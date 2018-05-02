@@ -6,7 +6,7 @@
 - removed restriction on Address.cs nullflavor
 - Added Hl7v2 DI to CDA functionality
 
-4.4.2 - Reference Platform Clinical Document Library (Feb 2019)
+4.4.2 - Reference Platform Clinical Document Library (Feb 2018)
 ----------------------------------------------------
 - Removed originalText for Diagnostic imaging study - not required.
 - Fix UTC offset when using DaylightSavings time
