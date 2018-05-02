@@ -630,6 +630,8 @@ namespace CDA.R5Samples
             var address = BaseCDAModel.CreateAddress();
             address.AustralianAddress = BaseCDAModel.CreateAustralianAddress();
             participant.Addresses = new List<IAddress> { address, address };
+            //address.AddressAbsentIndicator = AddressAbsentIndicator.NotIndicated;
+            //participant.Addresses = new List<IAddress> { address };
 
             // Subject of Care > Participant > Person or Organisation or Device > Person > Demographic Data > Sex
             person.Gender = Gender.Male;

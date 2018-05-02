@@ -180,7 +180,7 @@ namespace DigitalHealth.HL7.Common
             }
             else if (code == MessageTypes.ORU || code == MessageTypes.ORM)
             {
-                messageStructure = typeof(HL7GenericPathMessage);
+                messageStructure = typeof(HL7GenericMessage);
             }
             else if (code == MessageTypes.ORR || code == MessageTypes.ACK)
             {

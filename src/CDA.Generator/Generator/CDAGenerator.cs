@@ -27,6 +27,8 @@ using Nehta.VendorLibrary.Common;
 using Nehta.VendorLibrary.CDA.Common;
 using Nehta.HL7.CDA;
 using Nehta.VendorLibrary.CDA.SCSModel.DischargeSummary;
+using Nehta.VendorLibrary.CDA.SCSModel.PCML.Entities;
+using Nehta.VendorLibrary.CDA.SCSModel.ServiceReferral.Interfaces;
 using Entitlement = Nehta.VendorLibrary.CDA.SCSModel.Common.Entitlement;
 
 namespace Nehta.VendorLibrary.CDA.Generator
@@ -282,7 +284,105 @@ namespace Nehta.VendorLibrary.CDA.Generator
           //Generate and return the GeneratePersonalHealthObservation
           return CDAGeneratorHelper.CreateXml(clinicalDocument, authors, legalAuthenticator, authenticators, recipients, participants, components, nonXmlBody, birthDetailsRecord.IncludeLogo, birthDetailsRecord.LogoByte, typeof(BirthDetailsRecord));
         }
-       
+
+        /// <summary>
+        /// Generates PCML
+        /// </summary>
+        /// <param name="pcml">The GenerateBirthDetailsRecord object</param>
+        /// <returns>XmlDocument (CDA - GenerateBirthDetailsRecord)</returns>
+        public static XmlDocument GeneratePCML(PCML pcml)
+        {
+            var vb = new ValidationBuilder();
+
+            if (vb.ArgumentRequiredCheck("pcml", pcml))
+            {
+                pcml.Validate("pcml", vb.Messages);
+
+                LogoSetupAndValidation(pcml.LogoPath, pcml.LogoByte, pcml.IncludeLogo, vb);
+            }
+
+            //if (vb.Messages.Any())
+            //    throw new ValidationException(vb.Messages);
+
+
+            var authors = new List<POCD_MT000040Author>();
+            var recipients = new List<POCD_MT000040InformationRecipient>();
+            var participants = new List<POCD_MT000040Participant1>();
+            var components = new List<POCD_MT000040Component3>();
+            var patients = new List<POCD_MT000040RecordTarget>();
+            var authenticators = new List<POCD_MT000040Authenticator>();
+            POCD_MT000040NonXMLBody nonXmlBody = null;
+
+            //SETUP the clinical document object
+            var clinicalDocument = CDAGeneratorHelper.CreateDocument
+                (
+                    pcml.DocumentCreationTime,
+                    CDADocumentType.PharmacistCuratedMedicinesList,
+                    pcml.CDAContext.DocumentId,
+                    pcml.CDAContext.SetId,
+                    pcml.CDAContext.Version,
+                    pcml.DocumentStatus,
+                    pcml.Title
+                ); 
+            
+
+            if (pcml.SCSContext.Participant != null)
+            { 
+                foreach (var patientNominatedContact in pcml.SCSContext.Participant)
+                {
+                    participants.Add(CDAGeneratorHelper.CreateParticipant(patientNominatedContact,
+                        ParticipationType.PART, RoleClassAssociative.PROV, new CE { code = "PCP" }, 
+                        pcml.SCSContext?.SubjectOfCare?.Participant?.UniqueIdentifier.ToString()));
+                }
+            }
+
+            //SETUP the Legal Authenticator
+            var legalAuthenticator = CDAGeneratorHelper.CreateLegalAuthenticator(pcml.CDAContext.LegalAuthenticator);
+
+            //SETUP the patient
+            patients.Add(CDAGeneratorHelper.CreateSubjectOfCare(pcml.SCSContext.SubjectOfCare));
+            clinicalDocument.recordTarget = patients.ToArray();
+
+            //SETUP the author
+            authors.Add(CDAGeneratorHelper.CreateAuthor(pcml.SCSContext.Author));
+            clinicalDocument.author = authors.ToArray();
+            
+            //SETUP the Custodian
+            clinicalDocument.custodian = CDAGeneratorHelper.CreateCustodian(pcml.CDAContext.Custodian);
+
+            //SETUP the HealthcareFacility
+            pcml.SCSContext.Encounter = new SCSModel.PCML.Entities.Encounter();
+
+            if (pcml.SCSContext.Encounter.HealthcareFacility?.Participant != null)
+            { 
+                clinicalDocument.componentOf = CDAGeneratorHelper.CreateComponentOf(pcml.SCSContext.Encounter.HealthcareFacility);
+            }
+
+            //SETUP administrative observations component
+            //if (!(pcml.ShowAdministrativeObservationsSection.HasValue && pcml.ShowAdministrativeObservationsSection.Value == false))
+            //    components.Add
+            //    (
+            //        CDAGeneratorHelper.CreateAdministrativeObservations
+            //        (
+            //            pcml.SCSContext.SubjectOfCare,
+            //            pcml.SCSContext.Author as IParticipationAuthorHealthcareProvider,
+            //            pcml.SCSContent.CustomNarrativeAdministrativeObservations,
+            //            clinicalDocument.recordTarget[0].patientRole.id[0].root,
+            //            "1.2.36.1.2001.1001.101.102.16080",
+            //            (pcml.ShowAdministrativeObservationsNarrativeAndTitle.HasValue && pcml.ShowAdministrativeObservationsNarrativeAndTitle.Value == false) ? null : NarrativeGenerator
+            //        )
+            //    );
+
+            if (pcml.SCSContent.EncapsulatedData != null)
+            { 
+                components.Add(CDAGeneratorHelper.CreateComponent(pcml.SCSContent.EncapsulatedData, NarrativeGenerator));
+            }
+
+
+            //Generate and return the GeneratePersonalHealthObservation
+            return CDAGeneratorHelper.CreateXml(clinicalDocument, authors, legalAuthenticator, authenticators, recipients, participants, components, nonXmlBody, pcml.IncludeLogo, pcml.LogoByte, typeof(BirthDetailsRecord));
+        }
+
         /// <summary>
         /// Generates a Consumer Entered Health Summary CDA (XML) document
         /// </summary>

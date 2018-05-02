@@ -106,28 +106,31 @@ namespace Nehta.VendorLibrary.CDA.SCSModel.Common
               }
             }
 
-          if (!(path.ToLowerInvariant().Contains("consumerenterednotes.scscontext.subjectofcare.participant.addresses") 
-                    || path.ToLowerInvariant().Contains("consumerenteredhealthsummary.scscontext.subjectofcare.participant.addresses") 
-                    || path.ToLowerInvariant().Contains("advancedcaredirective.scscontext.subjectofcare.participant.addresses")
-                    || path.ToLowerInvariant().Contains("nswhealthcheckassessment.scscontext.subjectofcare.participant.addresses")
-                    || path.ToLowerInvariant().Contains("personalhealthobservation.scscontext.subjectofcare.participant.addresses")
-                    || path.ToLowerInvariant().Contains("consumerquestionnaire.scscontext.subjectofcare.participant.addresses")
-                    || path.ToLowerInvariant().Contains("birthdetailsrecord.scscontext.subjectofcare.participant.addresses")
-                    || path.ToLowerInvariant().Contains("consumerenteredachievements.scscontext.subjectofcare.participant.addresses")
-                    || path.ToLowerInvariant().Contains("consumerquestionnaire.scscontext.subjectofcare.participant.addresses")
-                    || path.ToLowerInvariant().Contains("nswhealthcheckassessment.scscontext.subjectofcare.participant.addresses")
-                    || path.ToLowerInvariant().Contains("personalhealthobservation.scscontext.subjectofcare.participant.addresses")
-                    )
-                )
-            {
-                if (AddressAbsentIndicator != null)
-                {
-                    if (AddressAbsentIndicator == CDA.Common.Enums.AddressAbsentIndicator.NotIndicated || AddressAbsentIndicator == CDA.Common.Enums.AddressAbsentIndicator.NotKnown)
-                    {
-                        vb.AddValidationMessage(vb.PathName, AddressAbsentIndicator.ToString(), "SubjectOfCare.Participant.Address null Flavor can only be 'No Fixed Addresss Indicator' for this document type");
-                    }
-                }
-            }
+            // 20/04/2018 Removed restriction as it does not seem relevant now
+
+            //if (!(path.ToLowerInvariant().Contains("consumerenterednotes.scscontext.subjectofcare.participant.addresses")
+            //          || path.ToLowerInvariant().Contains("consumerenteredhealthsummary.scscontext.subjectofcare.participant.addresses")
+            //          || path.ToLowerInvariant().Contains("advancedcaredirective.scscontext.subjectofcare.participant.addresses")
+            //          || path.ToLowerInvariant().Contains("nswhealthcheckassessment.scscontext.subjectofcare.participant.addresses")
+            //          || path.ToLowerInvariant().Contains("personalhealthobservation.scscontext.subjectofcare.participant.addresses")
+            //          || path.ToLowerInvariant().Contains("consumerquestionnaire.scscontext.subjectofcare.participant.addresses")
+            //          || path.ToLowerInvariant().Contains("birthdetailsrecord.scscontext.subjectofcare.participant.addresses")
+            //          || path.ToLowerInvariant().Contains("consumerenteredachievements.scscontext.subjectofcare.participant.addresses")
+            //          || path.ToLowerInvariant().Contains("consumerquestionnaire.scscontext.subjectofcare.participant.addresses")
+            //          || path.ToLowerInvariant().Contains("nswhealthcheckassessment.scscontext.subjectofcare.participant.addresses")
+            //          || path.ToLowerInvariant().Contains("personalhealthobservation.scscontext.subjectofcare.participant.addresses")
+            //          )
+            //      )
+            //{
+            //    if (AddressAbsentIndicator != null)
+            //    {
+            //        if (AddressAbsentIndicator == CDA.Common.Enums.AddressAbsentIndicator.NotIndicated || AddressAbsentIndicator == CDA.Common.Enums.AddressAbsentIndicator.NotKnown)
+            //        {
+            //            vb.AddValidationMessage(vb.PathName, AddressAbsentIndicator.ToString(), "SubjectOfCare.Participant.Address null Flavor can only be 'No Fixed Addresss Indicator' for this document type");
+            //        }
+            //    }
+            //}
+
         }
 
 

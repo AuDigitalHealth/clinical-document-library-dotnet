@@ -1,5 +1,11 @@
 ## Change Log/Revision History
 
+4.5.0 - (pre released) Reference Platform Clinical Document Library (2018)
+----------------------------------------------------
+- Added support for PCML generation
+- removed restriction on Address.cs nullflavor
+- Added Hl7v2 DI to CDA functionality
+
 4.4.2 - Reference Platform Clinical Document Library (Feb 2019)
 ----------------------------------------------------
 - Removed originalText for Diagnostic imaging study - not required.

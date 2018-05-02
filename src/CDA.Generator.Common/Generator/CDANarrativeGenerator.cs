@@ -1761,7 +1761,7 @@ namespace Nehta.VendorLibrary.CDA.Generator
 
                 // 31/05/2017 PW
                 // HIPS Enhancement: put each rendered multimedia item into a separate paragraph.
-                // This will throw an error for 1A Referrals - asked Schematron team to remove rule for next version
+                // This will throw an error for 1A Specialist Letter - asked Schematron team to remove rule for next version
                 // The next line was previously: strucDocText.renderMultiMedia = renderMultiMediaList.ToArray();
                 strucDocText.paragraph = renderMultiMediaList.Select(item => new StrucDocParagraph()
                 {
@@ -6537,6 +6537,47 @@ namespace Nehta.VendorLibrary.CDA.Generator
 
           return strucDocText;
         }
+
+
+
+
+        /// <summary>
+        /// Create a Narrative for Birth Details
+        /// </summary>
+        /// <returns>StrucDocText</returns>
+        public StrucDocText CreateNarrative(EncapsulatedData pcml)
+        {
+            StrucDocText strucDocText = null;
+            
+            var renderMultiMediaList = new List<StrucDocRenderMultiMedia>();
+
+            if (pcml != null)
+            {
+                var headerList = new List<String>()
+                {
+                    "Attachment Name",
+                    "Attachment"
+                };
+
+                strucDocText = new StrucDocText();
+
+                //pcml.ExternalData.Caption,
+                CreateEncapsulatedData(pcml.ExternalData, ref renderMultiMediaList);
+
+                var ai = new StrucDocRenderMultiMedia();
+                ai.caption = new StrucDocCaption()
+                {
+                    Text = new string[] {pcml.ExternalData.Caption}
+                };
+                ai.referencedObject = pcml.ExternalData.ID;
+
+                strucDocText.renderMultiMedia = new StrucDocRenderMultiMedia[]{ ai };
+            }
+
+
+            return strucDocText;
+        }
+
 
         /// <summary>
         /// Create a Narrative for List of QuestionnaireDocumentData

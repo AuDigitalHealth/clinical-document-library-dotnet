@@ -23,6 +23,37 @@ using Nehta.VendorLibrary.Common;
 
 namespace Nehta.VendorLibrary.CDA.SCSModel
 {
+
+  /// <summary>
+  /// 
+  /// </summary>
+  public class AuthorAuthoringDeviceWithParticipant : AuthorAuthoringDevice
+  {
+
+
+    /// <summary>
+    /// 
+    /// </summary>
+    [CanBeNull]
+   public  new IAuthorHealthcareProvider Participant { get; set; }
+
+
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="path"></param>
+    /// <param name="messages"></param>
+    /// <param name="mandatoryIdentifier"></param>
+    /// <param name="mandatoryDateTimeAuthored"></param>
+    public override void Validate(string path, List<ValidationMessage> messages, bool mandatoryIdentifier, bool mandatoryDateTimeAuthored)
+    {
+      base.Validate(path, messages, mandatoryIdentifier, mandatoryDateTimeAuthored);
+
+
+      //add validation here for participant
+    }
+  }
+
   /// <summary>
   /// This class models a Author - AssignedAuthoringDevice.
   /// </summary>
@@ -39,6 +70,9 @@ namespace Nehta.VendorLibrary.CDA.SCSModel
     /// </summary>
     [CanBeNull]
     public ICodableText Role { get; set; }
+
+    [CanBeNull]
+    public  IAuthorHealthcareProvider Participant { get; set; }
 
     /// <summary>
     /// Identifiers
@@ -68,7 +102,7 @@ namespace Nehta.VendorLibrary.CDA.SCSModel
     /// <param name="messages">the validation messages, these may be added to within this method</param>
     /// <param name="mandatoryIdentifier">Indicates whether the identifiers are mandatory for this validation </param>
     /// <param name="mandatoryDateTimeAuthored">Indicates whether the DateTimeAuthored is mandatory for this validation </param>
-    public void Validate(string path, List<ValidationMessage> messages, bool mandatoryIdentifier, bool mandatoryDateTimeAuthored)
+    public virtual void Validate(string path, List<ValidationMessage> messages, bool mandatoryIdentifier, bool mandatoryDateTimeAuthored)
     {
       var vb = new ValidationBuilder(path, messages);
 

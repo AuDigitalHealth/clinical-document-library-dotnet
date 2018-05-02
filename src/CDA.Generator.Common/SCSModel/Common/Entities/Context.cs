@@ -24,6 +24,7 @@ using Nehta.VendorLibrary.CDA.Common;
 using Nehta.VendorLibrary.CDA.Common.Enums;
 using Nehta.VendorLibrary.CDA.Generator.Enums;
 using Nehta.VendorLibrary.CDA.SCSModel.Pathology;
+using Nehta.VendorLibrary.CDA.SCSModel.PCML.Entities;
 using Nehta.VendorLibrary.CDA.SCSModel.ServiceReferral.Interfaces;
 using Nehta.VendorLibrary.Common;
 
@@ -39,17 +40,35 @@ namespace Nehta.VendorLibrary.CDA.SCSModel.Common
         IConsumerEnteredAchievementsContext, IEPrescriptionContext, IPhysicalMeasurementsContext, IDispenseRecordContext, INSWHealthCheckAssessmentContext,
         IPersonalHealthObservationContext, IConsumerQuestionnaireContext, IBirthDetailsRecordContext, IChildHealthCheckScheduleViewContext, IObservationViewDocumentContext,
         IPathologyResultViewContext, IPathologyResultReportContext, IDiagnosticImagingReportContext, IAdvanceCareInformationContext, IPathologyReportWithStructuredContentContext,
-        IServiceReferralContext
+        IServiceReferralContext, IPCMLContext
     {
+        private IAuthorCollection _author;
+
         #region Properties
 
         [DataMember]
         IParticipationConsumerAuthor IConsumerEnteredHealthSummaryContext.Author { get; set; }
 
+        [DataMember]
+        public string DocumentTitle { get; set; }
+
+        [DataMember]
+        public Encounter Encounter { get; set; }
+
+        [DataMember]
+        public IList<IParticipationPersonOrOrganisation> Participant { get; set; }
+         
+
         IParticipationAuthorHealthcareProvider IPathologyReportWithStructuredContentContext.Author { get; set; }
 
         [DataMember]
         public IParticipationSubjectOfCare SubjectOfCare { get; set; }
+
+        IAuthorCollection IPCMLContext.Author
+        {
+            get { return _author; }
+            set { _author = value; }
+        }
 
         [DataMember]
         IAuthorCollection IPhysicalMeasurementsContext.Author { get; set; }
@@ -1382,6 +1401,16 @@ namespace Nehta.VendorLibrary.CDA.SCSModel.Common
         }
 
         #endregion
+
+        #endregion
+
+
+        #region PCML
+
+        public void Validate(string path, List<ValidationMessage> messages)
+        {
+            
+        }
 
         #endregion
     }

@@ -101,19 +101,21 @@ namespace Nehta.VendorLibrary.CDA.Generator
         {
            var typeID = new POCD_MT000040InfrastructureRoottypeId{ extension = "POCD_HD000040", root = "2.16.840.1.113883.1.3"};
 
+            var templateIds = new List<II>
+            {
+                CreateIdentifierElement(
+                    cdaDocumentType.GetAttributeValue<NameAttribute, string>(x => x.TemplateIdentifier),
+                    cdaDocumentType.GetAttributeValue<NameAttribute, string>(x => x.Version),
+                    null),
+                CreateIdentifierElement("1.2.36.1.2001.1001.100.149", "1.0", null),
+                CreateIdentifierElement("1.2.36.1.2001.1001.100.1002.237", "1.0", null)
+            };
+            
             var clinicalDocument = new POCD_MT000040ClinicalDocument
                                        {
                                            typeId = typeID,
                                            title = title.IsNullOrEmptyWhitespace() ? CreateStructuredText(cdaDocumentType.GetAttributeValue<NameAttribute, string>(x => x.Title)) : CreateStructuredText(title),
-                                           templateId = new []
-                                                        {
-                                                             CreateIdentifierElement(
-                                                               cdaDocumentType.GetAttributeValue<NameAttribute, string>(x => x.TemplateIdentifier),
-                                                               cdaDocumentType.GetAttributeValue<NameAttribute, string>(x => x.Version),
-                                                               null),
-                                                             CreateIdentifierElement("1.2.36.1.2001.1001.100.149", "1.0", null)
-                                                        },
-                                      
+                                           templateId = templateIds.ToArray(),
                                            id = documentId != null ? CreateIdentifierElement(documentId) : CreateIdentifierElement(CreateOid(), null),
                                            setId = setId != null ? CreateIdentifierElement(setId) : null,
                                            code = CreateCodedWithExtensionElement(
@@ -15885,6 +15887,54 @@ namespace Nehta.VendorLibrary.CDA.Generator
              }
           }
           return component;
+        }
+
+
+
+        internal static POCD_MT000040Component3 CreateComponent(EncapsulatedData pcmlData, INarrativeGenerator narrativeGenerator)
+        {
+            POCD_MT000040Component3 component = null;
+
+            if (pcmlData != null)
+            {
+                component = new POCD_MT000040Component3
+                {
+                    section = new POCD_MT000040Section
+                    {
+                        id = CreateIdentifierElement(CreateGuid(), null),
+                        code = CreateCodedWithExtensionElement(CreateCodableText(PcmlSections.PharmacistCuratedMedicinesList)),
+                        title = CreateStructuredText(PcmlSections.PharmacistCuratedMedicinesList.GetAttributeValue<NameAttribute, string>(x => x.Title), null),
+                        templateId = CreateIdentifierArray("1.2.36.1.2001.1001.101.101.16886")
+                    }
+                };
+
+                if (pcmlData.ExternalData != null && pcmlData.ExternalData !=null)
+                {
+                    var entryList = new List<POCD_MT000040Entry>();
+
+                    //Added this relationship so as we can reference and display the test result representation 
+                    //data within the narrative
+                    //Create the observation entry with all the above relationships nested inside the observation
+                    var entry = new POCD_MT000040Entry
+                    {
+                        templateId = CreateIdentifierArray("1.2.36.1.2001.1001.101.102.16883"),
+                        observationMedia = CreateObservationMedia(pcmlData.ExternalData)
+                    };
+
+                    entryList.Add(entry);  
+
+                    component.section.entry = entryList.ToArray();
+                    component.section.text = narrativeGenerator.CreateNarrative(pcmlData);
+                }
+                else
+                {
+                    component.section.text = new StrucDocText
+                    {
+                        paragraph = new[] { new StrucDocParagraph { Text = new[] { NO_ENTRIES_MESSAGE } } }
+                    };
+                }
+            }
+            return component;
         }
 
         /// <summary>

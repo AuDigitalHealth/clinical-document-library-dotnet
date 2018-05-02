@@ -99,6 +99,11 @@
     <Compile Include="Common\Enums\SectionTitles\CommonSections.cs" />
     <Compile Include="Generator\CDAGeneratorHelperLegacy.cs" />
     <Compile Include="Generator\CDANarrativeGeneratorLegacy.cs" />
+    <Compile Include="SCSModel\CeHR\Enum\PcmlSections.cs" />
+    <Compile Include="SCSModel\PCML\Entities\Encounter.cs" />
+    <Compile Include="SCSModel\PCML\Interfaces\IPCMLContent.cs" />
+    <Compile Include="SCSModel\PCML\Interfaces\IPCMLContext.cs" />
+    <Compile Include="SCSModel\PCML\Interfaces\ICDAContextPCML.cs" />
     <Compile Include="SCSModel\Common\Entities\NarrativeOnlyDocument.cs" />
     <Compile Include="SCSModel\Common\Entities\ParticipationPeriod.cs" />
     <Compile Include="SCSModel\Common\Entities\QualifierCode.cs" />

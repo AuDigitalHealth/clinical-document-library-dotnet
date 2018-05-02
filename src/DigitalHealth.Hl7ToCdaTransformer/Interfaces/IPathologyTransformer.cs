@@ -15,7 +15,7 @@ namespace DigitalHealth.Hl7ToCdaTransformer.Interfaces
         /// </summary>
         /// <param name="payload">HL7 message.</param>
         /// <returns>HL7 message model.</returns>
-        HL7GenericPathMessage ParseHl7Message(string payload);
+        HL7GenericMessage ParseHl7Message(string payload);
         
         /// <summary>
         /// Transforms the HL7 v2 pathology message into a MHR compliant CDA document.
@@ -24,7 +24,7 @@ namespace DigitalHealth.Hl7ToCdaTransformer.Interfaces
         /// <param name="metadata">Additional data required from the source system.</param>
         /// <param name="reportData">Report data.</param>
         /// <returns>Transformed pathology report model</returns>
-        PathologyTransformResult Transform(HL7GenericPathMessage message, PathologyMetadata metadata, byte[] reportData = null);
+        PathologyTransformResult Transform(HL7GenericMessage message, PathologyMetadata metadata, byte[] reportData = null);
 
         /// <summary>
         /// Generates an XML document from the pathology report model.

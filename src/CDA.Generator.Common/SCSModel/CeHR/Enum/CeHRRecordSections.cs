@@ -2,8 +2,8 @@
 using System.Runtime.Serialization;
  namespace Nehta.VendorLibrary.CDA.Common.Enums
   {
-    /// <summary>
-      /// CeHR RecordSections
+      /// <summary>
+    /// CeHR RecordSections
     /// </summary>
     [Serializable]
     [DataContract]

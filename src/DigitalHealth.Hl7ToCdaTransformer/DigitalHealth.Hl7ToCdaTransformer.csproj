@@ -31,10 +31,6 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Nehta.VendorLibrary.Common, Version=4.2.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\Lib\Nehta.VendorLibrary.Common.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -45,11 +41,20 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Interfaces\IDiagnosticImagingTransformer.cs" />
     <Compile Include="Models\Custodian.cs" />
+    <Compile Include="Models\DiagnosticImagingMetadata.cs" />
+    <Compile Include="Models\DiagnosticImagingTransformResult.cs" />
     <Compile Include="Models\ReportingPathologist.cs" />
+    <Compile Include="Models\ReportingRadiologist.cs" />
     <Compile Include="Resources\ConstantsResource.Designer.cs" />
     <Compile Include="Resources\ResponseStrings.Designer.cs" />
+    <Compile Include="Services\DiagnosticImagingMessageTransformer.cs" />
+    <Compile Include="Services\DiagnosticImagingMessageValidator.cs" />
+    <Compile Include="Services\DiagnosticImagingTransformer.cs" />
+    <Compile Include="Services\MessageTransformerBase.cs" />
     <Compile Include="Services\MessageValidationException.cs" />
+    <Compile Include="Services\MessageValidatorBase.cs" />
     <Compile Include="Services\PathologyTransformer.cs" />
     <Compile Include="Interfaces\IPathologyTransformer.cs" />
     <Compile Include="EnumHelper.cs" />
@@ -76,6 +81,10 @@
     <ProjectReference Include="..\CDA.Generator\CDA.Generator.csproj">
       <Project>{4b542e29-7fa2-4de2-a828-a197da3f6b40}</Project>
       <Name>CDA.Generator</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Common\Common.csproj">
+      <Project>{0bdb0698-cb73-4e7b-a182-805831d3a5ac}</Project>
+      <Name>Common</Name>
     </ProjectReference>
     <ProjectReference Include="..\DigitalHealth.Hl7.Common\DigitalHealth.Hl7.Common.csproj">
       <Project>{D3CAE2FF-E5E0-487A-A99D-086422F96805}</Project>
