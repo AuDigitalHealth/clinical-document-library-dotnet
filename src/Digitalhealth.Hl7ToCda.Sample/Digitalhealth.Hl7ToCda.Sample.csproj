@@ -1,0 +1,78 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{0C2E6651-A2FD-42A3-B73A-8F3F8CC310D9}</ProjectGuid>
+    <OutputType>Exe</OutputType>
+    <RootNamespace>Digitalhealth.Hl7ToCda.Sample</RootNamespace>
+    <AssemblyName>Digitalhealth.Hl7ToCda.Sample</AssemblyName>
+    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Program.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config" />
+    <None Include="Sample\pathologyreport.hl7">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\CDA.GeneratedCode\CDA.GeneratedCode.csproj">
+      <Project>{0208153f-d77c-4cd1-b28d-1aadc00e1553}</Project>
+      <Name>CDA.GeneratedCode</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\CDA.Generator.Common\CDA.Generator.Common.csproj">
+      <Project>{851A08A2-728F-4BF7-A050-0E056617A829}</Project>
+      <Name>CDA.Generator.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\CDA.Generator\CDA.Generator.csproj">
+      <Project>{4B542E29-7FA2-4DE2-A828-A197DA3F6B40}</Project>
+      <Name>CDA.Generator</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\DigitalHealth.Hl7.Common\DigitalHealth.Hl7.Common.csproj">
+      <Project>{d3cae2ff-e5e0-487a-a99d-086422f96805}</Project>
+      <Name>DigitalHealth.Hl7.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\DigitalHealth.Hl7ToCdaTransformer\DigitalHealth.Hl7ToCdaTransformer.csproj">
+      <Project>{717a20f2-0503-4f32-8e6a-745f8609babe}</Project>
+      <Name>DigitalHealth.Hl7ToCdaTransformer</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>

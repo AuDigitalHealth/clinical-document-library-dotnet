@@ -1,0 +1,298 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="CannotFindHospital" xml:space="preserve">
+    <value>Cannot find hospital with code {0} in code system {1}</value>
+  </data>
+  <data name="CannotFindPatient" xml:space="preserve">
+    <value>Cannot find patient with MRN {0} in Hospital {1}</value>
+  </data>
+  <data name="ContactDetailsFormat" xml:space="preserve">
+    <value>{0} {1} {2} {3} {4} {5}</value>
+  </data>
+  <data name="DatabaseError" xml:space="preserve">
+    <value>Database error in {0}, please check SystemErrorLog</value>
+  </data>
+  <data name="DateOfBirthMismatchError" xml:space="preserve">
+    <value>Received DOB {0:dd/MM/yyyy} differs from current DOB {1:dd/MM/yyyy}.</value>
+  </data>
+  <data name="DateOfBirthOutOfRange" xml:space="preserve">
+    <value>Date of birth {0:dd/MM/yyyy} out of range.</value>
+  </data>
+  <data name="DefaultAddressTypeCode" xml:space="preserve">
+    <value>H</value>
+    <comment>Could choose U for Unknown or H for Home</comment>
+  </data>
+  <data name="DefaultCountryCode" xml:space="preserve">
+    <value>1101</value>
+  </data>
+  <data name="EnterpriseMergeFailed" xml:space="preserve">
+    <value>Enterprise merge of {0} into {1} failed</value>
+  </data>
+  <data name="EnterpriseMergeNeitherFound" xml:space="preserve">
+    <value>Neither patient was found for enterprise merge from {0} to {1}</value>
+  </data>
+  <data name="EnterpriseMergeOnlySurvivorFound" xml:space="preserve">
+    <value>Only the survivor was found for enterprise merge from {0} to {1}</value>
+  </data>
+  <data name="EnterpriseMergeToNewIdFailed" xml:space="preserve">
+    <value>Enterprise merge of {0} into new {1} failed</value>
+  </data>
+  <data name="ErrorMessageHipsFailed" xml:space="preserve">
+    <value>(ERROR) HIPS failed while processing HL7 message {0} from {1} at {2}</value>
+  </data>
+  <data name="ErrorMessageHpiiLookupFail" xml:space="preserve">
+    <value>(ERROR) HPI-I lookup failed for HL7 message {0} from {1} at {2}</value>
+  </data>
+  <data name="ErrorMessageIhiLookupFail" xml:space="preserve">
+    <value>(ERROR) IHI lookup failed for HL7 message {0} from {1} at {2}</value>
+  </data>
+  <data name="HipsExceptionMessage" xml:space="preserve">
+    <value>A Hips Exception Message was received. Message: {0}. Details: {1}.</value>
+  </data>
+  <data name="HospitalNotFoundError" xml:space="preserve">
+    <value>Hospital not found with identifier {0} from {1}.</value>
+  </data>
+  <data name="IhiNotInActiveStatus" xml:space="preserve">
+    <value>The IHI in the HL7 message has a Status other than Active set</value>
+  </data>
+  <data name="IhiValidationPeriodExpired" xml:space="preserve">
+    <value>The IHI validation period in the HL7 message has expired</value>
+  </data>
+  <data name="IncorrectTestResultStatusSupplied" xml:space="preserve">
+    <value>HL7 message contains an incorrect Test Result Status</value>
+  </data>
+  <data name="InfoMessageDateOfDeathBeforeSQLDateMin" xml:space="preserve">
+    <value>(INFO) HL7 PID Segment of MRN {0} at {1} has an Invalid Date Of Death.</value>
+  </data>
+  <data name="InfoMessageDateOfDeathBeforeSQLDateMinEx" xml:space="preserve">
+    <value>Invalid DateOfDeath received as {0} : stored DateOfDeath as {1:dd/MM/yyyy} and DateOfDeath Indicator set to {2}</value>
+  </data>
+  <data name="InfoMessageIhiLookupFail" xml:space="preserve">
+    <value>(INFO) IHI lookup failed for HL7 message {0} from {1} at {2}</value>
+  </data>
+  <data name="InfoMessageNotProcessed" xml:space="preserve">
+    <value>(INFO) HL7 message {0} from {1} at {2} was not processed</value>
+  </data>
+  <data name="InsufficientPrecisionInDateOfBirth" xml:space="preserve">
+    <value>Insufficient precision in date of birth</value>
+  </data>
+  <data name="InvalidDateOfBirth" xml:space="preserve">
+    <value>Date of birth {0} is not a valid date/time.</value>
+  </data>
+  <data name="InvalidIhiRequest" xml:space="preserve">
+    <value>Invalid data in IHI request: MRN {0} at {1}, DOB {2:dd/MM/yyyy}, stored DOB {3:dd/MM/yyyy}</value>
+  </data>
+  <data name="InvalidObservationDateTime" xml:space="preserve">
+    <value>HL7 message contains an invalid Observation Date and Time</value>
+  </data>
+  <data name="InvalidResultsDateTime" xml:space="preserve">
+    <value>HL7 message contains an invalid Test Result Date and Time</value>
+  </data>
+  <data name="InvalidUserDetails" xml:space="preserve">
+    <value>Invalid user details</value>
+  </data>
+  <data name="LastNameMismatchError" xml:space="preserve">
+    <value>Received last name {0} differs from current last name {1}.</value>
+  </data>
+  <data name="MergeMrnSourceNotFound" xml:space="preserve">
+    <value>Source patient not found for merge MRN {0} into {1}</value>
+  </data>
+  <data name="MergeVisitSourceEpisodeNotFound" xml:space="preserve">
+    <value>Source episode not found for merge visit {0} into {1} for MRN {2}</value>
+  </data>
+  <data name="MergeVisitSourcePatientNotFound" xml:space="preserve">
+    <value>Source patient not found for merge visit {0} into {1} for MRN {2}</value>
+  </data>
+  <data name="MessageFailedFormat" xml:space="preserve">
+    <value>HL7 message {0} from {1} at {2} failed</value>
+  </data>
+  <data name="MessageNeedsRetryFormat" xml:space="preserve">
+    <value>HL7 message {0} from {1} at {2} needs retry</value>
+  </data>
+  <data name="MessageSkippedFormat" xml:space="preserve">
+    <value>HL7 message {0} from {1} at {2} was skipped</value>
+  </data>
+  <data name="MoveMrnSourceNotFound" xml:space="preserve">
+    <value>Source patient not found for move MRN {0} to enterprise ID {1}</value>
+  </data>
+  <data name="MoveVisitEpisodeNotFound" xml:space="preserve">
+    <value>Episode not found for move visit {0} from {1} to {2}</value>
+  </data>
+  <data name="MoveVisitFailed" xml:space="preserve">
+    <value>Move visit {0} from {1} to {2} failed</value>
+  </data>
+  <data name="MoveVisitSourcePatientNotFound" xml:space="preserve">
+    <value>Source patient not found for move visit {0} from {1} to {2}</value>
+  </data>
+  <data name="MultipleEpisodesForFillerOrderNumber" xml:space="preserve">
+    <value>Multiple episodes exists for the Filler Order Number(s)</value>
+  </data>
+  <data name="NoDateOfBirthForPatient" xml:space="preserve">
+    <value>No date of birth for patient</value>
+  </data>
+  <data name="NoExaminationProcedureDetails" xml:space="preserve">
+    <value>HL7 message does not contain an Examination Procedure details</value>
+  </data>
+  <data name="NoIhiForPatient" xml:space="preserve">
+    <value>HL7 message does not contain an IHI for the patient</value>
+  </data>
+  <data name="NoLegalNameForPatient" xml:space="preserve">
+    <value>HL7 message does not contain a Legal Name for the patient</value>
+  </data>
+  <data name="NoMedicareOrDvaNumberForPatient" xml:space="preserve">
+    <value>HL7 message does not contain a Medicare or DVA number.</value>
+  </data>
+  <data name="NoMrnForPatient" xml:space="preserve">
+    <value>HL7 message does not contain an MRN for the patient</value>
+  </data>
+  <data name="NoOrderingProviderDetails" xml:space="preserve">
+    <value>HL7 message does not contain a Ordering Provider</value>
+  </data>
+  <data name="NoTestResultNameSupplied" xml:space="preserve">
+    <value>HL7 message does not contain a Test Result Name</value>
+  </data>
+  <data name="NoTestResultStatusSupplied" xml:space="preserve">
+    <value>HL7 message does not contain a Test Result Status</value>
+  </data>
+  <data name="NoVisitNumberForEpisode" xml:space="preserve">
+    <value>HL7 message does not contain a visit number for the episode</value>
+  </data>
+  <data name="PathologyHospitalCodeSystem" xml:space="preserve">
+    <value>labFacCd</value>
+  </data>
+  <data name="PatientAdministrationSystemHospitalCodeSystem" xml:space="preserve">
+    <value>pasFacCd</value>
+  </data>
+  <data name="PatientNotMatchedToFillerOrderNumber" xml:space="preserve">
+    <value>The Patient does not match the Patient with the existing Filler Order Number(s)</value>
+  </data>
+  <data name="PatientNotYetRegistered" xml:space="preserve">
+    <value>Patient not yet registered</value>
+  </data>
+  <data name="PrimaryPatientIdentifierCodeSystem" xml:space="preserve">
+    <value>patientIdAuthCd</value>
+  </data>
+  <data name="StatePatientIdentifierChange" xml:space="preserve">
+    <value>StatePatientId for {0} at {1} changed from {2} to {3}</value>
+  </data>
+  <data name="Unhandled_HL7_Message_Type" xml:space="preserve">
+    <value>Unhandled HL7 message type: {0}</value>
+  </data>
+</root>

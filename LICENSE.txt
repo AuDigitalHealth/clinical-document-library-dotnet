@@ -1,0 +1,56 @@
+Australian Digital Health Agency Production Disclaimer - 
+
+The Australian Digital Health Agency (as Licensor) grants You a
+licence to this Product subject to the terms of the Apache Licence
+(version 2.0), a copy of which is available at
+http://www.apache.org/licenses/LICENSE-2.0, and the following terms.
+ 
+This Product licensed under the Apache Licence and these terms may
+be used within production software systems. It nevertheless remains 
+your responsibility to test and validate the use of this product 
+within your software and the limitation of liability provisions in 
+clause 8 of the Apache Licence continue to apply.
+
+Despite clause 7 of the Apache Licence, if a condition or warranty 
+is implied by statute or law that cannot be excluded, then the 
+liability of a Contributor to the extent that it has contributed to 
+a breach of that condition or warranty is limited to one or more of 
+the following at its option: (a) in the case of goods, any one of 
+the following: the replacement of those goods or the re-supply of 
+equivalent goods; the repair of those goods; the payment of the 
+cost of replacing those or acquiring equivalent goods; or the 
+payment of the cost of having those goods repaired; and (b) in the 
+case of services: the supplying of those services again; or the 
+payment of the cost of having those services supplied again.
+ 
+A term which is given a meaning in the Apache Licence, has the same 
+meaning when used in these terms.
+
+
+*****************************************************************************************************************
+Copyright (c) 2002, 2003, 2004, 2005 Health Level Seven. All rights reserved.
+
+ Redistribution and use in source and binary forms, with or without
+ modification, are permitted provided that the following conditions
+ are met:
+ 1. Redistributions of source code must retain the above copyright
+    notice, this list of conditions and the following disclaimer.
+ 2. Redistributions in binary form must reproduce the above copyright
+    notice, this list of conditions and the following disclaimer in the
+    documentation and/or other materials provided with the distribution.
+ 3. All advertising materials mentioning features or use of this software
+    must display the following acknowledgement:
+      This product includes software developed by Health Level Seven.
+ THIS SOFTWARE IS PROVIDED BY HEALTH LEVEL SEVEN, INC. AND CONTRIBUTORS "AS IS" AND
+ ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+ IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
+ ARE DISCLAIMED.  IN NO EVENT SHALL THE REGENTS OR CONTRIBUTORS BE LIABLE
+ FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
+ DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS
+ OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)
+ HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT
+ LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY
+ OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
+********************************************************************************************************************
+                  
