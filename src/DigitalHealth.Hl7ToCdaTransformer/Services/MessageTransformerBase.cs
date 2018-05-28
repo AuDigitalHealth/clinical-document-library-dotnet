@@ -104,7 +104,7 @@ namespace DigitalHealth.Hl7ToCdaTransformer.Services
             var person = BaseCDAModel.CreatePersonWithOrganisation();
 
             // Participation Period
-            requester.ParticipationEndTime = GetResultsReportStatusChange(message);
+            requester.ParticipationEndTime = GetQuantityTimingStartDateTime(message);
 
             // Document Requester > Role
             requester.Role = BaseCDAModel.CreateRole(Occupation.GeneralMedicalPractitioner, CodingSystem.ANZSCO);
@@ -496,6 +496,19 @@ namespace DigitalHealth.Hl7ToCdaTransformer.Services
         {
             DateTime dateTime = genericMessage.Order.First().Observation.First()
                 .ObservationsReportID.ResultsRptStatusChngDateTime.First().TimestampValue.Value;
+
+            return new ISO8601DateTime(dateTime);
+        }
+
+        /// <summary>
+        /// Gets the start dateTime from OBR22 in the HL7 V2 message.
+        /// </summary>
+        /// <param name="genericMessage">The HL7 V2 message.</param>
+        /// <returns></returns>
+        internal static ISO8601DateTime GetQuantityTimingStartDateTime(HL7GenericMessage genericMessage)
+        {
+            DateTime dateTime = genericMessage.Order.First().Observation.First()
+                .ObservationsReportID.QuantityTiming.startdatetime.TimestampValue.Value;
 
             return new ISO8601DateTime(dateTime);
         }
