@@ -170,12 +170,17 @@ namespace DigitalHealth.Hl7ToCdaTransformer.Services
             if (pid.Race != null && pid.Race.Length > 0)
             {
                 IndigenousStatus indigenousStatus;
-                if (!EnumHelper.TryGetEnumValue<IndigenousStatus, NameAttribute>(a => a.Code == pid.Race[0].identifier, out indigenousStatus))
+                if (!EnumHelper.TryGetEnumValue<IndigenousStatus, NameAttribute>(a => a.Code == pid.Race[0].identifier,
+                    out indigenousStatus))
                 {
                     throw new ArgumentException("No matching IndigenousStatus value found");
                 }
 
                 person.IndigenousStatus = indigenousStatus;
+            }
+            else
+            {
+                person.IndigenousStatus = IndigenousStatus.NotStatedOrInadequatelyDescribed;
             }
 
             // Subject of Care > Participant > Person or Organisation or Device > Person > Person Name
