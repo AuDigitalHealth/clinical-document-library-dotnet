@@ -265,6 +265,122 @@ namespace Nehta.VendorLibrary.CDA.Sample
             return xmlDoc;
         }
 
+
+        /// <summary>
+        /// This example populates only the mandatory Sections / Entries; as a result this sample omits all
+        /// of the content within the body of the CDA document; as each of the sections within the body
+        /// are optional.
+        /// </summary>
+        public XmlDocument PopulateEReferralSample_1B_NarrativeExample(string fileName)
+        {
+            XmlDocument xmlDoc;
+
+            var document = PopulateEReferral(true);
+
+            document.SCSContent = EReferral.CreateSCSContent();
+            document.SCSContent.Referee = CreateReferee(true);
+
+            document.IncludeLogo = false;
+
+            // Hide Administrative Observations Section 
+            document.ShowAdministrativeObservationsSection = false;
+
+            var narrativeOnlyDocumentList = new List<NarrativeOnlyDocument>();
+
+            var narrativeOnlyDocument = BaseCDAModel.CreateNarrativeOnlyDocument();
+            narrativeOnlyDocument.Title = "Title";
+
+            // Build Narrative
+            var sdt = new StrucDocText();
+            sdt.content = new[]
+            {
+                new StrucDocContent {br = new[] {""}},
+                new StrucDocContent {styleCode = "Bold Underline", Text = new[] {"Text"}},
+                new StrucDocContent {Text = new[] {"Dear Mr Jones,"}, br = new[] {""}},
+                new StrucDocContent {Text = new[] { "Thank you for seeing this 21 year old male who has had 2 episodes of cholecystitis in the last month.  " }, br = new[] {"", ""} },
+                new StrucDocContent {Text = new[] {"He is currently unwell. "}, br = new[] {""}},
+                new StrucDocContent {styleCode = "Underline", Text = new[] {"Date:"}, br = new[] {"", ""}},
+                new StrucDocContent {Text = new[] {"12-Jan-2012"}},
+                new StrucDocContent {styleCode = "Underline", Text = new[] {"Time:"}, br = new[] {""}},
+                new StrucDocContent {Text = new[] {"12:00pm"}},
+                new StrucDocContent {br = new[] {"", ""}},
+            };
+
+            sdt.table = new[]
+            {
+                new StrucDocTable
+                {
+                    caption = new StrucDocCaption {Text = new [] {"Reason For Referral"}},
+                    tbody = new [] { new StrucDocTbody {tr = new [] { new StrucDocTr { td = new []{ new StrucDocTd { Text = new [] { "Referral reason" }} }} }} }
+                },
+                new StrucDocTable
+                {
+                    caption = new StrucDocCaption {Text = new [] {"Medications"}},
+                    thead = new StrucDocThead {tr = new [] { new StrucDocTr { td = new []{ new StrucDocTd { Text = new [] { "Medication" }}, new StrucDocTd { Text = new[] { "Directions" } } }} }},
+                    tbody = new [] { new StrucDocTbody {tr = new [] { new StrucDocTr { td = new []{ new StrucDocTd { Text = new [] { "paracetamol 500 mg + codeine phosphate 30 mg tablet" } }, new StrucDocTd { Text = new[] { "Dose:1, Frequency: 3 times daily" } } } } }} }
+                },
+                
+            };
+
+
+
+            sdt.renderMultiMedia = new[]
+                                      {
+                                      new StrucDocRenderMultiMedia
+                                        {
+                                          referencedObject = "efd92158-fea0-4e0b-93d9-e2913a63df8b",
+                                          caption = new StrucDocCaption
+                                                      {
+                                                        Text = new[] {"Report.pdf"}
+                                                      }
+                                        }
+                                    };
+
+            sdt.linkHtml = new[]
+                         {
+                         new StrucDocLinkHtml
+                           {
+                             href = "Report.pdf",
+                             Text = new[]
+                                      {
+                                        "Report.pdf"
+                                      },
+                           }
+                       };
+
+            narrativeOnlyDocument.Narrative = sdt;
+
+
+            // Add One
+            narrativeOnlyDocumentList.Add(narrativeOnlyDocument);
+
+            document.SCSContent.NarrativeOnlyDocument = narrativeOnlyDocumentList;
+
+            try
+            {
+                CDAGenerator.NarrativeGenerator = new CDANarrativeGenerator();
+
+                //Pass the document model into the Generate method 
+                xmlDoc = CDAGenerator.GenerateEReferral(document);
+
+                using (var writer = XmlWriter.Create(OutputFolderPath + @"\" + fileName, new XmlWriterSettings() { Indent = true }))
+                {
+                    if (!fileName.IsNullOrEmptyWhitespace()) xmlDoc.Save(writer);
+                }
+            }
+            catch (ValidationException ex)
+            {
+                //Catch any validation exceptions
+                var validationMessages = ex.GetMessagesString();
+
+                //Handle any validation errors as appropriate.
+                throw;
+            }
+
+            return xmlDoc;
+        }
+
+
         #region Populate Methods
 
 

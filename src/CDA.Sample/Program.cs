@@ -45,6 +45,7 @@ namespace Nehta.VendorLibrary.CDA.Sample
             var maxEReferralCda = eReferralSampleCode.MaxPopulatedEReferralSample("EReferral_3A_Max.xml");
             var eReferralCda1A = eReferralSampleCode.PopulateEReferralSample_1A("EReferral_1A.xml");
             var eReferralCda1B = eReferralSampleCode.PopulateEReferralSample_1B("EReferral_1B.xml");
+            var eReferralCda1N = eReferralSampleCode.PopulateEReferralSample_1B_NarrativeExample("EReferral_1B_NB.xml");
             LevelsGenerator.Generate2("EReferral_3A_Max.xml", "EReferral_2.xml");
 
             var sharedHealthSummarySampleCode = new SharedHealthSummarySample();

@@ -354,7 +354,8 @@ namespace CDA.PCML
              
             var address1 = BaseCDAModel.CreateAddress();
 
-            address1.AddressPurpose = AddressPurpose.Residential;
+            // MUST BE BUSINESS
+            address1.AddressPurpose = AddressPurpose.Business;
             address1.AustralianAddress = BaseCDAModel.CreateAustralianAddress();
 
             address1.AustralianAddress.UnstructuredAddressLines = new List<string> { "1 Clinician Street" };
@@ -364,7 +365,6 @@ namespace CDA.PCML
             address1.AustralianAddress.DeliveryPointId = 32568931;
 
             person.Participant.Addresses  = new List<IAddress> { address1 };
-
             
             person.Participant.Person.Organisation = BaseCDAModel.CreateEmploymentOrganisation();
             
@@ -372,7 +372,10 @@ namespace CDA.PCML
             person.Participant.Person.Organisation = BaseCDAModel.CreateEmploymentOrganisation();
             person.Participant.Person.Organisation.Name = "Hay Bill Hospital";
             person.Participant.Person.Organisation.NameUsage = OrganisationNameUsage.Other;
-                  
+
+            // New requirement to make address mandatory
+            person.Participant.Person.Organisation.Addresses = new List<IAddress> { address1 };
+
             person.Participant.Person.Organisation.Identifiers = new List<Identifier> {
                 BaseCDAModel.CreateHealthIdentifier(HealthIdentifierType.HPIO, "8003620833333789"),
                 //BaseCDAModel.CreateIdentifier("SampleAuthority", null, null, "1.2.3.4.5.66666", null)

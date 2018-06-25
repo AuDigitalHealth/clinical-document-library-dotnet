@@ -1,8 +1,10 @@
 ## Change Log/Revision History
 
+
+
 4.5.0 - (pre released) Reference Platform Clinical Document Library (2018)
 ----------------------------------------------------
-- Added support for PCML generation
+- Added support for PCML generation - aligning to conformance profile
 - removed restriction on Address.cs nullflavor
 - Added Hl7v2 DI to CDA functionality
 - Fixed HL7 requester.ParticipationEndTime to OBR-27.5 rather than OBR-22
