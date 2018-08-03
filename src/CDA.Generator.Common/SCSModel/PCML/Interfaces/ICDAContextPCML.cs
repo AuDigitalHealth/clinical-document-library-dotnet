@@ -22,7 +22,7 @@ using Nehta.VendorLibrary.Common;
 namespace Nehta.VendorLibrary.CDA.CDAModel
 {
     /// <summary>
-    /// A ICDAContextBirthDetailsRecord interface
+    /// A ICDAContextPCML interface
     /// </summary>
     public interface ICDAContextPCML
     {
@@ -52,12 +52,17 @@ namespace Nehta.VendorLibrary.CDA.CDAModel
         /// The custodian for this CDA document
         /// </summary>
         IParticipationCustodian Custodian { get; set; }
-        
+
+        /// <summary>
+        /// A list of recipients
+        /// </summary>
+        List<IParticipationInformationRecipient> InformationRecipients { get; set; }
+
         #endregion
 
         #region Validation
         /// <summary>
-        /// Validate the CDA Context for this ICDAContextBirthDetailsRecord
+        /// Validate the CDA Context for this ICDAContextPCML
         /// </summary>
         /// <param name="path">The path to this object as a string</param>
         /// <param name="messages">the validation messages, these may be added to within this method</param>

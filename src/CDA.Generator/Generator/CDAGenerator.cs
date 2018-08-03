@@ -336,6 +336,12 @@ namespace Nehta.VendorLibrary.CDA.Generator
                 }
             }
 
+            if (pcml.CDAContext.InformationRecipients != null)
+            {
+                recipients.AddRange(pcml.CDAContext.InformationRecipients.Select(interestedParty =>
+                    CDAGeneratorHelper.CreateInformationRecipient(interestedParty)));
+            }
+
             //SETUP the Legal Authenticator
             var legalAuthenticator = CDAGeneratorHelper.CreateLegalAuthenticator(pcml.CDAContext.LegalAuthenticator);
 
@@ -349,6 +355,9 @@ namespace Nehta.VendorLibrary.CDA.Generator
             
             //SETUP the Custodian
             clinicalDocument.custodian = CDAGeneratorHelper.CreateCustodian(pcml.CDAContext.Custodian);
+
+            //SETUP the Information Recipients
+            clinicalDocument.informationRecipient = recipients.ToArray();
 
             //SETUP the HealthcareFacility
             pcml.SCSContext.Encounter = new SCSModel.PCML.Entities.Encounter();
