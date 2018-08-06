@@ -2,7 +2,7 @@
 
 
 
-4.5.0 - (pre released) Reference Platform Clinical Document Library (2018)
+4.5.0 - Reference Platform Clinical Document Library (Aug 2018)
 ----------------------------------------------------
 - Added support for PCML generation - aligning to conformance profile
 - removed restriction on Address.cs nullflavor

@@ -1,16 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using DigitalHealth.Hl7ToCdaTransformer.Models;
+﻿using System.Linq;
 using DigitalHealth.Hl7ToCdaTransformer.Resources;
 using DigitalHealth.HL7.Common.DataStructure;
 using DigitalHealth.HL7.Common.Message;
-using DigitalHealth.HL7.Common.Segment;
 using DigitalHealth.HL7.Common.SegmentGroup;
-using Nehta.VendorLibrary.CDA.Common;
-using Nehta.VendorLibrary.CDA.Common.Enums;
 
 namespace DigitalHealth.Hl7ToCdaTransformer.Services
 {

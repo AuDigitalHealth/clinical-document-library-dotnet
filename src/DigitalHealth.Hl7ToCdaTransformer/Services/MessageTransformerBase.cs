@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using CDA.Generator.Common.SCSModel.Entities;
 using CDA.Generator.Common.SCSModel.Interfaces;
 using DigitalHealth.Hl7ToCdaTransformer.Models;

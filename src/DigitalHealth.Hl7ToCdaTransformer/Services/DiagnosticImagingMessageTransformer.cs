@@ -1,23 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using CDA.Generator.Common.SCSModel.Entities;
-using CDA.Generator.Common.SCSModel.Interfaces;
 using DigitalHealth.Hl7ToCdaTransformer.Models;
-using DigitalHealth.HL7.Common.DataStructure;
 using DigitalHealth.HL7.Common.Message;
 using DigitalHealth.HL7.Common.Segment;
-using DigitalHealth.HL7.Common.SegmentGroup;
 using Nehta.VendorLibrary.CDA;
 using Nehta.VendorLibrary.CDA.Common;
 using Nehta.VendorLibrary.CDA.Common.Enums;
 using Nehta.VendorLibrary.CDA.Generator.Enums;
 using Nehta.VendorLibrary.CDA.SCSModel;
 using Nehta.VendorLibrary.CDA.SCSModel.Common;
-using Nehta.VendorLibrary.CDA.SCSModel.Common.Entities;
-using Nehta.VendorLibrary.CDA.SCSModel.Pathology;
 using Nehta.VendorLibrary.Common;
 
 namespace DigitalHealth.Hl7ToCdaTransformer.Services

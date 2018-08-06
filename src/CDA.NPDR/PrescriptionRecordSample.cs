@@ -283,7 +283,7 @@ namespace Nehta.VendorLibrary.CDA.NPDR.Sample
       if (!mandatorySectionsOnly)
       {
           // Therapeutic Good Identification - The medicine, vaccine or other therapeutic good being ordered, administered to or used by the subject of care
-          prescriptionItem.TherapeuticGoodId = BaseCDAModel.CreateCodableText("02157M", CodingSystem.PBSCode, "ALUMINIUM HYDROXIDE with MAGNESIUM HYDROXIDE Oral suspension 200 mg-200 mg per 5 mL, 500 mL, 1", null, null);
+          prescriptionItem.TherapeuticGoodId = BaseCDAModel.CreateCodableText("04118R", CodingSystem.PBSCode, "ALUMINIUM HYDROXIDE with MAGNESIUM HYDROXIDE and SIMETHICONE Oral suspension 400 mg-400 mg-30 mg per 5 mL, 500 mL, 1", null, null);
 
           // Therapeutic Good Strength (Additional Therapeutic Good Detail) - Information concerning the strength of the Therapeutic Good
           prescriptionItem.TherapeuticGoodStrength = "Therapeutic Good Strength";

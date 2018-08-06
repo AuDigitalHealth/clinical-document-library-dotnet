@@ -18,6 +18,7 @@ using System.Xml;
 using CDA.Generator.Common.SCSModel.Common.Entities;
 using CDA.Generator.Common.SCSModel.ServiceReferral.Interfaces;
 using Nehta.HL7.CDA;
+using Nehta.VendorLibrary.CDA.CDAModel;
 using Nehta.VendorLibrary.CDA.CDAModel.ServiceReferral.Interfaces;
 using Nehta.VendorLibrary.CDA.Generator.Enums;
 using Nehta.VendorLibrary.Common;
@@ -267,7 +268,7 @@ namespace Nehta.VendorLibrary.CDA.Sample
             #region Setup and populate the CDA context model
 
             // Setup and populate the CDA context model
-            var cdaContext = ServiceReferral.CreateCDAContext();
+            ICDAContextServiceReferral cdaContext = ServiceReferral.CreateCDAContext();
 
             // Document Id
             cdaContext.DocumentId = BaseCDAModel.CreateIdentifier(BaseCDAModel.CreateOid());

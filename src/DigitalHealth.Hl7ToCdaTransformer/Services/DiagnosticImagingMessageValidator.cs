@@ -1,8 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using DigitalHealth.Hl7ToCdaTransformer.Models;
 using DigitalHealth.Hl7ToCdaTransformer.Resources;
 using DigitalHealth.HL7.Common.Message;

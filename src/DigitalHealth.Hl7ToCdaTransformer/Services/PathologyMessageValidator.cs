@@ -2,7 +2,6 @@
 using System.Linq;
 using DigitalHealth.Hl7ToCdaTransformer.Models;
 using DigitalHealth.Hl7ToCdaTransformer.Resources;
-using DigitalHealth.HL7.Common.DataStructure;
 using DigitalHealth.HL7.Common.Message;
 using DigitalHealth.HL7.Common.Segment;
 using DigitalHealth.HL7.Common.SegmentGroup;

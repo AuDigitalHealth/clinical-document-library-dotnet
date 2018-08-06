@@ -274,60 +274,73 @@ namespace Nehta.VendorLibrary.CDA.NPDR.Sample
       // DateTime of Dispense Event (Medication Action DateTime) 
       dispenseItem.DateTimeOfDispenseEvent = new ISO8601DateTime(DateTime.Now);
 
-      if (!mandatorySectionsOnly)
-      {
-        // Therapeutic Good Identification - The medicine, vaccine or other therapeutic good being ordered, administered to or used by the subject of care
-        dispenseItem.TherapeuticGoodId = BaseCDAModel.CreateCodableText("01471K", CodingSystem.PBSCode, "fluconazole 50 mg capsule, 28");
+        if (!mandatorySectionsOnly)
+        {
+            // Therapeutic Good Identification - The medicine, vaccine or other therapeutic good being ordered, administered to or used by the subject of care
+            dispenseItem.TherapeuticGoodId = BaseCDAModel.CreateCodableText("01471K", CodingSystem.PBSCode, "fluconazole 50 mg capsule, 28");
 
-        // Therapeutic Good Strength (Additional Therapeutic Good Detail) - Information concerning the strength of the Therapeutic Good
-        dispenseItem.TherapeuticGoodStrength = "Therapeutic Good Strength (Additional Therapeutic Good Detail)";
+            // Example of translation
+            //var translations = new List<ICodableTranslation>();
+            //translations.Add(BaseCDAModel.CreateCodableTranslation("01471K", CodingSystem.PBSCode, "fluconazole 50 mg capsule, 28"));
 
-        // Therapeutic Good Generic Name (Additional Therapeutic Good Detail) - The generic name of the Therapeutic Good
-        dispenseItem.TherapeuticGoodGenericName = "Therapeutic Good Generic Name";
+            //dispenseItem.TherapeuticGoodId = BaseCDAModel.CreateTherapeuticGoodIdentification("28190011000036104",
+            //    CodingSystem.AMTV3, "fluconazole 50 mg capsule, 28", null, translations);
 
-        // Additional Dispensed Item Description (Additional Therapeutic Good Detail)
-        dispenseItem.AdditionalDispensedItemDescription = "Additional Dispensed Item Description (Additional Therapeutic Good Detail)";
+            // Therapeutic Good Strength (Additional Therapeutic Good Detail) - Information concerning the strength of the Therapeutic Good
+            dispenseItem.TherapeuticGoodStrength = "Therapeutic Good Strength (Additional Therapeutic Good Detail)";
 
-        // Label Instruction (Medication Action Instructions)
-        dispenseItem.LabelInstruction = "Label Instruction (Medication Action Instructions)";
+            // Therapeutic Good Generic Name (Additional Therapeutic Good Detail) - The generic name of the Therapeutic Good
+            dispenseItem.TherapeuticGoodGenericName = "Therapeutic Good Generic Name";
 
-        // Formula - The recipe for compounding a medicine
-        dispenseItem.Formula = "Formula";
+            // Additional Dispensed Item Description (Additional Therapeutic Good Detail)
+            dispenseItem.AdditionalDispensedItemDescription =
+                "Additional Dispensed Item Description (Additional Therapeutic Good Detail)";
 
-        // Form - The formulation or presentation of the overall substance
-        dispenseItem.Form = BaseCDAModel.CreateCodableText("385057009", CodingSystem.SNOMED, "Film-coated tablet");
+            // Label Instruction (Medication Action Instructions)
+            dispenseItem.LabelInstruction = "Label Instruction (Medication Action Instructions)";
 
-        // Dispensing - Quantity Description - Free text description of the amount which may consist of the quantity and dose unit.
-        dispenseItem.QuantityDescription = "Dispensing Information - Quantity";
+            // Formula - The recipe for compounding a medicine
+            dispenseItem.Formula = "Formula";
 
-        // Comment (Medication Action Comment)
-        dispenseItem.Comment = "Comment (Medication Action Comment)";
+            // Form - The formulation or presentation of the overall substance
+            dispenseItem.Form = BaseCDAModel.CreateCodableText("385057009", CodingSystem.SNOMED, "Film-coated tablet");
 
-        // Brand Substitution Permitted - Indicates whether or not the substitution of a prescribed medicine with a different brand name of the same medicine, vaccine or other therapeutic good.
-        // which has been determined as bioequivalent, is allowed when the medication is dispensed/supplied
-        dispenseItem.BrandSubstitutionOccurred = false;
+            // Dispensing - Quantity Description - Free text description of the amount which may consist of the quantity and dose unit.
+            dispenseItem.QuantityDescription = "Dispensing Information - Quantity";
 
-        // Number of this Dispense
-        dispenseItem.NumberOfThisDispense = 1;
+            // Comment (Medication Action Comment)
+            dispenseItem.Comment = "Comment (Medication Action Comment)";
 
-        // Maximum Number Of Repeats - The number of times the expressed quantity of medicine, vaccine or other therapeutic good may be refilled or re-dispensed without a new prescription
-        dispenseItem.MaximumNumberOfRepeats = 6;
+            // Brand Substitution Permitted - Indicates whether or not the substitution of a prescribed medicine with a different brand name of the same medicine, vaccine or other therapeutic good.
+            // which has been determined as bioequivalent, is allowed when the medication is dispensed/supplied
+            dispenseItem.BrandSubstitutionOccurred = false;
 
-        // PBS Manufacturer Code (Administrative Manufacturer Code) - Administrative code of the manufacturer of the pharmaceutical item supplied
-        dispenseItem.PBSManufacturerCode = BaseCDAModel.CreateExternalConceptIdentifier(ExternalConcepts.AustralianPBSManufacturerCode, "AB");
+            // Number of this Dispense
+            dispenseItem.NumberOfThisDispense = 1;
 
-        // Unique Pharmacy Prescription Number (Administrative System Identifier)
-        dispenseItem.UniquePharmacyPrescriptionNumber = "UniquePharmacyPrescriptionNumber";
+            // Maximum Number Of Repeats - The number of times the expressed quantity of medicine, vaccine or other therapeutic good may be refilled or re-dispensed without a new prescription
+            dispenseItem.MaximumNumberOfRepeats = 6;
 
-        // Prescription Item Identifier - A globally unique object identifier for each instance of a Medication Instruction
-        dispenseItem.PrescriptionItemIdentifier = BaseCDAModel.CreateIdentifier("PrescriptionItemIdentifierAssigningAuthorityName", null, BaseCDAModel.CreateGuid(), "1.2.36.1.2001.1005.36", null);
-      } else
-      {
-        // Therapeutic Good Identification - The medicine, vaccine or other therapeutic good being ordered, administered to or used by the subject of care
-        dispenseItem.TherapeuticGoodId = BaseCDAModel.CreateCodableText("23641011000036102", CodingSystem.AMTV2, "paracetamol 500 mg + codeine phosphate 30 mg tablet");
-      }
+            // PBS Manufacturer Code (Administrative Manufacturer Code) - Administrative code of the manufacturer of the pharmaceutical item supplied
+            dispenseItem.PBSManufacturerCode =
+                BaseCDAModel.CreateExternalConceptIdentifier(ExternalConcepts.AustralianPBSManufacturerCode, "AB");
 
-      return dispenseItem;
+            // Unique Pharmacy Prescription Number (Administrative System Identifier)
+            dispenseItem.UniquePharmacyPrescriptionNumber = "UniquePharmacyPrescriptionNumber";
+
+            // Prescription Item Identifier - A globally unique object identifier for each instance of a Medication Instruction
+            dispenseItem.PrescriptionItemIdentifier = BaseCDAModel.CreateIdentifier(
+                "PrescriptionItemIdentifierAssigningAuthorityName", null, BaseCDAModel.CreateGuid(),
+                "1.2.36.1.2001.1005.36", null);
+        }
+        else
+        {
+            // Therapeutic Good Identification - The medicine, vaccine or other therapeutic good being ordered, administered to or used by the subject of care
+            dispenseItem.TherapeuticGoodId = BaseCDAModel.CreateCodableText("23641011000036102", CodingSystem.AMTV2,
+                "paracetamol 500 mg + codeine phosphate 30 mg tablet");
+        }
+
+        return dispenseItem;
     }
 
     /// <summary>

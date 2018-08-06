@@ -231,6 +231,7 @@ namespace CDA.R5Samples
             person.PersonNames = new List<IPersonName> { name1 };
 
             person.Organisation = BaseCDAModel.CreateEmploymentOrganisation();
+            person.Organisation.Name = "Requester";
 
             if (!mandatoryOnly)
             {
