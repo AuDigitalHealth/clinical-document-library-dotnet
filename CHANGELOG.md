@@ -9,6 +9,7 @@
 - Added Hl7v2 DI to CDA functionality
 - Fixed HL7 requester.ParticipationEndTime to OBR-27.5 rather than OBR-22
 - Added InformationRecipient to PCML Library
+- Added HealthcareFacility to PCML Library
 
 4.4.2 - Reference Platform Clinical Document Library (Feb 2018)
 ----------------------------------------------------
