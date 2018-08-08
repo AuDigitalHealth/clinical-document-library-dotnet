@@ -338,10 +338,14 @@ namespace CDA.PCML
             //Cannot use as a device : prohibited by CORE Level One
             //pharmacyCuratedMedsList.SCSContext.Author = GenericObjectReuseSample.CreateAuthorDevice();
 
-            pharmacyCuratedMedsList.SCSContext.Encounter = new Encounter
+            if (!mandatorySectionsOnly)
             {
-                HealthcareFacility = PopulateHealthcareFacility(mandatorySectionsOnly)
-            };
+                // Context>Encounter>HEALTHCARE FACILITY 
+                pharmacyCuratedMedsList.SCSContext.Encounter = new Encounter
+                {
+                    HealthcareFacility = PopulateHealthcareFacility(mandatorySectionsOnly)
+                };
+            }
 
             pharmacyCuratedMedsList.SCSContext.SubjectOfCare = BaseCDAModel.CreateSubjectOfCare();
             GenericObjectReuseSample.HydrateSubjectofCare(pharmacyCuratedMedsList.SCSContext.SubjectOfCare, mandatorySectionsOnly);
@@ -465,13 +469,13 @@ namespace CDA.PCML
         /// <returns>PCML</returns>
         public static Nehta.VendorLibrary.CDA.Common.PCML PopulatePCML_1B(Boolean mandatorySectionsOnly)
         {
-            var healthCheckAssessment = Nehta.VendorLibrary.CDA.Common.PCML.CreatePCML();
+            var pharmacyCuratedMedsList = Nehta.VendorLibrary.CDA.Common.PCML.CreatePCML();
 
             // Include Logo
-            healthCheckAssessment.IncludeLogo = false;
+            pharmacyCuratedMedsList.IncludeLogo = false;
 
             // Set Creation Time
-            healthCheckAssessment.DocumentCreationTime = new ISO8601DateTime(DateTime.Now);
+            pharmacyCuratedMedsList.DocumentCreationTime = new ISO8601DateTime(DateTime.Now);
 
             #region Setup and populate the CDA context model
 
@@ -498,28 +502,28 @@ namespace CDA.PCML
                 GenericObjectReuseSample.HydrateAuthenticator(cdaContext.LegalAuthenticator, mandatorySectionsOnly);
             }
 
-            healthCheckAssessment.CDAContext = cdaContext;
+            pharmacyCuratedMedsList.CDAContext = cdaContext;
             #endregion
 
             #region Setup and Populate the SCS Context model
             // Setup and Populate the SCS Context model
 
-            healthCheckAssessment.SCSContext = Nehta.VendorLibrary.CDA.Common.PCML.CreateSCSContext();
+            pharmacyCuratedMedsList.SCSContext = Nehta.VendorLibrary.CDA.Common.PCML.CreateSCSContext();
 
             var authorHealthcareProvider = BaseCDAModel.CreateAuthorHealthcareProvider();
             GenericObjectReuseSample.HydrateAuthorHealthcareProvider(authorHealthcareProvider, mandatorySectionsOnly);
-            healthCheckAssessment.SCSContext.Author = authorHealthcareProvider;
+            pharmacyCuratedMedsList.SCSContext.Author = authorHealthcareProvider;
 
             //Cannot use as a device : prohibited by CORE Level One
             //healthCheckAssessment.SCSContext.Author = GenericObjectReuseSample.CreateAuthorDevice();
 
-            healthCheckAssessment.SCSContext.Encounter = new Encounter
+            pharmacyCuratedMedsList.SCSContext.Encounter = new Encounter
             {
                 HealthcareFacility = PopulateHealthcareFacility(mandatorySectionsOnly)
             };
 
-            healthCheckAssessment.SCSContext.SubjectOfCare = BaseCDAModel.CreateSubjectOfCare();
-            GenericObjectReuseSample.HydrateSubjectofCare(healthCheckAssessment.SCSContext.SubjectOfCare, mandatorySectionsOnly);
+            pharmacyCuratedMedsList.SCSContext.SubjectOfCare = BaseCDAModel.CreateSubjectOfCare();
+            GenericObjectReuseSample.HydrateSubjectofCare(pharmacyCuratedMedsList.SCSContext.SubjectOfCare, mandatorySectionsOnly);
 
 
 
@@ -606,16 +610,16 @@ namespace CDA.PCML
             }
 
 
-            healthCheckAssessment.SCSContext.Participant = new List<IParticipationPersonOrOrganisation>();
-            healthCheckAssessment.SCSContext.Participant.Add(person);
+            pharmacyCuratedMedsList.SCSContext.Participant = new List<IParticipationPersonOrOrganisation>();
+            pharmacyCuratedMedsList.SCSContext.Participant.Add(person);
 
             #endregion
 
             #region Setup and populate the SCS Content model
             // Setup and populate the SCS Content model
-            healthCheckAssessment.SCSContent = Nehta.VendorLibrary.CDA.Common.PCML.CreateSCSContent();
+            pharmacyCuratedMedsList.SCSContent = Nehta.VendorLibrary.CDA.Common.PCML.CreateSCSContent();
 
-            healthCheckAssessment.SCSContent.EncapsulatedData = BaseCDAModel.CreateEncapsulatedData();
+            pharmacyCuratedMedsList.SCSContent.EncapsulatedData = BaseCDAModel.CreateEncapsulatedData();
 
             ExternalData report1 = EventSummary.CreateExternalData();
             //report1.ExternalDataMediaType = MediaType.PDF;
@@ -627,7 +631,7 @@ namespace CDA.PCML
             //healthCheckAssessment.SCSContent.EncapsulatedData.ExternalData = report1;
             #endregion
 
-            return healthCheckAssessment;
+            return pharmacyCuratedMedsList;
         }
 
 

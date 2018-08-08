@@ -360,12 +360,8 @@ namespace Nehta.VendorLibrary.CDA.Generator
             clinicalDocument.informationRecipient = recipients.ToArray();
 
             //SETUP the HealthcareFacility
-            pcml.SCSContext.Encounter = new SCSModel.PCML.Entities.Encounter();
-
-            if (pcml.SCSContext.Encounter.HealthcareFacility?.Participant != null)
-            { 
+            if (pcml.SCSContext.Encounter != null &&  pcml.SCSContext.Encounter.HealthcareFacility != null && pcml.SCSContext.Encounter.HealthcareFacility.Participant != null)
                 clinicalDocument.componentOf = CDAGeneratorHelper.CreateComponentOf(pcml.SCSContext.Encounter.HealthcareFacility);
-            }
 
             //SETUP administrative observations component
             //if (!(pcml.ShowAdministrativeObservationsSection.HasValue && pcml.ShowAdministrativeObservationsSection.Value == false))
