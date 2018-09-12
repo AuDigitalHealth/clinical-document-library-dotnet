@@ -282,10 +282,10 @@ namespace Nehta.VendorLibrary.CDA.Sample
             eReferral.DocumentCreationTime = new ISO8601DateTime(DateTime.Now);
 
             // Include Logo
-            eReferral.IncludeLogo = true;
+            eReferral.IncludeLogo = true;            
 
             // Note: Populate ByteArray Logo
-            eReferral.LogoByte = BaseCDAModel.FileToByteArray("Logo.png");
+            eReferral.LogoByte = BaseCDAModel.FileToByteArray(System.IO.Path.Combine(OutputFolderPath, "Logo.png"));
 
             #region Setup and populate the CDA context model
 

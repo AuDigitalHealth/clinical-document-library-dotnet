@@ -3190,43 +3190,53 @@ namespace Nehta.VendorLibrary.CDA.Generator
             return CDAGeneratorHelper.CreateXml(clinicalDocument, authors, legalAuthenticator, authenticators, recipients, participants, components, nonXmlBody, serviceReferral.IncludeLogo, serviceReferral.LogoByte, typeof(ServiceReferral));
         }
 
-        #endregion
+    #endregion
 
-        #region Setup and Validation
+    #region Setup and Validation
 
-        /// <summary>
-        /// Verifies that the logo path location is a valid path and is included in the bin directory
-        /// </summary>
-        /// <returns>XmlDocument (CDA - EventSummary)</returns>
-        public static void LogoSetupAndValidation(string logoPath,byte[] logoByte, bool includeLogo, ValidationBuilder vb)
+    /// <summary>
+    /// Verifies that the logo path location is a valid path and is included in the bin directory
+    /// </summary>
+    /// <returns>XmlDocument (CDA - EventSummary)</returns>
+    public static void LogoSetupAndValidation(string logoPath, byte[] logoByte, bool includeLogo, ValidationBuilder vb)
+    {
+      if (includeLogo)
+      {
+        bool UserProvidedLogoFileExists = false;
+        bool DefaultLogoFileExists = File.Exists("Logo.png");
+
+        //Use the Logo in the path provided else use the default. Note that a logoPath of "." is the same as not provided
+        if (!logoPath.IsNullOrEmptyWhitespace() && logoPath != ".")
         {
-          if (includeLogo)
+          if (File.Exists(System.IO.Path.Combine(logoPath, "Logo.png")))
           {
-            var fileExists = File.Exists("Logo.png");
-
-            if (!logoPath.IsNullOrEmptyWhitespace())
-            {
-              if (fileExists)
-              {
-                 File.Copy(logoPath, "Logo.png", true);
-              }
-              else
-              {
-                vb.AddValidationMessage(vb.PathName, string.Empty, string.Format("The path '{0}' does not contain an image", logoPath));
-              }
-            }
-
-            if (!fileExists && logoByte != null || !logoPath.IsNullOrEmptyWhitespace() && logoByte != null) 
-            {
-                vb.AddValidationMessage("Logo", null, "The LogoPath and LogoByte are Mutually exclusive, please pass a file to the file path or provide an byte array entry");
-            }
-
-            if (logoByte == null && !fileExists)
-            {
-              vb.AddValidationMessage(vb.PathName, string.Empty, "Logo.png needs to be included in the output directory or include a byte array if 'IncludeLogo' is true");
-            }
+            //If the user of the library has set a location for the Logo 'logoPath' and it exists then copy that
+            //logo file to the Application directory / bin
+            File.Copy(System.IO.Path.Combine(logoPath, "Logo.png"), "Logo.png", true);
+            UserProvidedLogoFileExists = true;
+          }
+          else
+          {
+            //No Logo file found in the path they provided, So they wanted to use their Logo file but it can not be found, so error.
+            vb.AddValidationMessage(vb.PathName, string.Empty, string.Format("The provided logo path '{0}' does not contain an image", logoPath));
           }
         }
-        #endregion
+
+        //Can only have one or either the User provided Logo file or the User provided Logo Byte Array
+        //This detects that we have both.
+        if (logoByte != null && UserProvidedLogoFileExists)
+        {
+          vb.AddValidationMessage("Logo", null, "The LogoPath and LogoByte are Mutually exclusive, please pass a file to the file path or provide an byte array entry");
+        }
+
+        //Check we have either a Logo Bytes or a logo file regardless of which logo file it is, default or user provided file
+        //If all are null or false then we have no Logo at all and yet includeLogo was set to true, so error
+        if (logoByte == null && !UserProvidedLogoFileExists && !DefaultLogoFileExists)
+        {
+          vb.AddValidationMessage(vb.PathName, string.Empty, "Logo.png needs to be included in the output directory or include a byte array if 'IncludeLogo' is true");
+        }
+      }
     }
+    #endregion
+  }
 }

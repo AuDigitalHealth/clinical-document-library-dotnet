@@ -260,6 +260,7 @@ namespace Nehta.VendorLibrary.CDA.Sample
 
             // Include Logo
             serviceReferral.IncludeLogo = true;
+            serviceReferral.LogoPath = OutputFolderPath;
 
             // Set Creation Time
             serviceReferral.DocumentCreationTime = new ISO8601DateTime(DateTime.Now, ISO8601DateTime.Precision.Second);

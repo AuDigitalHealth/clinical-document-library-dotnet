@@ -158,6 +158,7 @@ namespace CDA.R5Samples
 
             // Include Logo
             pathologyResultReport.IncludeLogo = true;
+            pathologyResultReport.LogoPath = OutputFolderPath;
 
             // Set Creation Time
             pathologyResultReport.DocumentCreationTime = new ISO8601DateTime(DateTime.Now);

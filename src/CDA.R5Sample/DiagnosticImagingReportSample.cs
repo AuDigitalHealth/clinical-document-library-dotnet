@@ -166,6 +166,7 @@ namespace CDA.R5Samples
 
             // Include Logo
             diagnosticImagingReport.IncludeLogo = true;
+            diagnosticImagingReport.LogoPath = OutputFolderPath;
 
             // Set Creation Time
             diagnosticImagingReport.DocumentCreationTime = new ISO8601DateTime(DateTime.Now);
