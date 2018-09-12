@@ -46,40 +46,41 @@ namespace Nehta.VendorLibrary.CDA.Sample
             var eReferralCda1A = eReferralSampleCode.PopulateEReferralSample_1A("EReferral_1A.xml");
             var eReferralCda1B = eReferralSampleCode.PopulateEReferralSample_1B("EReferral_1B.xml");
             var eReferralCda1N = eReferralSampleCode.PopulateEReferralSample_1B_NarrativeExample("EReferral_1B_NB.xml");
-            LevelsGenerator.Generate2("EReferral_3A_Max.xml", "EReferral_2.xml");
+            LevelsGeneratorPathCorrections("EReferral_3A_Max.xml", "EReferral_2.xml", EReferralSample.OutputFolderPath);
 
             var sharedHealthSummarySampleCode = new SharedHealthSummarySample();
             var minSharedHealthSummaryCda = sharedHealthSummarySampleCode.MinPopulatedSharedHealthSummarySample("SharedHealthSummary_3A_Min.xml");
             var maxSharedHealthSummaryCda = sharedHealthSummarySampleCode.MaxPopulatedSharedHealthSummarySample("SharedHealthSummary_3A_Max.xml");
             var sharedHealthSummaryCda_1A = sharedHealthSummarySampleCode.PopulateSharedHealthSummarySample_1A("SharedHealthSummary_1A.xml");
-            LevelsGenerator.Generate2("SharedHealthSummary_3A_Max.xml", "SharedHealthSummary_2.xml");
+            LevelsGeneratorPathCorrections("SharedHealthSummary_3A_Max.xml", "SharedHealthSummary_2.xml", SharedHealthSummarySample.OutputFolderPath);
+      
 
             var specialistLetterSampleCode = new SpecialistLetterSample();
             var minSpecialistLetterCda = specialistLetterSampleCode.MinPopulatedSpecialistLetterSample("SpecialistLetter_3A_Min.xml");
             var maxSpecialistLetterCda = specialistLetterSampleCode.MaxPopulatedSpecialistLetterSample("SpecialistLetter_3A_Max.xml");
             var specialistLetterCda1A = specialistLetterSampleCode.PopulateSpecialistLetterSample_1A("SpecialistLetter_1A.xml");
             var specialistLetterCda1B = specialistLetterSampleCode.PopulateSpecialistLetterSample_1B("SpecialistLetter_1B.xml");
-            LevelsGenerator.Generate2("SpecialistLetter_3A_Max.xml", "SpecialistLetter_2.xml");
+            LevelsGeneratorPathCorrections("SpecialistLetter_3A_Max.xml", "SpecialistLetter_2.xml", SpecialistLetterSample.OutputFolderPath);
 
             var dischargeSummarySampleCode = new EDischargeSummarySample();
             var minDischargeSummaryCda = dischargeSummarySampleCode.MinPopulatedEDischargeSummary("DischargeSummary_3A_Min.xml");
             var maxDischargeSummaryCda = dischargeSummarySampleCode.MaxPopulatedEDischargeSummary("DischargeSummary_3A_Max.xml");
             var dischargeSummaryCda1A = dischargeSummarySampleCode.PopulateEDischargeSummarySample_1A("DischargeSummary_1A.xml");
             var dischargeSummaryCda1B = dischargeSummarySampleCode.PopulateEDischargeSummarySample_1B("DischargeSummary_1B.xml");
-            LevelsGenerator.Generate2("DischargeSummary_3A_Max.xml", "DischargeSummary_2.xml");
+            LevelsGeneratorPathCorrections("DischargeSummary_3A_Max.xml", "DischargeSummary_2.xml", EDischargeSummarySample.OutputFolderPath);
 
             var eEventSummarySampleCode = new EventSummarySample();
             var minEventSummaryCda = eEventSummarySampleCode.MinPopulatedEventSummary("EventSummary_3A_Min.xml");
             var maxEventSummaryCda = eEventSummarySampleCode.MaxPopulatedEventSummary("EventSummary_3A_Max.xml");
             var eventSummaryCda1A = eEventSummarySampleCode.PopulateEventSummarySample_1A("EventSummary_1A.xml");
-            LevelsGenerator.Generate2("EventSummary_3A_Max.xml", "EventSummary_2.xml");
+            LevelsGeneratorPathCorrections("EventSummary_3A_Max.xml", "EventSummary_2.xml", EventSummarySample.OutputFolderPath);
 
             var serviceReferralSampleCode = new ServiceReferralSample();
             var minServiceReferralCda = serviceReferralSampleCode.MinPopulatedServiceReferralSample("ServiceReferral_3A_Min.xml");
             var maxServiceReferralCda = serviceReferralSampleCode.MaxPopulatedServiceReferralSample("ServiceReferral_3A_Max.xml");
             var serviceReferralCda1A = serviceReferralSampleCode.PopulateServiceReferralSample_1A("ServiceReferral_1A.xml");
             var serviceReferralCda1B = serviceReferralSampleCode.PopulateServiceReferralSample_1B("ServiceReferral_1B.xml");
-            LevelsGenerator.Generate2("ServiceReferral_3A_Max.xml", "ServiceReferral_2.xml");
+            LevelsGeneratorPathCorrections("ServiceReferral_3A_Max.xml", "ServiceReferral_2.xml", ServiceReferralSample.OutputFolderPath);
 
             var genericObjectReuseSampleCode = new GenericObjectReuseSample();
             var sampleSubjectOfCare = genericObjectReuseSampleCode.PopulateSubjectOfCare();
@@ -89,7 +90,12 @@ namespace Nehta.VendorLibrary.CDA.Sample
             var sampleRecipient = genericObjectReuseSampleCode.PopulateRecipient();
         }
 
-        static void PrepareOutputFolder(string folderPath)
+    private static void LevelsGeneratorPathCorrections(string input, string output, string OutPutFolderPath)
+    {
+      LevelsGenerator.Generate2(System.IO.Path.Combine(OutPutFolderPath, input), System.IO.Path.Combine(OutPutFolderPath, output));      
+    }
+
+    static void PrepareOutputFolder(string folderPath)
         {
             if (Directory.Exists(folderPath))
             {
