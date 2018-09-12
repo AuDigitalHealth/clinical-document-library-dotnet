@@ -214,6 +214,7 @@ namespace Nehta.VendorLibrary.CDA.Sample
 
             // Include Logo
             eventSummary.IncludeLogo = true;
+            eventSummary.LogoPath = OutputFolderPath;
 
             // Set Creation Time
             eventSummary.DocumentCreationTime = new ISO8601DateTime(DateTime.Now);
