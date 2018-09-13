@@ -679,7 +679,7 @@ namespace Nehta.VendorLibrary.CDA.SCSModel.Common
         public EncapsulatedData EncapsulatedData { get; set; }
 
         [DataMember]
-        public StrucDocText CustomNarrativePCMLRecord { get; set; }
+        public List<NarrativeOnlyDocument> CustomNarrativePcmlRecord { get; set; }
 
         #endregion
 
@@ -714,6 +714,8 @@ namespace Nehta.VendorLibrary.CDA.SCSModel.Common
                 EncapsulatedData.Validate(path,messages);
             }
         }
+
+
 
         void IAdvanceCareInformationContent.Validate(string path, List<ValidationMessage> messages)
         {
@@ -1799,6 +1801,30 @@ namespace Nehta.VendorLibrary.CDA.SCSModel.Common
         }
 
         #endregion
+
+        void IPCMLContent.Validate(string path, List<ValidationMessage> messages)
+        {
+            var vb = new ValidationBuilder(path, messages);
+
+            if (
+                StructuredBodyFiles != null &&
+                StructuredBodyFiles.Any() &&
+                (!Title.IsNullOrEmptyWhitespace() || !Description.IsNullOrEmptyWhitespace())
+            )
+            {
+                vb.AddValidationMessage(vb.Path + "NonXmlBody", null, "Both structured XML body and a structured XML body attachment have been specified; only one instance of these is allowed.");
+            }
+
+            EncapsulatedData?.Validate(path, messages);
+
+            if (EncapsulatedData != null && CustomNarrativePcmlRecord != null)
+            {
+                vb.AddValidationMessage(vb.Path + "XmlBody", null, "Both custom narrative and attached PDF have been specified; only one instance of these is allowed.");
+            }
+
+        }
+
+
 
         #endregion
     }

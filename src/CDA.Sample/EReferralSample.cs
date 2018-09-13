@@ -400,8 +400,8 @@ namespace Nehta.VendorLibrary.CDA.Sample
             // Include Logo
             eReferral.IncludeLogo = true;
 
-            // Note: Populate ByteArray Logo
-            eReferral.LogoByte = BaseCDAModel.FileToByteArray("Logo.png");
+            // Note:example  Populate ByteArray Logo
+            eReferral.LogoByte = BaseCDAModel.FileToByteArray(System.IO.Path.Combine(OutputFolderPath, "Logo.png"));
 
             #region Setup and populate the CDA context model
 

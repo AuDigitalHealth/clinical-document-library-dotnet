@@ -156,6 +156,7 @@ namespace Nehta.VendorLibrary.CDA.NPDR.Sample
 
       // Include Logo
       prescriptionRecord.IncludeLogo = true;
+      prescriptionRecord.LogoPath = OutputFolderPath;
 
       #region Setup and populate the CDA context model
 

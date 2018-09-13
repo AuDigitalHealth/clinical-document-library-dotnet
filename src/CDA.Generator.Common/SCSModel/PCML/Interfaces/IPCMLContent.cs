@@ -12,12 +12,9 @@
  * under the License.
  */
 
-using System;
 using System.Collections.Generic;
-using System.Runtime.Serialization;
-using CDA.Generator.Common.SCSModel.CeHR.Entities;
+using CDA.Generator.Common.SCSModel.Common.Entities;
 using JetBrains.Annotations;
-using Nehta.HL7.CDA;
 using Nehta.VendorLibrary.CDA.SCSModel.Common.Entities;
 using Nehta.VendorLibrary.Common;
 
@@ -36,7 +33,7 @@ namespace Nehta.VendorLibrary.CDA.SCSModel
         EncapsulatedData EncapsulatedData { get; set; }
 
         [CanBeNull]
-        StrucDocText CustomNarrativeAdministrativeObservations { get; set; }
+        List<NarrativeOnlyDocument> CustomNarrativePcmlRecord { get; set; }
 
         /// <summary>
         /// Validate the SCS Content for this BirthDetailsRecordContent

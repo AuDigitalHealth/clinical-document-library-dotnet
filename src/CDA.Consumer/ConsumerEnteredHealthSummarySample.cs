@@ -173,6 +173,7 @@ namespace Nehta.VendorLibrary.CDA.Sample
 
             // Include Logo
             consumerEnteredHealthSummary.IncludeLogo = true;
+            consumerEnteredHealthSummary.LogoPath = OutputFolderPath;
 
             // Set Creation Time
             consumerEnteredHealthSummary.DocumentCreationTime = new ISO8601DateTime(DateTime.Now);

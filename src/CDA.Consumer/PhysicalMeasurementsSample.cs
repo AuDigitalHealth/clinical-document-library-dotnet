@@ -316,6 +316,7 @@ namespace Nehta.VendorLibrary.CDA.Consumer
 
             // Include Logo
             physicalMeasurements.IncludeLogo = true;
+            physicalMeasurements.LogoPath = OutputFolderPath;
 
             // Set Creation Time
             physicalMeasurements.DocumentCreationTime = new ISO8601DateTime(DateTime.Now);

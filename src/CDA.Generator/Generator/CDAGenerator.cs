@@ -17,6 +17,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Xml;
+using CDA.Generator.Common.SCSModel.Common.Entities;
 using CDA.Generator.Common.SCSModel.ConsolidatedView.Entities;
 using CDA.Generator.Common.SCSModel.Interfaces;
 using Nehta.VendorLibrary.CDA.Common.Enums;
@@ -363,25 +364,23 @@ namespace Nehta.VendorLibrary.CDA.Generator
             if (pcml.SCSContext.Encounter != null &&  pcml.SCSContext.Encounter.HealthcareFacility != null && pcml.SCSContext.Encounter.HealthcareFacility.Participant != null)
                 clinicalDocument.componentOf = CDAGeneratorHelper.CreateComponentOf(pcml.SCSContext.Encounter.HealthcareFacility);
 
-            //SETUP administrative observations component
-            //if (!(pcml.ShowAdministrativeObservationsSection.HasValue && pcml.ShowAdministrativeObservationsSection.Value == false))
-            //    components.Add
-            //    (
-            //        CDAGeneratorHelper.CreateAdministrativeObservations
-            //        (
-            //            pcml.SCSContext.SubjectOfCare,
-            //            pcml.SCSContext.Author as IParticipationAuthorHealthcareProvider,
-            //            pcml.SCSContent.CustomNarrativeAdministrativeObservations,
-            //            clinicalDocument.recordTarget[0].patientRole.id[0].root,
-            //            "1.2.36.1.2001.1001.101.102.16080",
-            //            (pcml.ShowAdministrativeObservationsNarrativeAndTitle.HasValue && pcml.ShowAdministrativeObservationsNarrativeAndTitle.Value == false) ? null : NarrativeGenerator
-            //        )
-            //    );
-
+            //
             if (pcml.SCSContent.EncapsulatedData != null)
             { 
                 components.Add(CDAGeneratorHelper.CreateComponent(pcml.SCSContent.EncapsulatedData, NarrativeGenerator));
             }
+
+            if (pcml.SCSContent.CustomNarrativePcmlRecord != null)
+            {
+
+                if (pcml.SCSContent.CustomNarrativePcmlRecord != null &&
+                    pcml.SCSContent.CustomNarrativePcmlRecord.Any())
+                    components.AddRange
+                    (
+                        CDAGeneratorHelper.CreateNarrativeOnlyDocument(pcml.SCSContent.CustomNarrativePcmlRecord)
+                    );
+            }
+
 
 
             //Generate and return the GeneratePersonalHealthObservation
@@ -3302,35 +3301,44 @@ namespace Nehta.VendorLibrary.CDA.Generator
         /// <summary>
         /// Verifies that the logo path location is a valid path and is included in the bin directory
         /// </summary>
-        /// <returns>XmlDocument (CDA - EventSummary)</returns>
-        public static void LogoSetupAndValidation(string logoPath,byte[] logoByte, bool includeLogo, ValidationBuilder vb)
+        public static void LogoSetupAndValidation(string logoPath, byte[] logoByte, bool includeLogo, ValidationBuilder vb)
         {
-          if (includeLogo)
-          {
-            var fileExists = File.Exists("Logo.png");
-
-            if (!logoPath.IsNullOrEmptyWhitespace())
+            if (includeLogo)
             {
-              if (fileExists)
-              {
-                 File.Copy(logoPath, "Logo.png", true);
-              }
-              else
-              {
-                vb.AddValidationMessage(vb.PathName, string.Empty, string.Format("The path '{0}' does not contain an image", logoPath));
-              }
-            }
+                bool userProvidedLogoFileExists = false;
+                bool defaultLogoFileExists = File.Exists("logo.png");
 
-            if (!fileExists && logoByte != null || !logoPath.IsNullOrEmptyWhitespace() && logoByte != null) 
-            {
-                vb.AddValidationMessage("Logo", null, "The LogoPath and LogoByte are Mutually exclusive, please pass a file to the file path or provide an byte array entry");
-            }
+                //Use the Logo in the path provided else use the default. Note that a logoPath of "." is the same as not provided
+                if (!logoPath.IsNullOrEmptyWhitespace() && logoPath != ".")
+                {
+                    if (File.Exists(System.IO.Path.Combine(logoPath, "logo.png")))
+                    {
+                        //If the user of the library has set a location for the Logo 'logoPath' and it exists then copy that
+                        //logo file to the Application directory / bin
+                        File.Copy(System.IO.Path.Combine(logoPath, "logo.png"), "logo.png", true);
+                        userProvidedLogoFileExists = true;
+                    }
+                    else
+                    {
+                        //No Logo file found in the path they provided, So they wanted to use their Logo file but it can not be found, so error.
+                        vb.AddValidationMessage(vb.PathName, string.Empty, string.Format("The provided logo path '{0}' does not contain an image", logoPath));
+                    }
+                }
 
-            if (logoByte == null && !fileExists)
-            {
-              vb.AddValidationMessage(vb.PathName, string.Empty, "Logo.png needs to be included in the output directory or include a byte array if 'IncludeLogo' is true");
+                //Can only have one or either the User provided Logo file or the User provided Logo Byte Array
+                //This detects that we have both.
+                if (logoByte != null && userProvidedLogoFileExists)
+                {
+                    vb.AddValidationMessage("Logo", null, "The LogoPath and LogoByte are Mutually exclusive, please pass a file to the file path or provide an byte array entry");
+                }
+
+                //Check we have either a Logo Bytes or a logo file regardless of which logo file it is, default or user provided file
+                //If all are null or false then we have no Logo at all and yet includeLogo was set to true, so error
+                if (logoByte == null && !userProvidedLogoFileExists && !defaultLogoFileExists)
+                {
+                    vb.AddValidationMessage(vb.PathName, string.Empty, "logo.png needs to be included in the output directory or include a byte array if 'IncludeLogo' is true");
+                }
             }
-          }
         }
         #endregion
     }

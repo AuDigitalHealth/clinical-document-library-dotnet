@@ -153,6 +153,7 @@ namespace Nehta.VendorLibrary.CDA.NPDR.Sample
 
       // Include Logo
       dispenseRecord.IncludeLogo = true;
+      dispenseRecord.LogoPath = OutputFolderPath;
 
       #region Setup and populate the CDA context model
 

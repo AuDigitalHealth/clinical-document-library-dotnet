@@ -269,6 +269,7 @@ namespace Nehta.VendorLibrary.CDA.Sample
 
             // Include Logo
             specialistLetter.IncludeLogo = true;
+            specialistLetter.LogoPath = OutputFolderPath;
 
             #region Setup and populate the CDA context model
 

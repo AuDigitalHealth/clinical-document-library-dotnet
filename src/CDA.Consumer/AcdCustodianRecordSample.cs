@@ -172,6 +172,7 @@ namespace Nehta.VendorLibrary.CDA.Sample
 
             // Include Logo
             acdCustodianRecord.IncludeLogo = true;
+            acdCustodianRecord.LogoPath = OutputFolderPath;
 
             // Set Creation Time
             acdCustodianRecord.DocumentCreationTime = new ISO8601DateTime(DateTime.Now);

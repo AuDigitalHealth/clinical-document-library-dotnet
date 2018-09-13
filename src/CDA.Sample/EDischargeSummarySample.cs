@@ -294,6 +294,7 @@ namespace Nehta.VendorLibrary.CDA.Sample
 
             // Include Logo
             eDischargeSummary.IncludeLogo = true;
+            eDischargeSummary.LogoPath = OutputFolderPath;
 
             // Set Creation Time
             eDischargeSummary.DocumentCreationTime = new ISO8601DateTime(DateTime.Now.AddHours(9));

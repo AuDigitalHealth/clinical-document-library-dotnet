@@ -479,9 +479,6 @@ namespace CDA.PCML
 
             if (!mandatoryOnly)
             {
-
-
-
                 name1.GivenNames = new List<string> { "Good" };
                 name1.Titles = new List<string> { "Doctor" };
                 name1.NameUsages = new List<NameUsage> { NameUsage.Legal };

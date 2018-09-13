@@ -38,6 +38,9 @@ namespace CDA.PCML
             pcmlCda.MaxPopulatedPCMLAuthorHealthcareProviderSample_1A("PCML_AuthorHealthcareProvider_1A_Max.xml");
             pcmlCda.MinPopulatedPCMLAuthorHealthcareProviderSample_1A("PCML_AuthorHealthcareProvider_1A_Min.xml");
 
+            //Test Custom Narrative - not currently allowed
+            //pcmlCda.MaxPopulatedPCMLAuthorHealthcareProviderSample_1B("PCML_AuthorHealthcareProvider_1B_Max.xml");
+            //pcmlCda.MinPopulatedPCMLAuthorHealthcareProviderSample_1B("PCML_AuthorHealthcareProvider_1B_Min.xml");
 
         }
 
