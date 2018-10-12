@@ -234,10 +234,10 @@ namespace Nehta.VendorLibrary.CDA.Generator.Enums
         BirthDetails,
 
         /// <summary>
-        /// Pharmacist Curated Medicines List
+        /// Pharmacist Shared Medicines List
         /// </summary>
-        [Name(Name = "Pharmacist Curated Medicines List", CodeSystem = "LOINC", Code = "56445-0", TemplateIdentifier = "1.2.36.1.2001.1001.100.1002.218", Version = "1.1", Title = "Pharmacist Curated Medicines List")]
-        PharmacistCuratedMedicinesList,
+        [Name(Name = "Pharmacist Shared Medicines List", CodeSystem = "LOINC", Code = "56445-0", TemplateIdentifier = "1.2.36.1.2001.1001.100.1002.218", Version = "1.1", Title = "Pharmacist Shared Medicines List")]
+        PharmacistSharedMedicinesList,
        
         /// <summary> 
         /// Observation View

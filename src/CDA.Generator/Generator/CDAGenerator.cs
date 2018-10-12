@@ -318,7 +318,7 @@ namespace Nehta.VendorLibrary.CDA.Generator
             var clinicalDocument = CDAGeneratorHelper.CreateDocument
                 (
                     pcml.DocumentCreationTime,
-                    CDADocumentType.PharmacistCuratedMedicinesList,
+                    CDADocumentType.PharmacistSharedMedicinesList,
                     pcml.CDAContext.DocumentId,
                     pcml.CDAContext.SetId,
                     pcml.CDAContext.Version,

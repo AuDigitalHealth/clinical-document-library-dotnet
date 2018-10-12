@@ -35,7 +35,7 @@ using Entitlement = Nehta.VendorLibrary.CDA.SCSModel.Common.Entitlement;
 namespace CDA.PCML
 {
     /// <summary>
-    /// This project is intended to demonstrate how a PCML (Pharmacy Curated Medicines) Sample CDA document can be created.
+    /// This project is intended to demonstrate how a PCML (Pharmacy Shared Medicines) Sample CDA document can be created.
     /// 
     /// The project contains two samples, the first is designed to create a fully populated CDA document, including
     /// all of the optional sections and entries. The second sample only populates the mandatory sections and entries.

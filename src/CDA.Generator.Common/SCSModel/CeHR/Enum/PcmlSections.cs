@@ -14,7 +14,7 @@ namespace Nehta.VendorLibrary.CDA.Common.Enums
         /// Physical Measurements
         /// </summary>
         [EnumMember]
-        [Name(Code = "56445-0", Name = "Pharmacist Curated Medicines List", Title = "Pharmacist Curated Medicines List", CodeSystem = "LOINC")]
-        PharmacistCuratedMedicinesList,
+        [Name(Code = "56445-0", Name = "Pharmacist Shared Medicines List", Title = "Pharmacist Shared Medicines List", CodeSystem = "LOINC")]
+        PharmacistSharedMedicinesList,
     }
 }

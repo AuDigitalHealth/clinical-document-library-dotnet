@@ -5,6 +5,8 @@
 ----------------------------------------------------
 - Fix up logo path when specifying different OutputFolder
 - PCML - added identifier for Participant, plus example custom Narrative (not yet supported though)
+- Updated PCML to PSML
+-
 
 4.5.0 - Reference Platform Clinical Document Library (Aug 2018)
 ----------------------------------------------------

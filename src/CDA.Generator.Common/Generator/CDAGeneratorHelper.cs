@@ -15902,8 +15902,8 @@ namespace Nehta.VendorLibrary.CDA.Generator
                     section = new POCD_MT000040Section
                     {
                         id = CreateIdentifierElement(CreateGuid(), null),
-                        code = CreateCodedWithExtensionElement(CreateCodableText(PcmlSections.PharmacistCuratedMedicinesList)),
-                        title = CreateStructuredText(PcmlSections.PharmacistCuratedMedicinesList.GetAttributeValue<NameAttribute, string>(x => x.Title), null),
+                        code = CreateCodedWithExtensionElement(CreateCodableText(PcmlSections.PharmacistSharedMedicinesList)),
+                        title = CreateStructuredText(PcmlSections.PharmacistSharedMedicinesList.GetAttributeValue<NameAttribute, string>(x => x.Title), null),
                         templateId = CreateIdentifierArray("1.2.36.1.2001.1001.101.101.16886")
                     }
                 };
