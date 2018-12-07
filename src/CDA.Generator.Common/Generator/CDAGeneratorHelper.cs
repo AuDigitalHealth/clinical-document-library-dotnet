@@ -7926,6 +7926,14 @@ namespace Nehta.VendorLibrary.CDA.Generator
                     {
                         returnValue.nullFlavor = NullFlavor.UNK;
                     }
+                    else if (address.AddressAbsentIndicator.Value == AddressAbsentIndicator.Masked)
+                    {
+                        returnValue.nullFlavor = NullFlavor.MSK;
+                    }
+                    else
+                    {
+                        returnValue.nullFlavor = NullFlavor.UNK;
+                    }
 
                     returnValue.nullFlavorSpecified = true;
 

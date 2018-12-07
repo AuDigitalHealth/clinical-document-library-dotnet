@@ -1,12 +1,15 @@
 ## Change Log/Revision History
 
 
-4.5.1 - Reference Platform Clinical Document Library (xxx 2018 in dev)
+4.5.2 - Reference Platform Clinical Document Library (Dec 2018)
+----------------------------------------------------
+- Fixed up AddressAbsentIndicator.Masked mapping to  "ASKU" rather than "MSK"
+
+4.5.1 - Reference Platform Clinical Document Library (Oct 2018)
 ----------------------------------------------------
 - Fix up logo path when specifying different OutputFolder
 - PCML - added identifier for Participant, plus example custom Narrative (not yet supported though)
 - Updated PCML to PSML
--
 
 4.5.0 - Reference Platform Clinical Document Library (Aug 2018)
 ----------------------------------------------------
