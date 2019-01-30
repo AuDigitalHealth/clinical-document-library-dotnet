@@ -459,7 +459,7 @@ namespace CDA.R5Samples
             var person = BaseCDAModel.CreatePersonWithOrganisation();
 
             // Document Author > Role
-            author.Role = BaseCDAModel.CreateRole(Occupation.GeneralMedicalPractitioner, CodingSystem.ANZSCORevision1);
+            author.Role = BaseCDAModel.CreateRole(Occupation.Pathologist, CodingSystem.ANZSCORevision1);
 
             // Document Author > Participant
             author.Participant = BaseCDAModel.CreateParticipantForAuthor();
@@ -907,7 +907,7 @@ namespace CDA.R5Samples
             if (!mandatoryOnly)
             {
                 // LegalAuthenticator/assignedEntity/code
-                authenticator.Role = BaseCDAModel.CreateRole(Occupation.GeneralMedicalPractitioner, CodingSystem.ANZSCORevision1);
+                authenticator.Role = BaseCDAModel.CreateRole(Occupation.Pathologist, CodingSystem.ANZSCORevision1);
 
                 // LegalAuthenticator/assignedEntity/<Address>
                 var address1 = BaseCDAModel.CreateAddress();

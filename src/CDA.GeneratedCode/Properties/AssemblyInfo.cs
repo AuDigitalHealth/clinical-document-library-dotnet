@@ -5,12 +5,12 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("CDA.GeneratedCode")]
-[assembly: AssemblyDescription("CDA Library for generating CDA Documents")]
+[assembly: AssemblyTitle("Nehta.HL7.CDA")]
+[assembly: AssemblyDescription("This Library helps generate Agency defined CDA documents")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("ADHA")]
-[assembly: AssemblyProduct("CDA.GeneratedCode")]
-[assembly: AssemblyCopyright("Copyright © 2018")]
+[assembly: AssemblyCompany("Australian Digital Health Agency")]
+[assembly: AssemblyProduct("Nehta.HL7.CDA")]
+[assembly: AssemblyCopyright("Copyright ©2019")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
@@ -31,6 +31,6 @@ using System.Runtime.InteropServices;
 //
 // You can specify all the values or you can default the Build and Revision Numbers 
 // by using the '*' as shown below:
-[assembly: AssemblyVersion("4.5.2.0")]
-[assembly: AssemblyFileVersion("4.5.2.0")]
+[assembly: AssemblyVersion("4.5.3.0")]
+[assembly: AssemblyFileVersion("4.5.3.0")]
 

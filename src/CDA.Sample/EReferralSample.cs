@@ -447,7 +447,7 @@ namespace Nehta.VendorLibrary.CDA.Sample
             GenericObjectReuseSample.HydrateAuthor(eReferral.SCSContext.Author, mandatorySectionsOnly);
 
             eReferral.SCSContext.SubjectOfCare = BaseCDAModel.CreateSubjectOfCare();
-            GenericObjectReuseSample.HydrateSubjectofCare(eReferral.SCSContext.SubjectOfCare, mandatorySectionsOnly);
+            GenericObjectReuseSample.HydrateSubjectofCare(eReferral.SCSContext.SubjectOfCare, mandatorySectionsOnly, false);
 
             if (!mandatorySectionsOnly)
             {
@@ -579,7 +579,7 @@ namespace Nehta.VendorLibrary.CDA.Sample
             var personName = BaseCDAModel.CreatePersonName();
             personName.GivenNames = new List<string> { givenName };
             personName.FamilyName = familyName;
-            personName.Titles = new List<string> { "Doctor" };
+            personName.Titles = new List<string> { "Dr" };
             personName.NameUsages = new List<NameUsage> { NameUsage.Legal };
 
             nominatedContact.Participant.Person = EReferral.CreatePersonPatientNominatedContacts();
@@ -671,7 +671,7 @@ namespace Nehta.VendorLibrary.CDA.Sample
             var personName = BaseCDAModel.CreatePersonName();
             personName.GivenNames = new List<string> { "UsualGP" };
             personName.FamilyName = "Person";
-            personName.Titles = new List<string> { "Doctor" };
+            personName.Titles = new List<string> { "Dr" };
             personName.NameUsages = new List<NameUsage> { NameUsage.Legal };
 
             var person = BaseCDAModel.CreatePersonWithOrganisation();
@@ -796,7 +796,7 @@ namespace Nehta.VendorLibrary.CDA.Sample
                 var medicalHistoryItem2 = EReferral.CreateMedicalHistoryItem();
                 var ongoingInterval2 = CdaInterval.CreateLowHigh(
                                        new ISO8601DateTime(DateTime.Now.AddDays(-400), ISO8601DateTime.Precision.Day),
-                                       new ISO8601DateTime(DateTime.Now.AddDays(200), ISO8601DateTime.Precision.Day));
+                                       new ISO8601DateTime(DateTime.Now.AddDays(0), ISO8601DateTime.Precision.Day));
                 medicalHistoryItem2.DateTimeInterval = ongoingInterval2;
                 medicalHistoryItem2.ItemDescription = "Uncategorised Medical History item description here";
                 medicalHistoryItem2.ItemComment = "Item Comment";

@@ -258,7 +258,7 @@ namespace Nehta.VendorLibrary.CDA.Sample
 
             // Subject of Care
             sharedHealthSummary.SCSContext.SubjectOfCare = BaseCDAModel.CreateSubjectOfCare();
-            GenericObjectReuseSample.HydrateSubjectofCare(sharedHealthSummary.SCSContext.SubjectOfCare, mandatorySectionsOnly);
+            GenericObjectReuseSample.HydrateSubjectofCare(sharedHealthSummary.SCSContext.SubjectOfCare, mandatorySectionsOnly, true);
 
             #endregion
 
@@ -302,46 +302,46 @@ namespace Nehta.VendorLibrary.CDA.Sample
                 medication.ClinicalIndication = "Diuretic induced hypokalemia";
                 medication.Comment = "Taken with food";
                 medication.Directions = BaseCDAModel.CreateStructuredText("2 tablets once daily oral");
-                medication.Medicine = BaseCDAModel.CreateCodableText("5884011000036107", CodingSystem.AMTV2, "Span K (potassium chloride 600 mg (8 mmol potassium)) tablet: modified release, 1 tablet");
+                medication.Medicine = BaseCDAModel.CreateCodableText("5884011000036107", CodingSystem.AMTV3, "	Span K 600 mg (potassium 8 mmol) modified release tablet");
                 medicationList.Add(medication);                                                                 
 
                 var medication1 = SharedHealthSummary.CreateMedication();
                 medication1.ClinicalIndication = "Arthritis pain management";
                 medication1.Comment = "Swallow whole";
                 medication1.Directions = BaseCDAModel.CreateStructuredText("2 tablets three times per day");
-                medication1.Medicine = BaseCDAModel.CreateCodableText("5848011000036106", CodingSystem.AMTV2, "Panadol Osteo (paracetamol 665 mg) tablet: modified release, 1 tablet");
+                medication1.Medicine = BaseCDAModel.CreateCodableText("5848011000036106", CodingSystem.AMTV3, "	Panadol Osteo 665 mg modified release tablet");
                 medicationList.Add(medication1);
 
                 var medication2 = SharedHealthSummary.CreateMedication();
                 medication2.ClinicalIndication = "Fluid retention";
                 medication2.Comment = "Take in the morning";
                 medication2.Directions = BaseCDAModel.CreateStructuredText("1 tablet once daily oral");
-                medication2.Medicine = BaseCDAModel.CreateCodableText("40288011000036101", CodingSystem.AMTV2, "Lasix (frusemide 40 mg/4 mL) injection: solution, ampoule");
+                medication2.Medicine = BaseCDAModel.CreateCodableText("40288011000036101", CodingSystem.AMTV3, "Lasix 40 mg/4 mL injection, 4 mL ampoule");
                 medicationList.Add(medication2);
 
                 var medication3 = SharedHealthSummary.CreateMedication();
                 medication3.ClinicalIndication = "COPD";
                 medication3.Directions = BaseCDAModel.CreateStructuredText("1 inhalation per day");
-                medication3.Medicine = BaseCDAModel.CreateCodableText("7113011000036100", CodingSystem.AMTV2, "Spiriva (tiotropium (as bromide monohydrate) 18 microgram) inhalation: powder for, 1 capsule");
+                medication3.Medicine = BaseCDAModel.CreateCodableText("7113011000036100", CodingSystem.AMTV3, "	Spiriva 18 microgram powder for inhalation, 1 capsule");
                 medicationList.Add(medication3);
 
                 var medication4 = SharedHealthSummary.CreateMedication();
                 medication4.ClinicalIndication = "Depression";
                 medication4.Directions = BaseCDAModel.CreateStructuredText("Dose:1, Frequency: 3 times daily");
-                medication4.Medicine = BaseCDAModel.CreateCodableText("32481000036107", CodingSystem.AMTV2, "Exatrust (exemestane 25 mg) tablet: film-coated, 1 tablet");
+                medication4.Medicine = BaseCDAModel.CreateCodableText("32481000036107", CodingSystem.AMTV3, "	Exatrust 25 mg film-coated tablet");
                 medicationList.Add(medication4);
 
                 var medication5 = SharedHealthSummary.CreateMedication();
                 medication5.ClinicalIndication = "Depression";
-                medication5.Directions = BaseCDAModel.CreateStructuredText(NullFlavour.PositiveInfinity);
-                medication5.Medicine = BaseCDAModel.CreateCodableText("32481000036107", CodingSystem.AMTV2, "Exatrust (exemestane 25 mg) tablet: film-coated, 1 tablet");
+                medication5.Directions = BaseCDAModel.CreateStructuredText("Dose:1, Frequency: as required");
+                medication5.Medicine = BaseCDAModel.CreateCodableText("32481000036107", CodingSystem.AMTV3, "	Exatrust 25 mg film-coated tablet");
                 medicationList.Add(medication5);
                 medications.Medications = medicationList;
 
             } else
             {
                medications.ExclusionStatement = SharedHealthSummary.CreateStatement();
-               medications.ExclusionStatement.Value = NCTISGlobalStatementValues.NoneKnown;  
+               medications.ExclusionStatement.Value = NCTISGlobalStatementValues.NoneSupplied;  
             }
 
             return medications;
@@ -396,7 +396,7 @@ namespace Nehta.VendorLibrary.CDA.Sample
                 var medicalHistoryItem2 = BaseCDAModel.CreateMedicalHistoryItem();
                 var ongoingInterval2 = CdaInterval.CreateLowHigh(
                                        new ISO8601DateTime(DateTime.Now.AddDays(-400), ISO8601DateTime.Precision.Day),
-                                       new ISO8601DateTime(DateTime.Now.AddDays(200), ISO8601DateTime.Precision.Day));
+                                       new ISO8601DateTime(DateTime.Now.AddDays(0), ISO8601DateTime.Precision.Day));
 
                 medicalHistoryItem2.DateTimeInterval = ongoingInterval2;
                 medicalHistoryItem2.ItemDescription = "Uncategorised Medical History item description here";
@@ -511,10 +511,10 @@ namespace Nehta.VendorLibrary.CDA.Sample
             {
                 // NOTE : NotAsked is not a valid entry in context of a Shared Health Summary
                 medicalHistory.ProblemDiagnosisExclusionStatement = BaseCDAModel.CreateStatement();
-                medicalHistory.ProblemDiagnosisExclusionStatement.Value = NCTISGlobalStatementValues.NoneKnown;
+                medicalHistory.ProblemDiagnosisExclusionStatement.Value = NCTISGlobalStatementValues.NoneSupplied;
 
                 medicalHistory.ProceduresExclusionStatement = BaseCDAModel.CreateStatement();
-                medicalHistory.ProceduresExclusionStatement.Value = NCTISGlobalStatementValues.NoneKnown;
+                medicalHistory.ProceduresExclusionStatement.Value = NCTISGlobalStatementValues.NoneSupplied;
             }
 
             return medicalHistory;
@@ -536,13 +536,13 @@ namespace Nehta.VendorLibrary.CDA.Sample
                 var immunisationList = new List<IImmunisation>();
 
                 immunisation.DateTime = new ISO8601DateTime(DateTime.Now);
-                immunisation.Medicine = BaseCDAModel.CreateCodableText("74993011000036102", CodingSystem.AMTV2, 
+                immunisation.Medicine = BaseCDAModel.CreateCodableText("74993011000036102", CodingSystem.AMTV3,
                     "measles virus (Schwarz) live attenuated vaccine + mumps virus (Jeryl Lynn, strain RIT 4385) live attenuated vaccine + rubella virus (Wistar RA 27/3) live attenuated vaccine");
                 immunisationList.Add(immunisation);
 
                 var immunisation2 = SharedHealthSummary.CreateImmunisation();
                 immunisation2.DateTime = new ISO8601DateTime(DateTime.Now);
-                immunisation2.Medicine = BaseCDAModel.CreateCodableText("74993011000036102", CodingSystem.AMTV2, 
+                immunisation2.Medicine = BaseCDAModel.CreateCodableText("74993011000036102", CodingSystem.AMTV3, 
                     "measles virus (Schwarz) live attenuated vaccine + mumps virus (Jeryl Lynn, strain RIT 4385) live attenuated vaccine + rubella virus (Wistar RA 27/3) live attenuated vaccine");
                 immunisation2.SequenceNumber = 1;
                 immunisationList.Add(immunisation2);
@@ -572,9 +572,8 @@ namespace Nehta.VendorLibrary.CDA.Sample
             if (!mandatorySectionsOnly)
             {
                 var reaction = SharedHealthSummary.CreateReaction();
-
-                reaction.ReactionEvent = BaseCDAModel.CreateReactionEvent();
                 reaction.SubstanceOrAgent = BaseCDAModel.CreateCodableText("391739009", CodingSystem.SNOMED, "Aloe");
+                reaction.ReactionEvent = BaseCDAModel.CreateReactionEvent();
 
                 reaction.ReactionEvent.Manifestations = new List<ICodableText>
                                                             {
@@ -593,6 +592,8 @@ namespace Nehta.VendorLibrary.CDA.Sample
                                                                 BaseCDAModel.CreateCodableText("20262006", CodingSystem.SNOMED, "Ataxia"),
                                                                 BaseCDAModel.CreateCodableText("285599002", CodingSystem.SNOMED, "Trunk nerve lesion")
                                                          };
+
+                reaction2.ReactionEvent.ReactionType = BaseCDAModel.CreateCodableText("419076005", CodingSystem.SNOMED, "Allergic reaction");
 
                 adverseReactions.AdverseSubstanceReaction = new List<Reaction>
                 {

@@ -212,7 +212,7 @@ namespace Nehta.VendorLibrary.CDA.Sample
             PopulateAuthor(consumerEnteredHealthSummary.SCSContext.Author, mandatorySectionsOnly);
 
             consumerEnteredHealthSummary.SCSContext.SubjectOfCare = BaseCDAModel.CreateSubjectOfCare();
-            GenericObjectReuseSample.HydrateSubjectofCare(consumerEnteredHealthSummary.SCSContext.SubjectOfCare, mandatorySectionsOnly);
+            GenericObjectReuseSample.HydrateSubjectofCare(consumerEnteredHealthSummary.SCSContext.SubjectOfCare, mandatorySectionsOnly, false);
 
             #endregion
 

@@ -1962,42 +1962,42 @@ namespace Nehta.VendorLibrary.CDA.Generator
         /// <summary>
         /// Creates a Pre Narrative given a string
         /// </summary>
-        public static StrucDocTable poulateTablexPreNarrative(string xPreNarrative)
+        public static StrucDocTable populateTablexPreNarrative(string xPreNarrative)
         {
-           return
-                (
-                    new StrucDocTable
+            return
+            (
+                new StrucDocTable
+                {
+                    tbody = new[]
+                    {
+                        new StrucDocTbody
                         {
-                            tbody = new []
-                                       {
-                                          new StrucDocTbody
-                                              {
-                                                  tr = new []
-                                                           {
-                                                               new StrucDocTr
-                                                               {
-                                                                         td  = new []
-                                                                                   {
-                                                                                       new StrucDocTd
-                                                                                           {
-                                                                                                    paragraph = new []
-                                                                                                                    {
-                                                                                                                        new StrucDocParagraph
-                                                                                                                            {
-                                                                                                                                styleCode = "xPre",
-                                                                                                                                Text = new [] { xPreNarrative },
-                                                                                                                            }
-                                                                                                                    }
+                            tr = new[]
+                            {
+                                new StrucDocTr
+                                {
+                                    td = new[]
+                                    {
+                                        new StrucDocTd
+                                        {
+                                            paragraph = new[]
+                                            {
+                                                new StrucDocParagraph
+                                                {
+                                                    styleCode = "xPre",
+                                                    Text = new[] {xPreNarrative},
+                                                }
+                                            }
 
-                                                                                           }
-                                                                                   }
-                                                               }
-                                                           }
-                                              }
-                                       }
+                                        }
+                                    }
+                                }
+                            }
                         }
+                    }
+                }
 
-                    );
+            );
         }
 
         /// <summary>

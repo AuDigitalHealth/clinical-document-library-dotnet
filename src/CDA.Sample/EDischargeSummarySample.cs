@@ -330,7 +330,7 @@ namespace Nehta.VendorLibrary.CDA.Sample
 
             // Create Subject Of Care
             eDischargeSummary.SCSContext.SubjectOfCare = EDischargeSummary.CreateSubjectOfCare();
-            GenericObjectReuseSample.HydrateSubjectofCare(eDischargeSummary.SCSContext.SubjectOfCare, mandatoryOnly);
+            GenericObjectReuseSample.HydrateSubjectofCare(eDischargeSummary.SCSContext.SubjectOfCare, mandatoryOnly, false);
 
             // Create Facility
             eDischargeSummary.SCSContext.Facility = CreateFacility(mandatoryOnly);
@@ -483,7 +483,7 @@ namespace Nehta.VendorLibrary.CDA.Sample
         private static IParticipationResponsibleHealthProfessional CreateResponsibleHealthProfessional(Boolean mandatoryOnly)
         {
             var responsibleHealthProfessional = EDischargeSummary.CreateResponsibleHealthProfessional();
-            responsibleHealthProfessional.Role = BaseCDAModel.CreateRole(Occupation.AdmissionsClerk);
+            responsibleHealthProfessional.Role = BaseCDAModel.CreateRole(Occupation.SurgeonGeneral);
 
             responsibleHealthProfessional.Participant = EDischargeSummary.CreateParticipantForResponsibleHealthProfessional();
             responsibleHealthProfessional.Participant.Person = BaseCDAModel.CreatePersonWithOrganisation();
@@ -649,7 +649,7 @@ namespace Nehta.VendorLibrary.CDA.Sample
             participant.Person.Organisation.Addresses = new List<IAddress> { address, address2};
             participant.Person.Organisation.ElectronicCommunicationDetails = new List<ElectronicCommunicationDetail> { electronicCommunicationDetail, electronicCommunicationDetail2, electronicCommunicationDetail3 };
 
-            serviceProvider.Role = !mandatoryOnly ? BaseCDAModel.CreateRole(Occupation.GeneralMedicalPractitioner) : BaseCDAModel.CreateRole(NullFlavour.Other);
+            serviceProvider.Role = !mandatoryOnly ? BaseCDAModel.CreateRole(Occupation.SurgeonGeneral) : BaseCDAModel.CreateRole(NullFlavour.Other);
 
             serviceProvider.Participant = participant;
 
@@ -674,7 +674,7 @@ namespace Nehta.VendorLibrary.CDA.Sample
             var personName = BaseCDAModel.CreatePersonName();
             personName.GivenNames = new List<string> { "Alison" };
             personName.FamilyName = "Hodgers";
-            personName.Titles = new List<string> { "Doctor" };
+            personName.Titles = new List<string> { "Dr" };
             personName.NameUsages = new List<NameUsage> { NameUsage.Legal };
 
             recommendationRecipient.Participant.Person.PersonNames = new List<IPersonName> { personName };
@@ -978,7 +978,7 @@ namespace Nehta.VendorLibrary.CDA.Sample
         }
 
         /// <summary>
-        /// Creates and Hydrates a Clinical Synopsis
+        /// Creates and Hydrates a Clinical Summary
         /// 
         /// Note: the data used within this method is intended as a guide and should be replaced.
         /// </summary>
@@ -1050,7 +1050,7 @@ namespace Nehta.VendorLibrary.CDA.Sample
         private static List<ITherapeuticGood> CreateTherapeuticGoodsCurrent()
         { 
             var therapeuticGood1 = EDischargeSummary.CreateTherapeuticGood();
-            therapeuticGood1.TherapeuticGoodIdentification = BaseCDAModel.CreateCodableText("23641011000036102", CodingSystem.AMTV2, "paracetamol 500 mg + codeine phosphate 30 mg tablet");
+            therapeuticGood1.TherapeuticGoodIdentification = BaseCDAModel.CreateCodableText("23641011000036102", CodingSystem.AMTV3, "paracetamol 500 mg + codeine phosphate 30 mg tablet");
             therapeuticGood1.DoseInstruction = "1 tablet once daily oral";
             therapeuticGood1.UnitOfUseQuantityDispensed = "2 tablets";
             therapeuticGood1.ReasonForTherapeuticGood = "Pneumonia";
@@ -1064,7 +1064,7 @@ namespace Nehta.VendorLibrary.CDA.Sample
             therapeuticGood1.MedicationHistory.MedicationDuration = BaseCDAModel.CreateInterval(new ISO8601DateTime(DateTime.Now), new ISO8601DateTime(DateTime.Now.AddDays(5)));
 
             var therapeuticGood2 = EDischargeSummary.CreateTherapeuticGood();
-            therapeuticGood2.TherapeuticGoodIdentification = BaseCDAModel.CreateCodableText("23641011000036102", CodingSystem.AMTV2, "paracetamol 500 mg + codeine phosphate 30 mg tablet");
+            therapeuticGood2.TherapeuticGoodIdentification = BaseCDAModel.CreateCodableText("23641011000036102", CodingSystem.AMTV3, "paracetamol 500 mg + codeine phosphate 30 mg tablet");
             therapeuticGood2.DoseInstruction = "2 tablets daily oral";
             therapeuticGood2.UnitOfUseQuantityDispensed = "4 tablets";
             therapeuticGood2.ReasonForTherapeuticGood = "Stress";
@@ -1092,7 +1092,7 @@ namespace Nehta.VendorLibrary.CDA.Sample
         {
 
             var therapeuticGood1 = EDischargeSummary.CreateTherapeuticGoodCeased();
-            therapeuticGood1.TherapeuticGoodIdentification = BaseCDAModel.CreateCodableText("23641011000036102", CodingSystem.AMTV2, "paracetamol 500 mg + codeine phosphate 30 mg tablet");
+            therapeuticGood1.TherapeuticGoodIdentification = BaseCDAModel.CreateCodableText("23641011000036102", CodingSystem.AMTV3, "paracetamol 500 mg + codeine phosphate 30 mg tablet");
             // Create MedicationHistory
             therapeuticGood1.MedicationHistory = EDischargeSummary.CreateMedicationHistoryCeased();
             therapeuticGood1.MedicationHistory.ItemStatus = BaseCDAModel.CreateCodableText("Ceased");
@@ -1100,7 +1100,7 @@ namespace Nehta.VendorLibrary.CDA.Sample
             therapeuticGood1.MedicationHistory.ReasonForChange = "No longer required";
 
             var therapeuticGood2 = EDischargeSummary.CreateTherapeuticGoodCeased();
-            therapeuticGood2.TherapeuticGoodIdentification = BaseCDAModel.CreateCodableText("23641011000036102", CodingSystem.AMTV2, "paracetamol 500 mg + codeine phosphate 30 mg tablet");
+            therapeuticGood2.TherapeuticGoodIdentification = BaseCDAModel.CreateCodableText("23641011000036102", CodingSystem.AMTV3, "paracetamol 500 mg + codeine phosphate 30 mg tablet");
             // Create MedicationHistory
             therapeuticGood2.MedicationHistory = EDischargeSummary.CreateMedicationHistoryCeased();
             therapeuticGood2.MedicationHistory.ItemStatus = BaseCDAModel.CreateCodableText("Ceased");
@@ -1333,7 +1333,7 @@ namespace Nehta.VendorLibrary.CDA.Sample
             diagnosticInvestigations.ImagingExaminationResult = new List<IImagingExaminationResult>
             {
                 GenericObjectReuseSample.CreateImagingResults("Image chest x-ray 1"),
-                GenericObjectReuseSample.CreateImagingResults("Image chest x-ray 2"),
+                //GenericObjectReuseSample.CreateImagingResults("Image chest x-ray 2"),
             };
 
             diagnosticInvestigations.PathologyTestResult = new List<PathologyTestResult> 
@@ -1364,7 +1364,7 @@ namespace Nehta.VendorLibrary.CDA.Sample
           var person = BaseCDAModel.CreatePersonWithOrganisation();
 
           // Document Author > Role
-          author.Role = BaseCDAModel.CreateRole(Occupation.GeneralMedicalPractitioner);
+          author.Role = BaseCDAModel.CreateRole(Occupation.SurgeonGeneral);
 
           // Document Author > Participant
           author.Participant = BaseCDAModel.CreateParticipantForAuthor();
@@ -1406,8 +1406,9 @@ namespace Nehta.VendorLibrary.CDA.Sample
           name1.FamilyName = "Smith";
 
           var name2 = BaseCDAModel.CreatePersonName();
+          name2.Titles = new List<string> { "Sir" };
           name2.FamilyName = "Wong";
-          name2.NameSuffix = new List<string> { "Sir" };
+          name2.NameSuffix = new List<string> { "III" };
 
           person.PersonNames = new List<IPersonName> { name1, name2 };
 
@@ -1430,11 +1431,11 @@ namespace Nehta.VendorLibrary.CDA.Sample
             person.Organisation.NameUsage = OrganisationNameUsage.LocallyUsedName;
 
             name1.GivenNames = new List<string> { "Good" };
-            name1.Titles = new List<string> { "Doctor" };
+            name1.Titles = new List<string> { "Dr" };
             name1.NameUsages = new List<NameUsage> { NameUsage.Legal };
 
             name2.GivenNames = new List<string> { "Davey" };
-            name2.Titles = new List<string> { "Brother" };
+            name2.Titles = new List<string> { "Br" };
             name2.NameUsages = new List<NameUsage> { NameUsage.NewbornName };
 
             address1.AustralianAddress.UnstructuredAddressLines = new List<string> { "1 Clinician Street" };

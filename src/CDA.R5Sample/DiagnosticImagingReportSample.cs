@@ -407,7 +407,7 @@ namespace CDA.R5Samples
             reportingPathologist.ParticipationEndTime = new ISO8601DateTime(DateTime.Now);
 
             // Document reportingPathologist > Role
-            reportingPathologist.Role = DiagnosticImagingReport.CreateRole(Occupation.MedicalLaboratoryScientist);
+            reportingPathologist.Role = DiagnosticImagingReport.CreateRole(Occupation.Pathologist);
 
             // Document reportingPathologist > Participant > Person or Organisation or Device > Person > Person Name
             var name = BaseCDAModel.CreatePersonName();
@@ -425,7 +425,7 @@ namespace CDA.R5Samples
             person.Organisation.NameUsage = OrganisationNameUsage.Other;
             person.Organisation.Department = "Some department service provider";
             person.Organisation.EmploymentType = BaseCDAModel.CreateCodableText("Casual");
-            person.Organisation.Occupation = DiagnosticImagingReport.CreateRole(Occupation.GeneralMedicalPractitioner);
+            person.Organisation.Occupation = DiagnosticImagingReport.CreateRole(Occupation.DiagnosticandInterventionalRadiologist);
             person.Organisation.PositionInOrganisation = BaseCDAModel.CreateCodableText("Radiologist");
 
             person.Organisation.Identifiers = new List<Identifier> { 

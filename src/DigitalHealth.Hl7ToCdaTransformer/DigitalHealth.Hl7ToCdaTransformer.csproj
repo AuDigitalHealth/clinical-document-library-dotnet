@@ -31,6 +31,10 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Nehta.VendorLibrary.Common, Version=4.2.0.1, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Nehta.VendorLibrary.Common.4.2.0.1\lib\net40\Nehta.VendorLibrary.Common.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -81,10 +85,6 @@
     <ProjectReference Include="..\CDA.Generator\CDA.Generator.csproj">
       <Project>{4b542e29-7fa2-4de2-a828-a197da3f6b40}</Project>
       <Name>CDA.Generator</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Common\Common.csproj">
-      <Project>{0bdb0698-cb73-4e7b-a182-805831d3a5ac}</Project>
-      <Name>Common</Name>
     </ProjectReference>
     <ProjectReference Include="..\DigitalHealth.Hl7.Common\DigitalHealth.Hl7.Common.csproj">
       <Project>{D3CAE2FF-E5E0-487A-A99D-086422F96805}</Project>

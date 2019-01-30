@@ -76,7 +76,7 @@ namespace Nehta.VendorLibrary.CDA.Sample
         {
             IParticipationSubjectOfCare genericSubjectOfCare = BaseCDAModel.CreateSubjectOfCare();
 
-            HydrateSubjectofCare(genericSubjectOfCare, false);
+            HydrateSubjectofCare(genericSubjectOfCare, false, false);
 
             //The requirement to instantiate the objects with the factory ensures that the correct implementations
             //of each interface are instantiated; e.g. that the correct content and context are created.
@@ -233,7 +233,7 @@ namespace Nehta.VendorLibrary.CDA.Sample
         /// Note: the data used within this method is intended as a guide and should be replaced.
         /// </summary>
         /// <returns>A Hydrated SubjectofCare</returns>
-        public static void HydrateSubjectofCare(IParticipationSubjectOfCare subjectOfCare, bool mandatoryOnly)
+        public static void HydrateSubjectofCare(IParticipationSubjectOfCare subjectOfCare, bool mandatoryOnly, bool shs)
         {
             var participant = BaseCDAModel.CreateParticipantForSubjectOfCare();
 
@@ -333,7 +333,7 @@ namespace Nehta.VendorLibrary.CDA.Sample
                 var entitlement = BaseCDAModel.CreateEntitlement();
                 entitlement.Id = BaseCDAModel.CreateMedicareNumber(MedicareNumberType.MedicareCardNumber, "1234567881");
                 entitlement.Type = EntitlementType.MedicareBenefits;
-                entitlement.ValidityDuration = BaseCDAModel.CreateInterval(new ISO8601DateTime(DateTime.Now), new ISO8601DateTime(DateTime.Now));
+                entitlement.ValidityDuration = BaseCDAModel.CreateIntervalHigh(new ISO8601DateTime(DateTime.Today.AddMonths(15)));
                 participant.Entitlements = new List<Entitlement> { entitlement };
 
                 // Subject of Care > Participant > Person or Organisation or Device > Person > Source Of Death Notification
@@ -345,7 +345,9 @@ namespace Nehta.VendorLibrary.CDA.Sample
                 // Subject of Care > Participant > Person or Organisation or Device > Person > Mothers Original Family Name
                 person.MothersOriginalFamilyName = mothersOriginalFamilyName;
 
-                person.InterpreterRequired = CreateInterpreterRequiredAlert();
+                // Don't include in SHS
+                if (!shs) person.InterpreterRequired = CreateInterpreterRequiredAlert();
+
 
             } else
             {
@@ -391,7 +393,7 @@ namespace Nehta.VendorLibrary.CDA.Sample
                 var entitlement1 = BaseCDAModel.CreateEntitlement();
                 entitlement1.Id = BaseCDAModel.CreateMedicareNumber(MedicareNumberType.MedicareCardNumber, "1234567881");
                 entitlement1.Type = EntitlementType.MedicareBenefits;
-                entitlement1.ValidityDuration = BaseCDAModel.CreateInterval(new ISO8601DateTime(DateTime.Now), new ISO8601DateTime(DateTime.Now));
+                entitlement1.ValidityDuration = BaseCDAModel.CreateIntervalHigh(new ISO8601DateTime(DateTime.Today.AddMonths(15)));
 
                 author.Participant.Entitlements = new List<Entitlement> { entitlement1, entitlement1 };
 
@@ -438,8 +440,9 @@ namespace Nehta.VendorLibrary.CDA.Sample
             name1.FamilyName = "Smith";
 
             var name2 = BaseCDAModel.CreatePersonName();
+            name2.Titles = new List<string> { "Sir" };
             name2.FamilyName = "Wong";
-            name2.NameSuffix = new List<string> { "Sir" };
+            name2.NameSuffix = new List<string> { "III" };
 
             person.PersonNames = new List<IPersonName> { name1, name2 };
 
@@ -470,17 +473,17 @@ namespace Nehta.VendorLibrary.CDA.Sample
             {
                 // Document Author > Participation Period
                 author.AuthorParticipationPeriodOrDateTimeAuthored = BaseCDAModel.CreateParticipationPeriod(
-                    BaseCDAModel.CreateLowHigh(new ISO8601DateTime(DateTime.Now, ISO8601DateTime.Precision.Second), new ISO8601DateTime(DateTime.Now, ISO8601DateTime.Precision.Second)));
+                    BaseCDAModel.CreateLowHigh(new ISO8601DateTime(DateTime.Now.AddMinutes(-30), ISO8601DateTime.Precision.Second), new ISO8601DateTime(DateTime.Now, ISO8601DateTime.Precision.Second)));
 
                 person.Organisation.Department = "Surgical Ward";
                 person.Organisation.NameUsage = OrganisationNameUsage.LocallyUsedName;
 
                 name1.GivenNames = new List<string> { "Good" };
-                name1.Titles = new List<string> { "Doctor" };
+                name1.Titles = new List<string> { "Dr" };
                 name1.NameUsages = new List<NameUsage> { NameUsage.PreferredNameIndicator };
 
                 name2.GivenNames = new List<string> { "Davey" };
-                name2.Titles = new List<string> { "Brother" };
+                name2.Titles = new List<string> { "Br" };
                 name2.NameUsages = new List<NameUsage> { NameUsage.NewbornName };
 
                 // Document Author > Participant > Person or Organisation or Device > Person > Organisation > Addresses
@@ -511,7 +514,7 @@ namespace Nehta.VendorLibrary.CDA.Sample
                 var entitlement = BaseCDAModel.CreateEntitlement();
                 entitlement.Id = BaseCDAModel.CreateMedicareNumber(MedicareNumberType.MedicareCardNumber, "2296818481");
                 entitlement.Type = EntitlementType.MedicareBenefits;
-                entitlement.ValidityDuration = BaseCDAModel.CreateInterval(new ISO8601DateTime(DateTime.Now), new ISO8601DateTime(DateTime.Now));
+                entitlement.ValidityDuration = BaseCDAModel.CreateIntervalHigh(new ISO8601DateTime(DateTime.Today.AddMonths(15)));
 
                 author.Participant.Entitlements = new List<Entitlement> { entitlement, entitlement };
 
@@ -534,7 +537,7 @@ namespace Nehta.VendorLibrary.CDA.Sample
         public static void HydrateAuthor(IParticipationDocumentAuthor author, bool mandatoryOnly)
         {
             var person = BaseCDAModel.CreatePersonWithOrganisation();
-
+            
             // Document Author > Role
             author.Role = BaseCDAModel.CreateRole(Occupation.GeneralMedicalPractitioner);
 
@@ -588,8 +591,9 @@ namespace Nehta.VendorLibrary.CDA.Sample
             name1.FamilyName = "Smith";
 
             var name2 = BaseCDAModel.CreatePersonName();
+            name2.Titles = new List<string> { "Sir" };
             name2.FamilyName = "Wong";
-            name2.NameSuffix = new List<string> { "Sir" };
+            name2.NameSuffix = new List<string> { "III" };
 
             person.PersonNames = new List<IPersonName> { name1, name2 };
 
@@ -613,11 +617,11 @@ namespace Nehta.VendorLibrary.CDA.Sample
                 person.Organisation.NameUsage = OrganisationNameUsage.LocallyUsedName;
 
                 name1.GivenNames = new List<string> { "Good" };
-                name1.Titles = new List<string> { "Doctor" };
+                name1.Titles = new List<string> { "Dr" };
                 name1.NameUsages = new List<NameUsage> { NameUsage.PreferredNameIndicator };
 
                 name2.GivenNames = new List<string> { "Davey" };
-                name2.Titles = new List<string> { "Brother" };
+                name2.Titles = new List<string> { "Br" };
                 name2.NameUsages = new List<NameUsage> { NameUsage.NewbornName };
 
                 address1.AustralianAddress.UnstructuredAddressLines = new List<string> { "1 Clinician Street" };
@@ -745,7 +749,7 @@ namespace Nehta.VendorLibrary.CDA.Sample
                 var name1 = BaseCDAModel.CreatePersonName();
                 name1.GivenNames = new List<string> { "Information" };
                 name1.FamilyName = "Recipient";
-                name1.Titles = new List<string> { "Doctor" };
+                name1.Titles = new List<string> { "Dr" };
                 name1.NameUsages = new List<NameUsage> { NameUsage.Legal };
 
                 var name2 = BaseCDAModel.CreatePersonName();
@@ -804,7 +808,7 @@ namespace Nehta.VendorLibrary.CDA.Sample
             var name1 = BaseCDAModel.CreatePersonName();
             name1.GivenNames = new List<string> { "Good" };
             name1.FamilyName = "Doctor";
-            name1.Titles = new List<string> { "Doctor" };
+            name1.Titles = new List<string> { "Dr" };
             name1.NameUsages = new List<NameUsage> { NameUsage.Legal };
 
             authenticator.Participant.Person.PersonNames = new List<IPersonName> { name1 };
@@ -1349,9 +1353,10 @@ namespace Nehta.VendorLibrary.CDA.Sample
             imagingExaminationResult.ExaminationResultRepresentation = "Result Representation - Rich text representation of the entire result as issued by the diagnostic service";
 
 
-          imagingExaminationResult.ResultGroup = new List<IImagingResultGroup> { imagingResultGroup1, imagingResultGroup2 };
+            imagingExaminationResult.ResultGroup = new List<IImagingResultGroup> { imagingResultGroup1 };
+            //imagingExaminationResult.ResultGroup = new List<IImagingResultGroup> { imagingResultGroup1, imagingResultGroup2 };
 
-          return imagingExaminationResult;
+            return imagingExaminationResult;
         }
 
         /// Creates and Hydrates an atomicalSite

@@ -1102,7 +1102,7 @@ namespace Nehta.VendorLibrary.CDA.Generator
             //Setup the Health Profile 
             components.Add(CDAGeneratorHelper.CreateComponent(eDischargeSummary.SCSContent.HealthProfile, NarrativeGenerator));
 
-            //Setup the Event
+            //Setup the Event - Inc PD, Proc, Path/DI
             if ((eDischargeSummary.SCSContent.StructuredBodyFiles == null && eDischargeSummary.SCSContent.NarrativeOnlyDocument == null))
             components.Add(CDAGeneratorHelper.CreateComponentLegacy(eDischargeSummary.SCSContent.Event, NarrativeGenerator));
 

@@ -315,7 +315,7 @@ namespace Nehta.VendorLibrary.CDA.Sample
             GenericObjectReuseSample.HydrateAuthor(specialistLetter.SCSContext.Author, mandatorySectionsOnly);
 
             specialistLetter.SCSContext.SubjectOfCare = BaseCDAModel.CreateSubjectOfCare();
-            GenericObjectReuseSample.HydrateSubjectofCare(specialistLetter.SCSContext.SubjectOfCare, mandatorySectionsOnly);
+            GenericObjectReuseSample.HydrateSubjectofCare(specialistLetter.SCSContext.SubjectOfCare, mandatorySectionsOnly, false);
 
             specialistLetter.SCSContext.DateTimeSubjectSeen = new ISO8601DateTime(DateTime.Now);
 
@@ -411,7 +411,7 @@ namespace Nehta.VendorLibrary.CDA.Sample
             var personName = BaseCDAModel.CreatePersonName();
             personName.GivenNames = new List<string> { "Information (UsualGPPerson)" };
             personName.FamilyName = "Recipient";
-            personName.Titles = new List<string> { "Doctor" };
+            personName.Titles = new List<string> { "Dr" };
             personName.NameUsages = new List<NameUsage> { NameUsage.Legal };
 
             var person = BaseCDAModel.CreatePersonWithOrganisation();
@@ -449,7 +449,7 @@ namespace Nehta.VendorLibrary.CDA.Sample
 
             if (!mandatorySectionsOnly)
             {
-              usualGP.Role = BaseCDAModel.CreateRole(Occupation.GeneralMedicalPractitioner);
+              usualGP.Role = BaseCDAModel.CreateRole(Occupation.SpecialistPhysiciansnec);
             }
             else
             {
@@ -491,7 +491,7 @@ namespace Nehta.VendorLibrary.CDA.Sample
             personName.GivenNames = new List<string> { "Referrer" };
             personName.FamilyName = "1";
             personName.NameUsages = new List<NameUsage> { NameUsage.Legal };
-            personName.Titles = new List<string> { "Doctor" };
+            personName.Titles = new List<string> { "Dr" };
 
             var person = BaseCDAModel.CreatePersonWithOrganisation();
             person.Identifiers = new List<Identifier>
@@ -589,9 +589,7 @@ namespace Nehta.VendorLibrary.CDA.Sample
             {
                 var recomendationPerson = SpecialistLetter.CreateRecommendation();
                 recomendationPerson.Narrative = "Recommendation Narrative Person";
-                recomendationPerson.TimeFrame = BaseCDAModel.CreateInterval(
-                    new ISO8601DateTime(DateTime.Now, ISO8601DateTime.Precision.Day), 
-                    new ISO8601DateTime(DateTime.Now.AddMonths(4), ISO8601DateTime.Precision.Day));
+                recomendationPerson.TimeFrame = BaseCDAModel.CreateLowWidth(new ISO8601DateTime(DateTime.Now.AddMonths(4), ISO8601DateTime.Precision.Day), "4", TimeUnitOfMeasure.Month);
                 recomendationPerson.Addressee = CreateAddresseePerson(mandatorySectionsOnly);
 
                 var recomendationOrganisation = SpecialistLetter.CreateRecommendation();
