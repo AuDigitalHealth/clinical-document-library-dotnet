@@ -231,6 +231,7 @@ namespace CDA.R5Samples
             person.PersonNames = new List<IPersonName> { name1 };
 
             person.Organisation = BaseCDAModel.CreateEmploymentOrganisation();
+            person.Organisation.Name = "Requester";
 
             if (!mandatoryOnly)
             {
@@ -458,7 +459,7 @@ namespace CDA.R5Samples
             var person = BaseCDAModel.CreatePersonWithOrganisation();
 
             // Document Author > Role
-            author.Role = BaseCDAModel.CreateRole(Occupation.GeneralMedicalPractitioner, CodingSystem.ANZSCORevision1);
+            author.Role = BaseCDAModel.CreateRole(Occupation.Pathologist, CodingSystem.ANZSCORevision1);
 
             // Document Author > Participant
             author.Participant = BaseCDAModel.CreateParticipantForAuthor();
@@ -630,6 +631,8 @@ namespace CDA.R5Samples
             var address = BaseCDAModel.CreateAddress();
             address.AustralianAddress = BaseCDAModel.CreateAustralianAddress();
             participant.Addresses = new List<IAddress> { address, address };
+            //address.AddressAbsentIndicator = AddressAbsentIndicator.NotIndicated;
+            //participant.Addresses = new List<IAddress> { address };
 
             // Subject of Care > Participant > Person or Organisation or Device > Person > Demographic Data > Sex
             person.Gender = Gender.Male;
@@ -904,7 +907,7 @@ namespace CDA.R5Samples
             if (!mandatoryOnly)
             {
                 // LegalAuthenticator/assignedEntity/code
-                authenticator.Role = BaseCDAModel.CreateRole(Occupation.GeneralMedicalPractitioner, CodingSystem.ANZSCORevision1);
+                authenticator.Role = BaseCDAModel.CreateRole(Occupation.Pathologist, CodingSystem.ANZSCORevision1);
 
                 // LegalAuthenticator/assignedEntity/<Address>
                 var address1 = BaseCDAModel.CreateAddress();

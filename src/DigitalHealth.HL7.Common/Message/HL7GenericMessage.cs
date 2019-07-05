@@ -8,7 +8,7 @@ namespace DigitalHealth.HL7.Common.Message
     /// This covers all pathology test result messages.
     /// Note that the first segment MSH is declared in the superclass HL7Message.
     /// </summary>
-    public class HL7GenericPathMessage : HL7Message
+    public class HL7GenericMessage : HL7Message
     {
         public PID PatientIdentification;
         public PV1 PatientVisit;

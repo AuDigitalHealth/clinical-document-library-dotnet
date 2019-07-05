@@ -230,15 +230,100 @@ namespace Nehta.VendorLibrary.CDA.Generator
 
             if (diagnosticInvestigations != null)
             {
-                component = new POCD_MT000040Component5
+                // create table for narrative summary
+                var strucDocText = new StrucDocText();
+                var narrative = new List<List<String>>();
+                var strucDocTableList = new List<StrucDocTable>();
+
+                var headerList = new List<String>()
                 {
-                    section = CreateSectionCodeTitle("101.20117", CodingSystem.NCTIS, "Diagnostic Investigations", "This section may contain the following subsections Pathology Test Result and Imaging Examination Result.")
+                    "Test Name",
+                    "Date",
+                    "Result",
                 };
 
+                // Path results
+                if (diagnosticInvestigations.PathologyTestResult != null)
+                {
+                    foreach (var path in diagnosticInvestigations.PathologyTestResult)
+                    {
+                        var diagnostics = new List<string>
+                        {
+                            path.TestResultName?.NarrativeText,
+                            path.ObservationDateTime?.NarrativeText(),
+                            path.OverallTestResultStatus?.NarrativeText
+                        };
+                        narrative.Add(diagnostics);
+
+                    }
+                }
+
+                //DI results
+                if (diagnosticInvestigations.ImagingExaminationResult != null)
+                {
+                    foreach (var di in diagnosticInvestigations.ImagingExaminationResult)
+                    {
+                        var diagnostics = new List<string>
+                            {
+                                di.ExaminationResultName?.NarrativeText,
+                                di.ResultDateTime?.NarrativeText(),
+                                di.ExaminationResultStatus?.NarrativeText
+                            };
+
+                        narrative.Add(diagnostics);
+                    }
+                }
+
+                //Other results
+                if (diagnosticInvestigations.OtherTestResult != null)
+                {
+                    foreach (var other in diagnosticInvestigations.OtherTestResult)
+                    {
+                        var diagnostics = new List<string>
+                            {
+                                other.ReportName?.NarrativeText,
+                                other.ReportDate?.NarrativeText(),
+                                other.ReportStatus?.NarrativeText
+                            };
+
+                        narrative.Add(diagnostics);
+                    }
+                }
+
+                // Any entries added - create table
+                if (narrative.Count > 0)
+                {
+                    strucDocTableList.Add
+                    (
+                        CDANarrativeGenerator.PopulateTable
+                        (
+                            "Selected Investigation Results",
+                            null,
+                            headerList.ToArray(),
+                            null,
+                            narrative
+                        )
+                    );
+                }
+
+                // Create Narrative - if you want to add text
+                //strucDocText.paragraph = CDANarrativeGenerator.CreateParagraph("Some text");
+                if (strucDocTableList.Any())
+                {
+                    strucDocText.table = strucDocTableList.ToArray();
+                }
+                
+                component = new POCD_MT000040Component5
+                {
+                    section = CreateSectionCodeTitle("101.20117", CodingSystem.NCTIS, "Diagnostic Investigations", "Diagnostic Investigations", strucDocText)
+                };
+
+                //Override with custom narrative
                 if (diagnosticInvestigations.CustomNarrativeDiagnosticInvestigations != null)
                 {
                     component.section.text = diagnosticInvestigations.CustomNarrativeDiagnosticInvestigations;
                 }
+
 
                 //PATHOLOGY TEST RESULTS
                 if (diagnosticInvestigations.PathologyTestResult != null)
@@ -252,7 +337,7 @@ namespace Nehta.VendorLibrary.CDA.Generator
                         //Create the Pathology Test Result Component and section
                         var pathologyTestResultComponent = new POCD_MT000040Component5
                         {
-                            section = CreateSectionCodeTitle("102.16144", CodingSystem.NCTIS, "Pathology Test Result", "This section may contain the following subsections Test Specimen Detail and Pathology Test Result Group.")
+                            section = CreateSectionCodeTitle("102.16144", CodingSystem.NCTIS, "Pathology Test Result", "")
                         };
 
                         //Create relationships covering the test Specimen details
@@ -735,6 +820,7 @@ namespace Nehta.VendorLibrary.CDA.Generator
         /// <returns>POCD_MT000040Component3</returns>
         internal static POCD_MT000040Component3 CreateComponentLegacy(IDiagnosticInvestigations diagnosticInvestigations, CDADocumentType? cdaDocumentType, INarrativeGenerator narrativeGenerator)
         {
+            // For REF, SPEC
             POCD_MT000040Component3 component = null;
 
             var componentList = new List<POCD_MT000040Component5>();
@@ -749,7 +835,7 @@ namespace Nehta.VendorLibrary.CDA.Generator
                 // Diagnostic Investigations
                 component = new POCD_MT000040Component3
                 {
-                    section = CreateSectionCodeTitle("101.20117", CodingSystem.NCTIS, "Diagnostic Investigations", "This section may contain the following subsections Pathology Test Result, Imaging Examination Result and Requested Service(s)."),
+                    section = CreateSectionCodeTitle("101.20117", CodingSystem.NCTIS, "Diagnostic Investigations", "This section contains the following subsections: Requested Service, Pathology Test Result and Imaging Examination Result."),
                 };
 
                 if (diagnosticInvestigations.CustomNarrativeDiagnosticInvestigations != null) component.section.text = diagnosticInvestigations.CustomNarrativeDiagnosticInvestigations;
@@ -1100,12 +1186,22 @@ namespace Nehta.VendorLibrary.CDA.Generator
             if (otherTestResult.ReportStatus != null)
                 relationshipList.Add(CreateRelationshipForTestResultStatusLegacy(otherTestResult.ReportStatus));
 
+            if (otherTestResult.ReportContent != null && otherTestResult.ReportContent.ExternalData != null)
+            {
+                var imageEntryRelationship = new POCD_MT000040EntryRelationship
+                {
+                    typeCode = x_ActRelationshipEntryRelationship.COMP,
+                    observationMedia = CreateObservationMedia(otherTestResult.ReportContent.ExternalData)
+                };
+                relationshipList.Add(imageEntryRelationship);
+            }
+
             //Create the observation entry with all the above relationships nested inside the observation
             var entry = CreateEntryObservation(x_ActRelationshipEntry.COMP,
-                                              CreateConceptDescriptor(otherTestResult.ReportName),
-                                              otherTestResult.ReportDate,
-                                              relationshipList
-                                              );
+                CreateConceptDescriptor(otherTestResult.ReportName),
+                otherTestResult.ReportDate,
+                relationshipList
+            );
 
             // Report Content
             if (otherTestResult.ReportContent != null)
@@ -1113,12 +1209,13 @@ namespace Nehta.VendorLibrary.CDA.Generator
                 // Encapsulated Text
                 if (!otherTestResult.ReportContent.Text.IsNullOrEmptyWhitespace())
                 {
-                    entry.observation.value = new ANY[] { CreateEncapsulatedData(otherTestResult.ReportContent.Text) };
+                    entry.observation.value = new ANY[] {CreateEncapsulatedData(otherTestResult.ReportContent.Text)};
                 }
                 // External Data
                 else if (otherTestResult.ReportContent.ExternalData != null)
                 {
-                    entry.observation.value = new ANY[] { CreateEncapsulatedData(otherTestResult.ReportContent.ExternalData) };
+                    entry.observation.value = new ANY[]
+                        {CreateEncapsulatedData(otherTestResult.ReportContent.ExternalData)};
                 }
             }
 
@@ -2187,10 +2284,10 @@ namespace Nehta.VendorLibrary.CDA.Generator
         /// <param name="eventDischargeSummary">The eventDischargeSummary</param>
         /// <param name="narrativeGenerator">The narrativeGenerator</param>
         /// <returns>POCD_MT000040Component3</returns>
-        internal static POCD_MT000040Component3 CreateComponentLegacy(
-            Nehta.VendorLibrary.CDA.SCSModel.DischargeSummary.Event eventDischargeSummary,
+        internal static POCD_MT000040Component3 CreateComponentLegacy(SCSModel.DischargeSummary.Event eventDischargeSummary,
             INarrativeGenerator narrativeGenerator)
         {
+            // For DS
             POCD_MT000040Component3 component = null;
 
             if (eventDischargeSummary != null)
@@ -2201,8 +2298,7 @@ namespace Nehta.VendorLibrary.CDA.Generator
                 // Begin Event section
                 component = new POCD_MT000040Component3
                 {
-                    section = CreateSectionCodeTitle("101.16006", CodingSystem.NCTIS, "Event",
-                        "This section may contain the following subsections Problems/Diagnoses This Visit, Clinical Interventions Performed This Visit and Clinical Synopsis and Diagnostic Investigations.")
+                    section = CreateSectionCodeTitle("101.16006", CodingSystem.NCTIS, "Event", "This section contains the following subsections: Clinical Summary, Problems/Diagnoses This Visit, Procedures and Diagnostic Investigations.")
                 };
 
                 if (eventDischargeSummary.CustomNarrativeEvent != null)

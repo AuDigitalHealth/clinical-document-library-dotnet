@@ -1,6 +1,39 @@
 ## Change Log/Revision History
 
-4.4.2 - Reference Platform Clinical Document Library (Feb 2019)
+4.5.3 - Reference Platform Clinical Document Library (Jan 2019)
+----------------------------------------------------
+- Updated captions to Clinical Summary for DS and ES for Clinical Synopsis and Event Details sections 
+- Updated header of table to "Description" for Clinical Synopsis
+- Updated caption to Follow-up Appointments for DS for Arranged Services section
+- Updated Column headings and order for medicines on discharge + "-" for empty cells
+- Updated "Clinical Intervention Description" to "Procedures" for DS and change table to bullet list
+- Updated "Recommendations" to just two columns Recommendation and Person responsible
+- Updated section text for DS, REF, SPEC, ES, SREF docs.
+- Generated summary table for diagnostic investigations in DS documents
+- Fixed up Other Test Result, adding renderMultiMedia/observationMedia to section as per FAQ
+  Affects DS, ES, EREF, SL
+- Changed Other Test Result time to a value rather than low (Affects DS, ES, EREF, SL)
+
+4.5.2 - Reference Platform Clinical Document Library (Dec 2018)
+----------------------------------------------------
+- Fixed up AddressAbsentIndicator.Masked mapping to  "ASKU" rather than "MSK"
+
+4.5.1 - Reference Platform Clinical Document Library (Oct 2018)
+----------------------------------------------------
+- Fix up logo path when specifying different OutputFolder
+- PCML - added identifier for Participant, plus example custom Narrative (not yet supported though)
+- Updated PCML to PSML
+
+4.5.0 - Reference Platform Clinical Document Library (Aug 2018)
+----------------------------------------------------
+- Added support for PCML generation - aligning to conformance profile
+- removed restriction on Address.cs nullflavor
+- Added Hl7v2 DI to CDA functionality
+- Fixed HL7 requester.ParticipationEndTime to OBR-27.5 rather than OBR-22
+- Added InformationRecipient to PCML Library
+- Added HealthcareFacility to PCML Library
+
+4.4.2 - Reference Platform Clinical Document Library (Feb 2018)
 ----------------------------------------------------
 - Removed originalText for Diagnostic imaging study - not required.
 - Fix UTC offset when using DaylightSavings time

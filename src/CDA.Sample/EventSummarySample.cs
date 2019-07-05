@@ -214,6 +214,7 @@ namespace Nehta.VendorLibrary.CDA.Sample
 
             // Include Logo
             eventSummary.IncludeLogo = true;
+            eventSummary.LogoPath = OutputFolderPath;
 
             // Set Creation Time
             eventSummary.DocumentCreationTime = new ISO8601DateTime(DateTime.Now);
@@ -258,7 +259,7 @@ namespace Nehta.VendorLibrary.CDA.Sample
             GenericObjectReuseSample.HydrateAuthorV2(eventSummary.SCSContext.Author, mandatorySectionsOnly);
 
             eventSummary.SCSContext.SubjectOfCare = BaseCDAModel.CreateSubjectOfCare();
-            GenericObjectReuseSample.HydrateSubjectofCare(eventSummary.SCSContext.SubjectOfCare, mandatorySectionsOnly);
+            GenericObjectReuseSample.HydrateSubjectofCare(eventSummary.SCSContext.SubjectOfCare, mandatorySectionsOnly, false);
 
             // DateTime Health Event Started & DateTime Health Event Ended allowable combinations
             var dateTimeHealthEventEnded = new ISO8601DateTime(DateTime.Now);
@@ -318,7 +319,7 @@ namespace Nehta.VendorLibrary.CDA.Sample
         /// <returns>A Hydrated Event Summary object</returns>
         private static List<IImmunisation> CreateImmunisations()
         { 
-            var immunisation =  BaseCDAModel.CreateCodableText("53705011000036109",CodingSystem.AMTV2, "Advil (ibuprofen 200 mg) tablet: sugar-coated, 1 tablet" );
+            var immunisation =  BaseCDAModel.CreateCodableText("53705011000036109",CodingSystem.AMTV3, "Advil 200 mg sugar coated tablet");
 
             var immunisationList = new List<IImmunisation>
             {
@@ -395,7 +396,7 @@ namespace Nehta.VendorLibrary.CDA.Sample
             medication.ClinicalIndication = "Clinical Indication";
             medication.Comment = "Comment";
 
-            medication.Medicine = BaseCDAModel.CreateCodableText(code, CodingSystem.AMTV2, name);
+            medication.Medicine = BaseCDAModel.CreateCodableText(code, CodingSystem.AMTV3, name);
 
             return medication;
         }

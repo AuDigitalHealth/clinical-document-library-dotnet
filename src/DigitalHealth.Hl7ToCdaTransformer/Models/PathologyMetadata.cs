@@ -19,8 +19,7 @@ namespace DigitalHealth.Hl7ToCdaTransformer.Models
         /// The report identifier.
         /// </value>
         public Identifier ReportIdentifier { get; set; }
-
-        // Optional - Check with Phil if we should take this out
+        
         /// <summary>
         /// Gets or sets the requester order identifier.
         /// </summary>

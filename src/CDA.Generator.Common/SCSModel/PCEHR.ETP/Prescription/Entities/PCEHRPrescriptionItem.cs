@@ -224,7 +224,8 @@ namespace Nehta.VendorLibrary.CDA.SCSModel
             }
           }
 
-          if (TherapeuticGoodId.Code == CodingSystem.PBSCode.GetAttributeValue<NameAttribute, string>(x => x.Code) || TherapeuticGoodId.CodeSystemName == CodingSystem.PBSCode.GetAttributeValue<NameAttribute, string>(x => x.Name))
+          if (TherapeuticGoodId.CodeSystemCode == CodingSystem.PBSCode.GetAttributeValue<NameAttribute, string>(x => x.Code) || 
+              TherapeuticGoodId.CodeSystemName == CodingSystem.PBSCode.GetAttributeValue<NameAttribute, string>(x => x.Name))
           {
             foundPBSCode = true;
           }

@@ -55,9 +55,13 @@
     <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="JetBrains.Annotations, Version=4.5.1274.1, Culture=neutral, PublicKeyToken=1010a0d8d6380325, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\Lib\JetBrains.Annotations.dll</HintPath>
+    <Reference Include="JetBrains.Annotations, Version=2018.3.0.0, Culture=neutral, PublicKeyToken=1010a0d8d6380325, processorArchitecture=MSIL">
+      <HintPath>..\packages\JetBrains.Annotations.2018.3.0\lib\net20\JetBrains.Annotations.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Nehta.VendorLibrary.Common, Version=4.2.0.1, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Nehta.VendorLibrary.Common.4.2.0.1\lib\net40\Nehta.VendorLibrary.Common.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.configuration" />
@@ -99,6 +103,11 @@
     <Compile Include="Common\Enums\SectionTitles\CommonSections.cs" />
     <Compile Include="Generator\CDAGeneratorHelperLegacy.cs" />
     <Compile Include="Generator\CDANarrativeGeneratorLegacy.cs" />
+    <Compile Include="SCSModel\CeHR\Enum\PcmlSections.cs" />
+    <Compile Include="SCSModel\PCML\Entities\Encounter.cs" />
+    <Compile Include="SCSModel\PCML\Interfaces\IPCMLContent.cs" />
+    <Compile Include="SCSModel\PCML\Interfaces\IPCMLContext.cs" />
+    <Compile Include="SCSModel\PCML\Interfaces\ICDAContextPCML.cs" />
     <Compile Include="SCSModel\Common\Entities\NarrativeOnlyDocument.cs" />
     <Compile Include="SCSModel\Common\Entities\ParticipationPeriod.cs" />
     <Compile Include="SCSModel\Common\Entities\QualifierCode.cs" />
@@ -762,10 +771,6 @@
       <Project>{0208153F-D77C-4CD1-B28D-1AADC00E1553}</Project>
       <Name>CDA.GeneratedCode</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Common\Common.csproj">
-      <Project>{0bdb0698-cb73-4e7b-a182-805831d3a5ac}</Project>
-      <Name>Common</Name>
-    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include="Microsoft.Net.Client.3.5">
@@ -787,7 +792,6 @@
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
-  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

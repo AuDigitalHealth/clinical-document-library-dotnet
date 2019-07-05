@@ -2,7 +2,6 @@
 using System.Linq;
 using DigitalHealth.Hl7ToCdaTransformer.Models;
 using DigitalHealth.Hl7ToCdaTransformer.Resources;
-using DigitalHealth.HL7.Common.DataStructure;
 using DigitalHealth.HL7.Common.Message;
 using DigitalHealth.HL7.Common.Segment;
 using DigitalHealth.HL7.Common.SegmentGroup;
@@ -14,20 +13,20 @@ namespace DigitalHealth.Hl7ToCdaTransformer.Services
     /// <summary>
     /// Validator for HL7 V2 Pathology Message
     /// </summary>
-    internal class PathologyMessageValidator
+    internal class PathologyMessageValidator : MessageValidatorBase
     {
         /// <summary>
         /// Validates the specified HL7 generic path message.
         /// </summary>
-        /// <param name="hl7GenericPathMessage">The HL7 generic path message.</param>
+        /// <param name="hl7GenericMessage">The HL7 generic message.</param>
         /// <param name="metadata">The metadata instance providing required information.</param>
         /// <param name="reportData">The pathology report data, if not included in the path message.</param>
-        /// <exception cref="MessageValidationException">hl7GenericPathMessage</exception>
-        public void Validate(HL7GenericPathMessage hl7GenericPathMessage, PathologyMetadata metadata, byte[] reportData)
+        /// <exception cref="MessageValidationException">hl7GenericMessage</exception>
+        public void Validate(HL7GenericMessage hl7GenericMessage, PathologyMetadata metadata, byte[] reportData)
         {
-            if (hl7GenericPathMessage == null)
+            if (hl7GenericMessage == null)
             {
-                throw new MessageValidationException(nameof(hl7GenericPathMessage));
+                throw new MessageValidationException(nameof(hl7GenericMessage));
             }
 
             if (metadata == null)
@@ -35,11 +34,11 @@ namespace DigitalHealth.Hl7ToCdaTransformer.Services
                 throw new MessageValidationException(nameof(metadata));
             }
 
-            ValidatePatientIdentification(hl7GenericPathMessage);
+            ValidatePatientIdentification(hl7GenericMessage);
 
-            ValidateOrder(hl7GenericPathMessage, metadata);
+            ValidateOrder(hl7GenericMessage, metadata);
 
-            ValidateAttachment(hl7GenericPathMessage, reportData);
+            ValidateAttachment(hl7GenericMessage, reportData);
 
             ValidateMetadata(metadata);
         }
@@ -48,28 +47,28 @@ namespace DigitalHealth.Hl7ToCdaTransformer.Services
         /// Validate metadata instance.
         /// </summary>
         /// <param name="metadata">Metadata instance to validate.</param>
-        private static void ValidateMetadata(PathologyMetadata metadata)
+        internal static void ValidateMetadata(PathologyMetadata metadata)
         {
             if (metadata.ReportIdentifier == null)
                 throw new ArgumentNullException(nameof(metadata.ReportIdentifier));
 
-            if (string.IsNullOrEmpty(metadata.ReportIdentifier.Root))
+            if (String.IsNullOrEmpty(metadata.ReportIdentifier.Root))
                 throw new ArgumentNullException(nameof(metadata.ReportIdentifier.Root));
             
-            if (string.IsNullOrEmpty(metadata.ReportIdentifier.Extension))
+            if (String.IsNullOrEmpty(metadata.ReportIdentifier.Extension))
                 throw new ArgumentNullException(nameof(metadata.ReportIdentifier.Extension));
 
             if (metadata.RequesterOrderIdentifier == null)
                 throw new ArgumentNullException(nameof(metadata.RequesterOrderIdentifier));
 
-            if (string.IsNullOrEmpty(metadata.RequesterOrderIdentifier.Root))
+            if (String.IsNullOrEmpty(metadata.RequesterOrderIdentifier.Root))
                 throw new ArgumentNullException(nameof(metadata.RequesterOrderIdentifier.Root));
 
-            if (string.IsNullOrEmpty(metadata.RequesterOrderIdentifier.Extension))
+            if (String.IsNullOrEmpty(metadata.RequesterOrderIdentifier.Extension))
                 throw new ArgumentNullException(nameof(metadata.RequesterOrderIdentifier.Extension));
 
             //Required has to be HPI-O
-            if (string.IsNullOrEmpty(metadata.AuthorOrganisationHpio))
+            if (String.IsNullOrEmpty(metadata.AuthorOrganisationHpio))
                 throw new ArgumentNullException(nameof(metadata.AuthorOrganisationHpio));
 
             if (!metadata.AuthorOrganisationHpio.StartsWith("80036"))
@@ -82,7 +81,7 @@ namespace DigitalHealth.Hl7ToCdaTransformer.Services
             if (metadata.ReportingPathologist.Address == null || !metadata.ReportingPathologist.Address.Any())
                 throw new ArgumentNullException(nameof(metadata.ReportingPathologist.Address));
 
-            if (string.IsNullOrEmpty(metadata.ReportingPathologist.OrganisationHpio))
+            if (String.IsNullOrEmpty(metadata.ReportingPathologist.OrganisationHpio))
                 throw new ArgumentNullException(nameof(metadata.ReportingPathologist.OrganisationHpio));
 
             if (!metadata.ReportingPathologist.OrganisationHpio.StartsWith("80036"))
@@ -104,22 +103,9 @@ namespace DigitalHealth.Hl7ToCdaTransformer.Services
         }
 
         /// <summary>
-        /// Validates the patient identification.
-        /// </summary>
-        /// <param name="hl7GenericPathMessage">The HL7 generic path message.</param>
-        /// <exception cref="MessageValidationException">PatientIdentification</exception>
-        private static void ValidatePatientIdentification(HL7GenericPathMessage hl7GenericPathMessage)
-        {
-            if (hl7GenericPathMessage.PatientIdentification == null)
-            {
-                throw new MessageValidationException(nameof(hl7GenericPathMessage.PatientIdentification));
-            }
-        }
-
-        /// <summary>
         /// Validates the order.
         /// </summary>
-        /// <param name="hl7GenericPathMessage">The HL7 generic path message.</param>
+        /// <param name="hl7GenericMessage">The HL7 generic message.</param>
         /// <param name="metadata">Pathology metadata instance.</param>
         /// <exception cref="MessageValidationException">
         /// Order
@@ -128,21 +114,21 @@ namespace DigitalHealth.Hl7ToCdaTransformer.Services
         /// or
         /// ObservationsReportID
         /// </exception>
-        private static void ValidateOrder(HL7GenericPathMessage hl7GenericPathMessage, PathologyMetadata metadata)
+        internal static void ValidateOrder(HL7GenericMessage hl7GenericMessage, PathologyMetadata metadata)
         {
-            if (hl7GenericPathMessage.Order?.First().Observation?.First().ObservationsReportID?.PrincipalResultInterpreter?
+            if (hl7GenericMessage.Order?.First().Observation?.First().ObservationsReportID?.PrincipalResultInterpreter?
                     .name?.assigningauthority?.namespaceID != TransformerConstants.Aushic
-                && string.IsNullOrEmpty(metadata.ReportingPathologist.Hpii))
+                && String.IsNullOrEmpty(metadata.ReportingPathologist.Hpii))
             {
                 throw new MessageValidationException("ReportingPathologist.Hpii must be set in the metadata, if not provided in OBR-32 of the HL7 V2 message.");
             }
 
-            if (hl7GenericPathMessage.Order == null || hl7GenericPathMessage.Order.Length == 0)
+            if (hl7GenericMessage.Order == null || hl7GenericMessage.Order.Length == 0)
             {
-                throw new MessageValidationException(nameof(hl7GenericPathMessage.Order));
+                throw new MessageValidationException(nameof(hl7GenericMessage.Order));
             }
 
-            foreach (OrderGroup orderGroup in hl7GenericPathMessage.Order)
+            foreach (OrderGroup orderGroup in hl7GenericMessage.Order)
             {
                 if (orderGroup.Observation == null || orderGroup.Observation.Length == 0)
                 {
@@ -164,13 +150,13 @@ namespace DigitalHealth.Hl7ToCdaTransformer.Services
                     }
 
                     if (obrSegment.UniversalServiceID.identifier != TransformerConstants.ReportText)
-                    {                        
+                    {
                         if (obrSegment.ResultsRptStatusChngDateTime == null || !obrSegment.ResultsRptStatusChngDateTime.Any(r => r.TimestampValue.HasValue))
                         {
                             throw new MessageValidationException(ConstantsResource.InvalidResultsDateTime);
                         }
 
-                        if (obrSegment.UniversalServiceID == null || string.IsNullOrEmpty(obrSegment.UniversalServiceID.alternatetext ?? obrSegment.UniversalServiceID.text))
+                        if (obrSegment.UniversalServiceID == null || String.IsNullOrEmpty(obrSegment.UniversalServiceID.alternatetext ?? obrSegment.UniversalServiceID.text))
                         {
                             throw new MessageValidationException(ConstantsResource.NoTestResultNameSupplied);
                         }
@@ -196,79 +182,6 @@ namespace DigitalHealth.Hl7ToCdaTransformer.Services
                 }
 
                 ValidateOrderingProvider(orderGroup);
-            }
-        }
-
-        /// <summary>
-        /// Validate the principal result interpreter.
-        /// </summary>
-        /// <param name="principalResultInterpreter">Principal result interpreter</param>
-        /// <exception cref="MessageValidationException"/>
-        private static void ValidatePrincipalResultInterpreter(NDL principalResultInterpreter)
-        {
-            if (principalResultInterpreter?.name == null)
-            {
-                throw new MessageValidationException("Message missing PrincipalResultInterpreter");
-            }
-
-            if (string.IsNullOrWhiteSpace(principalResultInterpreter.name.familyname))
-            {
-                throw new MessageValidationException(ResponseStrings.HealthProviderNameNotSupplied);
-            }
-
-            if (principalResultInterpreter.name.assigningauthority?.universalID == null)
-            {
-                throw new MessageValidationException("Message missing PrincipalResultInterpreter universalID");
-            }
-        }
-
-        /// <summary>
-        /// Validates the attachment.
-        /// </summary>
-        /// <param name="hl7GenericPathMessage">The HL7 generic path message.</param>
-        /// <param name="reportData">The report attachment data.</param>
-        /// <exception cref="MessageValidationException">Message does not contain an embedded PDF report</exception>
-        private static void ValidateAttachment(HL7GenericPathMessage hl7GenericPathMessage, byte[] reportData)
-        {
-            var hasRpObx = hl7GenericPathMessage.Order.Last().Observation.Last().Result.SingleOrDefault(s => s.ValueType == "RP" &&
-                                                                                                             s.ObservationIdentifier.identifier.ToUpper() == "PDF") != null;
-            var hasEdObx = hl7GenericPathMessage.Order.Last().Observation.Last().Result.SingleOrDefault(s => s.ValueType == "ED" &&
-                                                                                                             s.ObservationIdentifier.identifier.ToUpper() == "PDF") != null;
-            if (hasRpObx && reportData == null)
-            {
-                throw new MessageValidationException("reportData must be provided for messages containing an RP type attachment");
-            }
-            if (hasEdObx && reportData != null)
-            {
-                throw new MessageValidationException("reportData cannot be provided for messages containing an ED type attachment");
-            }
-        }
-
-        /// <summary>
-        /// Validates the ordering provider.
-        /// </summary>
-        /// <param name="orderGroup">The order group.</param>
-        /// <exception cref="MessageValidationException">
-        /// Message must contain a valid Ordering Provider
-        /// or
-        /// Message contains more than one Ordering Provider
-        /// </exception>
-        private static void ValidateOrderingProvider(OrderGroup orderGroup)
-        {
-            var observations = orderGroup.Observation.Where(o => o.ObservationsReportID.UniversalServiceID.identifier != TransformerConstants.ReportText).ToArray();
-
-            if (observations.Any(i => string.IsNullOrEmpty(i.ObservationsReportID.OrderingProvider?.IDnumberST) || i.ObservationsReportID.OrderingProvider.familylastname == null))
-            {
-                throw new MessageValidationException("Message must contain a valid Ordering Provider");
-            }
-            
-            ObservationGroup[] distinctOrderingProviders = observations.GroupBy(
-                i => $"{i.ObservationsReportID.OrderingProvider.IDnumberST} {i.ObservationsReportID.OrderingProvider.familylastname.familyname} {i.ObservationsReportID.OrderingProvider.givenname} {i.ObservationsReportID.OrderingProvider.prefix}",
-                (key, group) => group.First()).ToArray();
-
-            if (distinctOrderingProviders.Length > 1)
-            {
-                throw new MessageValidationException("Message contains more than one Ordering Provider");
             }
         }
     }

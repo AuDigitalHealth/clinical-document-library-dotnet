@@ -55,13 +55,13 @@ namespace Nehta.VendorLibrary.CDA.SCSModel.Common
     [KnownType(typeof(MedicalHistory))]
     [KnownType(typeof(Recommendations))]
     [KnownType(typeof(Reaction))]
-    internal class Content : IPCEHRPrescriptionRecordContent, IPrescriptionRequestContent, IPCEHRDispenseRecordContent, ISharedHealthSummaryContent, 
+    internal class Content : IPCEHRPrescriptionRecordContent, IPrescriptionRequestContent, IPCEHRDispenseRecordContent, ISharedHealthSummaryContent,
         IEReferralContent, ISpecialistLetterContent, IEventSummaryContent, IAcdCustodianRecordContent, IConsumerEnteredHealthSummaryContent,
         IConsumerEnteredNotesContent, IConsolidatedViewContent, IMedicareOverviewContent, IPrescriptionAndDispenseViewContent, IConsumerEnteredAchievementsContent,
         IEPrescriptionContent, IPhysicalMeasurementsContent, IDispenseRecordContent, INSWHealthCheckAssessmentContent, IPersonalHealthObservationContent,
         IConsumerQuestionnaireContent, IBirthDetailsRecordContent, IChildHealthCheckScheduleViewContent, IObservationViewDocumentContent, IPathologyResultViewContent,
         IPathologyResultReportContent, IDiagnosticImagingReportContent, IAdvanceCareInformationContent, IPathologyReportWithStructuredContentContent,
-        IServiceReferralContent
+        IServiceReferralContent, IPCMLContent
     {
 
         #region Properties
@@ -149,7 +149,7 @@ namespace Nehta.VendorLibrary.CDA.SCSModel.Common
         [CanBeNull]
         [DataMember]
         public String RequesterNote { get; set; }
- 
+
         #endregion
 
         #region ATS Members
@@ -274,7 +274,7 @@ namespace Nehta.VendorLibrary.CDA.SCSModel.Common
 
         public StrucDocText CustomNarrativeConsumerQuestionnaire { get; set; }
 
-      #endregion
+        #endregion
 
         #region EventSummary
 
@@ -552,11 +552,11 @@ namespace Nehta.VendorLibrary.CDA.SCSModel.Common
         /// </summary>
         [DataMember]
         public StrucDocText CustomNarrativeAdvanceCareInformationSection { get; set; }
-        
-        #endregion 
+
+        #endregion
 
         #region Diagnostic Imaging Report
-         
+
         /// <summary>
         /// Imaging Examination Results
         /// </summary>
@@ -629,7 +629,7 @@ namespace Nehta.VendorLibrary.CDA.SCSModel.Common
         #endregion
 
         #region Structured Content Free Document
-        
+
         public StrucDocText CustomNarrativeBirthDetailsRecord { get; set; }
 
         #endregion
@@ -673,6 +673,17 @@ namespace Nehta.VendorLibrary.CDA.SCSModel.Common
 
         #endregion
 
+        #region PCML
+
+        [DataMember]
+        public EncapsulatedData EncapsulatedData { get; set; }
+
+        [DataMember]
+        public List<NarrativeOnlyDocument> CustomNarrativePcmlRecord { get; set; }
+
+        #endregion
+
+
         #endregion
 
         #region Constructors
@@ -680,8 +691,31 @@ namespace Nehta.VendorLibrary.CDA.SCSModel.Common
         {
         }
         #endregion
-        
+
         #region Validation
+
+
+
+        public void Validate(string path, List<ValidationMessage> messages)
+        {
+            var vb = new ValidationBuilder(path, messages);
+
+            if (
+                StructuredBodyFiles != null &&
+                StructuredBodyFiles.Any() &&
+                (!Title.IsNullOrEmptyWhitespace() || !Description.IsNullOrEmptyWhitespace())
+            )
+            {
+                vb.AddValidationMessage(vb.Path + "NonXmlBody", null, "Both structured XML body and a structured XML body attachment have been specified; only one instance of these is allowed.");
+            }
+
+            if (StructuredBodyFiles == null || StructuredBodyFiles.Count == 0)
+            {
+                EncapsulatedData.Validate(path,messages);
+            }
+        }
+
+
 
         void IAdvanceCareInformationContent.Validate(string path, List<ValidationMessage> messages)
         {
@@ -721,39 +755,39 @@ namespace Nehta.VendorLibrary.CDA.SCSModel.Common
 
         void IPathologyReportWithStructuredContentContent.Validate(string path, List<ValidationMessage> messages)
         {
-          var vb = new ValidationBuilder(path, messages);
+            var vb = new ValidationBuilder(path, messages);
 
-          var castedContent = ((IPathologyReportWithStructuredContentContent)this);
+            var castedContent = ((IPathologyReportWithStructuredContentContent)this);
 
-          if (vb.ArgumentRequiredCheck("PathologyTestResult", castedContent.PathologyTestResult))
-          {
-            if (!castedContent.PathologyTestResult.Any())
+            if (vb.ArgumentRequiredCheck("PathologyTestResult", castedContent.PathologyTestResult))
             {
-              vb.AddValidationMessage("PathologyTestResult", null, "Please provide a PathologyTestResult element");
-            }
-            else
-            {
-                foreach (var pathologyTestResult in castedContent.PathologyTestResult)
+                if (!castedContent.PathologyTestResult.Any())
                 {
-                    if (!pathologyTestResult.DiagnosticService.HasValue)
+                    vb.AddValidationMessage("PathologyTestResult", null, "Please provide a PathologyTestResult element");
+                }
+                else
+                {
+                    foreach (var pathologyTestResult in castedContent.PathologyTestResult)
                     {
-                        vb.AddValidationMessage("PathologyTestResult.DiagnosticService", null, "Please provide a DiagnosticService element");
+                        if (!pathologyTestResult.DiagnosticService.HasValue)
+                        {
+                            vb.AddValidationMessage("PathologyTestResult.DiagnosticService", null, "Please provide a DiagnosticService element");
+                        }
                     }
+                }
+
+                for (var y = 0; y < castedContent.PathologyTestResult.Count; y++)
+                {
+                    castedContent.PathologyTestResult[y].Validate(vb.Path + string.Format("PathologyTestResult {0}", y), vb.Messages);
                 }
             }
 
-            for (var y = 0; y < castedContent.PathologyTestResult.Count; y++)
+            if (vb.ArgumentRequiredCheck("RelatedDocument", castedContent.RelatedDocument))
             {
-               castedContent.PathologyTestResult[y].Validate(vb.Path + string.Format("PathologyTestResult {0}",y), vb.Messages);
+                castedContent.RelatedDocument.Validate(vb.Path + "RelatedDocument", vb.Messages);
+
+                vb.ArgumentRequiredCheck("ReportIdentifier", castedContent.RelatedDocument);
             }
-          }
-
-          if (vb.ArgumentRequiredCheck("RelatedDocument", castedContent.RelatedDocument))
-          {
-              castedContent.RelatedDocument.Validate(vb.Path + "RelatedDocument", vb.Messages);
-
-              vb.ArgumentRequiredCheck("ReportIdentifier", castedContent.RelatedDocument);
-          }
         }
 
 
@@ -793,7 +827,7 @@ namespace Nehta.VendorLibrary.CDA.SCSModel.Common
             if (
                 StructuredBodyFiles != null && StructuredBodyFiles.Any() &&
                 (
-                    castedContent.EventDetails != null  
+                    castedContent.EventDetails != null
                 )
                 )
             {
@@ -803,48 +837,48 @@ namespace Nehta.VendorLibrary.CDA.SCSModel.Common
             if (
                     StructuredBodyFiles == null || StructuredBodyFiles.Count == 0
                 )
+            {
+                if (castedContent.EventDetails != null)
                 {
-                    if (castedContent.EventDetails != null)
-                    {
-                        castedContent.EventDetails.Validate(vb.Path + "EventDetails", vb.Messages);
-                    }
+                    castedContent.EventDetails.Validate(vb.Path + "EventDetails", vb.Messages);
+                }
 
-                    if (castedContent.AdverseReactions != null)
-                    {
-                      castedContent.AdverseReactions.Validate(vb.Path + "AdverseReactions", vb.Messages);
-                    }
+                if (castedContent.AdverseReactions != null)
+                {
+                    castedContent.AdverseReactions.Validate(vb.Path + "AdverseReactions", vb.Messages);
+                }
 
-                    if (castedContent.Medications != null && castedContent.Medications != null)
+                if (castedContent.Medications != null && castedContent.Medications != null)
+                {
+                    for (var x = 0; x < castedContent.Medications.Count; x++)
                     {
-                        for (var x = 0; x < castedContent.Medications.Count; x++)
-                        {
-                            castedContent.Medications[x].Validate(vb.Path + string.Format("Medications.MedicationsList[{0}]", x), vb.Messages);
-                        }
-                    }
-
-                    if (castedContent.DiagnosesIntervention != null)
-                    {
-                          castedContent.DiagnosesIntervention.Validate(vb.Path + "DiagnosesIntervention", vb.Messages);
-
-                          if (castedContent.DiagnosesIntervention.UncategorisedMedicalHistoryItem == null && castedContent.DiagnosesIntervention.ProblemDiagnosis == null && castedContent.DiagnosesIntervention.Procedures == null)
-                          {
-                            vb.AddValidationMessage(vb.Path + "DiagnosesIntervention", null, "Please provide a MedicalHistoryItem or a ProblemDiagnosis or a Procedure");
-                          }
-                    }
-
-                    if (castedContent.Immunisations != null)
-                    {
-                      for (var x = 0; x < castedContent.Immunisations.Count; x++)
-                        {
-                          castedContent.Immunisations[x].Validate(vb.Path + string.Format("Immunisations[{0}]", x), vb.Messages);
-                        }
-                    }
-
-                    if (castedContent.DiagnosticInvestigations != null)
-                    {
-                        castedContent.DiagnosticInvestigations.Validate(vb.Path + "DiagnosticInvestigation", vb.Messages);
+                        castedContent.Medications[x].Validate(vb.Path + string.Format("Medications.MedicationsList[{0}]", x), vb.Messages);
                     }
                 }
+
+                if (castedContent.DiagnosesIntervention != null)
+                {
+                    castedContent.DiagnosesIntervention.Validate(vb.Path + "DiagnosesIntervention", vb.Messages);
+
+                    if (castedContent.DiagnosesIntervention.UncategorisedMedicalHistoryItem == null && castedContent.DiagnosesIntervention.ProblemDiagnosis == null && castedContent.DiagnosesIntervention.Procedures == null)
+                    {
+                        vb.AddValidationMessage(vb.Path + "DiagnosesIntervention", null, "Please provide a MedicalHistoryItem or a ProblemDiagnosis or a Procedure");
+                    }
+                }
+
+                if (castedContent.Immunisations != null)
+                {
+                    for (var x = 0; x < castedContent.Immunisations.Count; x++)
+                    {
+                        castedContent.Immunisations[x].Validate(vb.Path + string.Format("Immunisations[{0}]", x), vb.Messages);
+                    }
+                }
+
+                if (castedContent.DiagnosticInvestigations != null)
+                {
+                    castedContent.DiagnosticInvestigations.Validate(vb.Path + "DiagnosticInvestigation", vb.Messages);
+                }
+            }
         }
 
         void ISharedHealthSummaryContent.Validate(string path, List<ValidationMessage> messages)
@@ -854,13 +888,13 @@ namespace Nehta.VendorLibrary.CDA.SCSModel.Common
             var castedContent = ((ISharedHealthSummaryContent)this);
 
             if (
-                StructuredBodyFiles != null && 
+                StructuredBodyFiles != null &&
                 StructuredBodyFiles.Any() &&
                 (
                     castedContent.MedicalHistory != null ||
                     castedContent.Medications != null ||
                     castedContent.AdverseReactions != null ||
-                    castedContent.Immunisations != null 
+                    castedContent.Immunisations != null
                 )
             )
             {
@@ -921,7 +955,7 @@ namespace Nehta.VendorLibrary.CDA.SCSModel.Common
             var castedContent = ((IAcdCustodianRecordContent)this);
 
             if (
-                    StructuredBodyFiles != null && 
+                    StructuredBodyFiles != null &&
                     StructuredBodyFiles.Any() &&
                     castedContent.AcdCustodians != null
                 )
@@ -1023,7 +1057,7 @@ namespace Nehta.VendorLibrary.CDA.SCSModel.Common
                 {
                     castedContent.DiagnosticInvestigations.Validate(vb.Path + "DiagnosticInvestigations", vb.Messages);
                 }
-            } 
+            }
             else
             {
                 if (vb.ArgumentRequiredCheck("Referee", castedContent.Referee))
@@ -1045,7 +1079,7 @@ namespace Nehta.VendorLibrary.CDA.SCSModel.Common
                         castedContent.DiagnosticInvestigations != null ||
                         castedContent.Medications != null ||
                         castedContent.Recommendations != null ||
-                        castedContent.ResponseDetails != null || 
+                        castedContent.ResponseDetails != null ||
                         castedContent.AdverseReactions != null ||
                         castedContent.StructuredBodyFiles != null
                     )
@@ -1275,40 +1309,40 @@ namespace Nehta.VendorLibrary.CDA.SCSModel.Common
                 castedContent.SharedHealthSummaryDocumentProvenance.Validate(vb.Path + "SharedHealthSummaryDocumentProvenance[{0}]", vb.Messages);
                 if (vb.ArgumentRequiredCheck("SharedHealthSummaryDocumentProvenance.Author", castedContent.SharedHealthSummaryDocumentProvenance.Author))
                 {
-                  if (castedContent.SharedHealthSummaryDocumentProvenance.Author.Participant != null)
-                  {
-                      vb.ArgumentRequiredCheck("SharedHealthSummaryDocumentProvenance.Author.Participant.Addresses", castedContent.SharedHealthSummaryDocumentProvenance.Author.Participant.Addresses);
-                      vb.ArgumentRequiredCheck("SharedHealthSummaryDocumentProvenance.Author.Participant.ElectronicCommunicationDetails", castedContent.SharedHealthSummaryDocumentProvenance.Author.Participant.ElectronicCommunicationDetails);
-                      if (castedContent.SharedHealthSummaryDocumentProvenance.Author.Participant.Person != null)
-                          vb.ArgumentRequiredCheck("SharedHealthSummaryDocumentProvenance.Author.Participant.Person.Organisation", castedContent.SharedHealthSummaryDocumentProvenance.Author.Participant.Person.Organisation);
-                   }
+                    if (castedContent.SharedHealthSummaryDocumentProvenance.Author.Participant != null)
+                    {
+                        vb.ArgumentRequiredCheck("SharedHealthSummaryDocumentProvenance.Author.Participant.Addresses", castedContent.SharedHealthSummaryDocumentProvenance.Author.Participant.Addresses);
+                        vb.ArgumentRequiredCheck("SharedHealthSummaryDocumentProvenance.Author.Participant.ElectronicCommunicationDetails", castedContent.SharedHealthSummaryDocumentProvenance.Author.Participant.ElectronicCommunicationDetails);
+                        if (castedContent.SharedHealthSummaryDocumentProvenance.Author.Participant.Person != null)
+                            vb.ArgumentRequiredCheck("SharedHealthSummaryDocumentProvenance.Author.Participant.Person.Organisation", castedContent.SharedHealthSummaryDocumentProvenance.Author.Participant.Person.Organisation);
+                    }
                 }
             }
 
             if (castedContent.AdvanceCareDirectiveCustodianDocumentProvenance != null)
             {
-                  castedContent.AdvanceCareDirectiveCustodianDocumentProvenance.Validate(vb.Path + "AdvanceCareDirectiveCustodianDocumentProvenance", vb.Messages);
+                castedContent.AdvanceCareDirectiveCustodianDocumentProvenance.Validate(vb.Path + "AdvanceCareDirectiveCustodianDocumentProvenance", vb.Messages);
             }
 
             if (castedContent.ConsumerEnteredDocumentProvenance != null)
             {
-              for (var x = 0; x < castedContent.ConsumerEnteredDocumentProvenance.Count; x++)
-              {
-                  castedContent.ConsumerEnteredDocumentProvenance[x].Validate(vb.Path + string.Format("ConsumerEnteredDocumentProvenance[{0}]", x), vb.Messages);
-                  vb.ArgumentRequiredCheck(string.Format("ConsumerEnteredDocumentProvenance[{0}].Author", x), castedContent.ConsumerEnteredDocumentProvenance[x].Author);
-              }
+                for (var x = 0; x < castedContent.ConsumerEnteredDocumentProvenance.Count; x++)
+                {
+                    castedContent.ConsumerEnteredDocumentProvenance[x].Validate(vb.Path + string.Format("ConsumerEnteredDocumentProvenance[{0}]", x), vb.Messages);
+                    vb.ArgumentRequiredCheck(string.Format("ConsumerEnteredDocumentProvenance[{0}].Author", x), castedContent.ConsumerEnteredDocumentProvenance[x].Author);
+                }
             }
 
             if (castedContent.MedicareDocumentProvenance != null)
             {
-              for (var x = 0; x < castedContent.MedicareDocumentProvenance.Count; x++)
-              {
-                  castedContent.MedicareDocumentProvenance[x].Validate(vb.Path + string.Format("MedicareDocumentProvenance[{0}]", x), vb.Messages);
-                  if (castedContent.MedicareDocumentProvenance[x].Author != null)
-                  {
-                    vb.AddValidationMessage(vb.Path + string.Format(".MedicareDocumentProvenance[{0}]", x), null, "Medicare Document Provenance section can not contain an Author");
-                  }
-              }
+                for (var x = 0; x < castedContent.MedicareDocumentProvenance.Count; x++)
+                {
+                    castedContent.MedicareDocumentProvenance[x].Validate(vb.Path + string.Format("MedicareDocumentProvenance[{0}]", x), vb.Messages);
+                    if (castedContent.MedicareDocumentProvenance[x].Author != null)
+                    {
+                        vb.AddValidationMessage(vb.Path + string.Format(".MedicareDocumentProvenance[{0}]", x), null, "Medicare Document Provenance section can not contain an Author");
+                    }
+                }
             }
 
             if (castedContent.AdvanceCareDirectiveCustodianDocumentProvenance != null)
@@ -1316,384 +1350,384 @@ namespace Nehta.VendorLibrary.CDA.SCSModel.Common
                 castedContent.AdvanceCareDirectiveCustodianDocumentProvenance.Validate(vb.Path + "AdvanceCareDirectiveCustodianDocumentProvenance", vb.Messages);
                 if (castedContent.AdvanceCareDirectiveCustodianDocumentProvenance.Author != null)
                 {
-                  vb.AddValidationMessage(vb.Path + ".AdvanceCareDirectiveCustodianDocumentProvenance", null, "Advance Care Directive Custodian Document Provenance section can not contain an Author");
+                    vb.AddValidationMessage(vb.Path + ".AdvanceCareDirectiveCustodianDocumentProvenance", null, "Advance Care Directive Custodian Document Provenance section can not contain an Author");
                 }
             }
 
             if (castedContent.NewDocumentProvenance != null)
             {
-              for (var x = 0; x < castedContent.NewDocumentProvenance.Count; x++)
-              {
-                  castedContent.NewDocumentProvenance[x].Validate(vb.Path + string.Format("NewDocumentProvenance[{0}]", x), vb.Messages);
-                  vb.ArgumentRequiredCheck(string.Format("NewDocumentProvenance[{0}].Author", x), castedContent.NewDocumentProvenance[x].Author);
-              }
+                for (var x = 0; x < castedContent.NewDocumentProvenance.Count; x++)
+                {
+                    castedContent.NewDocumentProvenance[x].Validate(vb.Path + string.Format("NewDocumentProvenance[{0}]", x), vb.Messages);
+                    vb.ArgumentRequiredCheck(string.Format("NewDocumentProvenance[{0}].Author", x), castedContent.NewDocumentProvenance[x].Author);
+                }
             }
 
             if (castedContent.RecentDiagnosticTestResultDocumentProvenance != null)
             {
-              for (var x = 0; x < castedContent.RecentDiagnosticTestResultDocumentProvenance.Count; x++)
-              {
-                  castedContent.RecentDiagnosticTestResultDocumentProvenance[x].Validate(vb.Path + string.Format("RecentDiagnosticTestResultDocumentProvenance[{0}]", x), vb.Messages);
-                  vb.ArgumentRequiredCheck(string.Format("RecentDiagnosticTestResultDocumentProvenance[{0}].Author", x), castedContent.RecentDiagnosticTestResultDocumentProvenance[x].Author);
-              }
+                for (var x = 0; x < castedContent.RecentDiagnosticTestResultDocumentProvenance.Count; x++)
+                {
+                    castedContent.RecentDiagnosticTestResultDocumentProvenance[x].Validate(vb.Path + string.Format("RecentDiagnosticTestResultDocumentProvenance[{0}]", x), vb.Messages);
+                    vb.ArgumentRequiredCheck(string.Format("RecentDiagnosticTestResultDocumentProvenance[{0}].Author", x), castedContent.RecentDiagnosticTestResultDocumentProvenance[x].Author);
+                }
             }
 
             if (castedContent.RecentDocumentProvenance != null)
             {
-              for (var x = 0; x < castedContent.RecentDocumentProvenance.Count; x++)
-              {
-                  castedContent.RecentDocumentProvenance[x].Validate(vb.Path + string.Format("RecentDocumentProvenance[{0}]", x), vb.Messages);
-                  vb.ArgumentRequiredCheck(string.Format("RecentDocumentProvenance[{0}].Author", x), castedContent.RecentDocumentProvenance[x].Author);
-              }
+                for (var x = 0; x < castedContent.RecentDocumentProvenance.Count; x++)
+                {
+                    castedContent.RecentDocumentProvenance[x].Validate(vb.Path + string.Format("RecentDocumentProvenance[{0}]", x), vb.Messages);
+                    vb.ArgumentRequiredCheck(string.Format("RecentDocumentProvenance[{0}].Author", x), castedContent.RecentDocumentProvenance[x].Author);
+                }
             }
         }
 
-       void IPrescriptionAndDispenseViewContent.Validate(string path, List<ValidationMessage> messages)
-       {
-          var vb = new ValidationBuilder(path, messages);
+        void IPrescriptionAndDispenseViewContent.Validate(string path, List<ValidationMessage> messages)
+        {
+            var vb = new ValidationBuilder(path, messages);
 
-          var castedContent = ((IPrescriptionAndDispenseViewContent)this);
+            var castedContent = ((IPrescriptionAndDispenseViewContent)this);
 
-          if ((castedContent.ExclusionStatement == null && castedContent.PrescribingAndDispensingReports == null) || (castedContent.ExclusionStatement != null && castedContent.PrescribingAndDispensingReports != null))
-          {
-            vb.AddValidationMessage(vb.Path + "MedicationEntriesWithSummary", null,
-                                    "Each instance of this composition SHALL have one instance of EXCLUSION STATEMENT or one instance of 'Prescribing and Dispensing Reports' but not instances of both.");
-          }
-
-         if (castedContent.ExclusionStatement != null)
-          {
-            if (vb.ArgumentRequiredCheck("ExclusionStatement", castedContent.ExclusionStatement))
-              castedContent.ExclusionStatement.Validate(vb.Path + "ExclusionStatement", vb.Messages);
-          }
-          else
-          {
-            if (PrescribingAndDispensingReports != null)
+            if ((castedContent.ExclusionStatement == null && castedContent.PrescribingAndDispensingReports == null) || (castedContent.ExclusionStatement != null && castedContent.PrescribingAndDispensingReports != null))
             {
-                PrescribingAndDispensingReports.Validate(vb.Path + "PrescribingAndDispensingReports", vb.Messages);
+                vb.AddValidationMessage(vb.Path + "MedicationEntriesWithSummary", null,
+                                        "Each instance of this composition SHALL have one instance of EXCLUSION STATEMENT or one instance of 'Prescribing and Dispensing Reports' but not instances of both.");
             }
-          }
-      }
 
-       void IPathologyResultViewContent.Validate(string path, List<ValidationMessage> messages)
-       {
+            if (castedContent.ExclusionStatement != null)
+            {
+                if (vb.ArgumentRequiredCheck("ExclusionStatement", castedContent.ExclusionStatement))
+                    castedContent.ExclusionStatement.Validate(vb.Path + "ExclusionStatement", vb.Messages);
+            }
+            else
+            {
+                if (PrescribingAndDispensingReports != null)
+                {
+                    PrescribingAndDispensingReports.Validate(vb.Path + "PrescribingAndDispensingReports", vb.Messages);
+                }
+            }
+        }
+
+        void IPathologyResultViewContent.Validate(string path, List<ValidationMessage> messages)
+        {
             var vb = new ValidationBuilder(path, messages);
 
             var castedContent = ((IPathologyResultViewContent)this);
             castedContent.Validate(path, messages);
-       }
-
-       //public void Validate(string path, List<ValidationMessage> messages)
-       //{
-       //    var vb = new ValidationBuilder(path, messages);
-       //}
-
-      void IMedicareOverviewContent.Validate(string path, List<ValidationMessage> messages)
-      {
-          var vb = new ValidationBuilder(path, messages);
-
-          var castedContent = ((IMedicareOverviewContent)this);
-
-          if (ExclusionStatement == null && MedicareDvaFundedServicesHistory == null && PharmaceuticalBenefitsHistory == null && 
-              AustralianChildhoodImmunisationRegisterHistory == null && AustralianOrganDonorRegisterDecisionInformation == null)
-            vb.AddValidationMessage(vb.Path + "IMedicareOverviewContent", null, "This IMedicareOverviewContent model SHALL have exactly one instance of 'Medciare Overview Exclusion Statement OR SHALL " +
-                                              "have one instance of each of the following sections: MedicareDVAFundedServicesHistory, PharmaceuticalBenefitsHistory, AustralianChildhoodImmunisationRegisterHistory, AustralianOrganDonorRegisterDecisionInformation");
-
-
-       if (ExclusionStatement != null && 
-          (MedicareDvaFundedServicesHistory != null || 
-           PharmaceuticalBenefitsHistory != null ||  
-           AustralianChildhoodImmunisationRegisterHistory != null ||
-           AustralianOrganDonorRegisterDecisionInformation != null)
-          )
-        vb.AddValidationMessage(vb.Path + "IMedicareOverviewContent", null, "This IMedicareOverviewContent model SHALL have exactly one instance of 'Medciare Overview Exclusion Statement OR SHALL " +
-                                              "have one instance of each of the following sections: MedicareDVAFundedServicesHistory, PharmaceuticalBenefitsHistory, AustralianChildhoodImmunisationRegisterHistory, AustralianOrganDonorRegisterDecisionInformation");
-
-
-        if (ExclusionStatement != null)
-        {
-          if (vb.ArgumentRequiredCheck("ExclusionStatement", castedContent.ExclusionStatement))
-             castedContent.ExclusionStatement.Validate(vb.Path + "ExclusionStatement", vb.Messages);
-
-        } 
-          else
-        {
-          if (vb.ArgumentRequiredCheck("MedicareDVAFundedServicesHistory", castedContent.MedicareDvaFundedServicesHistory))
-             castedContent.MedicareDvaFundedServicesHistory.Validate(vb.Path + "MedicareDVAFundedServicesHistory", vb.Messages);
-
-          if (vb.ArgumentRequiredCheck("PharmaceuticalBenefitsHistory", castedContent.PharmaceuticalBenefitsHistory))
-             castedContent.PharmaceuticalBenefitsHistory.Validate(vb.Path + "PharmaceuticalBenefitsHistory", vb.Messages);
-
-          if (vb.ArgumentRequiredCheck("AustralianChildhoodImmunisationRegisterHistory", castedContent.AustralianChildhoodImmunisationRegisterHistory))
-             castedContent.AustralianChildhoodImmunisationRegisterHistory.Validate(vb.Path + "AustralianChildhoodImmunisationRegisterHistory", vb.Messages);
-
-          if (vb.ArgumentRequiredCheck("AustralianOrganDonorRegisterDecisionInformation", castedContent.AustralianOrganDonorRegisterDecisionInformation))
-            castedContent.AustralianOrganDonorRegisterDecisionInformation.Validate(vb.Path + "AustralianOrganDonorRegisterDecisionInformation", vb.Messages);
-
-         }
         }
 
-      void IConsumerEnteredAchievementsContent.Validate(string path, List<ValidationMessage> messages)
-      {
-        var vb = new ValidationBuilder(path, messages);
+        //public void Validate(string path, List<ValidationMessage> messages)
+        //{
+        //    var vb = new ValidationBuilder(path, messages);
+        //}
 
-        var castedContent = ((IConsumerEnteredAchievementsContent)this);
-
-        vb.ArgumentRequiredCheck("SectionTitle", SectionTitle);
-
-        if (vb.ArgumentRequiredCheck("Achievements", castedContent.Achievements))
+        void IMedicareOverviewContent.Validate(string path, List<ValidationMessage> messages)
         {
-          for (var x = 0; x < castedContent.Achievements.Count; x++)
-          {
-              castedContent.Achievements[x].Validate(vb.Path + string.Format("Achievements[{0}]", x), vb.Messages);
-          }
+            var vb = new ValidationBuilder(path, messages);
+
+            var castedContent = ((IMedicareOverviewContent)this);
+
+            if (ExclusionStatement == null && MedicareDvaFundedServicesHistory == null && PharmaceuticalBenefitsHistory == null &&
+                AustralianChildhoodImmunisationRegisterHistory == null && AustralianOrganDonorRegisterDecisionInformation == null)
+                vb.AddValidationMessage(vb.Path + "IMedicareOverviewContent", null, "This IMedicareOverviewContent model SHALL have exactly one instance of 'Medciare Overview Exclusion Statement OR SHALL " +
+                                                  "have one instance of each of the following sections: MedicareDVAFundedServicesHistory, PharmaceuticalBenefitsHistory, AustralianChildhoodImmunisationRegisterHistory, AustralianOrganDonorRegisterDecisionInformation");
+
+
+            if (ExclusionStatement != null &&
+               (MedicareDvaFundedServicesHistory != null ||
+                PharmaceuticalBenefitsHistory != null ||
+                AustralianChildhoodImmunisationRegisterHistory != null ||
+                AustralianOrganDonorRegisterDecisionInformation != null)
+               )
+                vb.AddValidationMessage(vb.Path + "IMedicareOverviewContent", null, "This IMedicareOverviewContent model SHALL have exactly one instance of 'Medciare Overview Exclusion Statement OR SHALL " +
+                                                      "have one instance of each of the following sections: MedicareDVAFundedServicesHistory, PharmaceuticalBenefitsHistory, AustralianChildhoodImmunisationRegisterHistory, AustralianOrganDonorRegisterDecisionInformation");
+
+
+            if (ExclusionStatement != null)
+            {
+                if (vb.ArgumentRequiredCheck("ExclusionStatement", castedContent.ExclusionStatement))
+                    castedContent.ExclusionStatement.Validate(vb.Path + "ExclusionStatement", vb.Messages);
+
+            }
+            else
+            {
+                if (vb.ArgumentRequiredCheck("MedicareDVAFundedServicesHistory", castedContent.MedicareDvaFundedServicesHistory))
+                    castedContent.MedicareDvaFundedServicesHistory.Validate(vb.Path + "MedicareDVAFundedServicesHistory", vb.Messages);
+
+                if (vb.ArgumentRequiredCheck("PharmaceuticalBenefitsHistory", castedContent.PharmaceuticalBenefitsHistory))
+                    castedContent.PharmaceuticalBenefitsHistory.Validate(vb.Path + "PharmaceuticalBenefitsHistory", vb.Messages);
+
+                if (vb.ArgumentRequiredCheck("AustralianChildhoodImmunisationRegisterHistory", castedContent.AustralianChildhoodImmunisationRegisterHistory))
+                    castedContent.AustralianChildhoodImmunisationRegisterHistory.Validate(vb.Path + "AustralianChildhoodImmunisationRegisterHistory", vb.Messages);
+
+                if (vb.ArgumentRequiredCheck("AustralianOrganDonorRegisterDecisionInformation", castedContent.AustralianOrganDonorRegisterDecisionInformation))
+                    castedContent.AustralianOrganDonorRegisterDecisionInformation.Validate(vb.Path + "AustralianOrganDonorRegisterDecisionInformation", vb.Messages);
+
+            }
         }
-      }
 
-      void IEPrescriptionContent.Validate(string path, List<ValidationMessage> messages)
-      {
-        var vb = new ValidationBuilder(path, messages);
+        void IConsumerEnteredAchievementsContent.Validate(string path, List<ValidationMessage> messages)
+        {
+            var vb = new ValidationBuilder(path, messages);
 
-        var castedContent = ((IEPrescriptionContent)this);
+            var castedContent = ((IConsumerEnteredAchievementsContent)this);
 
-        if (
-                StructuredBodyFiles != null &&
-                StructuredBodyFiles.Count > 0 &&
-                (
-                    castedContent.PrescriptionItem != null ||
-                    castedContent.Observation != null
+            vb.ArgumentRequiredCheck("SectionTitle", SectionTitle);
+
+            if (vb.ArgumentRequiredCheck("Achievements", castedContent.Achievements))
+            {
+                for (var x = 0; x < castedContent.Achievements.Count; x++)
+                {
+                    castedContent.Achievements[x].Validate(vb.Path + string.Format("Achievements[{0}]", x), vb.Messages);
+                }
+            }
+        }
+
+        void IEPrescriptionContent.Validate(string path, List<ValidationMessage> messages)
+        {
+            var vb = new ValidationBuilder(path, messages);
+
+            var castedContent = ((IEPrescriptionContent)this);
+
+            if (
+                    StructuredBodyFiles != null &&
+                    StructuredBodyFiles.Count > 0 &&
+                    (
+                        castedContent.PrescriptionItem != null ||
+                        castedContent.Observation != null
+                    )
                 )
-            )
-        {
-          vb.AddValidationMessage(vb.Path + "NonXmlBody", null, "Both structured XML body and a structured XML body attachment have been specified; only one instance of these is allowed.");
-        }
-
-        if (
-              StructuredBodyFiles == null || StructuredBodyFiles.Count == 0
-            )
-        {
-
-          if (vb.ArgumentRequiredCheck("PrescriptionItem", castedContent.PrescriptionItem))
-          {
-            if (castedContent.PrescriptionItem != null)
-              castedContent.PrescriptionItem.Validate(vb.Path + "PrescriptionItem", vb.Messages);
-          }
-
-          if (castedContent.Observation != null)
-          {
-            castedContent.Observation.Validate(vb.Path + "Observation", vb.Messages);
-          }
-        }
-      }
-
-      void IPhysicalMeasurementsContent.Validate(string path, List<ValidationMessage> messages)
-      {
-        var vb = new ValidationBuilder(path, messages);
-
-        var castedContent = ((IPhysicalMeasurementsContent)this);
-
-        if (vb.ArgumentRequiredCheck("PhysicalMeasurement", castedContent.PhysicalMeasurement))
-        {
-            castedContent.PhysicalMeasurement.Validate(vb.Path + string.Format("PhysicalMeasurement"), vb.Messages);
-        }
-      }
-
-      void IDispenseRecordContent.Validate(string path, List<ValidationMessage> messages)
-      {
-        var vb = new ValidationBuilder(path, messages);
-
-        var castedContent = ((IDispenseRecordContent)this);
-
-        if (vb.ArgumentRequiredCheck("DispenseItem", castedContent.DispenseItem))
-        {
-           castedContent.DispenseItem.Validate(path, messages);
-        }
-      }
-
-      void IBirthDetailsRecordContent.Validate(string path, List<ValidationMessage> messages)
-      {
-          var vb = new ValidationBuilder(path, messages);
-
-          if (
-                  StructuredBodyFiles != null &&
-                  StructuredBodyFiles.Any() &&
-                  (!Title.IsNullOrEmptyWhitespace() || !Description.IsNullOrEmptyWhitespace())
-              )
-          {
-              vb.AddValidationMessage(vb.Path + "NonXmlBody", null, "Both structured XML body and a structured XML body attachment have been specified; only one instance of these is allowed.");
-          }
-
-          if (StructuredBodyFiles == null || StructuredBodyFiles.Count == 0)
-          {
-
-              if (BirthDetails != null)
-              {
-                  BirthDetails.Validate(path, messages);
-              }
-          }
-      }
-
-      #region CeHR
-
-      void INSWHealthCheckAssessmentContent.Validate(string path, List<ValidationMessage> messages)
-      {
-        var vb = new ValidationBuilder(path, messages);
-
-        var castedContent = ((INSWHealthCheckAssessmentContent)this);
-
-        if (
-                StructuredBodyFiles != null &&
-                StructuredBodyFiles.Any() &&
-                (!Title.IsNullOrEmptyWhitespace() || !Description.IsNullOrEmptyWhitespace())
-            )
-        {
-          vb.AddValidationMessage(vb.Path + "NonXmlBody", null, "Both structured XML body and a structured XML body attachment have been specified; only one instance of these is allowed.");
-        }
-
-        if (StructuredBodyFiles == null || StructuredBodyFiles.Count == 0)
-        {
-           if (MeasurementInformation != null)
-           {
-               MeasurementInformation.Validate(path, messages);
-           }
-
-           if (HealthCheckAssesment != null)
-           {
-             HealthCheckAssesment.Validate(path, messages);
-           }
-       }
-      }
-
-      void IChildHealthCheckScheduleViewContent.Validate(string path, List<ValidationMessage> messages)
-      {
-        var vb = new ValidationBuilder(path, messages);
-
-        var castedContent = ((IChildHealthCheckScheduleViewContent)this);
-
-        if (
-                StructuredBodyFiles != null &&
-                StructuredBodyFiles.Any() &&
-                (!Title.IsNullOrEmptyWhitespace() || !Description.IsNullOrEmptyWhitespace())
-            )
-        {
-          vb.AddValidationMessage(vb.Path + "NonXmlBody", null, "Both structured XML body and a structured XML body attachment have been specified; only one instance of these is allowed.");
-        }
-
-        if (StructuredBodyFiles == null || StructuredBodyFiles.Count == 0)
-        {
-          if (castedContent.QuestionnaireDocuments != null)
-          {
-            for (var x = 0; x < castedContent.QuestionnaireDocuments.Count; x++)
-              {
-                var questionnaireDocuments = castedContent.QuestionnaireDocuments[x];
-
-                if (vb.ArgumentRequiredCheck(string.Format("QuestionnaireDocuments[{0}]", x), questionnaireDocuments))
-                  questionnaireDocuments.Validate(vb.Path + string.Format("QuestionnaireDocuments[{0}]", x), vb.Messages);
-              }
-          }
-        }
-      }
-
-      void IObservationViewDocumentContent.Validate(string path, List<ValidationMessage> messages)
-      {
-        var vb = new ValidationBuilder(path, messages);
-
-        var castedContent = ((IObservationViewDocumentContent)this);
-
-        if (
-                StructuredBodyFiles != null &&
-                StructuredBodyFiles.Any() &&
-                (!Title.IsNullOrEmptyWhitespace() || !Description.IsNullOrEmptyWhitespace())
-            )
-        {
-          vb.AddValidationMessage(vb.Path + "NonXmlBody", null, "Both structured XML body and a structured XML body attachment have been specified; only one instance of these is allowed.");
-        }
-
-        if (StructuredBodyFiles == null || StructuredBodyFiles.Count == 0)
-        {
-          if (castedContent.ConsumerEnteredMeasurementEntry != null)
-          {
-            for (var x = 0; x < castedContent.ConsumerEnteredMeasurementEntry.Count; x++)
             {
-              var consumerEnteredMeasurementEntry = castedContent.ConsumerEnteredMeasurementEntry[x];
-
-              if (vb.ArgumentRequiredCheck(string.Format("ConsumerEnteredMeasurementEntry[{0}]", x), consumerEnteredMeasurementEntry))
-                consumerEnteredMeasurementEntry.Validate(vb.Path + string.Format("ConsumerEnteredMeasurementEntry[{0}]", x), vb.Messages);
+                vb.AddValidationMessage(vb.Path + "NonXmlBody", null, "Both structured XML body and a structured XML body attachment have been specified; only one instance of these is allowed.");
             }
-          }
 
-          if (castedContent.ProviderEnteredMeasurementInformationEntry != null)
-          {
-            for (var x = 0; x < castedContent.ProviderEnteredMeasurementInformationEntry.Count; x++)
+            if (
+                  StructuredBodyFiles == null || StructuredBodyFiles.Count == 0
+                )
             {
-              var providerEnteredMeasurementInformationEntry = castedContent.ProviderEnteredMeasurementInformationEntry[x];
 
-              if (vb.ArgumentRequiredCheck(string.Format("ProviderEnteredMeasurementInformationEntry[{0}]", x), providerEnteredMeasurementInformationEntry))
-                providerEnteredMeasurementInformationEntry.Validate(vb.Path + string.Format("ProviderEnteredMeasurementInformationEntry[{0}]", x), vb.Messages);
-            }
-          }
+                if (vb.ArgumentRequiredCheck("PrescriptionItem", castedContent.PrescriptionItem))
+                {
+                    if (castedContent.PrescriptionItem != null)
+                        castedContent.PrescriptionItem.Validate(vb.Path + "PrescriptionItem", vb.Messages);
+                }
 
-          //if (castedContent.ConsumerEnteredMeasurementEntry == null && castedContent.ProviderEnteredMeasurementInformationEntry == null)
-          //{
-          //  vb.AddValidationMessage("ConsumerEnteredMeasurementEntry, ProviderEnteredMeasurementInformationEntry", null, "Please provide a Measurement Information Entry");
-          //}
-
-        }
-      }
-
-      void IConsumerQuestionnaireContent.Validate(string path, List<ValidationMessage> messages)
-      {
-        var vb = new ValidationBuilder(path, messages);
-
-        if (
-                StructuredBodyFiles != null &&
-                StructuredBodyFiles.Any() &&
-                (!Title.IsNullOrEmptyWhitespace() || !Description.IsNullOrEmptyWhitespace())
-            )
-        {
-          vb.AddValidationMessage(vb.Path + "NonXmlBody", null, "Both structured XML body and a structured XML body attachment have been specified; only one instance of these is allowed.");
-        }
-
-        if (StructuredBodyFiles == null || StructuredBodyFiles.Count == 0)
-        {
-           if (Questionnaire != null)
-           {
-             Questionnaire.Validate(path, messages);
-           }
-       }
-      }
-
-      void IPersonalHealthObservationContent.Validate(string path, List<ValidationMessage> messages)
-      {
-        var vb = new ValidationBuilder(path, messages);
-
-        var castedContent = ((IPersonalHealthObservationContent)this);
-
-        if (
-                StructuredBodyFiles != null &&
-                StructuredBodyFiles.Any() &&
-                (!Title.IsNullOrEmptyWhitespace() || !Description.IsNullOrEmptyWhitespace())
-            )
-        {
-          vb.AddValidationMessage(vb.Path + "NonXmlBody", null, "Both structured XML body and a structured XML body attachment have been specified; only one instance of these is allowed.");
-        }
-
-        if (StructuredBodyFiles == null || StructuredBodyFiles.Count == 0)
-        {
-
-          vb.ArgumentRequiredCheck("MeasurementInformations", castedContent.MeasurementInformations);
-
-          if (MeasurementInformation != null)
-          {
-              for (var x = 0; x < castedContent.MeasurementInformations.Count; x++)
-              {
-                var measurementInformations = castedContent.MeasurementInformations[x];
-
-                if (vb.ArgumentRequiredCheck(string.Format("MeasurementInformations[{0}]", x), measurementInformations))
-                  measurementInformations.Validate(vb.Path + string.Format("MeasurementInformations[{0}]", x), vb.Messages);
-              }
+                if (castedContent.Observation != null)
+                {
+                    castedContent.Observation.Validate(vb.Path + "Observation", vb.Messages);
+                }
             }
         }
-      }
+
+        void IPhysicalMeasurementsContent.Validate(string path, List<ValidationMessage> messages)
+        {
+            var vb = new ValidationBuilder(path, messages);
+
+            var castedContent = ((IPhysicalMeasurementsContent)this);
+
+            if (vb.ArgumentRequiredCheck("PhysicalMeasurement", castedContent.PhysicalMeasurement))
+            {
+                castedContent.PhysicalMeasurement.Validate(vb.Path + string.Format("PhysicalMeasurement"), vb.Messages);
+            }
+        }
+
+        void IDispenseRecordContent.Validate(string path, List<ValidationMessage> messages)
+        {
+            var vb = new ValidationBuilder(path, messages);
+
+            var castedContent = ((IDispenseRecordContent)this);
+
+            if (vb.ArgumentRequiredCheck("DispenseItem", castedContent.DispenseItem))
+            {
+                castedContent.DispenseItem.Validate(path, messages);
+            }
+        }
+
+        void IBirthDetailsRecordContent.Validate(string path, List<ValidationMessage> messages)
+        {
+            var vb = new ValidationBuilder(path, messages);
+
+            if (
+                    StructuredBodyFiles != null &&
+                    StructuredBodyFiles.Any() &&
+                    (!Title.IsNullOrEmptyWhitespace() || !Description.IsNullOrEmptyWhitespace())
+                )
+            {
+                vb.AddValidationMessage(vb.Path + "NonXmlBody", null, "Both structured XML body and a structured XML body attachment have been specified; only one instance of these is allowed.");
+            }
+
+            if (StructuredBodyFiles == null || StructuredBodyFiles.Count == 0)
+            {
+
+                if (BirthDetails != null)
+                {
+                    BirthDetails.Validate(path, messages);
+                }
+            }
+        }
+
+        #region CeHR
+
+        void INSWHealthCheckAssessmentContent.Validate(string path, List<ValidationMessage> messages)
+        {
+            var vb = new ValidationBuilder(path, messages);
+
+            var castedContent = ((INSWHealthCheckAssessmentContent)this);
+
+            if (
+                    StructuredBodyFiles != null &&
+                    StructuredBodyFiles.Any() &&
+                    (!Title.IsNullOrEmptyWhitespace() || !Description.IsNullOrEmptyWhitespace())
+                )
+            {
+                vb.AddValidationMessage(vb.Path + "NonXmlBody", null, "Both structured XML body and a structured XML body attachment have been specified; only one instance of these is allowed.");
+            }
+
+            if (StructuredBodyFiles == null || StructuredBodyFiles.Count == 0)
+            {
+                if (MeasurementInformation != null)
+                {
+                    MeasurementInformation.Validate(path, messages);
+                }
+
+                if (HealthCheckAssesment != null)
+                {
+                    HealthCheckAssesment.Validate(path, messages);
+                }
+            }
+        }
+
+        void IChildHealthCheckScheduleViewContent.Validate(string path, List<ValidationMessage> messages)
+        {
+            var vb = new ValidationBuilder(path, messages);
+
+            var castedContent = ((IChildHealthCheckScheduleViewContent)this);
+
+            if (
+                    StructuredBodyFiles != null &&
+                    StructuredBodyFiles.Any() &&
+                    (!Title.IsNullOrEmptyWhitespace() || !Description.IsNullOrEmptyWhitespace())
+                )
+            {
+                vb.AddValidationMessage(vb.Path + "NonXmlBody", null, "Both structured XML body and a structured XML body attachment have been specified; only one instance of these is allowed.");
+            }
+
+            if (StructuredBodyFiles == null || StructuredBodyFiles.Count == 0)
+            {
+                if (castedContent.QuestionnaireDocuments != null)
+                {
+                    for (var x = 0; x < castedContent.QuestionnaireDocuments.Count; x++)
+                    {
+                        var questionnaireDocuments = castedContent.QuestionnaireDocuments[x];
+
+                        if (vb.ArgumentRequiredCheck(string.Format("QuestionnaireDocuments[{0}]", x), questionnaireDocuments))
+                            questionnaireDocuments.Validate(vb.Path + string.Format("QuestionnaireDocuments[{0}]", x), vb.Messages);
+                    }
+                }
+            }
+        }
+
+        void IObservationViewDocumentContent.Validate(string path, List<ValidationMessage> messages)
+        {
+            var vb = new ValidationBuilder(path, messages);
+
+            var castedContent = ((IObservationViewDocumentContent)this);
+
+            if (
+                    StructuredBodyFiles != null &&
+                    StructuredBodyFiles.Any() &&
+                    (!Title.IsNullOrEmptyWhitespace() || !Description.IsNullOrEmptyWhitespace())
+                )
+            {
+                vb.AddValidationMessage(vb.Path + "NonXmlBody", null, "Both structured XML body and a structured XML body attachment have been specified; only one instance of these is allowed.");
+            }
+
+            if (StructuredBodyFiles == null || StructuredBodyFiles.Count == 0)
+            {
+                if (castedContent.ConsumerEnteredMeasurementEntry != null)
+                {
+                    for (var x = 0; x < castedContent.ConsumerEnteredMeasurementEntry.Count; x++)
+                    {
+                        var consumerEnteredMeasurementEntry = castedContent.ConsumerEnteredMeasurementEntry[x];
+
+                        if (vb.ArgumentRequiredCheck(string.Format("ConsumerEnteredMeasurementEntry[{0}]", x), consumerEnteredMeasurementEntry))
+                            consumerEnteredMeasurementEntry.Validate(vb.Path + string.Format("ConsumerEnteredMeasurementEntry[{0}]", x), vb.Messages);
+                    }
+                }
+
+                if (castedContent.ProviderEnteredMeasurementInformationEntry != null)
+                {
+                    for (var x = 0; x < castedContent.ProviderEnteredMeasurementInformationEntry.Count; x++)
+                    {
+                        var providerEnteredMeasurementInformationEntry = castedContent.ProviderEnteredMeasurementInformationEntry[x];
+
+                        if (vb.ArgumentRequiredCheck(string.Format("ProviderEnteredMeasurementInformationEntry[{0}]", x), providerEnteredMeasurementInformationEntry))
+                            providerEnteredMeasurementInformationEntry.Validate(vb.Path + string.Format("ProviderEnteredMeasurementInformationEntry[{0}]", x), vb.Messages);
+                    }
+                }
+
+                //if (castedContent.ConsumerEnteredMeasurementEntry == null && castedContent.ProviderEnteredMeasurementInformationEntry == null)
+                //{
+                //  vb.AddValidationMessage("ConsumerEnteredMeasurementEntry, ProviderEnteredMeasurementInformationEntry", null, "Please provide a Measurement Information Entry");
+                //}
+
+            }
+        }
+
+        void IConsumerQuestionnaireContent.Validate(string path, List<ValidationMessage> messages)
+        {
+            var vb = new ValidationBuilder(path, messages);
+
+            if (
+                    StructuredBodyFiles != null &&
+                    StructuredBodyFiles.Any() &&
+                    (!Title.IsNullOrEmptyWhitespace() || !Description.IsNullOrEmptyWhitespace())
+                )
+            {
+                vb.AddValidationMessage(vb.Path + "NonXmlBody", null, "Both structured XML body and a structured XML body attachment have been specified; only one instance of these is allowed.");
+            }
+
+            if (StructuredBodyFiles == null || StructuredBodyFiles.Count == 0)
+            {
+                if (Questionnaire != null)
+                {
+                    Questionnaire.Validate(path, messages);
+                }
+            }
+        }
+
+        void IPersonalHealthObservationContent.Validate(string path, List<ValidationMessage> messages)
+        {
+            var vb = new ValidationBuilder(path, messages);
+
+            var castedContent = ((IPersonalHealthObservationContent)this);
+
+            if (
+                    StructuredBodyFiles != null &&
+                    StructuredBodyFiles.Any() &&
+                    (!Title.IsNullOrEmptyWhitespace() || !Description.IsNullOrEmptyWhitespace())
+                )
+            {
+                vb.AddValidationMessage(vb.Path + "NonXmlBody", null, "Both structured XML body and a structured XML body attachment have been specified; only one instance of these is allowed.");
+            }
+
+            if (StructuredBodyFiles == null || StructuredBodyFiles.Count == 0)
+            {
+
+                vb.ArgumentRequiredCheck("MeasurementInformations", castedContent.MeasurementInformations);
+
+                if (MeasurementInformation != null)
+                {
+                    for (var x = 0; x < castedContent.MeasurementInformations.Count; x++)
+                    {
+                        var measurementInformations = castedContent.MeasurementInformations[x];
+
+                        if (vb.ArgumentRequiredCheck(string.Format("MeasurementInformations[{0}]", x), measurementInformations))
+                            measurementInformations.Validate(vb.Path + string.Format("MeasurementInformations[{0}]", x), vb.Messages);
+                    }
+                }
+            }
+        }
 
         #endregion
 
@@ -1767,6 +1801,30 @@ namespace Nehta.VendorLibrary.CDA.SCSModel.Common
         }
 
         #endregion
+
+        void IPCMLContent.Validate(string path, List<ValidationMessage> messages)
+        {
+            var vb = new ValidationBuilder(path, messages);
+
+            if (
+                StructuredBodyFiles != null &&
+                StructuredBodyFiles.Any() &&
+                (!Title.IsNullOrEmptyWhitespace() || !Description.IsNullOrEmptyWhitespace())
+            )
+            {
+                vb.AddValidationMessage(vb.Path + "NonXmlBody", null, "Both structured XML body and a structured XML body attachment have been specified; only one instance of these is allowed.");
+            }
+
+            EncapsulatedData?.Validate(path, messages);
+
+            if (EncapsulatedData != null && CustomNarrativePcmlRecord != null)
+            {
+                vb.AddValidationMessage(vb.Path + "XmlBody", null, "Both custom narrative and attached PDF have been specified; only one instance of these is allowed.");
+            }
+
+        }
+
+
 
         #endregion
     }

@@ -25,14 +25,14 @@ namespace DigitalHealth.Hl7ToCdaTransformer.Services
         /// <returns>HL7 pathology message model.</returns>
         /// <exception cref="ArgumentNullException">payload</exception>
         /// <exception cref="ArgumentException">Message is not a HL7 result message (ORU_R01)</exception>
-        public HL7GenericPathMessage ParseHl7Message(string payload)
+        public HL7GenericMessage ParseHl7Message(string payload)
         {
             if (string.IsNullOrWhiteSpace(payload))
             {
                 throw new ArgumentNullException(nameof(payload));
             }
 
-            HL7GenericPathMessage message = (HL7GenericPathMessage)HL7Message.Parse(payload);
+            HL7GenericMessage message = (HL7GenericMessage)HL7Message.Parse(payload);
 
             if (!(message.MessageHeader.MessageType.messagetype == TransformerConstants.Hl7PathologyMessage && 
                   message.MessageHeader.MessageType.triggerevent == TransformerConstants.Hl7PathologyMessageType))
@@ -50,7 +50,7 @@ namespace DigitalHealth.Hl7ToCdaTransformer.Services
         /// <param name="metadata">Additional data required from the source system.</param>
         /// <param name="reportData"></param>
         /// <returns>Transformed pathology report model</returns>
-        public PathologyTransformResult Transform(HL7GenericPathMessage message, PathologyMetadata metadata, byte[] reportData = null)
+        public PathologyTransformResult Transform(HL7GenericMessage message, PathologyMetadata metadata, byte[] reportData = null)
         {
             _pathologyMessageValidator.Validate(message, metadata, reportData);
 

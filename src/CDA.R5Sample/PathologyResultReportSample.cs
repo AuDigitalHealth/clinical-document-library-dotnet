@@ -158,6 +158,7 @@ namespace CDA.R5Samples
 
             // Include Logo
             pathologyResultReport.IncludeLogo = true;
+            pathologyResultReport.LogoPath = OutputFolderPath;
 
             // Set Creation Time
             pathologyResultReport.DocumentCreationTime = new ISO8601DateTime(DateTime.Now);
@@ -351,7 +352,7 @@ namespace CDA.R5Samples
           reportingPathologist.ParticipationEndTime = new ISO8601DateTime(DateTime.Now);
 
           // Document reportingPathologist > Role
-          reportingPathologist.Role = PathologyResultReport.CreateRole(Occupation.MedicalLaboratoryScientist);
+          reportingPathologist.Role = PathologyResultReport.CreateRole(Occupation.Pathologist);
 
           // Document reportingPathologist > Participant > Person or Organisation or Device > Person > Person Name
           var name = BaseCDAModel.CreatePersonName();

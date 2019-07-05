@@ -93,7 +93,7 @@
     <Compile Include="HL7Separators.cs" />
     <Compile Include="Message\HL7Acknowledgement.cs" />
     <Compile Include="Message\HL7GenericPasMessage.cs" />
-    <Compile Include="Message\HL7GenericPathMessage.cs" />
+    <Compile Include="Message\HL7GenericMessage.cs" />
     <Compile Include="Message\MessageTypes.Designer.cs">
       <DependentUpon>MessageTypes.resx</DependentUpon>
       <AutoGen>True</AutoGen>

@@ -54,6 +54,10 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Nehta.VendorLibrary.Common, Version=4.2.0.1, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Nehta.VendorLibrary.Common.4.2.0.1\lib\net40\Nehta.VendorLibrary.Common.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Configuration" />
     <Reference Include="System.Core">
@@ -105,6 +109,7 @@
     <None Include="Attachments\path1234.pdf">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\CDA.GeneratedCode\CDA.GeneratedCode.csproj">
@@ -118,10 +123,6 @@
     <ProjectReference Include="..\CDA.Generator\CDA.Generator.csproj">
       <Project>{4B542E29-7FA2-4DE2-A828-A197DA3F6B40}</Project>
       <Name>CDA.Generator</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Common\Common.csproj">
-      <Project>{0bdb0698-cb73-4e7b-a182-805831d3a5ac}</Project>
-      <Name>Common</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

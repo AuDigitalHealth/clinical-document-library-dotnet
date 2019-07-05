@@ -103,19 +103,21 @@ namespace Nehta.VendorLibrary.CDA.Generator
         {
            var typeID = new POCD_MT000040InfrastructureRoottypeId{ extension = "POCD_HD000040", root = "2.16.840.1.113883.1.3"};
 
+            var templateIds = new List<II>
+            {
+                CreateIdentifierElement(
+                    cdaDocumentType.GetAttributeValue<NameAttribute, string>(x => x.TemplateIdentifier),
+                    cdaDocumentType.GetAttributeValue<NameAttribute, string>(x => x.Version),
+                    null),
+                CreateIdentifierElement("1.2.36.1.2001.1001.100.149", "1.0", null),
+                CreateIdentifierElement("1.2.36.1.2001.1001.100.1002.237", "1.0", null)
+            };
+            
             var clinicalDocument = new POCD_MT000040ClinicalDocument
                                        {
                                            typeId = typeID,
                                            title = title.IsNullOrEmptyWhitespace() ? CreateStructuredText(cdaDocumentType.GetAttributeValue<NameAttribute, string>(x => x.Title)) : CreateStructuredText(title),
-                                           templateId = new []
-                                                        {
-                                                             CreateIdentifierElement(
-                                                               cdaDocumentType.GetAttributeValue<NameAttribute, string>(x => x.TemplateIdentifier),
-                                                               cdaDocumentType.GetAttributeValue<NameAttribute, string>(x => x.Version),
-                                                               null),
-                                                             CreateIdentifierElement("1.2.36.1.2001.1001.100.149", "1.0", null)
-                                                        },
-                                      
+                                           templateId = templateIds.ToArray(),
                                            id = documentId != null ? CreateIdentifierElement(documentId) : CreateIdentifierElement(CreateOid(), null),
                                            setId = setId != null ? CreateIdentifierElement(setId) : null,
                                            code = CreateCodedWithExtensionElement(
@@ -1058,7 +1060,7 @@ namespace Nehta.VendorLibrary.CDA.Generator
 
           if (eventDetails != null)
           {
-              component = new POCD_MT000040Component3 { section = CreateSectionCodeTitle("101.16672", CodingSystem.NCTIS, "Event Overview", "Event Details", null) };
+              component = new POCD_MT000040Component3 { section = CreateSectionCodeTitle("101.16672", CodingSystem.NCTIS, "Event Overview", "Event Details", "") };
 
             // Begin Reason for Encounter Description
             if (eventDetails.ClinicalSynopsisDescription != null)
@@ -1089,7 +1091,7 @@ namespace Nehta.VendorLibrary.CDA.Generator
 
           if (diagnosesIntervention != null)
           {
-              component = new POCD_MT000040Component3 { section = CreateSectionCodeTitle("101.16117", CodingSystem.NCTIS, "Medical History", "Diagnoses/Interventions", null) };
+              component = new POCD_MT000040Component3 { section = CreateSectionCodeTitle("101.16117", CodingSystem.NCTIS, "Medical History", "Diagnoses/Interventions", "") };
 
             //PROBLEM / DIAGNOSIS
             if (diagnosesIntervention.ProblemDiagnosis != null && diagnosesIntervention.ProblemDiagnosis.Any())
@@ -1208,7 +1210,7 @@ namespace Nehta.VendorLibrary.CDA.Generator
 
           if (medications != null)
           {
-              component = new POCD_MT000040Component3 { section = CreateSectionCodeTitle("101.16146", CodingSystem.NCTIS, "Medication Orders", "Medications",null) };
+              component = new POCD_MT000040Component3 { section = CreateSectionCodeTitle("101.16146", CodingSystem.NCTIS, "Medication Orders", "Medications", "") };
 
             var relationshipList = new List<POCD_MT000040EntryRelationship>();
 
@@ -1330,7 +1332,7 @@ namespace Nehta.VendorLibrary.CDA.Generator
 
           if (medications != null && medications.Any())
           {
-              component = new POCD_MT000040Component3 { section = CreateSectionCodeTitle("101.16146", CodingSystem.NCTIS, "Medication Orders", "Medications", null) };
+              component = new POCD_MT000040Component3 { section = CreateSectionCodeTitle("101.16146", CodingSystem.NCTIS, "Medication Orders", "Medications", "") };
 
             if (medications.Any())
             {
@@ -1538,7 +1540,7 @@ namespace Nehta.VendorLibrary.CDA.Generator
                                        CodingSystem.NCTIS,
                                        MedicareOverviewSections.MedicareDVAFundedServicesExclusionStatement.GetAttributeValue<NameAttribute, string>(x => x.Name),
                                        medicareDvaFundedServicesHistory.ExclusionStatement.SectionTitle,
-                                       null
+                                       ""
                             );
 
               section.text = medicareDvaFundedServicesHistory.ExclusionStatement.CustomNarrative ?? narrativeGenerator.CreateNarrative(medicareDvaFundedServicesHistory.ExclusionStatement);
@@ -1611,7 +1613,7 @@ namespace Nehta.VendorLibrary.CDA.Generator
                                  CodingSystem.NCTIS,
                                  MedicareOverviewSections.PharmaceuticalBenefitItemsExclusionStatement.GetAttributeValue<NameAttribute, string>(x => x.Name),
                                  pharmaceuticalBenefitsHistory.ExclusionStatement.SectionTitle,
-                                 null
+                                 ""
                             );
 
               section.text = pharmaceuticalBenefitsHistory.ExclusionStatement.CustomNarrative ?? narrativeGenerator.CreateNarrative(pharmaceuticalBenefitsHistory.ExclusionStatement);
@@ -1732,7 +1734,7 @@ namespace Nehta.VendorLibrary.CDA.Generator
                                               (CodingSystem)Enum.Parse(typeof(CodingSystem), documentSections.GetAttributeValue<NameAttribute, string>(x => x.CodeSystem)),
                                               documentSections.GetAttributeValue<NameAttribute, string>(x => x.Name),
                                               documentSections.GetAttributeValue<NameAttribute, string>(x => x.Title),
-                                              null)
+                                              "")
           };
 
           if (documents != null && documents.Any())
@@ -1767,7 +1769,7 @@ namespace Nehta.VendorLibrary.CDA.Generator
                                                  (CodingSystem)Enum.Parse(typeof(CodingSystem), documentSections.GetAttributeValue<NameAttribute, string>(x => x.CodeSystem)),
                                                  documentSections.GetAttributeValue<NameAttribute, string>(x => x.Name),
                                                  documentSections.GetAttributeValue<NameAttribute, string>(x => x.Title),
-                                                 null)
+                                                 "")
           };
           if (documents != null)
           {
@@ -2196,6 +2198,7 @@ namespace Nehta.VendorLibrary.CDA.Generator
         /// <returns>POCD_MT000040Component3</returns>
         internal static POCD_MT000040Component3 CreateComponent(IDiagnosticInvestigations diagnosticInvestigations, CDADocumentType? cdaDocumentType, INarrativeGenerator narrativeGenerator)
         {
+            //ES
           POCD_MT000040Component3 component = null;
 
           var componentList = new List<POCD_MT000040Component5>();
@@ -2210,7 +2213,7 @@ namespace Nehta.VendorLibrary.CDA.Generator
             // Diagnostic Investigations
             component = new POCD_MT000040Component3
             {
-              section = CreateSectionCodeTitle("101.20117", CodingSystem.NCTIS, "Diagnostic Investigations", "This section may contain the following subsections Pathology Test Result, Imaging Examination Result and Requested Service(s)."),
+              section = CreateSectionCodeTitle("101.20117", CodingSystem.NCTIS, "Diagnostic Investigations", "This section contains the following subsections: Pathology Test Result, Imaging Examination Result and Requested Service(s)."),
             };
 
             if (diagnosticInvestigations.CustomNarrativeDiagnosticInvestigations != null) component.section.text = diagnosticInvestigations.CustomNarrativeDiagnosticInvestigations;
@@ -2247,6 +2250,7 @@ namespace Nehta.VendorLibrary.CDA.Generator
         /// <returns>POCD_MT000040Component3</returns>
         internal static POCD_MT000040Component3 CreateComponent(IDiagnosticInvestigationsV1 diagnosticInvestigations, INarrativeGenerator narrativeGenerator)
         {
+            //SREF
             POCD_MT000040Component3 component = null;
 
             var componentList = new List<POCD_MT000040Component5>();
@@ -2256,7 +2260,7 @@ namespace Nehta.VendorLibrary.CDA.Generator
                 // Diagnostic Investigations
                 component = new POCD_MT000040Component3
                 {
-                    section = CreateSectionCodeTitle("101.20117", CodingSystem.NCTIS, "Diagnostic Investigations", null)
+                    section = CreateSectionCodeTitle("101.20117", CodingSystem.NCTIS, "Diagnostic Investigations", "This section contains the following subsections: Requested Service, Pathology Test Result and Imaging Examination Result.")
                 };
 
                 // Pathology Test Result
@@ -2279,8 +2283,7 @@ namespace Nehta.VendorLibrary.CDA.Generator
 
                 // Requested Service
                 component.section.text = narrativeGenerator.CreateNarrative(
-                    diagnosticInvestigations.RequestedService, 
-                    "This section may contain the following subsections Pathology Test Result, Imaging Examination Result and Requested Service(s)."
+                    diagnosticInvestigations.RequestedService, ""
                 );
                  
                 component.section.component = componentList.ToArray();
@@ -2889,7 +2892,7 @@ namespace Nehta.VendorLibrary.CDA.Generator
                                        CodingSystem.NCTIS,
                                        MedicareOverviewSections.AustralianChildhoodImmunisationRegisterHistoryExclusionStatement.GetAttributeValue<NameAttribute, string>(x => x.Name),
                                        australianChildhoodImmunisationRegisterHistory.ExclusionStatement.SectionTitle,
-                                       null
+                                       ""
                             );
 
               section.text = australianChildhoodImmunisationRegisterHistory.ExclusionStatement.CustomNarrative ?? narrativeGenerator.CreateNarrative(australianChildhoodImmunisationRegisterHistory.ExclusionStatement);
@@ -2971,7 +2974,7 @@ namespace Nehta.VendorLibrary.CDA.Generator
                                        CodingSystem.NCTIS,
                                        MedicareOverviewSections.AustralianOrganDonorRegisterDetailsExclusionStatement.GetAttributeValue<NameAttribute, string>(x => x.Name),
                                        australianOrganDonorRegisterDecisionInformation.ExclusionStatement.SectionTitle,
-                                       null
+                                       ""
                             );
 
               section.entry = entryList.ToArray();
@@ -4755,45 +4758,55 @@ namespace Nehta.VendorLibrary.CDA.Generator
         internal static POCD_MT000040Component5 CreateOtherTestResult(OtherTestResult otherTestResult, INarrativeGenerator narrativeGenerator)
         {
             var relationshipList = new List<POCD_MT000040EntryRelationship>();
-          var entryList = new List<POCD_MT000040Entry>();
+            var entryList = new List<POCD_MT000040Entry>();
 
-          //Create the otherTestResultComponent and section
-          var otherTestResultComponent = new POCD_MT000040Component5
-          {
-              section = CreateSectionCodeTitle("102.16029", CodingSystem.NCTIS, "Diagnostic Investigation")
-          };
+            //Create the otherTestResultComponent and section
+            var otherTestResultComponent = new POCD_MT000040Component5
+            {
+                section = CreateSectionCodeTitle("102.16029", CodingSystem.NCTIS, "Diagnostic Investigation")
+            };
 
-          if (otherTestResult.ReportStatus != null)
-            relationshipList.Add(CreateRelationshipForTestResultStatus(otherTestResult.ReportStatus, null));
+            if (otherTestResult.ReportStatus != null)
+                relationshipList.Add(CreateRelationshipForTestResultStatus(otherTestResult.ReportStatus, null));
+
+            if (otherTestResult.ReportContent != null && otherTestResult.ReportContent.ExternalData != null)
+            {
+                var imageEntryRelationship = new POCD_MT000040EntryRelationship
+                {
+                    typeCode = x_ActRelationshipEntryRelationship.COMP,
+                    observationMedia = CreateObservationMedia(otherTestResult.ReportContent.ExternalData)
+                };
+                relationshipList.Add(imageEntryRelationship);
+            }
 
             //Create the observation entry with all the above relationships nested inside the observation
             var entry = CreateEntryObservation(x_ActRelationshipEntry.COMP,
-                                            CreateConceptDescriptor(otherTestResult.ReportName),
-                                            otherTestResult.ReportDate,
-                                            relationshipList
-                                            );
+                CreateConceptDescriptor(otherTestResult.ReportName),
+                otherTestResult.ReportDate,
+                relationshipList
+            );
 
-          // Report Content
-          if (otherTestResult.ReportContent != null)
-          {
-            // Encapsulated Text
-            if (!otherTestResult.ReportContent.Text.IsNullOrEmptyWhitespace())
+            // Report Content
+            if (otherTestResult.ReportContent != null)
             {
-              entry.observation.value = new ANY[] { CreateEncapsulatedData(otherTestResult.ReportContent.Text) };
+                // Encapsulated Text
+                if (!otherTestResult.ReportContent.Text.IsNullOrEmptyWhitespace())
+                {
+                    entry.observation.value = new ANY[] {CreateEncapsulatedData(otherTestResult.ReportContent.Text)};
+                }
+                // External Data
+                else if (otherTestResult.ReportContent.ExternalData != null)
+                {
+                    entry.observation.value = new ANY[] { CreateEncapsulatedData(otherTestResult.ReportContent.ExternalData) };
+                }
             }
-            // External Data
-            else if (otherTestResult.ReportContent.ExternalData != null)
-            {
-              entry.observation.value = new ANY[] { CreateEncapsulatedData(otherTestResult.ReportContent.ExternalData) };
-            }
-          }
 
-          entryList.Add(entry);
+            entryList.Add(entry);
 
-          otherTestResultComponent.section.text = otherTestResult.CustomNarrative ?? narrativeGenerator.CreateNarrative(otherTestResult);
-          otherTestResultComponent.section.entry = entryList.ToArray();
+            otherTestResultComponent.section.text = otherTestResult.CustomNarrative ?? narrativeGenerator.CreateNarrative(otherTestResult);
+            otherTestResultComponent.section.entry = entryList.ToArray();
 
-          return otherTestResultComponent;
+            return otherTestResultComponent;
         }
 
         /// <summary>
@@ -7926,6 +7939,14 @@ namespace Nehta.VendorLibrary.CDA.Generator
                     {
                         returnValue.nullFlavor = NullFlavor.UNK;
                     }
+                    else if (address.AddressAbsentIndicator.Value == AddressAbsentIndicator.Masked)
+                    {
+                        returnValue.nullFlavor = NullFlavor.MSK;
+                    }
+                    else
+                    {
+                        returnValue.nullFlavor = NullFlavor.UNK;
+                    }
 
                     returnValue.nullFlavorSpecified = true;
 
@@ -8326,39 +8347,39 @@ namespace Nehta.VendorLibrary.CDA.Generator
         }
 
         private static POCD_MT000040Entry CreateEntryObservation(x_ActRelationshipEntry actRelationshipEntry,
-                                                                  CD code,
-                                                                  ISO8601DateTime effectiveTimeLow,
-                                                                  List<POCD_MT000040EntryRelationship> entryRelationshipList)
+            CD code,
+            ISO8601DateTime effectiveTimeValue,
+            List<POCD_MT000040EntryRelationship> entryRelationshipList)
         {
 
-          var entry = new POCD_MT000040Entry
-          {
-            typeCode = actRelationshipEntry,
-            observation =
-                new POCD_MT000040Observation
-                {
-                  classCode = ActClassObservation.OBS,
-                  moodCode = x_ActMoodDocumentObservation.EVN,
-                  id = CreateIdentifierArray(CreateGuid(), null)
-                }
-          };
+            var entry = new POCD_MT000040Entry
+            {
+                typeCode = actRelationshipEntry,
+                observation =
+                    new POCD_MT000040Observation
+                    {
+                        classCode = ActClassObservation.OBS,
+                        moodCode = x_ActMoodDocumentObservation.EVN,
+                        id = CreateIdentifierArray(CreateGuid(), null)
+                    }
+            };
 
-          if (code != null)
-          {
-            entry.observation.code = code;
-          }
+            if (code != null)
+            {
+                entry.observation.code = code;
+            }
 
-          if (effectiveTimeLow != null)
-          {
-              entry.observation.effectiveTime = CreateIntervalTimestamp(effectiveTimeLow.ToString(), null, null, null, null, null);
-          }
+            if (effectiveTimeValue != null)
+            {
+                entry.observation.effectiveTime = CreateIntervalTimestamp(null, null, null, null, effectiveTimeValue.ToString(), null);
+            }
 
-          if (entryRelationshipList.Any())
-          {
-            entry.observation.entryRelationship = entryRelationshipList.ToArray();
-          }
+            if (entryRelationshipList.Any())
+            {
+                entry.observation.entryRelationship = entryRelationshipList.ToArray();
+            }
 
-          return entry;
+            return entry;
         }
 
 
@@ -12421,7 +12442,7 @@ namespace Nehta.VendorLibrary.CDA.Generator
 
         internal static POCD_MT000040Section CreateSectionCodeTitle(string code, CodingSystem? codeSystem, string value)
         {
-          return CreateSectionCodeTitle(code, codeSystem, value, value, null);
+          return CreateSectionCodeTitle(code, codeSystem, value, value, "");
         }
 
         internal static POCD_MT000040Section CreateSectionCodeTitle(string code, CodingSystem? codeSystem, string value, string narrative)
@@ -12431,21 +12452,37 @@ namespace Nehta.VendorLibrary.CDA.Generator
 
         internal static POCD_MT000040Section CreateSectionCodeTitle(string code, CodingSystem? codeSystem, string displayName, string title, string narrative)
         {
-          var section = new POCD_MT000040Section
-          {
-            code = CreateCodedWithExtensionElement(code, codeSystem, displayName, null, null, null),
-            title = new ST
+            var section = new POCD_MT000040Section
             {
-              Text = new[]
-                    {
-                          title
-                    }
-            },
-            text = narrative != null ? new StrucDocText { paragraph = new[] { new StrucDocParagraph { Text = new[] { narrative } } } } : new StrucDocText(),
-            id = CreateIdentifierElement(CreateGuid(), null)
-          };
+                code = CreateCodedWithExtensionElement(code, codeSystem, displayName, null, null, null),
+                title = new ST { Text = new[] { title } },
+                text = !string.IsNullOrEmpty(narrative)
+                    ? new StrucDocText {paragraph = new[] {new StrucDocParagraph {Text = new[] {narrative}}}}
+                    : null,
+                //text = !string.IsNullOrEmpty(narrative) ? new StrucDocText { paragraph = new[] { new StrucDocParagraph { Text = new[] { narrative } } } } : new StrucDocText(),
+                id = CreateIdentifierElement(CreateGuid(), null)
+            };
 
           return (section);
+        }
+
+        internal static POCD_MT000040Section CreateSectionCodeTitle(string code, CodingSystem? codeSystem, string displayName, string title, StrucDocText narrative)
+        {
+            var section = new POCD_MT000040Section
+            {
+                code = CreateCodedWithExtensionElement(code, codeSystem, displayName, null, null, null),
+                title = new ST
+                {
+                    Text = new[]
+                    {
+                        title
+                    }
+                },
+                text = narrative,
+                id = CreateIdentifierElement(CreateGuid(), null)
+            };
+
+            return (section);
         }
 
         # endregion
@@ -15896,6 +15933,54 @@ namespace Nehta.VendorLibrary.CDA.Generator
              }
           }
           return component;
+        }
+
+
+
+        internal static POCD_MT000040Component3 CreateComponent(EncapsulatedData pcmlData, INarrativeGenerator narrativeGenerator)
+        {
+            POCD_MT000040Component3 component = null;
+
+            if (pcmlData != null)
+            {
+                component = new POCD_MT000040Component3
+                {
+                    section = new POCD_MT000040Section
+                    {
+                        id = CreateIdentifierElement(CreateGuid(), null),
+                        code = CreateCodedWithExtensionElement(CreateCodableText(PcmlSections.PharmacistSharedMedicinesList)),
+                        title = CreateStructuredText(PcmlSections.PharmacistSharedMedicinesList.GetAttributeValue<NameAttribute, string>(x => x.Title), null),
+                        templateId = CreateIdentifierArray("1.2.36.1.2001.1001.101.101.16886")
+                    }
+                };
+
+                if (pcmlData.ExternalData != null && pcmlData.ExternalData !=null)
+                {
+                    var entryList = new List<POCD_MT000040Entry>();
+
+                    //Added this relationship so as we can reference and display the test result representation 
+                    //data within the narrative
+                    //Create the observation entry with all the above relationships nested inside the observation
+                    var entry = new POCD_MT000040Entry
+                    {
+                        templateId = CreateIdentifierArray("1.2.36.1.2001.1001.101.102.16883"),
+                        observationMedia = CreateObservationMedia(pcmlData.ExternalData)
+                    };
+
+                    entryList.Add(entry);  
+
+                    component.section.entry = entryList.ToArray();
+                    component.section.text = narrativeGenerator.CreateNarrative(pcmlData);
+                }
+                else
+                {
+                    component.section.text = new StrucDocText
+                    {
+                        paragraph = new[] { new StrucDocParagraph { Text = new[] { NO_ENTRIES_MESSAGE } } }
+                    };
+                }
+            }
+            return component;
         }
 
         /// <summary>

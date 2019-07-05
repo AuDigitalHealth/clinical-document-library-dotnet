@@ -56,6 +56,10 @@
     <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Nehta.VendorLibrary.Common, Version=4.2.0.1, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Nehta.VendorLibrary.Common.4.2.0.1\lib\net40\Nehta.VendorLibrary.Common.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.configuration" />
     <Reference Include="System.Core">
@@ -85,6 +89,7 @@
     <None Include="Attachments\attachment.pdf">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Attachments\logo.png">
@@ -107,10 +112,6 @@
     <ProjectReference Include="..\CDA.Sample\CDA.Sample.csproj">
       <Project>{18C3AC1A-8748-4CD9-B01F-5EF678E4B9D7}</Project>
       <Name>CDA.Sample</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Common\Common.csproj">
-      <Project>{0bdb0698-cb73-4e7b-a182-805831d3a5ac}</Project>
-      <Name>Common</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

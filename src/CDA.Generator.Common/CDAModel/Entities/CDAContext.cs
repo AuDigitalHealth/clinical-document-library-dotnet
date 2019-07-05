@@ -43,8 +43,8 @@ namespace Nehta.VendorLibrary.CDA.CDAModel
         ICDAContextConsumerEnteredHealthSummary, ICDAContextConsumerEnteredNotes, ICDAContextConsolidatedView, ICDAContextMedicareOverview, ICDAContextPrescriptionAndDispenseView,
         ICDAContextConsumerEnteredAchievements, ICDAContextPhysicalMeasurements, ICDAContextNSWHealthCheckAssessment, ICDAContextPersonalHealthObservation, ICDAContextConsumerQuestionnaire,
         ICDAContextBirthDetailsRecord, ICDAContextChildHealthCheckScheduleView, ICDAContextObservationViewDocument, ICDAContextPathologyResultView, ICDAContextPathologyResultReport, ICDAContextDiagnosticImagingReport,
-        ICDAContextAdvanceCareInformation, ICDAContextPathologyReportWithStructuredContent, ICDAContextServiceReferral
-    {
+        ICDAContextAdvanceCareInformation, ICDAContextPathologyReportWithStructuredContent, ICDAContextServiceReferral, ICDAContextPCML
+  {
         #region Properties
 
         /// <summary>
@@ -110,7 +110,7 @@ namespace Nehta.VendorLibrary.CDA.CDAModel
         [DataMember]
         public List<IParticipationInformationRecipient> InformationRecipients { get; set; }
         #endregion
-
+        
         #region Constructors
         internal CDAContext()
         {

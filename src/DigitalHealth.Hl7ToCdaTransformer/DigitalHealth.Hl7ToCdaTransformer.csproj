@@ -31,9 +31,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Nehta.VendorLibrary.Common, Version=4.2.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\Lib\Nehta.VendorLibrary.Common.dll</HintPath>
+    <Reference Include="Nehta.VendorLibrary.Common, Version=4.2.0.1, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Nehta.VendorLibrary.Common.4.2.0.1\lib\net40\Nehta.VendorLibrary.Common.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -45,11 +45,20 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Interfaces\IDiagnosticImagingTransformer.cs" />
     <Compile Include="Models\Custodian.cs" />
+    <Compile Include="Models\DiagnosticImagingMetadata.cs" />
+    <Compile Include="Models\DiagnosticImagingTransformResult.cs" />
     <Compile Include="Models\ReportingPathologist.cs" />
+    <Compile Include="Models\ReportingRadiologist.cs" />
     <Compile Include="Resources\ConstantsResource.Designer.cs" />
     <Compile Include="Resources\ResponseStrings.Designer.cs" />
+    <Compile Include="Services\DiagnosticImagingMessageTransformer.cs" />
+    <Compile Include="Services\DiagnosticImagingMessageValidator.cs" />
+    <Compile Include="Services\DiagnosticImagingTransformer.cs" />
+    <Compile Include="Services\MessageTransformerBase.cs" />
     <Compile Include="Services\MessageValidationException.cs" />
+    <Compile Include="Services\MessageValidatorBase.cs" />
     <Compile Include="Services\PathologyTransformer.cs" />
     <Compile Include="Interfaces\IPathologyTransformer.cs" />
     <Compile Include="EnumHelper.cs" />

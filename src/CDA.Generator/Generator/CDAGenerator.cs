@@ -17,6 +17,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Xml;
+using CDA.Generator.Common.SCSModel.Common.Entities;
 using CDA.Generator.Common.SCSModel.ConsolidatedView.Entities;
 using CDA.Generator.Common.SCSModel.Interfaces;
 using Nehta.VendorLibrary.CDA.Common.Enums;
@@ -27,6 +28,8 @@ using Nehta.VendorLibrary.Common;
 using Nehta.VendorLibrary.CDA.Common;
 using Nehta.HL7.CDA;
 using Nehta.VendorLibrary.CDA.SCSModel.DischargeSummary;
+using Nehta.VendorLibrary.CDA.SCSModel.PCML.Entities;
+using Nehta.VendorLibrary.CDA.SCSModel.ServiceReferral.Interfaces;
 using Entitlement = Nehta.VendorLibrary.CDA.SCSModel.Common.Entitlement;
 
 namespace Nehta.VendorLibrary.CDA.Generator
@@ -282,7 +285,108 @@ namespace Nehta.VendorLibrary.CDA.Generator
           //Generate and return the GeneratePersonalHealthObservation
           return CDAGeneratorHelper.CreateXml(clinicalDocument, authors, legalAuthenticator, authenticators, recipients, participants, components, nonXmlBody, birthDetailsRecord.IncludeLogo, birthDetailsRecord.LogoByte, typeof(BirthDetailsRecord));
         }
-       
+
+        /// <summary>
+        /// Generates PCML
+        /// </summary>
+        /// <param name="pcml">The GenerateBirthDetailsRecord object</param>
+        /// <returns>XmlDocument (CDA - GenerateBirthDetailsRecord)</returns>
+        public static XmlDocument GeneratePCML(PCML pcml)
+        {
+            var vb = new ValidationBuilder();
+
+            if (vb.ArgumentRequiredCheck("pcml", pcml))
+            {
+                pcml.Validate("pcml", vb.Messages);
+
+                LogoSetupAndValidation(pcml.LogoPath, pcml.LogoByte, pcml.IncludeLogo, vb);
+            }
+
+            //if (vb.Messages.Any())
+            //    throw new ValidationException(vb.Messages);
+
+
+            var authors = new List<POCD_MT000040Author>();
+            var recipients = new List<POCD_MT000040InformationRecipient>();
+            var participants = new List<POCD_MT000040Participant1>();
+            var components = new List<POCD_MT000040Component3>();
+            var patients = new List<POCD_MT000040RecordTarget>();
+            var authenticators = new List<POCD_MT000040Authenticator>();
+            POCD_MT000040NonXMLBody nonXmlBody = null;
+
+            //SETUP the clinical document object
+            var clinicalDocument = CDAGeneratorHelper.CreateDocument
+                (
+                    pcml.DocumentCreationTime,
+                    CDADocumentType.PharmacistSharedMedicinesList,
+                    pcml.CDAContext.DocumentId,
+                    pcml.CDAContext.SetId,
+                    pcml.CDAContext.Version,
+                    pcml.DocumentStatus,
+                    pcml.Title
+                ); 
+            
+
+            if (pcml.SCSContext.Participant != null)
+            { 
+                foreach (var patientNominatedContact in pcml.SCSContext.Participant)
+                {
+                    participants.Add(CDAGeneratorHelper.CreateParticipant(patientNominatedContact,
+                        ParticipationType.PART, RoleClassAssociative.PROV, new CE { code = "PCP" }, 
+                        pcml.SCSContext?.SubjectOfCare?.Participant?.UniqueIdentifier.ToString()));
+                }
+            }
+
+            if (pcml.CDAContext.InformationRecipients != null)
+            {
+                recipients.AddRange(pcml.CDAContext.InformationRecipients.Select(interestedParty =>
+                    CDAGeneratorHelper.CreateInformationRecipient(interestedParty)));
+            }
+
+            //SETUP the Legal Authenticator
+            var legalAuthenticator = CDAGeneratorHelper.CreateLegalAuthenticator(pcml.CDAContext.LegalAuthenticator);
+
+            //SETUP the patient
+            patients.Add(CDAGeneratorHelper.CreateSubjectOfCare(pcml.SCSContext.SubjectOfCare));
+            clinicalDocument.recordTarget = patients.ToArray();
+
+            //SETUP the author
+            authors.Add(CDAGeneratorHelper.CreateAuthor(pcml.SCSContext.Author));
+            clinicalDocument.author = authors.ToArray();
+            
+            //SETUP the Custodian
+            clinicalDocument.custodian = CDAGeneratorHelper.CreateCustodian(pcml.CDAContext.Custodian);
+
+            //SETUP the Information Recipients
+            clinicalDocument.informationRecipient = recipients.ToArray();
+
+            //SETUP the HealthcareFacility
+            if (pcml.SCSContext.Encounter != null &&  pcml.SCSContext.Encounter.HealthcareFacility != null && pcml.SCSContext.Encounter.HealthcareFacility.Participant != null)
+                clinicalDocument.componentOf = CDAGeneratorHelper.CreateComponentOf(pcml.SCSContext.Encounter.HealthcareFacility);
+
+            //
+            if (pcml.SCSContent.EncapsulatedData != null)
+            { 
+                components.Add(CDAGeneratorHelper.CreateComponent(pcml.SCSContent.EncapsulatedData, NarrativeGenerator));
+            }
+
+            if (pcml.SCSContent.CustomNarrativePcmlRecord != null)
+            {
+
+                if (pcml.SCSContent.CustomNarrativePcmlRecord != null &&
+                    pcml.SCSContent.CustomNarrativePcmlRecord.Any())
+                    components.AddRange
+                    (
+                        CDAGeneratorHelper.CreateNarrativeOnlyDocument(pcml.SCSContent.CustomNarrativePcmlRecord)
+                    );
+            }
+
+
+
+            //Generate and return the GeneratePersonalHealthObservation
+            return CDAGeneratorHelper.CreateXml(clinicalDocument, authors, legalAuthenticator, authenticators, recipients, participants, components, nonXmlBody, pcml.IncludeLogo, pcml.LogoByte, typeof(BirthDetailsRecord));
+        }
+
         /// <summary>
         /// Generates a Consumer Entered Health Summary CDA (XML) document
         /// </summary>
@@ -998,7 +1102,7 @@ namespace Nehta.VendorLibrary.CDA.Generator
             //Setup the Health Profile 
             components.Add(CDAGeneratorHelper.CreateComponent(eDischargeSummary.SCSContent.HealthProfile, NarrativeGenerator));
 
-            //Setup the Event
+            //Setup the Event - Inc PD, Proc, Path/DI
             if ((eDischargeSummary.SCSContent.StructuredBodyFiles == null && eDischargeSummary.SCSContent.NarrativeOnlyDocument == null))
             components.Add(CDAGeneratorHelper.CreateComponentLegacy(eDischargeSummary.SCSContent.Event, NarrativeGenerator));
 
@@ -3197,35 +3301,44 @@ namespace Nehta.VendorLibrary.CDA.Generator
         /// <summary>
         /// Verifies that the logo path location is a valid path and is included in the bin directory
         /// </summary>
-        /// <returns>XmlDocument (CDA - EventSummary)</returns>
-        public static void LogoSetupAndValidation(string logoPath,byte[] logoByte, bool includeLogo, ValidationBuilder vb)
+        public static void LogoSetupAndValidation(string logoPath, byte[] logoByte, bool includeLogo, ValidationBuilder vb)
         {
-          if (includeLogo)
-          {
-            var fileExists = File.Exists("Logo.png");
-
-            if (!logoPath.IsNullOrEmptyWhitespace())
+            if (includeLogo)
             {
-              if (fileExists)
-              {
-                 File.Copy(logoPath, "Logo.png", true);
-              }
-              else
-              {
-                vb.AddValidationMessage(vb.PathName, string.Empty, string.Format("The path '{0}' does not contain an image", logoPath));
-              }
-            }
+                bool userProvidedLogoFileExists = false;
+                bool defaultLogoFileExists = File.Exists("logo.png");
 
-            if (!fileExists && logoByte != null || !logoPath.IsNullOrEmptyWhitespace() && logoByte != null) 
-            {
-                vb.AddValidationMessage("Logo", null, "The LogoPath and LogoByte are Mutually exclusive, please pass a file to the file path or provide an byte array entry");
-            }
+                //Use the Logo in the path provided else use the default. Note that a logoPath of "." is the same as not provided
+                if (!logoPath.IsNullOrEmptyWhitespace() && logoPath != ".")
+                {
+                    if (File.Exists(System.IO.Path.Combine(logoPath, "logo.png")))
+                    {
+                        //If the user of the library has set a location for the Logo 'logoPath' and it exists then copy that
+                        //logo file to the Application directory / bin
+                        File.Copy(System.IO.Path.Combine(logoPath, "logo.png"), "logo.png", true);
+                        userProvidedLogoFileExists = true;
+                    }
+                    else
+                    {
+                        //No Logo file found in the path they provided, So they wanted to use their Logo file but it can not be found, so error.
+                        vb.AddValidationMessage(vb.PathName, string.Empty, string.Format("The provided logo path '{0}' does not contain an image", logoPath));
+                    }
+                }
 
-            if (logoByte == null && !fileExists)
-            {
-              vb.AddValidationMessage(vb.PathName, string.Empty, "Logo.png needs to be included in the output directory or include a byte array if 'IncludeLogo' is true");
+                //Can only have one or either the User provided Logo file or the User provided Logo Byte Array
+                //This detects that we have both.
+                if (logoByte != null && userProvidedLogoFileExists)
+                {
+                    vb.AddValidationMessage("Logo", null, "The LogoPath and LogoByte are Mutually exclusive, please pass a file to the file path or provide an byte array entry");
+                }
+
+                //Check we have either a Logo Bytes or a logo file regardless of which logo file it is, default or user provided file
+                //If all are null or false then we have no Logo at all and yet includeLogo was set to true, so error
+                if (logoByte == null && !userProvidedLogoFileExists && !defaultLogoFileExists)
+                {
+                    vb.AddValidationMessage(vb.PathName, string.Empty, "logo.png needs to be included in the output directory or include a byte array if 'IncludeLogo' is true");
+                }
             }
-          }
         }
         #endregion
     }

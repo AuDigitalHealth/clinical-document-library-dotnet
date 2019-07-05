@@ -112,7 +112,7 @@ namespace Nehta.VendorLibrary.CDA.Generator
         /// <param name="medications">IMedicationsSpecialistLetter</param>
         /// <returns>StrucDocText</returns>
         StrucDocText CreateNarrativeLegacy(IMedicationsSpecialistLetter medications);
-        
+
         /// <summary>
         /// This method creates the narrative for the medical history section
         /// </summary>
@@ -127,7 +127,7 @@ namespace Nehta.VendorLibrary.CDA.Generator
         /// <param name="responseDetails">IResponseDetails</param>
         /// <returns>StrucDocText</returns>
         StrucDocText CreateNarrative(IResponseDetails responseDetails);
-        
+
         /// <summary>
         /// This method creates the narrative for the recommendations section
         /// </summary>
@@ -155,7 +155,7 @@ namespace Nehta.VendorLibrary.CDA.Generator
         /// <param name="documents">documents</param>
         /// <returns>StrucDocText</returns>
         StrucDocText CreateNarrative(List<IDocument> documents);
-        
+
         /// <summary>
         /// This method creates the narrative for the reviewed immunisations section
         /// </summary>
@@ -190,7 +190,7 @@ namespace Nehta.VendorLibrary.CDA.Generator
         /// <param name="imagingExaminationResult">IImagingExaminationResult</param>
         /// <returns>StrucDocText</returns>
         StrucDocText CreateNarrative(IImagingExaminationResult imagingExaminationResult);
-        
+
         /// <summary>
         /// This method creates the narrative for the reason for referral section; or any section that takes in a 
         /// narrative and a date time along with a duration.
@@ -295,14 +295,14 @@ namespace Nehta.VendorLibrary.CDA.Generator
         /// <param name="ceasedMedications">CeasedMedications</param>
         /// <returns>StrucDocText</returns>
         StrucDocText CreateNarrative(Nehta.VendorLibrary.CDA.SCSModel.DischargeSummary.CeasedMedications ceasedMedications);
-        
+
         /// <summary>
         /// Creates the narrative section for adverse reactions in discharge summary.
         /// </summary>
         /// <param name="adverseReactions">Adverse reactions</param>
         /// <returns></returns>
         StrucDocText CreateNarrative(SCSModel.DischargeSummary.AdverseReactions adverseReactions);
-               
+
         /// <summary>
         /// This method creates the narrative for a Alerts    
         /// </summary>
@@ -353,100 +353,100 @@ namespace Nehta.VendorLibrary.CDA.Generator
 
         #region NPDR 
 
-      /// <summary>
-      /// Create a Narrative for an IEPrescriptionItem
-      /// </summary>
-      /// <param name="item">A IEPrescriptionItem</param>
-      /// <param name="prescriber">A IParticipationPrescriber</param>
-      /// <param name="subjectOfCare">A IParticipationSubjectOfCare</param>
-      /// <returns>StrucDocText</returns>
-      StrucDocText CreateNarrative(PCEHRPrescriptionItem item, IParticipationPrescriber prescriber, IParticipationSubjectOfCare subjectOfCare);
+        /// <summary>
+        /// Create a Narrative for an IEPrescriptionItem
+        /// </summary>
+        /// <param name="item">A IEPrescriptionItem</param>
+        /// <param name="prescriber">A IParticipationPrescriber</param>
+        /// <param name="subjectOfCare">A IParticipationSubjectOfCare</param>
+        /// <returns>StrucDocText</returns>
+        StrucDocText CreateNarrative(PCEHRPrescriptionItem item, IParticipationPrescriber prescriber, IParticipationSubjectOfCare subjectOfCare);
 
-      /// <summary>
-      /// Create a Narrative for an IEDispenseItem
-      /// </summary>
-      /// <param name="item">A IEPrescriptionItem</param>
-      /// <param name="dispenser">A IParticipationDispenser</param>
-      /// <param name="dispenserOrganisation">A IParticipationDispenserOrganisation</param>
-      /// <param name="subjectOfCare">A IParticipationSubjectOfCare</param>
-      /// <returns>StrucDocText</returns>
-       StrucDocText CreateNarrative(PCEHRDispenseItem item, IParticipationDispenser dispenser, IParticipationDispenserOrganisation dispenserOrganisation, IParticipationSubjectOfCare subjectOfCare);
+        /// <summary>
+        /// Create a Narrative for an IEDispenseItem
+        /// </summary>
+        /// <param name="item">A IEPrescriptionItem</param>
+        /// <param name="dispenser">A IParticipationDispenser</param>
+        /// <param name="dispenserOrganisation">A IParticipationDispenserOrganisation</param>
+        /// <param name="subjectOfCare">A IParticipationSubjectOfCare</param>
+        /// <returns>StrucDocText</returns>
+        StrucDocText CreateNarrative(PCEHRDispenseItem item, IParticipationDispenser dispenser, IParticipationDispenserOrganisation dispenserOrganisation, IParticipationSubjectOfCare subjectOfCare);
 
-       /// <summary>
-       /// Create a Narrative for an (PrescribingAndDispensingReports)
-       /// </summary>
-       /// <param name="prescribingAndDispensingReports">A PrescribingAndDispensingReports</param>
-       /// <returns>StrucDocText</returns>
-       StrucDocText CreateNarrative(PrescribingAndDispensingReports prescribingAndDispensingReports);
+        /// <summary>
+        /// Create a Narrative for an (PrescribingAndDispensingReports)
+        /// </summary>
+        /// <param name="prescribingAndDispensingReports">A PrescribingAndDispensingReports</param>
+        /// <returns>StrucDocText</returns>
+        StrucDocText CreateNarrative(PrescribingAndDispensingReports prescribingAndDispensingReports);
 
-       #endregion
+        #endregion
 
         #region ATS ETP
 
-       /// <summary>
-       /// Create a Narrative for an IEPrescriptionItem
-       /// </summary>
-       /// <param name="item">A IEPrescriptionItem</param>
-       /// <param name="prescriber">A IParticipationPrescriber</param>
-       /// <param name="subjectOfCare">A IParticipationSubjectOfCare</param>
-       /// <returns>StrucDocText</returns>
-       StrucDocText CreateNarrative(IEPrescriptionItem item, IParticipationPrescriber prescriber, IParticipationSubjectOfCare subjectOfCare);
+        /// <summary>
+        /// Create a Narrative for an IEPrescriptionItem
+        /// </summary>
+        /// <param name="item">A IEPrescriptionItem</param>
+        /// <param name="prescriber">A IParticipationPrescriber</param>
+        /// <param name="subjectOfCare">A IParticipationSubjectOfCare</param>
+        /// <returns>StrucDocText</returns>
+        StrucDocText CreateNarrative(IEPrescriptionItem item, IParticipationPrescriber prescriber, IParticipationSubjectOfCare subjectOfCare);
 
-       /// <summary>
-       /// Create a Narrative for an DispenseItemATS
-       /// </summary>
-       /// <param name="item">A DispenseItemATS</param>
-       /// <returns>StrucDocText</returns>
-       StrucDocText CreateNarrative(DispenseItem item);
+        /// <summary>
+        /// Create a Narrative for an DispenseItemATS
+        /// </summary>
+        /// <param name="item">A DispenseItemATS</param>
+        /// <returns>StrucDocText</returns>
+        StrucDocText CreateNarrative(DispenseItem item);
 
-       /// <summary>
-       /// Create a Narrative for an IObservationWeightHeight
-       /// </summary>
-       /// <param name="observation">IObservationWeightHeight</param>
-       /// <returns>StrucDocText</returns>
-       StrucDocText CreateNarrative(IObservationWeightHeight observation);
+        /// <summary>
+        /// Create a Narrative for an IObservationWeightHeight
+        /// </summary>
+        /// <param name="observation">IObservationWeightHeight</param>
+        /// <returns>StrucDocText</returns>
+        StrucDocText CreateNarrative(IObservationWeightHeight observation);
 
-       /// <summary>
-       /// Create a Narrative for an prescriberInstructionDetail Section
-       /// </summary>
-       /// <param name="prescriberInstructionDetail">A prescriberInstructionDetail</param>
-       /// <param name="participationPrescriber">A IParticipationPrescriber</param>
-       /// <param name="participationPrescriberOrganisation">A IParticipationPrescriberOrganisation</param>
-       /// <returns>StrucDocText</returns>
-       StrucDocText CreateNarrative
-           (
-               PrescriberInstructionDetail prescriberInstructionDetail,
-               IParticipationPrescriber participationPrescriber,
-               IParticipationPrescriberOrganisation participationPrescriberOrganisation
-           );
+        /// <summary>
+        /// Create a Narrative for an prescriberInstructionDetail Section
+        /// </summary>
+        /// <param name="prescriberInstructionDetail">A prescriberInstructionDetail</param>
+        /// <param name="participationPrescriber">A IParticipationPrescriber</param>
+        /// <param name="participationPrescriberOrganisation">A IParticipationPrescriberOrganisation</param>
+        /// <returns>StrucDocText</returns>
+        StrucDocText CreateNarrative
+            (
+                PrescriberInstructionDetail prescriberInstructionDetail,
+                IParticipationPrescriber participationPrescriber,
+                IParticipationPrescriberOrganisation participationPrescriberOrganisation
+            );
 
 
-       /// <summary>
-       /// Create a Narrative for an PrescriptionRequestItem Section
-       /// </summary>
-       /// <param name="item">The PrescriptionRequestItem</param>
-       /// <param name="subjectOfCare">The subjectOfCare</param>
-       /// <param name="dispensingOrganisation">The DispensingOrganisation</param>
-       /// <param name="requesterNote">The requesterNote </param>
-       /// <returns>StrucDocText</returns>
-       StrucDocText CreateNarrative
-           (
-               PrescriptionRequestItem item,
-               IParticipationSubjectOfCare subjectOfCare,
-               IParticipationDispenserOrganisation dispensingOrganisation,
-               String requesterNote
-           );
+        /// <summary>
+        /// Create a Narrative for an PrescriptionRequestItem Section
+        /// </summary>
+        /// <param name="item">The PrescriptionRequestItem</param>
+        /// <param name="subjectOfCare">The subjectOfCare</param>
+        /// <param name="dispensingOrganisation">The DispensingOrganisation</param>
+        /// <param name="requesterNote">The requesterNote </param>
+        /// <returns>StrucDocText</returns>
+        StrucDocText CreateNarrative
+            (
+                PrescriptionRequestItem item,
+                IParticipationSubjectOfCare subjectOfCare,
+                IParticipationDispenserOrganisation dispensingOrganisation,
+                String requesterNote
+            );
 
-       #endregion 
+        #endregion
 
         #region Medicare
 
         /// <summary>
         /// Create a Narrative for a Medciare Overview
         /// </summary>
-       /// <param name="australianChildhoodImmunisationRegisterHistory">AustralianChildhoodImmunisationRegisterHistory</param>
+        /// <param name="australianChildhoodImmunisationRegisterHistory">AustralianChildhoodImmunisationRegisterHistory</param>
         /// <returns>StrucDocText</returns>
-       StrucDocText CreateNarrative(AustralianChildhoodImmunisationRegisterHistory australianChildhoodImmunisationRegisterHistory);
+        StrucDocText CreateNarrative(AustralianChildhoodImmunisationRegisterHistory australianChildhoodImmunisationRegisterHistory);
 
         /// <summary>
         /// Create a Narrative for an Medciare Overview
@@ -521,7 +521,7 @@ namespace Nehta.VendorLibrary.CDA.Generator
         /// </summary>
         /// <returns>StrucDocText</returns>
         StrucDocText CreateNarrative(List<MeasurementEntry> measurementEntry);
- 
+
 
         #endregion PathologyTestResult  
 
@@ -598,6 +598,20 @@ namespace Nehta.VendorLibrary.CDA.Generator
         /// </summary>
         /// <returns>StrucDocText</returns>
         StrucDocText CreateNarrative(List<IPendingDiagnosticInvestigation> service, string narrativeText);
+
+        #endregion
+
+
+        #region PCML
+
+
+        /// <summary>
+        /// Create a Narrative for the Questionnaire
+        /// </summary>
+        /// <returns>StrucDocText</returns>
+        StrucDocText CreateNarrative(EncapsulatedData pcmlData);
+
+
 
         #endregion
 

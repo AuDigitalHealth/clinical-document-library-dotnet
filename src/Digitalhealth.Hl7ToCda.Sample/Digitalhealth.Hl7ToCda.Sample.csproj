@@ -51,6 +51,9 @@
     <None Include="Sample\pathologyreport.hl7">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <None Include="Sample\imagingreport.hl7">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\CDA.GeneratedCode\CDA.GeneratedCode.csproj">

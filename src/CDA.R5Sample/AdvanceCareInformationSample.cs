@@ -157,6 +157,7 @@ namespace CDA.R5Samples
 
             // Include Logo
             advanceCareInformation.IncludeLogo = true;
+            advanceCareInformation.LogoPath = OutputFolderPath;
 
             // Set Creation Time
             advanceCareInformation.DocumentCreationTime = new ISO8601DateTime(DateTime.Now);

@@ -172,6 +172,7 @@ namespace Nehta.VendorLibrary.CDA.Sample
 
             // Include Logo
             acdCustodianRecord.IncludeLogo = true;
+            acdCustodianRecord.LogoPath = OutputFolderPath;
 
             // Set Creation Time
             acdCustodianRecord.DocumentCreationTime = new ISO8601DateTime(DateTime.Now);
@@ -216,7 +217,7 @@ namespace Nehta.VendorLibrary.CDA.Sample
             }
 
             acdCustodianRecord.SCSContext.SubjectOfCare = BaseCDAModel.CreateSubjectOfCare();
-            GenericObjectReuseSample.HydrateSubjectofCare(acdCustodianRecord.SCSContext.SubjectOfCare, mandatorySectionsOnly);
+            GenericObjectReuseSample.HydrateSubjectofCare(acdCustodianRecord.SCSContext.SubjectOfCare, mandatorySectionsOnly, false);
 
             #endregion
 

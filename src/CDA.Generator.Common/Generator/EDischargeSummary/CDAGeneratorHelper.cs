@@ -264,7 +264,8 @@ namespace Nehta.VendorLibrary.CDA.Generator
         /// <returns>POCD_MT000040Component3</returns>
         internal static POCD_MT000040Component3 CreateComponent(Event eventDischargeSummary, INarrativeGenerator narrativeGenerator)
         {
-          POCD_MT000040Component3 component = null;
+            // THIS PARTICULAR FUNCTION IS NO LONGER USED - See CDAGeneratorHelperLegacy
+            POCD_MT000040Component3 component = null;
 
           if (eventDischargeSummary != null)
           {
@@ -275,7 +276,7 @@ namespace Nehta.VendorLibrary.CDA.Generator
             component = new POCD_MT000040Component3
             {
               section = CreateSectionCodeTitle("101.16006", CodingSystem.NCTIS, "Event", 
-              "This section may contain the following subsections Problems/Diagnoses This Visit, Clinical Interventions Performed This Visit and Clinical Synopsis and Diagnostic Investigations.")
+              "This section may contain the following subsections Problems/Diagnoses This Visit, Clinical Interventions Performed This Visit and Clinical Summary and Diagnostic Investigations.")
             };
 
             if (eventDischargeSummary.CustomNarrativeEvent != null) component.section.text = eventDischargeSummary.CustomNarrativeEvent;
@@ -478,6 +479,7 @@ namespace Nehta.VendorLibrary.CDA.Generator
         /// <returns>POCD_MT000040Component3</returns>
         internal static POCD_MT000040Component3 CreateComponent(IMedicationsDischargeSummary medications, INarrativeGenerator narrativeGenerator)
         {
+            //DS
           POCD_MT000040Component3 component = null;
 
           if (medications != null)
@@ -486,7 +488,7 @@ namespace Nehta.VendorLibrary.CDA.Generator
 
             component = new POCD_MT000040Component3
             {
-              section = CreateSectionCodeTitle("101.16022", CodingSystem.NCTIS, "Medications", "This section may contain the following subsections Current Medications On Discharge and Ceased Medications.")
+              section = CreateSectionCodeTitle("101.16022", CodingSystem.NCTIS, "Medications", "This section contains the following subsections: Current Medications On Discharge and Ceased Medications.")
             };
 
             if (medications.CustomNarrativeMedications != null) component.section.text = medications.CustomNarrativeMedications;
@@ -560,6 +562,7 @@ namespace Nehta.VendorLibrary.CDA.Generator
         /// <returns>POCD_MT000040Component3</returns>
         internal static POCD_MT000040Component3 CreateComponent(HealthProfile healthProfile, INarrativeGenerator narrativeGenerator)
         {
+            // For DS
           POCD_MT000040Component3 component = null;
 
           if (healthProfile != null)
@@ -568,7 +571,7 @@ namespace Nehta.VendorLibrary.CDA.Generator
 
             component = new POCD_MT000040Component3
             {
-              section = CreateSectionCodeTitle("101.16011", CodingSystem.NCTIS, "Health Profile", "This section may contain the following subsections Adverse Reactions and Alerts.")
+              section = CreateSectionCodeTitle("101.16011", CodingSystem.NCTIS, "Health Profile", "This section contains the following subsections: Adverse Reactions and Alerts.")
             };
 
             if (healthProfile.CustomNarrativeHealthProfile != null) component.section.text = healthProfile.CustomNarrativeHealthProfile;
@@ -640,7 +643,7 @@ namespace Nehta.VendorLibrary.CDA.Generator
 
             component = new POCD_MT000040Component3
             {
-              section = CreateSectionCodeTitle("101.16020", CodingSystem.NCTIS, "Plan", "This section may contain the following subsections Arranged Services and Record Of Recommendations And Information Provided.")
+              section = CreateSectionCodeTitle("101.16020", CodingSystem.NCTIS, "Plan", "This section contains the following subsections: Follow-up Appointments and Record Of Recommendations And Information Provided.")
             };
 
             if (plan.CustomNarrativePlan != null)
@@ -827,7 +830,7 @@ namespace Nehta.VendorLibrary.CDA.Generator
           {
             component = new POCD_MT000040Component5
             {
-              section = CreateSectionCodeTitle("101.20117", CodingSystem.NCTIS, "Diagnostic Investigations", "This section may contain the following subsections Pathology Test Result and Imaging Examination Result.")
+              section = CreateSectionCodeTitle("101.20117", CodingSystem.NCTIS, "Diagnostic Investigations", "")
             };
 
             if (diagnosticInvestigations.CustomNarrativeDiagnosticInvestigations != null)
@@ -847,7 +850,7 @@ namespace Nehta.VendorLibrary.CDA.Generator
                 //Create the Pathology Test Result Component and section
                 var pathologyTestResultComponent = new POCD_MT000040Component5
                 {
-                    section = CreateSectionCodeTitle("102.16144", CodingSystem.NCTIS, "Pathology Test Result", "This section may contain the following subsections Test Specimen Detail and Pathology Test Result Group.")
+                    section = CreateSectionCodeTitle("102.16144", CodingSystem.NCTIS, "Pathology Test Result", "")
                 };
 
                 //Create relationships covering the test Specimen details

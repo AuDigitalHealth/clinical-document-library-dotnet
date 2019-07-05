@@ -156,6 +156,7 @@ namespace Nehta.VendorLibrary.CDA.NPDR.Sample
 
       // Include Logo
       prescriptionRecord.IncludeLogo = true;
+      prescriptionRecord.LogoPath = OutputFolderPath;
 
       #region Setup and populate the CDA context model
 
@@ -210,7 +211,7 @@ namespace Nehta.VendorLibrary.CDA.NPDR.Sample
       prescriptionRecord.SCSContext.PrescriberOrganisation = CreatePrescriberOrganisation(mandatorySectionsOnly, prescriberOrganisationId);
 
       prescriptionRecord.SCSContext.SubjectOfCare = BaseCDAModel.CreateSubjectOfCare();
-      GenericObjectReuseSample.HydrateSubjectofCare(prescriptionRecord.SCSContext.SubjectOfCare, mandatorySectionsOnly);
+      GenericObjectReuseSample.HydrateSubjectofCare(prescriptionRecord.SCSContext.SubjectOfCare, mandatorySectionsOnly, false);
 
       #endregion
 
@@ -283,7 +284,7 @@ namespace Nehta.VendorLibrary.CDA.NPDR.Sample
       if (!mandatorySectionsOnly)
       {
           // Therapeutic Good Identification - The medicine, vaccine or other therapeutic good being ordered, administered to or used by the subject of care
-          prescriptionItem.TherapeuticGoodId = BaseCDAModel.CreateCodableText("02157M", CodingSystem.PBSCode, "ALUMINIUM HYDROXIDE with MAGNESIUM HYDROXIDE Oral suspension 200 mg-200 mg per 5 mL, 500 mL, 1", null, null);
+          prescriptionItem.TherapeuticGoodId = BaseCDAModel.CreateCodableText("04118R", CodingSystem.PBSCode, "ALUMINIUM HYDROXIDE with MAGNESIUM HYDROXIDE and SIMETHICONE Oral suspension 400 mg-400 mg-30 mg per 5 mL, 500 mL, 1", null, null);
 
           // Therapeutic Good Strength (Additional Therapeutic Good Detail) - Information concerning the strength of the Therapeutic Good
           prescriptionItem.TherapeuticGoodStrength = "Therapeutic Good Strength";

@@ -174,6 +174,7 @@ namespace Nehta.VendorLibrary.CDA.Sample
 
             // Include Logo
             consumerEnteredNotes.IncludeLogo = true;
+            consumerEnteredNotes.LogoPath = OutputFolderPath;
 
             // Set Creation Time
             consumerEnteredNotes.DocumentCreationTime = new ISO8601DateTime(DateTime.Now);

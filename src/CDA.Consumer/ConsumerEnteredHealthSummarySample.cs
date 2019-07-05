@@ -173,6 +173,7 @@ namespace Nehta.VendorLibrary.CDA.Sample
 
             // Include Logo
             consumerEnteredHealthSummary.IncludeLogo = true;
+            consumerEnteredHealthSummary.LogoPath = OutputFolderPath;
 
             // Set Creation Time
             consumerEnteredHealthSummary.DocumentCreationTime = new ISO8601DateTime(DateTime.Now);
@@ -211,7 +212,7 @@ namespace Nehta.VendorLibrary.CDA.Sample
             PopulateAuthor(consumerEnteredHealthSummary.SCSContext.Author, mandatorySectionsOnly);
 
             consumerEnteredHealthSummary.SCSContext.SubjectOfCare = BaseCDAModel.CreateSubjectOfCare();
-            GenericObjectReuseSample.HydrateSubjectofCare(consumerEnteredHealthSummary.SCSContext.SubjectOfCare, mandatorySectionsOnly);
+            GenericObjectReuseSample.HydrateSubjectofCare(consumerEnteredHealthSummary.SCSContext.SubjectOfCare, mandatorySectionsOnly, false);
 
             #endregion
 

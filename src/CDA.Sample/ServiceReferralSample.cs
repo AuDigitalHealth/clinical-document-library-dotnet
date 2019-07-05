@@ -18,6 +18,7 @@ using System.Xml;
 using CDA.Generator.Common.SCSModel.Common.Entities;
 using CDA.Generator.Common.SCSModel.ServiceReferral.Interfaces;
 using Nehta.HL7.CDA;
+using Nehta.VendorLibrary.CDA.CDAModel;
 using Nehta.VendorLibrary.CDA.CDAModel.ServiceReferral.Interfaces;
 using Nehta.VendorLibrary.CDA.Generator.Enums;
 using Nehta.VendorLibrary.Common;
@@ -260,6 +261,7 @@ namespace Nehta.VendorLibrary.CDA.Sample
 
             // Include Logo
             serviceReferral.IncludeLogo = true;
+            serviceReferral.LogoPath = OutputFolderPath;
 
             // Set Creation Time
             serviceReferral.DocumentCreationTime = new ISO8601DateTime(DateTime.Now, ISO8601DateTime.Precision.Second);
@@ -267,7 +269,7 @@ namespace Nehta.VendorLibrary.CDA.Sample
             #region Setup and populate the CDA context model
 
             // Setup and populate the CDA context model
-            var cdaContext = ServiceReferral.CreateCDAContext();
+            ICDAContextServiceReferral cdaContext = ServiceReferral.CreateCDAContext();
 
             // Document Id
             cdaContext.DocumentId = BaseCDAModel.CreateIdentifier(BaseCDAModel.CreateOid());
@@ -321,7 +323,7 @@ namespace Nehta.VendorLibrary.CDA.Sample
 
             // Subject of Care
             serviceReferral.SCSContext.SubjectOfCare = BaseCDAModel.CreateSubjectOfCare();
-            GenericObjectReuseSample.HydrateSubjectofCare(serviceReferral.SCSContext.SubjectOfCare, mandatorySectionsOnly);
+            GenericObjectReuseSample.HydrateSubjectofCare(serviceReferral.SCSContext.SubjectOfCare, mandatorySectionsOnly, false);
 
             // Optional Items
             if (!mandatorySectionsOnly)
@@ -629,39 +631,39 @@ namespace Nehta.VendorLibrary.CDA.Sample
                 medication.ClinicalIndication = "Diuretic induced hypokalemia";
                 medication.Comment = "Taken with food";
                 medication.Directions = BaseCDAModel.CreateStructuredText("2 tablets once daily oral");
-                medication.Medicine = BaseCDAModel.CreateCodableText("5884011000036107", CodingSystem.AMTV2, "Span K (potassium chloride 600 mg (8 mmol potassium)) tablet: modified release, 1 tablet");
+                medication.Medicine = BaseCDAModel.CreateCodableText("5884011000036107", CodingSystem.AMTV3, "	Span K 600 mg (potassium 8 mmol) modified release tablet");
                 medicationList.Add(medication);                                                                 
 
                 var medication1 = BaseCDAModel.CreateMedication();
                 medication1.ClinicalIndication = "Arthritis pain management";
                 medication1.Comment = "Swallow whole";
                 medication1.Directions = BaseCDAModel.CreateStructuredText("2 tablets three times per day");
-                medication1.Medicine = BaseCDAModel.CreateCodableText("5848011000036106", CodingSystem.AMTV2, "Panadol Osteo (paracetamol 665 mg) tablet: modified release, 1 tablet");
+                medication1.Medicine = BaseCDAModel.CreateCodableText("5848011000036106", CodingSystem.AMTV3, "Panadol Osteo 665 mg modified release tablet");
                 medicationList.Add(medication1);
 
                 var medication2 = BaseCDAModel.CreateMedication();
                 medication2.ClinicalIndication = "Fluid retention";
                 medication2.Comment = "Take in the morning";
                 medication2.Directions = BaseCDAModel.CreateStructuredText("1 tablet once daily oral");
-                medication2.Medicine = BaseCDAModel.CreateCodableText("40288011000036101", CodingSystem.AMTV2, "Lasix (frusemide 40 mg/4 mL) injection: solution, ampoule");
+                medication2.Medicine = BaseCDAModel.CreateCodableText("40288011000036101", CodingSystem.AMTV3, "Lasix 40 mg/4 mL injection, 4 mL ampoule");
                 medicationList.Add(medication2);
 
                 var medication3 = BaseCDAModel.CreateMedication();
                 medication3.ClinicalIndication = "COPD";
                 medication3.Directions = BaseCDAModel.CreateStructuredText("1 inhalation per day");
-                medication3.Medicine = BaseCDAModel.CreateCodableText("7113011000036100", CodingSystem.AMTV2, "Spiriva (tiotropium (as bromide monohydrate) 18 microgram) inhalation: powder for, 1 capsule");
+                medication3.Medicine = BaseCDAModel.CreateCodableText("7113011000036100", CodingSystem.AMTV3, "Spiriva 18 microgram powder for inhalation, 1 capsule");
                 medicationList.Add(medication3);
 
                 var medication4 = BaseCDAModel.CreateMedication();
                 medication4.ClinicalIndication = "Depression";
                 medication4.Directions = BaseCDAModel.CreateStructuredText("Dose:1, Frequency: 3 times daily");
-                medication4.Medicine = BaseCDAModel.CreateCodableText("32481000036107", CodingSystem.AMTV2, "Exatrust (exemestane 25 mg) tablet: film-coated, 1 tablet");
+                medication4.Medicine = BaseCDAModel.CreateCodableText("32481000036107", CodingSystem.AMTV3, "Exatrust 25 mg film-coated tablet");
                 medicationList.Add(medication4);
 
                 var medication5 = BaseCDAModel.CreateMedication();
                 medication5.ClinicalIndication = "Depression";
-                medication5.Directions = BaseCDAModel.CreateStructuredText(NullFlavour.PositiveInfinity);
-                medication5.Medicine = BaseCDAModel.CreateCodableText("32481000036107", CodingSystem.AMTV2, "Exatrust (exemestane 25 mg) tablet: film-coated, 1 tablet");
+                medication5.Directions = BaseCDAModel.CreateStructuredText("Dose:1, Frequency: as required");
+                medication5.Medicine = BaseCDAModel.CreateCodableText("32481000036107", CodingSystem.AMTV3, "Exatrust 25 mg film-coated tablet");
                 medicationList.Add(medication5);
                 medications.Medications = medicationList;
 
@@ -688,9 +690,8 @@ namespace Nehta.VendorLibrary.CDA.Sample
             if (!mandatorySectionsOnly)
             {
                 var reaction = BaseCDAModel.CreateReaction();
-
-                reaction.ReactionEvent = BaseCDAModel.CreateReactionEvent();
                 reaction.SubstanceOrAgent = BaseCDAModel.CreateCodableText("391739009", CodingSystem.SNOMED, "Aloe");
+                reaction.ReactionEvent = BaseCDAModel.CreateReactionEvent();
 
                 reaction.ReactionEvent.Manifestations = new List<ICodableText>
                 {
@@ -709,6 +710,8 @@ namespace Nehta.VendorLibrary.CDA.Sample
                     BaseCDAModel.CreateCodableText("20262006", CodingSystem.SNOMED, "Ataxia"),
                     BaseCDAModel.CreateCodableText("285599002", CodingSystem.SNOMED, "Trunk nerve lesion")
                 };
+
+                reaction2.ReactionEvent.ReactionType = BaseCDAModel.CreateCodableText("419076005", CodingSystem.SNOMED, "Allergic reaction");
 
                 adverseReactions.AdverseSubstanceReaction = new List<Reaction>
                 {
@@ -775,7 +778,7 @@ namespace Nehta.VendorLibrary.CDA.Sample
                 var medicalHistoryItem2 = BaseCDAModel.CreateMedicalHistoryItem();
                 var ongoingInterval2 = CdaInterval.CreateLowHigh(
                                        new ISO8601DateTime(DateTime.Now.AddDays(-400), ISO8601DateTime.Precision.Day),
-                                       new ISO8601DateTime(DateTime.Now.AddDays(200), ISO8601DateTime.Precision.Day));
+                                       new ISO8601DateTime(DateTime.Now.AddDays(0), ISO8601DateTime.Precision.Day));
 
                 medicalHistoryItem2.DateTimeInterval = ongoingInterval2;
                 medicalHistoryItem2.ItemDescription = "Uncategorised Medical History item description here";
