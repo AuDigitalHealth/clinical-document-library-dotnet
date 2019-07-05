@@ -53,6 +53,8 @@ using RequestedService = Nehta.VendorLibrary.CDA.SCSModel.Common.RequestedServic
 using CDA.Generator.Common.SCSModel.Common.Entities;
 using CDA.Generator.Common.SCSModel.ServiceReferral.Entities;
 using CDA.Generator.Common.SCSModel.ServiceReferral.Interfaces;
+// HIPS ADDITION
+using System.Security.Cryptography;
 using Nehta.VendorLibrary.CDA.CDAModel.ServiceReferral.Interfaces;
 using Nehta.VendorLibrary.CDA.SCSModel.DischargeSummary;
 using Nehta.VendorLibrary.CDA.SCSModel.ServiceReferral.Interfaces;
@@ -15048,7 +15050,9 @@ namespace Nehta.VendorLibrary.CDA.Generator
                                               POCD_MT000040NonXMLBody nonXmlBody,
                                               Boolean includeLogo,
                                               Byte[] logoByte,
-                                              Type documentType)
+                                              Type documentType,
+                                              // HIPS MODIFICATION FOR LOGO CONTENT
+                                              byte[] logoContent = null)
 
         {
           // Add Authors
@@ -15109,6 +15113,13 @@ namespace Nehta.VendorLibrary.CDA.Generator
               Path = filePathName,
               ID = "LOGO"
             };
+
+            // HIPS Extension: allow logo to be supplied in memory instead of read from disk.
+            if (logoContent != null)
+            {
+                externalData.DigestValue = SHA1.Create().ComputeHash(logoContent);
+                externalData.DigestCheckAlgorithm = DigestCheckAlgorithm.SHA1;
+            }
 
             components.Add(new POCD_MT000040Component3
             {

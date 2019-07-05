@@ -1103,11 +1103,14 @@ namespace Nehta.VendorLibrary.CDA.SCSModel.Common
         {
           var vb = new ValidationBuilder(path, messages);
 
-          if (vb.ArgumentRequiredCheck("Role", Role))
-          {
-            if (Role != null) Role.ValidateMandatory(vb.Path + "Role", vb.Messages);
-          }
-          var participation = ((IParticipationAuthorHealthcareProvider)this);
+            // Modified 20/06/2016: Allows NullFlavour when Multiple Authors for Pathology and Diagnostic Imaging Uploads
+            vb.ArgumentRequiredCheck("Role", Role);
+            //if (vb.ArgumentRequiredCheck("Role", Role))
+            //{
+            //  if (Role != null) Role.ValidateMandatory(vb.Path + "Role", vb.Messages);
+            //}
+
+            var participation = ((IParticipationAuthorHealthcareProvider)this);
           var participant = participation.Participant;
 
           //  IPCDOCS-71 - Relax Electronic Communication Details for IParticipationAuthorHealthcareProvider

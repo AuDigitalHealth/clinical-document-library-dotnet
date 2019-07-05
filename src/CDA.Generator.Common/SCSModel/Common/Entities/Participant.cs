@@ -1715,7 +1715,9 @@ namespace Nehta.VendorLibrary.CDA.SCSModel.Common
             {
                 person.Validate(vb.Path + "Person", vb.Messages);
 
-                vb.ArgumentRequiredCheck("Person.Organisation", person.Organisation);
+                // Validation removed so that HIPS can omit the asEmployment element
+                // with nullFlavor ="NI" when the organisation name is unknown.
+                // vb.ArgumentRequiredCheck("Person.Organisation", person.Organisation);
             }
 
             if (addresses != null)
