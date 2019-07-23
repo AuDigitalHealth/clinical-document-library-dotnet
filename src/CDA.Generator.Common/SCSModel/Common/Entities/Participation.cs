@@ -1101,32 +1101,36 @@ namespace Nehta.VendorLibrary.CDA.SCSModel.Common
 
         void IParticipationAuthorHealthcareProvider.Validate(string path, List<ValidationMessage> messages)
         {
-          var vb = new ValidationBuilder(path, messages);
+            var vb = new ValidationBuilder(path, messages);
 
-          if (vb.ArgumentRequiredCheck("Role", Role))
-          {
-            if (Role != null) Role.ValidateMandatory(vb.Path + "Role", vb.Messages);
-          }
-          var participation = ((IParticipationAuthorHealthcareProvider)this);
-          var participant = participation.Participant;
+            // Modified 11/07/2019: Allows NullFlavour when Multiple Authors for Pathology and Diagnostic Imaging Uploads
+            vb.ArgumentRequiredCheck("Role", Role);
+            //if (vb.ArgumentRequiredCheck("Role", Role))
+            //{
+            //    if (Role != null) Role.ValidateMandatory(vb.Path + "Role", vb.Messages);
+            //}
 
-          //  IPCDOCS-71 - Relax Electronic Communication Details for IParticipationAuthorHealthcareProvider
-          //  if (participant != null)
-          //  {
-          //     // Note : Validate if document != BirthDetails
-          //     if (!(new StackTrace()).GetFrames()
-          //         .Any(t => t.GetMethod().Name.Contains(CDADocumentType.BirthDetails.ToString())))
-          //         {
-          //            vb.ArgumentRequiredCheck("Participation.ElectronicCommunicationDetails", participant.ElectronicCommunicationDetails); 
-          //         }
-          //   }
+            var participation = ((IParticipationAuthorHealthcareProvider) this);
+            var participant = participation.Participant;
 
-            vb.ArgumentRequiredCheck("AuthorParticipationPeriodOrDateTimeAuthored", participation.AuthorParticipationPeriodOrDateTimeAuthored);
+            //  IPCDOCS-71 - Relax Electronic Communication Details for IParticipationAuthorHealthcareProvider
+            //  if (participant != null)
+            //  {
+            //     // Note : Validate if document != BirthDetails
+            //     if (!(new StackTrace()).GetFrames()
+            //         .Any(t => t.GetMethod().Name.Contains(CDADocumentType.BirthDetails.ToString())))
+            //         {
+            //            vb.ArgumentRequiredCheck("Participation.ElectronicCommunicationDetails", participant.ElectronicCommunicationDetails); 
+            //         }
+            //   }
 
-          if (vb.ArgumentRequiredCheck("Participant", participant))
-          {
-              if (participant != null) participant.Validate(vb.Path + "Participant", vb.Messages);
-          }
+            vb.ArgumentRequiredCheck("AuthorParticipationPeriodOrDateTimeAuthored",
+                participation.AuthorParticipationPeriodOrDateTimeAuthored);
+
+            if (vb.ArgumentRequiredCheck("Participant", participant))
+            {
+                if (participant != null) participant.Validate(vb.Path + "Participant", vb.Messages);
+            }
         }
 
         void IParticipationHealthcareFacility.Validate(string path, bool mandatoryRole, List<ValidationMessage> messages)

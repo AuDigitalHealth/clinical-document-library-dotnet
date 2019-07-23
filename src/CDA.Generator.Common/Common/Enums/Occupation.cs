@@ -2349,12 +2349,6 @@ namespace Nehta.VendorLibrary.CDA.Common.Enums
         [Name(Code = "251412", Name = "Orthoptist", CodeSystem = "ANZSCO")]
         Orthoptist,
         /// <summary>
-        /// The pharmacists
-        /// </summary>
-        [EnumMember]
-        [Name(Code = "2515", Name = "Pharmacists", CodeSystem = "ANZSCO")]
-        Pharmacists,
-        /// <summary>
         /// The pharmacistsnfd
         /// </summary>
         [EnumMember]

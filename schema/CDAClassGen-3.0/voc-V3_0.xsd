@@ -7,7 +7,7 @@
   operational setting. 
   *****************************************************************
   -->
-<xs:schema  xmlns:mif="urn:hl7-org:v3/mif2" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+<xs:schema xmlns:mif="urn:hl7-org:v3/mif2" xmlns:xs="http://www.w3.org/2001/XMLSchema">
    <!--
       *****************************************************************************************************************
       * XML schema for message type POCD_MT000040.
@@ -1787,6 +1787,8 @@
          <xs:enumeration value="PG"/>
          <xs:enumeration value="HP"/>
          <xs:enumeration value="HV"/>
+		 <!-- Following value was missing but should have been here: OLD -->
+		 <xs:enumeration value="OLD"/>         
          <xs:enumeration value="DIR"/>
          <xs:enumeration value="PUB"/>
       </xs:restriction>
@@ -2981,9 +2983,10 @@
       <xs:restriction base="cs">
          <xs:enumeration value="SBJ"/>
          <xs:enumeration value="SPC"/>
-         <!-- Extension -->
-         <xs:enumeration value="COVBY"/>
-         <!-- End extension -->
+      	<!-- Extension -->
+      	<xs:enumeration value="COVBY"/>
+      	<!-- End extension -->
+      	
       </xs:restriction>
    </xs:simpleType>
    <xs:simpleType name="ParticipationTracker">
@@ -4602,9 +4605,10 @@
          <xs:enumeration value="SPRT"/>
          <xs:enumeration value="SUBJ"/>
          <xs:enumeration value="XCRPT"/>
-         <!-- Extension -->
-         <xs:enumeration value="AUTH"/>
-         <!-- Extension -->
+      	<!-- Extension -->
+      	<xs:enumeration value="AUTH"/>
+      	<!-- Extension -->
+      	
       </xs:restriction>
    </xs:simpleType>
    <xs:simpleType name="x_ActRelationshipExternalReference">

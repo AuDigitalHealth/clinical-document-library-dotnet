@@ -179,7 +179,7 @@ namespace Nehta.VendorLibrary.CDA.Generator
                         (
                             PopulateTable
                                 (
-                                    "Demographic Data",
+                                    "Observations details",
                                     null,
                                     columnHeaders.ToArray(),
                                     null,
@@ -7178,7 +7178,7 @@ namespace Nehta.VendorLibrary.CDA.Generator
             var narrativedDocumentProvenance = new List<List<Object>>();
             var renderMultiMediaList = new List<StrucDocRenderMultiMedia>();
 
-            var header = new[] { "Field", "Value" };
+            var header = new[] { "Document details", "Value" };
 
             if (documentDetails != null)
             {
@@ -7199,7 +7199,7 @@ namespace Nehta.VendorLibrary.CDA.Generator
                       (
                         PopulateTable
                           (
-                            "Related Document",
+                            "Related Document Information",
                             null,
                             header,
                             null,
@@ -7588,7 +7588,7 @@ namespace Nehta.VendorLibrary.CDA.Generator
         /// <returns>The StrucDocTable</returns>
         public StrucDocTable CreateRelatedDocumentNarative(RelatedDocumentV1 relatedDocument)
         {
-            var header = new[] { "Field", "Value" };
+            var header = new[] { "Document details", "Value" };
             var narrative = new List<List<object>>();
 
             if (relatedDocument.DocumentDetails?.DocumentTitle != null)
@@ -7609,7 +7609,7 @@ namespace Nehta.VendorLibrary.CDA.Generator
                 (
                     new List<object>
                     {
-                        "Document",
+                        "Document details",
                         CreateSimpleHtmlLink(relatedDocument.DocumentTarget)
                     }
                 );
@@ -7618,7 +7618,7 @@ namespace Nehta.VendorLibrary.CDA.Generator
             // Struc Doc Table List
             return PopulateTable
             (
-                "Related Document",
+                "Related Document Information",
                 null,
                 header,
                 null,

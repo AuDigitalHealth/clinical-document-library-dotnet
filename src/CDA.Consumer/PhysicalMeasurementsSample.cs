@@ -1143,7 +1143,7 @@ namespace Nehta.VendorLibrary.CDA.Consumer
           var name2 = BaseCDAModel.CreatePersonName();
           name2.FamilyName = "Grant";
           name2.GivenNames = new List<string> { "Wally" };
-          name2.Titles = new List<string> { "Mr" };
+          name2.Titles = new List<string> { "Mrs" };
           name2.NameUsages = new List<NameUsage> { NameUsage.NewbornName };
 
           person.PersonNames = new List<IPersonName> { name1, name2 };

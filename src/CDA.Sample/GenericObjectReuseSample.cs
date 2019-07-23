@@ -514,7 +514,7 @@ namespace Nehta.VendorLibrary.CDA.Sample
                 var entitlement = BaseCDAModel.CreateEntitlement();
                 entitlement.Id = BaseCDAModel.CreateMedicareNumber(MedicareNumberType.MedicareCardNumber, "2296818481");
                 entitlement.Type = EntitlementType.MedicareBenefits;
-                entitlement.ValidityDuration = BaseCDAModel.CreateIntervalHigh(new ISO8601DateTime(DateTime.Today.AddMonths(15)));
+                entitlement.ValidityDuration = BaseCDAModel.CreateIntervalHigh(new ISO8601DateTime(DateTime.Today.AddMonths(15), ISO8601DateTime.Precision.Day));
 
                 author.Participant.Entitlements = new List<Entitlement> { entitlement, entitlement };
 

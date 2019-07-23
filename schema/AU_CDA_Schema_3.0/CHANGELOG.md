@@ -3,6 +3,87 @@
 Changes made to Schemas
 
 ---
+### 11/06/2019
+---
+
+This change is to add extensions to the Agency Extensions schema.
+### EXTENSION.xsd
+
+<!-- Extension for languageCommunication -->
+<xs:element name="languageCommunication" type="hl7:POCD_MT000040.LanguageCommunication"/>
+
+<!-- Extension for admissionReferralSourceCode -->
+<xs:element name="admissionReferralSourceCode" type="hl7:CE"/>
+
+<!-- Extension for expirationTime -->
+<xs:element name="expirationTime" type="hl7:TS"/>
+
+<!-- Extension for dischargeDispositionCode -->
+<xs:element name="dischargeDispositionCode" type="hl7:CE"/>
+
+<!-- Extension for inFulfillmentOf1 -->
+<xs:element name="inFulfillmentOf1" type="ext:InFulfillmentOf1"/>
+
+<!-- complexType for ActReference-->
+<xs:complexType name="ActReference">
+ ... new complexType ...
+</xs:complexType>
+
+<!-- complexType for InFulfillmentOf1 -->
+<xs:complexType name="InFulfillmentOf1">
+ ... new complexType ...
+</xs:complexType>
+
+
+This change is to add extensions to several classes.
+### POCD_MT000040-AU-V1_0.xsd
+
+Change in <xs:complexType name="POCD_MT000040.Act"> to add an extension
+<xs:element ref="ext:inFulfillmentOf1" minOccurs="0" maxOccurs="unbounded" />
+
+Change in <xs:complexType name="POCD_MT000040.EncompassingEncounter"> to add an extension
+<xs:element ref="ext:admissionReferralSourceCode" minOccurs="0" maxOccurs="1"/>
+
+Change in <xs:complexType name="POCD_MT000040.Encounter"> to add 3 extensions
+<xs:element ref="ext:admissionReferralSourceCode" minOccurs="0" maxOccurs="1"/>
+<xs:element ref="ext:dischargeDispositionCode" minOccurs="0"/>			
+<xs:element ref="ext:inFulfillmentOf1" minOccurs="0" maxOccurs="unbounded" />
+
+Change in <xs:complexType name="POCD_MT000040.Material"> to add an extension
+<xs:element ref="ext:expirationTime" minOccurs="0" maxOccurs="1"/>	
+
+Change in <xs:complexType name="POCD_MT000040.Observation"> to add an extension
+<xs:element ref="ext:inFulfillmentOf1" minOccurs="0" maxOccurs="unbounded" />
+
+Change in <xs:complexType name="POCD_MT000040.Person"> to add an extension
+<xs:element ref="ext:languageCommunication" minOccurs="0" maxOccurs="unbounded"/>
+
+Change in <xs:complexType name="POCD_MT000040.PlayingEntity"> to add an extension
+<xs:element ref="ext:languageCommunication" minOccurs="0" maxOccurs="unbounded"/>
+
+Change in <xs:complexType name="POCD_MT000040.Procedure"> to add an extension
+<xs:element ref="ext:inFulfillmentOf1" minOccurs="0" maxOccurs="unbounded" />
+
+Change in <xs:complexType name="POCD_MT000040.RelatedSubject"> to add an extension
+<xs:element ref="ext:id" minOccurs="0" maxOccurs="unbounded" />
+
+Change in <xs:complexType name="POCD_MT000040.SubjectPerson"> to add an extension
+<xs:element ref="ext:languageCommunication" minOccurs="0" maxOccurs="unbounded"/>
+
+Change in <xs:complexType name="POCD_MT000040.SubstanceAdministration"> to add an extension
+<xs:element ref="ext:inFulfillmentOf1" minOccurs="0" maxOccurs="unbounded" />
+
+Change in <xs:complexType name="POCD_MT000040.Supply"> to add an extension
+<xs:element ref="ext:inFulfillmentOf1" minOccurs="0" maxOccurs="unbounded" />
+
+
+This change is to add missing value to AddressUse
+### voc-V3_0.xsd
+
+Change in <xs:simpleType name="AddressUse"> to add a missing value
+<xs:enumeration value="OLD"/>
+
+---
 ### 05/07/2017
 ---
 

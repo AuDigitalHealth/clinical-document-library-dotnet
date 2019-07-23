@@ -302,14 +302,14 @@ namespace Nehta.VendorLibrary.CDA.Sample
                 medication.ClinicalIndication = "Diuretic induced hypokalemia";
                 medication.Comment = "Taken with food";
                 medication.Directions = BaseCDAModel.CreateStructuredText("2 tablets once daily oral");
-                medication.Medicine = BaseCDAModel.CreateCodableText("5884011000036107", CodingSystem.AMTV3, "	Span K 600 mg (potassium 8 mmol) modified release tablet");
+                medication.Medicine = BaseCDAModel.CreateCodableText("5884011000036107", CodingSystem.AMTV3, "Span K 600 mg (potassium 8 mmol) modified release tablet");
                 medicationList.Add(medication);                                                                 
 
                 var medication1 = SharedHealthSummary.CreateMedication();
                 medication1.ClinicalIndication = "Arthritis pain management";
                 medication1.Comment = "Swallow whole";
                 medication1.Directions = BaseCDAModel.CreateStructuredText("2 tablets three times per day");
-                medication1.Medicine = BaseCDAModel.CreateCodableText("5848011000036106", CodingSystem.AMTV3, "	Panadol Osteo 665 mg modified release tablet");
+                medication1.Medicine = BaseCDAModel.CreateCodableText("5848011000036106", CodingSystem.AMTV3, "Panadol Osteo 665 mg modified release tablet");
                 medicationList.Add(medication1);
 
                 var medication2 = SharedHealthSummary.CreateMedication();
@@ -322,19 +322,19 @@ namespace Nehta.VendorLibrary.CDA.Sample
                 var medication3 = SharedHealthSummary.CreateMedication();
                 medication3.ClinicalIndication = "COPD";
                 medication3.Directions = BaseCDAModel.CreateStructuredText("1 inhalation per day");
-                medication3.Medicine = BaseCDAModel.CreateCodableText("7113011000036100", CodingSystem.AMTV3, "	Spiriva 18 microgram powder for inhalation, 1 capsule");
+                medication3.Medicine = BaseCDAModel.CreateCodableText("7113011000036100", CodingSystem.AMTV3, "Spiriva 18 microgram powder for inhalation, 1 capsule");
                 medicationList.Add(medication3);
 
                 var medication4 = SharedHealthSummary.CreateMedication();
                 medication4.ClinicalIndication = "Depression";
                 medication4.Directions = BaseCDAModel.CreateStructuredText("Dose:1, Frequency: 3 times daily");
-                medication4.Medicine = BaseCDAModel.CreateCodableText("32481000036107", CodingSystem.AMTV3, "	Exatrust 25 mg film-coated tablet");
+                medication4.Medicine = BaseCDAModel.CreateCodableText("32481000036107", CodingSystem.AMTV3, "Exatrust 25 mg film-coated tablet");
                 medicationList.Add(medication4);
 
                 var medication5 = SharedHealthSummary.CreateMedication();
                 medication5.ClinicalIndication = "Depression";
                 medication5.Directions = BaseCDAModel.CreateStructuredText("Dose:1, Frequency: as required");
-                medication5.Medicine = BaseCDAModel.CreateCodableText("32481000036107", CodingSystem.AMTV3, "	Exatrust 25 mg film-coated tablet");
+                medication5.Medicine = BaseCDAModel.CreateCodableText("32481000036107", CodingSystem.AMTV3, "Exatrust 25 mg film-coated tablet");
                 medicationList.Add(medication5);
                 medications.Medications = medicationList;
 
@@ -375,7 +375,7 @@ namespace Nehta.VendorLibrary.CDA.Sample
 
                 var prodcedure2 = BaseCDAModel.CreateProcedure();
                 prodcedure2.Comment = "Comment";
-                prodcedure2.ProcedureName = BaseCDAModel.CreateCodableText("388544006", CodingSystem.SNOMED, "Crab RAST");
+                prodcedure2.ProcedureName = BaseCDAModel.CreateCodableText("388544006", CodingSystem.SNOMED, "Crab specific IgE antibody measurement");
                 prodcedure2.ProcedureDateTime = CdaInterval.CreateLow(new ISO8601DateTime(DateTime.Now.AddDays(-400), ISO8601DateTime.Precision.Day));
                 procedureList.Add(prodcedure2);
 
@@ -536,14 +536,12 @@ namespace Nehta.VendorLibrary.CDA.Sample
                 var immunisationList = new List<IImmunisation>();
 
                 immunisation.DateTime = new ISO8601DateTime(DateTime.Now);
-                immunisation.Medicine = BaseCDAModel.CreateCodableText("74993011000036102", CodingSystem.AMTV3,
-                    "measles virus (Schwarz) live attenuated vaccine + mumps virus (Jeryl Lynn, strain RIT 4385) live attenuated vaccine + rubella virus (Wistar RA 27/3) live attenuated vaccine");
+                immunisation.Medicine = BaseCDAModel.CreateCodableText("1004461000168106", CodingSystem.AMTV3, "M-M-R II powder for injection, 10 vials");
                 immunisationList.Add(immunisation);
 
                 var immunisation2 = SharedHealthSummary.CreateImmunisation();
                 immunisation2.DateTime = new ISO8601DateTime(DateTime.Now);
-                immunisation2.Medicine = BaseCDAModel.CreateCodableText("74993011000036102", CodingSystem.AMTV3, 
-                    "measles virus (Schwarz) live attenuated vaccine + mumps virus (Jeryl Lynn, strain RIT 4385) live attenuated vaccine + rubella virus (Wistar RA 27/3) live attenuated vaccine");
+                immunisation2.Medicine = BaseCDAModel.CreateCodableText("1004461000168106", CodingSystem.AMTV3, "M-M-R II powder for injection, 10 vials");
                 immunisation2.SequenceNumber = 1;
                 immunisationList.Add(immunisation2);
 

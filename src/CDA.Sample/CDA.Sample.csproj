@@ -56,9 +56,8 @@
     <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Nehta.VendorLibrary.Common, Version=4.2.0.1, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Nehta.VendorLibrary.Common.4.2.0.1\lib\net40\Nehta.VendorLibrary.Common.dll</HintPath>
-      <Private>True</Private>
+    <Reference Include="Nehta.VendorLibrary.Common, Version=4.2.1.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Nehta.VendorLibrary.Common.4.2.1\lib\net40\Nehta.VendorLibrary.Common.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.configuration" />

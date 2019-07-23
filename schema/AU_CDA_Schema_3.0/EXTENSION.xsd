@@ -108,8 +108,22 @@
 
 	<!-- Begin desc -->
 	<xs:element name="desc" type="hl7:ST"/>
-	<!-- End desc -->
+	<!-- End desc -->	
+	
+	<!-- Extension for languageCommunication -->
+	<xs:element name="languageCommunication" type="hl7:POCD_MT000040.LanguageCommunication"/>
+	
+	<!-- Extension for admissionReferralSourceCode -->
+	<xs:element name="admissionReferralSourceCode" type="hl7:CE"/>
 
+	<!-- Extension for expirationTime -->
+	<xs:element name="expirationTime" type="hl7:TS"/>
+
+	<!-- Extension for dischargeDispositionCode -->
+	<xs:element name="dischargeDispositionCode" type="hl7:CE" />
+
+	<!-- Extension for inFulfillmentOf1 -->
+	<xs:element name="inFulfillmentOf1" type="ext:InFulfillmentOf1"/>
 
 	<!-- Begin Ingredient -->
 	<xs:complexType name="Ingredient">
@@ -460,5 +474,33 @@
 		<xs:attribute name="moodCode" type="hl7:ActMood" use="required" fixed="PERM"/>
 	</xs:complexType>
 	<!-- End: Coverage (Authority Approval Number & Medical Benefit Category Type) (coverage)-->
+
+	<!-- Begin: ActReference -->
+	<xs:complexType name="ActReference">
+		<xs:sequence>
+			<xs:element name="realmCode" type="hl7:CS" minOccurs="0" maxOccurs="unbounded"/>
+			<xs:element name="typeId" type="hl7:POCD_MT000040.InfrastructureRoot.typeId" minOccurs="0"/>
+			<xs:element name="templateId" type="hl7:II" minOccurs="0" maxOccurs="unbounded"/>
+			<xs:element name="id" type="hl7:II" minOccurs="1" maxOccurs="unbounded"/>
+		</xs:sequence>
+		<xs:attribute name="classCode" type="hl7:ActClass" use="required"/>
+		<xs:attribute name="moodCode" type="hl7:x_DocumentActMood" use="required"/>
+		<xs:attribute name="determinerCode" type="hl7:EntityDeterminer" use="optional" fixed="INSTANCE"/>
+	</xs:complexType>
+	<!-- End: ActReference -->
+
+	<!-- Begin: InFulfillmentOf1 -->
+	<xs:complexType name="InFulfillmentOf1">
+		<xs:sequence>
+			<xs:element name="realmCode" type="hl7:CS" minOccurs="0" maxOccurs="unbounded"/>
+			<xs:element name="typeId" type="hl7:POCD_MT000040.InfrastructureRoot.typeId" minOccurs="0"/>
+			<xs:element name="templateId" type="hl7:II" minOccurs="0" maxOccurs="unbounded"/>
+			<xs:element name="actReference" type="ext:ActReference"/>
+		</xs:sequence>
+		<xs:attribute name="typeCode" type="hl7:ActRelationshipFulfills" use="required" fixed="FLFS"/>
+		<xs:attribute name="inversionInd" type="hl7:bl" use="optional"/>
+		<xs:attribute name="negationInd" type="hl7:bl" use="optional"/>
+	</xs:complexType>
+	<!-- End: InFulfillmentOf1 -->
 
 </xs:schema>

@@ -3499,7 +3499,7 @@ namespace Nehta.VendorLibrary.CDA.Common
       {
           return new Participation
           {
-              Role = CreateRole(Occupation.Pharmacists)
+              Role = CreateRole(Occupation.Pharmacistsnfd)
           };
       }
 

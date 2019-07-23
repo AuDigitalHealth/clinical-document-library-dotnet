@@ -579,13 +579,13 @@ namespace Nehta.VendorLibrary.CDA.Sample
 
                 var prodcedure2 = EventSummary.CreateProcedure();
                 prodcedure2.Comment = "Comment";
-                prodcedure2.ProcedureName = BaseCDAModel.CreateCodableText("388544006", CodingSystem.SNOMED, "Crab RAST");
+                prodcedure2.ProcedureName = BaseCDAModel.CreateCodableText("388544006", CodingSystem.SNOMED, "Crab specific IgE antibody measurement");
                 prodcedure2.ProcedureDateTime = CdaInterval.CreateLow(new ISO8601DateTime(DateTime.Now.AddDays(-400), ISO8601DateTime.Precision.Day));
                 procedureList.Add(prodcedure2);
 
                 var prodcedure3 = EventSummary.CreateProcedure();
                 prodcedure3.Comment = "Comment";
-                prodcedure3.ProcedureName = BaseCDAModel.CreateCodableText("388544006", CodingSystem.SNOMED, "Crab RAST");
+                prodcedure3.ProcedureName = BaseCDAModel.CreateCodableText("388544006", CodingSystem.SNOMED, "Crab specific IgE antibody measurement");
                 prodcedure3.ProcedureDateTime = CdaInterval.CreateHigh(new ISO8601DateTime(DateTime.Now.AddDays(-400), ISO8601DateTime.Precision.Day));
                 prodcedure3.ShowOngoingInNarrative = true;
                 procedureList.Add(prodcedure3);
@@ -672,7 +672,7 @@ namespace Nehta.VendorLibrary.CDA.Sample
             reaction.ReactionEvent = BaseCDAModel.CreateReactionEvent();
             reaction.ReactionEvent.Manifestations = new List<ICodableText>
             {
-                BaseCDAModel.CreateCodableText("248265004", CodingSystem.SNOMED, "Work stress"),
+                BaseCDAModel.CreateCodableText("276074009", CodingSystem.SNOMED, "Stress at work"),
                 BaseCDAModel.CreateCodableText("425392003", CodingSystem.SNOMED, "Active advance directive")
             };
 

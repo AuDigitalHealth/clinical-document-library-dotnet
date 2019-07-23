@@ -1,5 +1,14 @@
 ## Change Log/Revision History
 
+4.6.0 - Reference Platform Clinical Document Library (July 2017)
+----------------------------------------------------
+- Relax the validation check on the role of the document author to allow multiple authors 
+  to be specified in the narrative and consequently none in the atomic data in pathology 
+  reports and diagnostic imaging reports.
+- Relax the validation check on the organisation of the person to allow the requester 
+  organisation to be unknown.
+- Removed incorrect occupation code - 2515
+
 4.5.3 - Reference Platform Clinical Document Library (Jan 2019)
 ----------------------------------------------------
 - Updated captions to Clinical Summary for DS and ES for Clinical Synopsis and Event Details sections 

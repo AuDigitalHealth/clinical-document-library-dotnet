@@ -1787,6 +1787,8 @@
          <xs:enumeration value="PG"/>
          <xs:enumeration value="HP"/>
          <xs:enumeration value="HV"/>
+		 <!-- Following value was missing but should have been here: OLD -->
+		 <xs:enumeration value="OLD"/>         
          <xs:enumeration value="DIR"/>
          <xs:enumeration value="PUB"/>
       </xs:restriction>

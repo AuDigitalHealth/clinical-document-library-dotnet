@@ -631,7 +631,7 @@ namespace Nehta.VendorLibrary.CDA.Sample
                 medication.ClinicalIndication = "Diuretic induced hypokalemia";
                 medication.Comment = "Taken with food";
                 medication.Directions = BaseCDAModel.CreateStructuredText("2 tablets once daily oral");
-                medication.Medicine = BaseCDAModel.CreateCodableText("5884011000036107", CodingSystem.AMTV3, "	Span K 600 mg (potassium 8 mmol) modified release tablet");
+                medication.Medicine = BaseCDAModel.CreateCodableText("5884011000036107", CodingSystem.AMTV3, "Span K 600 mg (potassium 8 mmol) modified release tablet");
                 medicationList.Add(medication);                                                                 
 
                 var medication1 = BaseCDAModel.CreateMedication();
@@ -757,7 +757,7 @@ namespace Nehta.VendorLibrary.CDA.Sample
 
                 var prodcedure2 = BaseCDAModel.CreateProcedure();
                 prodcedure2.Comment = "Comment";
-                prodcedure2.ProcedureName = BaseCDAModel.CreateCodableText("388544006", CodingSystem.SNOMED, "Crab RAST");
+                prodcedure2.ProcedureName = BaseCDAModel.CreateCodableText("388544006", CodingSystem.SNOMED, "Crab specific IgE antibody measurement");
                 prodcedure2.ProcedureDateTime = CdaInterval.CreateLow(new ISO8601DateTime(DateTime.Now.AddDays(-400), ISO8601DateTime.Precision.Day));
                 procedureList.Add(prodcedure2);
 

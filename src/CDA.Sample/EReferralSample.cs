@@ -776,7 +776,7 @@ namespace Nehta.VendorLibrary.CDA.Sample
 
                 var prodcedure2 = BaseCDAModel.CreateProcedure();
                 prodcedure2.Comment = "Comment";
-                prodcedure2.ProcedureName = BaseCDAModel.CreateCodableText("388544006", CodingSystem.SNOMED, "Crab RAST");
+                prodcedure2.ProcedureName = BaseCDAModel.CreateCodableText("388544006", CodingSystem.SNOMED, "Crab specific IgE antibody measurement");
                 procedureList.Add(prodcedure2);
 
                 // Uncategorised Medical History Items
