@@ -1,0 +1,264 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="AUSEHRSetToN" xml:space="preserve">
+    <value>The AUSEHR Flag has been set to 'N' for this Patient indicating this Patient does not have a PCEHR.</value>
+  </data>
+  <data name="DatabaseError" xml:space="preserve">
+    <value>Database error in {0}, please check SystemErrorLog</value>
+  </data>
+  <data name="DemographicsNotAllowedForThisService" xml:space="preserve">
+    <value>This service does not allow a patient identifier of Demographic type</value>
+  </data>
+  <data name="HospitalNotFound" xml:space="preserve">
+    <value>No hospital was found with the given code and code system.</value>
+  </data>
+  <data name="HospitalPatientNotFound" xml:space="preserve">
+    <value>The patient has no MRN at the given hospital.</value>
+  </data>
+  <data name="HpiiNotSupplied" xml:space="preserve">
+    <value>HL7 message does not contain a Health Provider's HPI-I. Document cannot be uploaded to the PCEHR</value>
+  </data>
+  <data name="HpiiNotValid" xml:space="preserve">
+    <value>Health Provider's HPI-I is not valid. Document cannot be uploaded to the PCEHR</value>
+  </data>
+  <data name="IhiLengthNot16" xml:space="preserve">
+    <value>The IHI for this patient had the wrong length and cannot be used to access the PCEHR.</value>
+  </data>
+  <data name="IhiNotSupplied" xml:space="preserve">
+    <value>No IHI was found for this patient and so the PCEHR cannot be accessed.</value>
+  </data>
+  <data name="IhiRecordStatusNotVerified" xml:space="preserve">
+    <value>The IHI for this patient is not verified and cannot be used to access the PCEHR.</value>
+  </data>
+  <data name="IhiStatusDemographicMismatch" xml:space="preserve">
+    <value>There is an unresolved alert of type 'Demographic Mismatch' for this patient. PCEHR cannot be accessed until this alert is resolved.</value>
+  </data>
+  <data name="IhiStatusDuplicateIhi" xml:space="preserve">
+    <value>There is an unresolved alert of type 'Duplicate IHI' for this patient. PCEHR cannot be accessed until this alert is resolved.</value>
+  </data>
+  <data name="IhiStatusDuplicatePatient" xml:space="preserve">
+    <value>There is an unresolved alert of type 'Duplicate Patient' for this patient. PCEHR cannot be accessed until this alert is resolved.</value>
+  </data>
+  <data name="IhiStatusExpired" xml:space="preserve">
+    <value>The IHI for this patient is expired and cannot be used to access the PCEHR.</value>
+  </data>
+  <data name="IhiStatusMedicareDvaChangeMismatch" xml:space="preserve">
+    <value>There is an unresolved alert of type 'Medicare/DVA Change Mismatch' for this patient. PCEHR cannot be accessed until this alert is resolved.</value>
+  </data>
+  <data name="IhiStatusMergeConflict" xml:space="preserve">
+    <value>The IHI for this patient conflicted with the IHI of another patient with which this patient was merged, and cannot be used to access the PCEHR.</value>
+  </data>
+  <data name="IhiStatusNotHandled" xml:space="preserve">
+    <value>HIPS encountered an unexpected IHI status.</value>
+  </data>
+  <data name="IhiStatusResolved" xml:space="preserve">
+    <value>The IHI for this patient is resolved and cannot be used to access the PCEHR.</value>
+  </data>
+  <data name="IhiStatusRetired" xml:space="preserve">
+    <value>The IHI for this patient is retired and cannot be used to access the PCEHR.</value>
+  </data>
+  <data name="IhiStatusServiceUnavailable" xml:space="preserve">
+    <value>The IHI for this patient requires validation but the HI Service was not available. Please try the operation again.</value>
+  </data>
+  <data name="IhiStatusUnknown" xml:space="preserve">
+    <value>The IHI for this patient is invalid and cannot be used to access the PCEHR.</value>
+  </data>
+  <data name="InvalidSex" xml:space="preserve">
+    <value>The sex of this patient was not recognised.</value>
+  </data>
+  <data name="LogoNotSupplied" xml:space="preserve">
+    <value>Document references logo file {0} which was not supplied and there was no logo configured in the Hospital table.</value>
+  </data>
+  <data name="LogoTooLarge" xml:space="preserve">
+    <value>Organisational logo for hospital {0} with size {1}x{2} pixels exceeds the 400x100 limit for uploading to PCEHR.</value>
+  </data>
+  <data name="MrnNotFound" xml:space="preserve">
+    <value>No patient was found with the given MRN.</value>
+  </data>
+  <data name="MultipleOrderingProvidersExist" xml:space="preserve">
+    <value>There is more than one Ordering Provider. The document cannot be uploaded.</value>
+  </data>
+  <data name="NameNotSupplied" xml:space="preserve">
+    <value>The name of this patient was not supplied.</value>
+  </data>
+  <data name="PatientMasterIdNotFound" xml:space="preserve">
+    <value>No patient was found with the given patient master identifier.</value>
+  </data>
+  <data name="PCEHRNotDisclosed" xml:space="preserve">
+    <value>The Patients PCEHR has not been advertised or disclosed. The Report cannot be uploaded.</value>
+  </data>
+  <data name="StatePatientIdNotFound" xml:space="preserve">
+    <value>No patient was found with the given enterprise patient identifier.</value>
+  </data>
+  <data name="UnableToGetEpisode" xml:space="preserve">
+    <value>The admission at {0} for the patient {1} at {2} could not be found.  Check that this is the correct Patient Identifier.</value>
+  </data>
+  <data name="UnableToGetHospitalList" xml:space="preserve">
+    <value>Database access failed when populating the list of hospitals.</value>
+  </data>
+  <data name="UnableToGetPatientMaster" xml:space="preserve">
+    <value>Database access failed when retrieving patient record.</value>
+  </data>
+  <data name="UnableToInsertPatientStub" xml:space="preserve">
+    <value>Database access failed when creating patient record.</value>
+  </data>
+  <data name="UnknownPatientIdentifierType" xml:space="preserve">
+    <value>A patient identifier of unknown type was supplied.</value>
+  </data>
+  <data name="VisitorHospitalNotFound" xml:space="preserve">
+    <value>Vistor Hospital for hospital code {0} with HospitalId {1} not found.</value>
+  </data>
+  <data name="VisitorHospitalNotFoundByCode" xml:space="preserve">
+    <value>Visitor Hospital for hospital code {0} with code system {1} not found.</value>
+  </data>
+  <data name="HpiiLengthNot16" xml:space="preserve">
+    <value>The HPI-I for this Health Provider has the wrong length and cannot be used to access the PCEHR</value>
+  </data>
+  <data name="HealthProviderNotFound" xml:space="preserve">
+    <value>No Health Provider record was found for the local provider indentifier. The Report cannot be uploaded to the PCEHR</value>
+  </data>
+  <data name="MultiplePrimaryIdentifiersFound" xml:space="preserve">
+    <value>The HL7 Message contains multiple Primary Identfiers. The Report cannot be uploaded to the PCEHR</value>
+  </data>
+  <data name="HealthProviderNameNotSupplied" xml:space="preserve">
+    <value>The HL7 message does not contain the Health Provider's Family Name. The Report cannot be uploaded.</value>
+  </data>
+  <data name="ErrorUnableToAddOrEditLocalProvider" xml:space="preserve">
+    <value>(ERROR) Unable to add or edit local provider</value>
+  </data>
+  <data name="ErrorUnableToDeactivateLocalProvider" xml:space="preserve">
+    <value>(ERROR) Unable to deactivate local provider</value>
+  </data>
+  <data name="ExistingProviderWithHPIIFound" xml:space="preserve">
+    <value>An existing provider with the specified HPI-I was found.</value>
+  </data>
+  <data name="UnableToListLocalProviders" xml:space="preserve">
+    <value>Database access failed when populating the list of local providers.</value>
+  </data>
+  <data name="InvalidUserDetails" xml:space="preserve">
+    <value>Invalid user details</value>
+  </data>
+  <data name="MissingUserValues" xml:space="preserve">
+    <value>Missing user values</value>
+  </data>
+  <data name="AUSEHRNotValid" xml:space="preserve">
+    <value>The AUSEHR Flag has been set to an invalid value. Check the AUSEHR Flag is correct.</value>
+  </data>
+</root>

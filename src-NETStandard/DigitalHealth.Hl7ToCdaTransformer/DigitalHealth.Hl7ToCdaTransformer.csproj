@@ -1,0 +1,98 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{717A20F2-0503-4F32-8E6A-745F8609BABE}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>DigitalHealth.Hl7ToCdaTransformer</RootNamespace>
+    <AssemblyName>DigitalHealth.Hl7ToCdaTransformer</AssemblyName>
+    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>TRACE;DEBUG;LIBLOG_PUBLIC</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Nehta.VendorLibrary.Common, Version=4.2.1.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Nehta.VendorLibrary.Common.4.2.1\lib\net40\Nehta.VendorLibrary.Common.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Interfaces\IDiagnosticImagingTransformer.cs" />
+    <Compile Include="Models\Custodian.cs" />
+    <Compile Include="Models\DiagnosticImagingMetadata.cs" />
+    <Compile Include="Models\DiagnosticImagingTransformResult.cs" />
+    <Compile Include="Models\ReportingPathologist.cs" />
+    <Compile Include="Models\ReportingRadiologist.cs" />
+    <Compile Include="Resources\ConstantsResource.Designer.cs" />
+    <Compile Include="Resources\ResponseStrings.Designer.cs" />
+    <Compile Include="Services\DiagnosticImagingMessageTransformer.cs" />
+    <Compile Include="Services\DiagnosticImagingMessageValidator.cs" />
+    <Compile Include="Services\DiagnosticImagingTransformer.cs" />
+    <Compile Include="Services\MessageTransformerBase.cs" />
+    <Compile Include="Services\MessageValidationException.cs" />
+    <Compile Include="Services\MessageValidatorBase.cs" />
+    <Compile Include="Services\PathologyTransformer.cs" />
+    <Compile Include="Interfaces\IPathologyTransformer.cs" />
+    <Compile Include="EnumHelper.cs" />
+    <Compile Include="Models\ReportAttachment.cs" />
+    <Compile Include="Models\PathologyMetadata.cs" />
+    <Compile Include="Models\PathologyTransformResult.cs" />
+    <Compile Include="Services\PathologyMessageValidator.cs" />
+    <Compile Include="Services\PathologyMessageTransformer.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="TransformerConstants.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\CDA.GeneratedCode\CDA.GeneratedCode.csproj">
+      <Project>{0208153F-D77C-4CD1-B28D-1AADC00E1553}</Project>
+      <Name>CDA.GeneratedCode</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\CDA.Generator.Common\CDA.Generator.Common.csproj">
+      <Project>{851A08A2-728F-4BF7-A050-0E056617A829}</Project>
+      <Name>CDA.Generator.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\CDA.Generator\CDA.Generator.csproj">
+      <Project>{4b542e29-7fa2-4de2-a828-a197da3f6b40}</Project>
+      <Name>CDA.Generator</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\DigitalHealth.Hl7.Common\DigitalHealth.Hl7.Common.csproj">
+      <Project>{D3CAE2FF-E5E0-487A-A99D-086422F96805}</Project>
+      <Name>DigitalHealth.Hl7.Common</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Resources\ConstantsResource.resx" />
+    <EmbeddedResource Include="Resources\ResponseStrings.resx" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>
