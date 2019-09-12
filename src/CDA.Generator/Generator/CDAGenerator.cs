@@ -160,10 +160,12 @@ namespace Nehta.VendorLibrary.CDA.Generator
             clinicalDocument.componentOf = CDAGeneratorHelper.CreateComponentOf(eventSummary.SCSContext.EncounterPeriod, null);
 
             //XML BODY FILE
-            components.Add
-                (
+            if (eventSummary.SCSContent.StructuredBodyFiles != null)
+            {
+                components.Add(
                     CDAGeneratorHelper.CreateStructuredBodyFileComponent(eventSummary.SCSContent.StructuredBodyFiles, NarrativeGenerator)
                 );
+            }
 
             // Setup EventDetails
             components.Add(CDAGeneratorHelper.CreateComponent(eventSummary.SCSContent.EventDetails, NarrativeGenerator));
@@ -446,10 +448,12 @@ namespace Nehta.VendorLibrary.CDA.Generator
             clinicalDocument.custodian = CDAGeneratorHelper.CreateCustodian(consumerEnteredHealthSummary.CDAContext.Custodian);
 
             //XML BODY FILE
-            components.Add
-                (
+            if (consumerEnteredHealthSummary.SCSContent.StructuredBodyFiles != null)
+            {
+                components.Add(
                     CDAGeneratorHelper.CreateStructuredBodyFileComponent(consumerEnteredHealthSummary.SCSContent.StructuredBodyFiles, NarrativeGenerator)
                 );
+            }
 
             components.Add(CDAGeneratorHelper.CreateComponent(consumerEnteredHealthSummary.SCSContent.AllergiesAndAdverseReactions, consumerEnteredHealthSummary.SCSContent.CustomNarrativeAllergiesAndAdverseReactions ,NarrativeGenerator));
 
@@ -532,10 +536,12 @@ namespace Nehta.VendorLibrary.CDA.Generator
             clinicalDocument.custodian = CDAGeneratorHelper.CreateCustodian(consumerEnteredNotes.CDAContext.Custodian);
 
             //XML BODY FILE
-            components.Add
-                (
+            if (consumerEnteredNotes.SCSContent.StructuredBodyFiles != null)
+            {
+                components.Add(
                     CDAGeneratorHelper.CreateStructuredBodyFileComponent(consumerEnteredNotes.SCSContent.StructuredBodyFiles, NarrativeGenerator)
                 );
+            }
 
             // Build content
             if (consumerEnteredNotes.SCSContent != null && (!consumerEnteredNotes.SCSContent.Title.IsNullOrEmptyWhitespace() || !consumerEnteredNotes.SCSContent.Description.IsNullOrEmptyWhitespace()))
@@ -626,11 +632,13 @@ namespace Nehta.VendorLibrary.CDA.Generator
             clinicalDocument.custodian = CDAGeneratorHelper.CreateCustodian(acdCustodianRecord.CDAContext.Custodian);
 
             //XML BODY FILE
-            components.Add
-                (
+            if (acdCustodianRecord.SCSContent.StructuredBodyFiles != null)
+            {
+                components.Add(
                     CDAGeneratorHelper.CreateStructuredBodyFileComponent(acdCustodianRecord.SCSContent.StructuredBodyFiles, NarrativeGenerator)
                 );
-  
+            }
+
             // Set up ACD custodian records
             components.Add(CDAGeneratorHelper.CreateComponent(acdCustodianRecord.SCSContent.AcdCustodians, acdCustodianRecord.SCSContent.CustomNarrativeACDCustodianEntries ,NarrativeGenerator));
 
@@ -729,10 +737,12 @@ namespace Nehta.VendorLibrary.CDA.Generator
             participants.Add(CDAGeneratorHelper.CreateParticipant(eReferral.SCSContent.UsualGP));
 
             //XML BODY FILE
-            components.Add
-            (
-                CDAGeneratorHelper.CreateStructuredBodyFileComponent(eReferral.SCSContent.StructuredBodyFiles, NarrativeGenerator)
-            );
+            if (eReferral.SCSContent.StructuredBodyFiles != null)
+            {
+                components.Add(
+                    CDAGeneratorHelper.CreateStructuredBodyFileComponent(eReferral.SCSContent.StructuredBodyFiles, NarrativeGenerator)
+                );
+            }
 
             //Add Narrative Only Document 
             if (eReferral.SCSContent.NarrativeOnlyDocument != null && eReferral.SCSContent.NarrativeOnlyDocument.Any())
@@ -842,11 +852,13 @@ namespace Nehta.VendorLibrary.CDA.Generator
             //SETUP the Custodian
             clinicalDocument.custodian = CDAGeneratorHelper.CreateCustodian(sharedHealthSummary.CDAContext.Custodian);
 
-            //XML body file
-            components.Add
-            (
-                CDAGeneratorHelper.CreateStructuredBodyFileComponent(sharedHealthSummary.SCSContent.StructuredBodyFiles, NarrativeGenerator)
-            );
+            //XML BODY FILE
+            if (sharedHealthSummary.SCSContent.StructuredBodyFiles != null)
+            {
+                components.Add(
+                    CDAGeneratorHelper.CreateStructuredBodyFileComponent(sharedHealthSummary.SCSContent.StructuredBodyFiles, NarrativeGenerator)
+                );
+            }
 
             components.Add(CDAGeneratorHelper.CreateComponent((SCSModel.Common.AdverseReactions)sharedHealthSummary.SCSContent.AdverseReactions, NarrativeGenerator, "103.16302.120.1.1"));
             components.Add(CDAGeneratorHelper.CreateComponent(sharedHealthSummary.SCSContent.Medications, NarrativeGenerator, CDADocumentType.SharedHeathSummary));
@@ -945,11 +957,22 @@ namespace Nehta.VendorLibrary.CDA.Generator
             }
 
             //XML BODY FILE
-            components.Add
-                (
-                    CDAGeneratorHelper.CreateStructuredBodyFileComponent(specialistLetter.SCSContent.StructuredBodyFiles, NarrativeGenerator)
-                );
+            if (specialistLetter.SCSContent.StructuredBodyFiles != null)
+            {
+                var component = CDAGeneratorHelper.CreateStructuredBodyFileComponent(specialistLetter.SCSContent.StructuredBodyFiles, NarrativeGenerator);
 
+                // 31/05/2017 - CDANarrativeGenerator.cs CreateNarrative() Line 1753
+                // HIPS Enhancement: puts each rendered multimedia item into a separate paragraph.
+                // Template Package rule needs to be fixed for 1A Specialist Letter which throws an error for the below
+                // Work around in place:
+
+                // So just remove the paragraph tags
+                var rmm = component.section.text.paragraph[0].renderMultiMedia;
+                component.section.text = new StrucDocText();
+                component.section.text.renderMultiMedia = rmm;
+                components.Add(component);
+            }
+            
             //Add Narrative Only Document 
             if (specialistLetter.SCSContent.NarrativeOnlyDocument != null && specialistLetter.SCSContent.NarrativeOnlyDocument.Any())
                 components.AddRange
@@ -1087,10 +1110,12 @@ namespace Nehta.VendorLibrary.CDA.Generator
             }
 
             //XML BODY FILE
-            components.Add
-                (
+            if (eDischargeSummary.SCSContent.StructuredBodyFiles != null)
+            {
+                components.Add(
                     CDAGeneratorHelper.CreateStructuredBodyFileComponent(eDischargeSummary.SCSContent.StructuredBodyFiles, NarrativeGenerator)
                 );
+            }
 
             //Add Narrative Only Document 
             if (eDischargeSummary.SCSContent.NarrativeOnlyDocument != null && eDischargeSummary.SCSContent.NarrativeOnlyDocument.Any())
@@ -3186,11 +3211,13 @@ namespace Nehta.VendorLibrary.CDA.Generator
             //SETUP the Custodian
             clinicalDocument.custodian = CDAGeneratorHelper.CreateCustodian(serviceReferral.CDAContext.Custodian);
 
-            //XML body file
-            components.Add
-            (
-                CDAGeneratorHelper.CreateStructuredBodyFileComponent(serviceReferral.SCSContent.StructuredBodyFiles, NarrativeGenerator)
-            );
+            //XML BODY FILE
+            if (serviceReferral.SCSContent.StructuredBodyFiles != null)
+            {
+                components.Add(
+                    CDAGeneratorHelper.CreateStructuredBodyFileComponent(serviceReferral.SCSContent.StructuredBodyFiles, NarrativeGenerator)
+                );
+            }
 
             // Service Referral Detail 
             if (serviceReferral.SCSContent.ServiceReferralDetail != null)

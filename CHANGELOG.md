@@ -1,6 +1,11 @@
 ## Change Log/Revision History
 
-4.6.0 - Reference Platform Clinical Document Library (July 2017)
+4.X.0 - Reference Platform Clinical Document Library (XXXX 2019) - In progress
+----------------------------------------------------
+- Removed <paragraph> tag for 1A specialist letter narrative (as TP has not been fixed)
+
+
+4.6.0 - Reference Platform Clinical Document Library (July 2019)
 ----------------------------------------------------
 - Relax the validation check on the role of the document author to allow multiple authors 
   to be specified in the narrative and consequently none in the atomic data in pathology 

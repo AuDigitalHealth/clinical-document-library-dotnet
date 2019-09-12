@@ -1763,7 +1763,7 @@ namespace Nehta.VendorLibrary.CDA.Generator
 
                 // 31/05/2017 PW
                 // HIPS Enhancement: put each rendered multimedia item into a separate paragraph.
-                // This will throw an error for 1A Specialist Letter - asked Schematron team to remove rule for next version
+                // Template Package rule needs to be fixed for 1A Specialist Letter which throws an error for the below (work around in place)
                 // The next line was previously: strucDocText.renderMultiMedia = renderMultiMediaList.ToArray();
                 strucDocText.paragraph = renderMultiMediaList.Select(item => new StrucDocParagraph()
                 {
