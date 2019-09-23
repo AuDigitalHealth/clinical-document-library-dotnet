@@ -7,8 +7,8 @@
     <ProjectGuid>{363DE0DE-A5FC-4298-9D2D-F6C66432A0E4}</ProjectGuid>
     <OutputType>Exe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>CDA.PCML</RootNamespace>
-    <AssemblyName>CDA.PCML</AssemblyName>
+    <RootNamespace>CDA.PSML</RootNamespace>
+    <AssemblyName>CDA.PSML</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
@@ -48,7 +48,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="GenericObjectReuseSample.cs" />
-    <Compile Include="PCMLSample.cs" />
+    <Compile Include="PSMLSample.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

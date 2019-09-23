@@ -267,7 +267,7 @@ namespace Nehta.VendorLibrary.CDA.Sample
 
             // Document Author > Participant > Per-son or Organisation or Device > Person > Person Name
             var name1 = BaseCDAModel.CreatePersonName();
-            name1.FamilyName = "Doctor";
+            name1.FamilyName = "Healthy";
 
             var name2 = BaseCDAModel.CreatePersonName();
             name2.FamilyName = "Wong";
@@ -278,8 +278,8 @@ namespace Nehta.VendorLibrary.CDA.Sample
             {
                 author.Participant.RelationshipToSubjectOfCare = BaseCDAModel.CreateRole(Occupation.MedicalOncologist);
 
-                name1.GivenNames = new List<string> { "Good" };
-                name1.Titles = new List<string> { "Doctor" };
+                name1.GivenNames = new List<string> { "Fitun" };
+                name1.Titles = new List<string> { "Dr" };
                 name1.NameUsages = new List<NameUsage> { NameUsage.Legal };
 
                 name2.GivenNames = new List<string> { "Davey" };
@@ -303,13 +303,11 @@ namespace Nehta.VendorLibrary.CDA.Sample
                 address1.AustralianAddress.SuburbTownLocality = "Nehtaville";
                 address1.AustralianAddress.State = AustralianState.QLD;
                 address1.AustralianAddress.PostCode = "5555";
-                address1.AustralianAddress.DeliveryPointId = 32568931;
 
                 address2.AustralianAddress.UnstructuredAddressLines = new List<string> { "2 Clinician Street" };
                 address2.AustralianAddress.SuburbTownLocality = "Nehtaville";
                 address2.AustralianAddress.State = AustralianState.QLD;
                 address2.AustralianAddress.PostCode = "5555";
-                address2.AustralianAddress.DeliveryPointId = 32568931;
 
                 // Document Author > Participant > Electronic Communication Detail
                 var coms1 = BaseCDAModel.CreateElectronicCommunicationDetail(

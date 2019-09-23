@@ -165,8 +165,10 @@ namespace Nehta.VendorLibrary.CDA.Sample
             var narrativeOnlyDocumentList = new List<NarrativeOnlyDocument>();
 
             var narrativeOnlyDocument = BaseCDAModel.CreateNarrativeOnlyDocument();
-            narrativeOnlyDocument.Title = "Title";
-            narrativeOnlyDocument.Narrative = new StrucDocText { Text = new[] { "Narrative" } };
+            narrativeOnlyDocument.Title = "Narrative Title";
+            narrativeOnlyDocument.Narrative = new StrucDocText
+                { paragraph = new[] { new StrucDocParagraph { Text = new[] { "The narrative goes here" } } } };
+
 
             // Add One
             narrativeOnlyDocumentList.Add(narrativeOnlyDocument);
@@ -420,11 +422,12 @@ namespace Nehta.VendorLibrary.CDA.Sample
             GenericObjectReuseSample.HydrateCustodian(cdaContext.Custodian, mandatorySectionsOnly);
 
             // Legal authenticator
+            cdaContext.LegalAuthenticator = BaseCDAModel.CreateLegalAuthenticator();
+            GenericObjectReuseSample.HydrateAuthenticator(cdaContext.LegalAuthenticator, mandatorySectionsOnly);
+
+            // InformationRecipients
             if (!mandatorySectionsOnly)
             {
-                cdaContext.LegalAuthenticator = BaseCDAModel.CreateLegalAuthenticator();
-                GenericObjectReuseSample.HydrateAuthenticator(cdaContext.LegalAuthenticator, mandatorySectionsOnly);
-
                 var recipient1 = BaseCDAModel.CreateInformationRecipient();
                 var recipient2 = BaseCDAModel.CreateInformationRecipient();
 
@@ -468,7 +471,7 @@ namespace Nehta.VendorLibrary.CDA.Sample
             eReferral.SCSContent.ReferralDateTime = new ISO8601DateTime(DateTime.Now);
 
             // Validity Duration
-            eReferral.SCSContent.ValidityDuration = BaseCDAModel.CreateInterval(new ISO8601DateTime(DateTime.Now), new ISO8601DateTime(DateTime.Now));
+            eReferral.SCSContent.ValidityDuration = BaseCDAModel.CreateInterval(new ISO8601DateTime(DateTime.Now), new ISO8601DateTime(DateTime.Now.AddDays(14)));
 
             // Referee
             eReferral.SCSContent.Referee = CreateReferee(mandatorySectionsOnly);
@@ -533,13 +536,12 @@ namespace Nehta.VendorLibrary.CDA.Sample
 
             // Address
             var address = BaseCDAModel.CreateAddress();
-            address.AddressPurpose = AddressPurpose.Residential;
+            address.AddressPurpose = AddressPurpose.Business;
             address.AustralianAddress = BaseCDAModel.CreateAustralianAddress();
             address.AustralianAddress.UnstructuredAddressLines = new List<string> { addressLine };
             address.AustralianAddress.SuburbTownLocality = "Nehtaville";
             address.AustralianAddress.State = AustralianState.QLD;
             address.AustralianAddress.PostCode = "5555";
-            address.AustralianAddress.DeliveryPointId = 32568931;
 
             nominatedContact.Participant.Addresses = new List<IAddress> {address};
 
@@ -553,7 +555,7 @@ namespace Nehta.VendorLibrary.CDA.Sample
 
             nominatedContact.Participant.ElectronicCommunicationDetails = new List<ElectronicCommunicationDetail> {electronicCommunicationDetail};
 
-            nominatedContact.Role = !mandatorySectionsOnly ? BaseCDAModel.CreateRole(Occupation.GeneralMedicalPractitioner) : BaseCDAModel.CreateRole(NullFlavour.TemporarilyUnavailable);
+            nominatedContact.Role =  !mandatorySectionsOnly ? BaseCDAModel.CreateRole(HealthcareFacilityTypeCodes.HospitalsExceptPsychiatricHospitals) : BaseCDAModel.CreateRole(NullFlavour.TemporarilyUnavailable);
 
             return nominatedContact;
         }
@@ -594,7 +596,6 @@ namespace Nehta.VendorLibrary.CDA.Sample
             address.AustralianAddress.SuburbTownLocality = "Nehtaville";
             address.AustralianAddress.State = AustralianState.QLD;
             address.AustralianAddress.PostCode = "5555";
-            address.AustralianAddress.DeliveryPointId = 32568931;
 
             nominatedContact.Participant.Addresses = new List<IAddress> { address };
 
@@ -639,7 +640,6 @@ namespace Nehta.VendorLibrary.CDA.Sample
             address.AustralianAddress.SuburbTownLocality = "Nehtaville";
             address.AustralianAddress.State = AustralianState.QLD;
             address.AustralianAddress.PostCode = "5555";
-            address.AustralianAddress.DeliveryPointId = 32568931;
 
             var addressList = new List<IAddress>{ address };
 
@@ -649,7 +649,7 @@ namespace Nehta.VendorLibrary.CDA.Sample
 
             participant.ElectronicCommunicationDetails = new List<ElectronicCommunicationDetail> { electronicCommunicationDetail };
 
-            usualGP.Role = BaseCDAModel.CreateRole(Occupation.GeneralMedicalPractitioner);
+            usualGP.Role = BaseCDAModel.CreateRole(HealthcareFacilityTypeCodes.HospitalsExceptPsychiatricHospitals);
 
             usualGP.Participant = participant;
 
@@ -694,7 +694,6 @@ namespace Nehta.VendorLibrary.CDA.Sample
             address.AustralianAddress.SuburbTownLocality = "Nehtaville";
             address.AustralianAddress.State = AustralianState.QLD;
             address.AustralianAddress.PostCode = "5555";
-            address.AustralianAddress.DeliveryPointId = 32568931;
 
             var addressList = new List<IAddress>{ address };
 
@@ -729,13 +728,13 @@ namespace Nehta.VendorLibrary.CDA.Sample
                 var medication1 = EReferral.CreateMedication();
                 medication1.Directions = BaseCDAModel.CreateStructuredText("Dose:1, Frequency: 3 times daily");
 
-                medication1.Medicine = BaseCDAModel.CreateCodableText("23641011000036102", CodingSystem.AMT, "paracetamol 500 mg + codeine phosphate 30 mg tablet");
+                medication1.Medicine = BaseCDAModel.CreateCodableText("79115011000036100", CodingSystem.AMTV3, "paracetamol 500 mg + codeine phosphate hemihydrate 30 mg tablet");
                 medicationList.Add(medication1);
 
                 var medication2 = EReferral.CreateMedication();
                 medication2.Directions =BaseCDAModel.CreateStructuredText( NullFlavour.TemporarilyUnavailable);
 
-                medication2.Medicine = BaseCDAModel.CreateCodableText("23641011000036102", CodingSystem.AMT, "paracetamol 500 mg + codeine phosphate 30 mg tablet");
+                medication2.Medicine = BaseCDAModel.CreateCodableText("79115011000036100", CodingSystem.AMTV3, "paracetamol 500 mg + codeine phosphate hemihydrate 30 mg tablet");
                 medicationList.Add(medication2);
 
                 medications.MedicationsList = medicationList;
@@ -804,7 +803,7 @@ namespace Nehta.VendorLibrary.CDA.Sample
 
                 var medicalHistoryItem3 = EReferral.CreateMedicalHistoryItem();
                 var ongoingInterval3 = CdaInterval.CreateHigh(
-                                       new ISO8601DateTime(DateTime.Now.AddDays(200), ISO8601DateTime.Precision.Day));
+                                       new ISO8601DateTime(DateTime.Now.AddDays(0), ISO8601DateTime.Precision.Day));
                 medicalHistoryItem3.DateTimeInterval = ongoingInterval3;
                 medicalHistoryItem3.ItemDescription = "Uncategorised Medical History item description here";
                 medicalHistoryItem3.ItemComment = "Item Comment 4";
@@ -813,7 +812,7 @@ namespace Nehta.VendorLibrary.CDA.Sample
                 // Problem Diagnosis
                 var diagnosis = BaseCDAModel.CreateProblemDiagnosis();
                 diagnosis.ProblemDiagnosisIdentification = BaseCDAModel.CreateCodableText("162311003", CodingSystem.SNOMED, "Heavy head");
-                diagnosis.DateOfOnset = new ISO8601DateTime(DateTime.Now.AddYears(-2));
+                diagnosis.DateOfOnset = new ISO8601DateTime(DateTime.Now.AddYears(-2), ISO8601DateTime.Precision.Day);
                 diagnosis.DateOfResolutionRemission = new ISO8601DateTime(DateTime.Now.AddYears(-1), ISO8601DateTime.Precision.Day);
                 diagnosis.Comment = "Solved this";
                 diagnosis.ShowOngoingDateInNarrative = true;
@@ -948,7 +947,7 @@ namespace Nehta.VendorLibrary.CDA.Sample
             requestedServicePerson.ServiceBookingStatus = EventTypes.Definition;
             // Create Duration
             requestedServicePerson.SubjectOfCareInstructionDescription = "Subject Of Care Instruction Description";
-            requestedServicePerson.RequestedServiceDateTime = new ISO8601DateTime(DateTime.Now.AddDays(4));
+            requestedServicePerson.RequestedServiceDateTime = new ISO8601DateTime(DateTime.Now.AddDays(0));
 
             requestedServicePerson.ServiceCommencementWindow = BaseCDAModel.CreateInterval(
                 new ISO8601DateTime(DateTime.Now, ISO8601DateTime.Precision.Day),
@@ -966,7 +965,7 @@ namespace Nehta.VendorLibrary.CDA.Sample
             requestedServiceOrganisation.ServiceBookingStatus = EventTypes.Intent;
             requestedServiceOrganisation.ServiceScheduled = new ISO8601DateTime(DateTime.Now, ISO8601DateTime.Precision.Day);
             requestedServiceOrganisation.SubjectOfCareInstructionDescription = "Subject Of Care Instruction Description";
-            requestedServiceOrganisation.RequestedServiceDateTime = new ISO8601DateTime(DateTime.Now.AddDays(4));
+            requestedServiceOrganisation.RequestedServiceDateTime = new ISO8601DateTime(DateTime.Now.AddDays(0));
             requestedServiceOrganisation.ServiceProvider = CreateServiceProviderOrganisation(mandatorySectionsOnly);
 
             // Add to list
@@ -989,7 +988,9 @@ namespace Nehta.VendorLibrary.CDA.Sample
             serviceProvider.Participant = participant;
 
             var personName = BaseCDAModel.CreatePersonName();
-            personName.FamilyName = "Dr Jane Anderson";
+            personName.FamilyName = "Anderson";
+            personName.GivenNames = new List<string> {"Jane"};
+            personName.Titles = new List<string> { "Dr" };
             personName.NameUsages = new List<NameUsage> { NameUsage.Legal };
 
             participant.Person = BaseCDAModel.CreatePersonHealthcareProvider();
@@ -1021,16 +1022,15 @@ namespace Nehta.VendorLibrary.CDA.Sample
             address.AustralianAddress.SuburbTownLocality = "Nehtaville";
             address.AustralianAddress.State = AustralianState.QLD;
             address.AustralianAddress.PostCode = "5555";
-            address.AustralianAddress.DeliveryPointId = 32568931;
 
             participant.Addresses = new List<IAddress>{ address, address };
 
             serviceProvider.Role = !mandatorySectionsOnly ? BaseCDAModel.CreateRole(Occupation.GeneralMedicalPractitioner) : BaseCDAModel.CreateRole(NullFlavour.Other);
 
             var entitlement = BaseCDAModel.CreateEntitlement();
-            entitlement.Id = BaseCDAModel.CreateMedicareNumber(MedicareNumberType.IndividualMedicareCardNumber, "42614955241");
+            entitlement.Id = BaseCDAModel.CreatePrescriberNumber(IdentifierType.PrescriberNumber, "049960CT");
             entitlement.Type = EntitlementType.MedicarePrescriberNumber;
-            entitlement.ValidityDuration = BaseCDAModel.CreateInterval(new ISO8601DateTime(DateTime.Now), new ISO8601DateTime(DateTime.Now));
+            entitlement.ValidityDuration = BaseCDAModel.CreateHigh(new ISO8601DateTime(DateTime.Now.AddMonths(15), ISO8601DateTime.Precision.Day));
             participant.Person.Entitlements = new List<SCSModel.Common.Entitlement> { entitlement, entitlement };
 
             participant.Person.Qualifications = "M.B.B.S., F.R.A.C.S.";
@@ -1066,17 +1066,16 @@ namespace Nehta.VendorLibrary.CDA.Sample
             serviceProvider.Participant.ElectronicCommunicationDetails = new List<ElectronicCommunicationDetail> { electronicCommunicationDetail };
 
             var address = BaseCDAModel.CreateAddress();
-            address.AddressPurpose = AddressPurpose.Residential;
+            address.AddressPurpose = AddressPurpose.Business;
             address.AustralianAddress = BaseCDAModel.CreateAustralianAddress();
             address.AustralianAddress.UnstructuredAddressLines = new List<string> { "1 Clinician Street" };
             address.AustralianAddress.SuburbTownLocality = "Nehtaville";
             address.AustralianAddress.State = AustralianState.QLD;
             address.AustralianAddress.PostCode = "5555";
-            address.AustralianAddress.DeliveryPointId = 32568931;
 
             serviceProvider.Participant.Addresses = new List<IAddress> { address };
 
-            serviceProvider.Role = !mandatorySectionsOnly ? BaseCDAModel.CreateRole(Occupation.GeneralMedicalPractitioner) : BaseCDAModel.CreateRole(NullFlavour.Other);
+            serviceProvider.Role = !mandatorySectionsOnly ? BaseCDAModel.CreateRole(HealthcareFacilityTypeCodes.HospitalsExceptPsychiatricHospitals) : BaseCDAModel.CreateRole(NullFlavour.Other);
 
             return serviceProvider;
         }
@@ -1095,7 +1094,9 @@ namespace Nehta.VendorLibrary.CDA.Sample
             referee.Participant = participant;
 
             var personName = BaseCDAModel.CreatePersonName();
-            personName.FamilyName = "Dr Jane Anderson";
+            personName.FamilyName = "Anderson";
+            personName.GivenNames = new List<string> { "Jane" };
+            personName.Titles = new List<string> { "Dr" };
             personName.NameUsages = new List<NameUsage> { NameUsage.Legal };
 
             participant.Person = EReferral.CreatePersonForServiceProvider();
@@ -1122,7 +1123,6 @@ namespace Nehta.VendorLibrary.CDA.Sample
             address.AustralianAddress.SuburbTownLocality = "Nehtaville";
             address.AustralianAddress.State = AustralianState.QLD;
             address.AustralianAddress.PostCode = "5555";
-            address.AustralianAddress.DeliveryPointId = 32568931;
 
             participant.Person.Organisation.ElectronicCommunicationDetails = new List<ElectronicCommunicationDetail> { electronicCommunicationDetail };
             participant.Person.Organisation.Addresses = new List<IAddress> { address };
@@ -1159,15 +1159,14 @@ namespace Nehta.VendorLibrary.CDA.Sample
             serviceProvider.Participant.ElectronicCommunicationDetails = new List<ElectronicCommunicationDetail> { electronicCommunicationDetail };
 
             var address = BaseCDAModel.CreateAddress();
-            address.AddressPurpose = AddressPurpose.Residential;
+            address.AddressPurpose = AddressPurpose.Business;
             address.AustralianAddress = BaseCDAModel.CreateAustralianAddress();
             address.AustralianAddress.UnstructuredAddressLines = new List<string> { "1 Clinician Street" };
             address.AustralianAddress.SuburbTownLocality = "Nehtaville";
             address.AustralianAddress.State = AustralianState.QLD;
             address.AustralianAddress.PostCode = "5555";
-            address.AustralianAddress.DeliveryPointId = 32568931;
 
-            serviceProvider.Role = !mandatorySectionsOnly ? BaseCDAModel.CreateRole(Occupation.GeneralMedicalPractitioner) : BaseCDAModel.CreateRole(NullFlavour.NegativeInfinity);
+            serviceProvider.Role = !mandatorySectionsOnly ? BaseCDAModel.CreateRole(HealthcareFacilityTypeCodes.HospitalsExceptPsychiatricHospitals) : BaseCDAModel.CreateRole(NullFlavour.NegativeInfinity);
 
             serviceProvider.Participant.Addresses = new List<IAddress> { address };
 

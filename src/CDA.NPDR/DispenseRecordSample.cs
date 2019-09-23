@@ -270,7 +270,7 @@ namespace Nehta.VendorLibrary.CDA.NPDR.Sample
       dispenseItem.Status = MedicationStatus.Completed;
 
       // Dispense Item Identifier (Medication Action Instance Identifier)
-      dispenseItem.DispenseItemIdentifier = BaseCDAModel.CreateIdentifier("DispenseItemIdentifierAssigningAuthorityName", null, dispenseDocumentId, "1.2.3.4.5.66666", null);
+      dispenseItem.DispenseItemIdentifier = BaseCDAModel.CreateIdentifier("Test Authority", null, dispenseDocumentId, "2.999.1234567890", null);
 
       // DateTime of Dispense Event (Medication Action DateTime) 
       dispenseItem.DateTimeOfDispenseEvent = new ISO8601DateTime(DateTime.Now);
@@ -337,8 +337,8 @@ namespace Nehta.VendorLibrary.CDA.NPDR.Sample
         else
         {
             // Therapeutic Good Identification - The medicine, vaccine or other therapeutic good being ordered, administered to or used by the subject of care
-            dispenseItem.TherapeuticGoodId = BaseCDAModel.CreateCodableText("23641011000036102", CodingSystem.AMTV2,
-                "paracetamol 500 mg + codeine phosphate 30 mg tablet");
+            dispenseItem.TherapeuticGoodId = BaseCDAModel.CreateCodableText("79115011000036100", CodingSystem.AMTV3,
+                "paracetamol 500 mg + codeine phosphate hemihydrate 30 mg tablet");
         }
 
         return dispenseItem;
@@ -373,9 +373,9 @@ namespace Nehta.VendorLibrary.CDA.NPDR.Sample
 
       //LegalAuthenticator/assignedEntity/assignedPerson/<Person Name>
       var name1 = BaseCDAModel.CreatePersonName();
-      name1.GivenNames = new List<string> { "Good" };
-      name1.FamilyName = "Doctor";
-      name1.Titles = new List<string> { "Doctor" };
+      name1.GivenNames = new List<string> { "Fitun" };
+      name1.FamilyName = "Healthy";
+      name1.Titles = new List<string> { "Dr" };
       name1.NameUsages = new List<NameUsage> { NameUsage.Legal };
 
       var name2 = BaseCDAModel.CreatePersonName();
@@ -396,7 +396,6 @@ namespace Nehta.VendorLibrary.CDA.NPDR.Sample
         address1.AustralianAddress.SuburbTownLocality = "Nehtaville";
         address1.AustralianAddress.State = AustralianState.QLD;
         address1.AustralianAddress.PostCode = "5555";
-        address1.AustralianAddress.DeliveryPointId = 32568931;
 
         dispenser.Participant.Addresses = new List<IAddress> { address1 };
 
@@ -442,15 +441,15 @@ namespace Nehta.VendorLibrary.CDA.NPDR.Sample
       // LegalAuthenticator/assignedEntity/<Entity Identifier>
       authenticator.Participant.Person.Identifiers = new List<Identifier> 
                 { 
-                  BaseCDAModel.CreateIdentifier("LocalAuthority", null, "66666", "1.2.3.4.5", localAuthorityCode), 
+                  BaseCDAModel.CreateIdentifier("Test Authority", null, "66666", "2.999.1234567890", localAuthorityCode), 
                   BaseCDAModel.CreateHealthIdentifier(HealthIdentifierType.HPII, "8003615833334118") 
                 };
 
       //LegalAuthenticator/assignedEntity/assignedPerson/<Person Name>
       var name1 = BaseCDAModel.CreatePersonName();
-      name1.GivenNames = new List<string> { "Good" };
-      name1.FamilyName = "Doctor";
-      name1.Titles = new List<string> { "Doctor" };
+      name1.GivenNames = new List<string> { "Fitun" };
+      name1.FamilyName = "Healthy";
+      name1.Titles = new List<string> { "Dr" };
       name1.NameUsages = new List<NameUsage> { NameUsage.Legal };
 
       authenticator.Participant.Person.PersonNames = new List<IPersonName> { name1 };
@@ -471,7 +470,6 @@ namespace Nehta.VendorLibrary.CDA.NPDR.Sample
         address1.AustralianAddress.SuburbTownLocality = "Nehtaville";
         address1.AustralianAddress.State = AustralianState.QLD;
         address1.AustralianAddress.PostCode = "5555";
-        address1.AustralianAddress.DeliveryPointId = 32568931;
 
         var addressList = new List<IAddress> { address1 };
 
@@ -495,7 +493,7 @@ namespace Nehta.VendorLibrary.CDA.NPDR.Sample
 
         authenticator.Participant.Organisation.Identifiers = new List<Identifier> 
         { 
-            BaseCDAModel.CreateIdentifier("SampleAuthority", null, null, "1.2.3.4.5.66666", null), 
+            BaseCDAModel.CreateIdentifier("Test Authority", null, null, "2.999.1234567890", null), 
             BaseCDAModel.CreateHealthIdentifier (HealthIdentifierType.HPIO, "8003620833333789") 
         };
       }
@@ -541,7 +539,6 @@ namespace Nehta.VendorLibrary.CDA.NPDR.Sample
         address1.AustralianAddress.SuburbTownLocality = "Nehtaville";
         address1.AustralianAddress.State = AustralianState.QLD;
         address1.AustralianAddress.PostCode = "5555";
-        address1.AustralianAddress.DeliveryPointId = 32568931;
 
         custodian.Address = address1;
 
@@ -568,7 +565,7 @@ namespace Nehta.VendorLibrary.CDA.NPDR.Sample
 
       // Prescribe rOrganisation > Participant > Entity Identifier
       participation.Participant.Organisation.Identifiers = new List<Identifier> { 
-                BaseCDAModel.CreateIdentifier("SampleAuthority", null, null, "1.2.3.4.5.66666", null), 
+                BaseCDAModel.CreateIdentifier("Test Authority", null, null, "2.999.1234567890", null), 
                 BaseCDAModel.CreateHealthIdentifier (HealthIdentifierType.HPIO, "8003620833333789") 
             };
 
@@ -589,7 +586,6 @@ namespace Nehta.VendorLibrary.CDA.NPDR.Sample
         address1.AustralianAddress.SuburbTownLocality = "Nehtaville";
         address1.AustralianAddress.State = AustralianState.QLD;
         address1.AustralianAddress.PostCode = "5555";
-        address1.AustralianAddress.DeliveryPointId = 32568931;
 
         participation.Participant.Addresses = new List<IAddress> { address1 };
 

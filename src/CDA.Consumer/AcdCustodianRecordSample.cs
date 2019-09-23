@@ -282,7 +282,6 @@ namespace Nehta.VendorLibrary.CDA.Sample
                 address1.AustralianAddress.SuburbTownLocality = "Nehtaville";
                 address1.AustralianAddress.State = AustralianState.QLD;
                 address1.AustralianAddress.PostCode = "5555";
-                address1.AustralianAddress.DeliveryPointId = 32568931;
                 custodianParticipation.Participant.Addresses = new List<IAddressAustralian> { address1 };
 
                 // Communication
@@ -326,7 +325,7 @@ namespace Nehta.VendorLibrary.CDA.Sample
             var personName = BaseCDAModel.CreatePersonName();
             personName.GivenNames = new List<string> { givenName };
             personName.FamilyName = familyName;
-            personName.Titles = new List<string> { "Doctor" };
+            personName.Titles = new List<string> { "Dr" };
             personName.NameUsages = new List<NameUsage> { NameUsage.Legal };
             person.PersonNames = new List<IPersonName> { personName };
 
@@ -340,7 +339,6 @@ namespace Nehta.VendorLibrary.CDA.Sample
             address.AustralianAddress.SuburbTownLocality = "Nehtaville";
             address.AustralianAddress.State = AustralianState.QLD;
             address.AustralianAddress.PostCode = "5555";
-            address.AustralianAddress.DeliveryPointId = 32568931;
 
             paticipation.Participant.Addresses = new List<IAddressAustralian> { address };
 
@@ -374,7 +372,7 @@ namespace Nehta.VendorLibrary.CDA.Sample
                 person.Organisation.NameUsage = OrganisationNameUsage.EnterpriseName;
                 person.Organisation.Department = "Endocrinology";
 
-                person.Organisation.EmploymentType = BaseCDAModel.CreateCodableText(null, null, null, "Permanent", null);
+                person.Organisation.EmploymentType = BaseCDAModel.CreateCodableText(EmploymentType.FullTime);
                 person.Organisation.Occupation = BaseCDAModel.CreateRole(Occupation.GeneralMedicalPractitioner);
                 person.Organisation.PositionInOrganisation = BaseCDAModel.CreateCodableText(null, null, null, "SMO", null);
             }

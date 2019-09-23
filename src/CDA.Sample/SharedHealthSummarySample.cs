@@ -328,13 +328,13 @@ namespace Nehta.VendorLibrary.CDA.Sample
                 var medication4 = SharedHealthSummary.CreateMedication();
                 medication4.ClinicalIndication = "Depression";
                 medication4.Directions = BaseCDAModel.CreateStructuredText("Dose:1, Frequency: 3 times daily");
-                medication4.Medicine = BaseCDAModel.CreateCodableText("32481000036107", CodingSystem.AMTV3, "Exatrust 25 mg film-coated tablet");
+                medication4.Medicine = BaseCDAModel.CreateCodableText("32481000036107", CodingSystem.AMTV3, "Exatrust 25 mg tablet");
                 medicationList.Add(medication4);
 
                 var medication5 = SharedHealthSummary.CreateMedication();
                 medication5.ClinicalIndication = "Depression";
                 medication5.Directions = BaseCDAModel.CreateStructuredText("Dose:1, Frequency: as required");
-                medication5.Medicine = BaseCDAModel.CreateCodableText("32481000036107", CodingSystem.AMTV3, "Exatrust 25 mg film-coated tablet");
+                medication5.Medicine = BaseCDAModel.CreateCodableText("32481000036107", CodingSystem.AMTV3, "Exatrust 25 mg tablet");
                 medicationList.Add(medication5);
                 medications.Medications = medicationList;
 
@@ -404,7 +404,7 @@ namespace Nehta.VendorLibrary.CDA.Sample
                 medicalHistoryItems.Add(medicalHistoryItem2);
 
                 var medicalHistoryItem3 = BaseCDAModel.CreateMedicalHistoryItem();
-                var ongoingInterval3 = CdaInterval.CreateHigh(new ISO8601DateTime(DateTime.Now.AddDays(200), ISO8601DateTime.Precision.Day));
+                var ongoingInterval3 = CdaInterval.CreateHigh(new ISO8601DateTime(DateTime.Now.AddDays(0), ISO8601DateTime.Precision.Day));
                 medicalHistoryItem3.DateTimeInterval = ongoingInterval3;
                 medicalHistoryItem3.ItemDescription = "Uncategorised Medical History item description here";
                 medicalHistoryItem3.ItemComment = "Item Comment 4";

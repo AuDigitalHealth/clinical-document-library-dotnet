@@ -424,13 +424,13 @@ namespace CDA.R5Samples
             person.Organisation.Name = "Hay Bill Hospital";
             person.Organisation.NameUsage = OrganisationNameUsage.Other;
             person.Organisation.Department = "Some department service provider";
-            person.Organisation.EmploymentType = BaseCDAModel.CreateCodableText("Casual");
+            person.Organisation.EmploymentType = BaseCDAModel.CreateCodableText(EmploymentType.Casual);
             person.Organisation.Occupation = DiagnosticImagingReport.CreateRole(Occupation.DiagnosticandInterventionalRadiologist);
             person.Organisation.PositionInOrganisation = BaseCDAModel.CreateCodableText("Radiologist");
 
             person.Organisation.Identifiers = new List<Identifier> { 
               BaseCDAModel.CreateHealthIdentifier(HealthIdentifierType.HPIO, "8003620833333789"),
-              BaseCDAModel.CreateIdentifier("SampleReportingId", null, null, "1.2.3.4.5.66666", null)
+              BaseCDAModel.CreateIdentifier("Test Authority", null, null, "2.999.1234567890", null)
           };
 
             if (!mandatoryOnly)
@@ -473,33 +473,27 @@ namespace CDA.R5Samples
 
                 // Participant > Entitlement 2
                 var medicarePrescriberNumberEntitlement = BaseCDAModel.CreateEntitlement();
-                var medicarePharmacyApprovalNumberCode = BaseCDAModel.CreateCodableText("10", CodingSystem.NCTISEntitlementTypeValues, "Medicare Prescriber Number", null, null);
-                medicarePrescriberNumberEntitlement.Id = BaseCDAModel.CreateIdentifier("Prescriber",
-                                                                    null,
-                                                                    "049960CT",
-                                                                    "1.2.36.174030967.0.3",
-                                                                    medicarePharmacyApprovalNumberCode);
+                //var medicarePharmacyApprovalNumberCode = BaseCDAModel.CreateCodableText("10", CodingSystem.NCTISEntitlementTypeValues, "Medicare Prescriber Number", null, null);
+                medicarePrescriberNumberEntitlement.Id = BaseCDAModel.CreatePrescriberNumber(IdentifierType.PrescriberNumber, "049960CT");
 
                 medicarePrescriberNumberEntitlement.Type = EntitlementType.MedicarePrescriberNumber;
                 medicarePrescriberNumberEntitlement.ValidityDuration = BaseCDAModel.CreateInterval("1", TimeUnitOfMeasure.Year);
 
                 reportingPathologist.Participant.Entitlements = new List<Entitlement> { medicarePharmacyApprovalNumberEntitlement, medicarePrescriberNumberEntitlement };
 
-                name.GivenNames = new List<string> { "Good" };
-                name.Titles = new List<string> { "Doctor" };
+                name.GivenNames = new List<string> { "Fitun" };
+                name.Titles = new List<string> { "Dr" };
                 name.NameUsages = new List<NameUsage> { NameUsage.Legal };
 
                 address1.AustralianAddress.UnstructuredAddressLines = new List<string> { "1 Clinician Street" };
                 address1.AustralianAddress.SuburbTownLocality = "Nehtaville";
                 address1.AustralianAddress.State = AustralianState.QLD;
                 address1.AustralianAddress.PostCode = "5555";
-                address1.AustralianAddress.DeliveryPointId = 32568931;
 
                 address2.AustralianAddress.UnstructuredAddressLines = new List<string> { "2 Clinician Street" };
                 address2.AustralianAddress.SuburbTownLocality = "Nehtaville";
                 address2.AustralianAddress.State = AustralianState.QLD;
                 address2.AustralianAddress.PostCode = "5555";
-                address2.AustralianAddress.DeliveryPointId = 32568931;
 
                 // Qualifications
                 reportingPathologist.Participant.Qualifications = "FRACGP";

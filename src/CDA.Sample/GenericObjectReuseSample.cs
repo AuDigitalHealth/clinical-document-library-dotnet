@@ -245,11 +245,19 @@ namespace Nehta.VendorLibrary.CDA.Sample
 
             address1.AddressPurpose = AddressPurpose.Residential;
             address1.AustralianAddress = BaseCDAModel.CreateAustralianAddress();
-            
+            address1.AustralianAddress.UnstructuredAddressLines = new List<string> { "1 Clinician Street" };
+            address1.AustralianAddress.SuburbTownLocality = "Nehtaville";
+            address1.AustralianAddress.State = AustralianState.NSW;
+            address1.AustralianAddress.PostCode = "5555";
+
             var address2 = BaseCDAModel.CreateAddress();
             address2.AddressPurpose = AddressPurpose.TemporaryAccommodation;
             address2.InternationalAddress = BaseCDAModel.CreateInternationalAddress();
-            
+            address2.InternationalAddress.AddressLine = new List<string> { "1 Overseas Street" };
+            address2.InternationalAddress.Country = Country.NewCaledonia;
+            address2.InternationalAddress.PostCode = "12345";
+            address2.InternationalAddress.StateProvince = "Foreign Land";
+
             participant.Addresses = new List<IAddress> { address1, address2 };
 
             // Subject of Care > Participant > Person or Organisation or Device > Person > Person Name
@@ -305,17 +313,6 @@ namespace Nehta.VendorLibrary.CDA.Sample
 
             if (!mandatoryOnly)
             {
-                address1.AustralianAddress.UnstructuredAddressLines = new List<string> { "1 Clinician Street" };
-                address1.AustralianAddress.SuburbTownLocality = "Nehtaville";
-                address1.AustralianAddress.State = AustralianState.NSW;
-                address1.AustralianAddress.PostCode = "5555";
-                address1.AustralianAddress.DeliveryPointId = 32568931;
-                
-                address2.InternationalAddress.AddressLine = new List<string> { "1 Overseas Street" };
-                address2.InternationalAddress.Country = Country.NewCaledonia;
-                address2.InternationalAddress.PostCode = "12345";
-                address2.InternationalAddress.StateProvince = "Foreign Land";
-
                 person.DateOfBirthCalculatedFromAge = true;
                 person.DateOfBirthAccuracyIndicator = new DateAccuracyIndicator(true, true, true);
                 person.Age = 54;
@@ -333,7 +330,7 @@ namespace Nehta.VendorLibrary.CDA.Sample
                 var entitlement = BaseCDAModel.CreateEntitlement();
                 entitlement.Id = BaseCDAModel.CreateMedicareNumber(MedicareNumberType.MedicareCardNumber, "1234567881");
                 entitlement.Type = EntitlementType.MedicareBenefits;
-                entitlement.ValidityDuration = BaseCDAModel.CreateIntervalHigh(new ISO8601DateTime(DateTime.Today.AddMonths(15)));
+                entitlement.ValidityDuration = BaseCDAModel.CreateHigh(new ISO8601DateTime(DateTime.Now.AddMonths(15), ISO8601DateTime.Precision.Day));
                 participant.Entitlements = new List<Entitlement> { entitlement };
 
                 // Subject of Care > Participant > Person or Organisation or Device > Person > Source Of Death Notification
@@ -349,10 +346,6 @@ namespace Nehta.VendorLibrary.CDA.Sample
                 if (!shs) person.InterpreterRequired = CreateInterpreterRequiredAlert();
 
 
-            } else
-            {
-                address1.AddressAbsentIndicator = AddressAbsentIndicator.NoFixedAddressIndicator;
-                address2.AddressAbsentIndicator = AddressAbsentIndicator.NoFixedAddressIndicator;
             }
 
             participant.Person = person;
@@ -393,7 +386,7 @@ namespace Nehta.VendorLibrary.CDA.Sample
                 var entitlement1 = BaseCDAModel.CreateEntitlement();
                 entitlement1.Id = BaseCDAModel.CreateMedicareNumber(MedicareNumberType.MedicareCardNumber, "1234567881");
                 entitlement1.Type = EntitlementType.MedicareBenefits;
-                entitlement1.ValidityDuration = BaseCDAModel.CreateIntervalHigh(new ISO8601DateTime(DateTime.Today.AddMonths(15)));
+                entitlement1.ValidityDuration = BaseCDAModel.CreateHigh(new ISO8601DateTime(DateTime.Now.AddMonths(15), ISO8601DateTime.Precision.Day));
 
                 author.Participant.Entitlements = new List<Entitlement> { entitlement1, entitlement1 };
 
@@ -424,14 +417,24 @@ namespace Nehta.VendorLibrary.CDA.Sample
 
             // Document Author > Participant > Address
             var address1 = BaseCDAModel.CreateAddress();
-            address1.AddressAbsentIndicator = AddressAbsentIndicator.NoFixedAddressIndicator;
             address1.AddressPurpose = AddressPurpose.Business;
+            //address1.AddressAbsentIndicator = AddressAbsentIndicator.NoFixedAddressIndicator;
             address1.AustralianAddress = BaseCDAModel.CreateAustralianAddress();
+            address1.AustralianAddress.UnstructuredAddressLines = new List<string> { "1 Clinician Street" };
+            address1.AustralianAddress.SuburbTownLocality = "Nehtaville";
+            address1.AustralianAddress.State = AustralianState.QLD;
+            address1.AustralianAddress.PostCode = "5555";
+            address1.AddressAbsentIndicator = null;
 
             var address2 = BaseCDAModel.CreateAddress();
-            address2.AddressAbsentIndicator = AddressAbsentIndicator.NoFixedAddressIndicator;
             address2.AddressPurpose = AddressPurpose.Business;
+            //address2.AddressAbsentIndicator = AddressAbsentIndicator.NoFixedAddressIndicator;
             address2.AustralianAddress = BaseCDAModel.CreateAustralianAddress();
+            address2.AustralianAddress.UnstructuredAddressLines = new List<string> { "2 Clinician Street" };
+            address2.AustralianAddress.SuburbTownLocality = "Nehtaville";
+            address2.AustralianAddress.State = AustralianState.QLD;
+            address2.AustralianAddress.PostCode = "5555";
+            address2.AddressAbsentIndicator = null;
 
             var addressList = new List<IAddress> { address1, address2 };
 
@@ -450,7 +453,7 @@ namespace Nehta.VendorLibrary.CDA.Sample
             person.Organisation = BaseCDAModel.CreateEmploymentOrganisation();
             person.Organisation.Identifiers = new List<Identifier> { 
                  BaseCDAModel.CreateHealthIdentifier(HealthIdentifierType.HPIO, "8003620833333789"),
-                 BaseCDAModel.CreateIdentifier("SampleAuthority", null, null, "1.2.3.4.5.66666", null)
+                 BaseCDAModel.CreateIdentifier("Test Authority", null, null, "2.999.1234567890", null)
             };
             person.Organisation.Name = "Good Hospital";
             person.Organisation.Addresses = addressList;
@@ -478,7 +481,7 @@ namespace Nehta.VendorLibrary.CDA.Sample
                 person.Organisation.Department = "Surgical Ward";
                 person.Organisation.NameUsage = OrganisationNameUsage.LocallyUsedName;
 
-                name1.GivenNames = new List<string> { "Good" };
+                name1.GivenNames = new List<string> { "Fitun" };
                 name1.Titles = new List<string> { "Dr" };
                 name1.NameUsages = new List<NameUsage> { NameUsage.PreferredNameIndicator };
 
@@ -488,20 +491,6 @@ namespace Nehta.VendorLibrary.CDA.Sample
 
                 // Document Author > Participant > Person or Organisation or Device > Person > Organisation > Addresses
                 author.Participant.Addresses = addressList;
-
-                address1.AustralianAddress.UnstructuredAddressLines = new List<string> { "1 Clinician Street" };
-                address1.AustralianAddress.SuburbTownLocality = "Nehtaville";
-                address1.AustralianAddress.State = AustralianState.QLD;
-                address1.AustralianAddress.PostCode = "5555";
-                address1.AustralianAddress.DeliveryPointId = 32568931;
-                address1.AddressAbsentIndicator = null;
-
-                address2.AustralianAddress.UnstructuredAddressLines = new List<string> { "2 Clinician Street" };
-                address2.AustralianAddress.SuburbTownLocality = "Nehtaville";
-                address2.AustralianAddress.State = AustralianState.QLD;
-                address2.AustralianAddress.PostCode = "5555";
-                address2.AustralianAddress.DeliveryPointId = 32568931;
-                address2.AddressAbsentIndicator = null;
 
                 // Document Author > Participant > Person or Organisation or Device > Person > Organisation > ElectronicCommunicationDetails
                 author.Participant.ElectronicCommunicationDetails = new List<ElectronicCommunicationDetail> 
@@ -514,7 +503,7 @@ namespace Nehta.VendorLibrary.CDA.Sample
                 var entitlement = BaseCDAModel.CreateEntitlement();
                 entitlement.Id = BaseCDAModel.CreateMedicareNumber(MedicareNumberType.MedicareCardNumber, "2296818481");
                 entitlement.Type = EntitlementType.MedicareBenefits;
-                entitlement.ValidityDuration = BaseCDAModel.CreateIntervalHigh(new ISO8601DateTime(DateTime.Today.AddMonths(15), ISO8601DateTime.Precision.Day));
+                entitlement.ValidityDuration = BaseCDAModel.CreateHigh(new ISO8601DateTime(DateTime.Now.AddMonths(15), ISO8601DateTime.Precision.Day));
 
                 author.Participant.Entitlements = new List<Entitlement> { entitlement, entitlement };
 
@@ -561,14 +550,22 @@ namespace Nehta.VendorLibrary.CDA.Sample
            
             // Document Author > Participant > Address
             var address1 = BaseCDAModel.CreateAddress();
-            address1.AddressAbsentIndicator = AddressAbsentIndicator.NoFixedAddressIndicator;
             address1.AddressPurpose = AddressPurpose.Business;
+            //address1.AddressAbsentIndicator = AddressAbsentIndicator.NoFixedAddressIndicator;
             address1.AustralianAddress = BaseCDAModel.CreateAustralianAddress();
+            address1.AustralianAddress.UnstructuredAddressLines = new List<string> { "1 Clinician Street" };
+            address1.AustralianAddress.SuburbTownLocality = "Nehtaville";
+            address1.AustralianAddress.State = AustralianState.QLD;
+            address1.AustralianAddress.PostCode = "5555";
 
             var address2 = BaseCDAModel.CreateAddress();
-            address2.AddressAbsentIndicator = AddressAbsentIndicator.NoFixedAddressIndicator;
             address2.AddressPurpose = AddressPurpose.Business;
+            //address2.AddressAbsentIndicator = AddressAbsentIndicator.NoFixedAddressIndicator;
             address2.AustralianAddress = BaseCDAModel.CreateAustralianAddress();
+            address2.AustralianAddress.UnstructuredAddressLines = new List<string> { "2 Clinician Street" };
+            address2.AustralianAddress.SuburbTownLocality = "Nehtaville";
+            address2.AustralianAddress.State = AustralianState.QLD;
+            address2.AustralianAddress.PostCode = "5555";
 
             var addressList = new List<IAddress> { address1, address2 };
 
@@ -601,7 +598,7 @@ namespace Nehta.VendorLibrary.CDA.Sample
             person.Organisation = BaseCDAModel.CreateEmploymentOrganisation();
             person.Organisation.Identifiers = new List<Identifier> { 
                 BaseCDAModel.CreateHealthIdentifier(HealthIdentifierType.HPIO, "8003620833333789"),
-                BaseCDAModel.CreateIdentifier("SampleAuthority", null, null, "1.2.3.4.5.66666", null)
+                BaseCDAModel.CreateIdentifier("Test Authority", null, null, "2.999.1234567890", null)
             };
             person.Organisation.Name = "Good Hospital";
 
@@ -616,25 +613,13 @@ namespace Nehta.VendorLibrary.CDA.Sample
                 person.Organisation.Department = "Surgical Ward";
                 person.Organisation.NameUsage = OrganisationNameUsage.LocallyUsedName;
 
-                name1.GivenNames = new List<string> { "Good" };
+                name1.GivenNames = new List<string> { "Fitun" };
                 name1.Titles = new List<string> { "Dr" };
                 name1.NameUsages = new List<NameUsage> { NameUsage.PreferredNameIndicator };
 
                 name2.GivenNames = new List<string> { "Davey" };
                 name2.Titles = new List<string> { "Br" };
                 name2.NameUsages = new List<NameUsage> { NameUsage.NewbornName };
-
-                address1.AustralianAddress.UnstructuredAddressLines = new List<string> { "1 Clinician Street" };
-                address1.AustralianAddress.SuburbTownLocality = "Nehtaville";
-                address1.AustralianAddress.State = AustralianState.QLD;
-                address1.AustralianAddress.PostCode = "5555";
-                address1.AustralianAddress.DeliveryPointId = 32568931;
-
-                address2.AustralianAddress.UnstructuredAddressLines = new List<string> { "2 Clinician Street" };
-                address2.AustralianAddress.SuburbTownLocality = "Nehtaville";
-                address2.AustralianAddress.State = AustralianState.QLD;
-                address2.AustralianAddress.PostCode = "5555";
-                address2.AustralianAddress.DeliveryPointId = 32568931;
             }
 
             author.Participant.Person = person;
@@ -674,7 +659,6 @@ namespace Nehta.VendorLibrary.CDA.Sample
                 address1.AustralianAddress.SuburbTownLocality = "Nehtaville";
                 address1.AustralianAddress.State = AustralianState.QLD;
                 address1.AustralianAddress.PostCode = "5555";
-                address1.AustralianAddress.DeliveryPointId = 32568931;
 
                 custodian.Address = address1;
 
@@ -711,13 +695,12 @@ namespace Nehta.VendorLibrary.CDA.Sample
 
                 // informationRecipient/intendedRecipient/<Address>
                 var address1 = BaseCDAModel.CreateAddress();
-                address1.AddressPurpose = AddressPurpose.Residential;
+                address1.AddressPurpose = AddressPurpose.Business;
                 address1.AustralianAddress = BaseCDAModel.CreateAustralianAddress();
                 address1.AustralianAddress.UnstructuredAddressLines = new List<string> { "1 Clinician Street" };
                 address1.AustralianAddress.SuburbTownLocality = "Nehtaville";
                 address1.AustralianAddress.State = AustralianState.QLD;
                 address1.AustralianAddress.PostCode = "5555";
-                address1.AustralianAddress.DeliveryPointId = 32568931;
 
                 var address2 = BaseCDAModel.CreateAddress();
                 address2.AddressPurpose = AddressPurpose.TemporaryAccommodation;
@@ -806,8 +789,8 @@ namespace Nehta.VendorLibrary.CDA.Sample
 
             //LegalAuthenticator/assignedEntity/assignedPerson/<Person Name>
             var name1 = BaseCDAModel.CreatePersonName();
-            name1.GivenNames = new List<string> { "Good" };
-            name1.FamilyName = "Doctor";
+            name1.GivenNames = new List<string> { "Fitun" };
+            name1.FamilyName = "Healthy";
             name1.Titles = new List<string> { "Dr" };
             name1.NameUsages = new List<NameUsage> { NameUsage.Legal };
 
@@ -826,7 +809,6 @@ namespace Nehta.VendorLibrary.CDA.Sample
                 address1.AustralianAddress.SuburbTownLocality = "Nehtaville";
                 address1.AustralianAddress.State = AustralianState.QLD;
                 address1.AustralianAddress.PostCode = "5555";
-                address1.AustralianAddress.DeliveryPointId = 32568931;
 
                 var address2 = BaseCDAModel.CreateAddress();
                 address2.AddressPurpose = AddressPurpose.Business;
@@ -866,7 +848,7 @@ namespace Nehta.VendorLibrary.CDA.Sample
                 // LegalAuthenticator/assignedEntity/representedOrganization/<Entity Identifier>
                 authenticator.Participant.Organisation.Identifiers = new List<Identifier> 
                 { 
-                    BaseCDAModel.CreateIdentifier("SampleAuthority", null, null, "1.2.3.4.55555", null),
+                    BaseCDAModel.CreateIdentifier("Test Authority", null, null, "2.999.1234567890", null),
                     BaseCDAModel.CreateHealthIdentifier(HealthIdentifierType.HPIO, "8003620000001144") 
                 };
             }
@@ -896,7 +878,7 @@ namespace Nehta.VendorLibrary.CDA.Sample
           pathologyTestResult.TestSpecimenDetail = new List<SpecimenDetail> { specimenDetail };         
 
           // Test Result Name
-          pathologyTestResult.TestResultName = BaseCDAModel.CreateCodableText("275711006", CodingSystem.SNOMED, "Serum chemistry test");
+          pathologyTestResult.TestResultName = BaseCDAModel.CreateCodableText("104950002", CodingSystem.SNOMED, "Sulfhaemoglobin measurement");
 
           // Test Comment
           pathologyTestResult.TestComment = "Comment";
@@ -948,7 +930,7 @@ namespace Nehta.VendorLibrary.CDA.Sample
             PathologyTestResult pathologyTestResult = BaseCDAModel.CreatePathologyTestResult();
 
             // Test Result Name
-            pathologyTestResult.TestResultName = BaseCDAModel.CreateCodableText("275711006", CodingSystem.SNOMED, "Serum chemistry test");
+            pathologyTestResult.TestResultName = BaseCDAModel.CreateCodableText("104950002", CodingSystem.SNOMED, "Sulfhaemoglobin measurement");
 
             // Diagnostic Service
             pathologyTestResult.DiagnosticService = DiagnosticServiceSectionID.Chemistry;
@@ -968,7 +950,7 @@ namespace Nehta.VendorLibrary.CDA.Sample
                 pathologyTestResult.PathologicalDiagnosis = new List<ICodableText>
                                                             {
                                                                 BaseCDAModel.CreateCodableText("17621005", CodingSystem.SNOMED, "Normal"),
-                                                                BaseCDAModel.CreateCodableText("85531003", CodingSystem.SNOMED, "Abnormal")
+                                                                BaseCDAModel.CreateCodableText("263654008", CodingSystem.SNOMED, "Abnormal")
                                                             };
 
                 // Conclusion
@@ -992,7 +974,7 @@ namespace Nehta.VendorLibrary.CDA.Sample
                 ITestRequest testRequestDetailsOne = BaseCDAModel.CreateTestRequest();
 
                 // Requester Order Identifier
-                testRequestDetailsOne.RequesterOrderIdentifier = BaseCDAModel.CreateInstanceIdentifier("1.2.36.1.2001.1005.52.8003620833333789", "10523479");
+                testRequestDetailsOne.RequesterOrderIdentifier = BaseCDAModel.CreateInstanceIdentifier("1.2.36.1.2001.1005.52.8003620833333789", "10523478");
 
                 // LaboratoryTestResultIdentifier
                 testRequestDetailsOne.LaboratoryTestResultIdentifier = BaseCDAModel.CreateInstanceIdentifier(BaseCDAModel.CreateGuid(), "Laboratory Test Result Identifier");
@@ -1001,14 +983,31 @@ namespace Nehta.VendorLibrary.CDA.Sample
                 testRequestDetailsOne.TestsRequestedName = new List<ICodableText>
                                               {
                                                   BaseCDAModel.CreateCodableText("401324008", CodingSystem.SNOMED, "Urinary microscopy, culture and sensitivities"),
-                                                  BaseCDAModel.CreateCodableText("401324008", CodingSystem.SNOMED, "Urinary microscopy, culture and sensitivities"),
+                                                  // BaseCDAModel.CreateCodableText("401324008", CodingSystem.SNOMED, "Urinary microscopy, culture and sensitivities"),
                                               };
+
+                // Test request details one
+                ITestRequest testRequestDetailsTwo = BaseCDAModel.CreateTestRequest();
+
+                // Requester Order Identifier
+                testRequestDetailsTwo.RequesterOrderIdentifier = BaseCDAModel.CreateInstanceIdentifier("1.2.36.1.2001.1005.52.8003620833333789", "10523479");
+
+                // LaboratoryTestResultIdentifier
+                testRequestDetailsTwo.LaboratoryTestResultIdentifier = BaseCDAModel.CreateInstanceIdentifier(BaseCDAModel.CreateGuid(), "Laboratory Test Result Identifier");
+
+                // Tests Requested Name
+                testRequestDetailsTwo.TestsRequestedName = new List<ICodableText>
+                {
+                    BaseCDAModel.CreateCodableText("401324008", CodingSystem.SNOMED, "Urinary microscopy, culture and sensitivities")
+                };
+
 
 
                 // Test Request Details
                 pathologyTestResult.TestRequestDetails = new List<ITestRequest>
                                               {
-                                                  testRequestDetailsOne
+                                                  testRequestDetailsOne,
+                                                  testRequestDetailsTwo
                                               };
 
                 // Result Group (PATHOLOGY TEST RESULT GROUP)
@@ -1111,7 +1110,7 @@ namespace Nehta.VendorLibrary.CDA.Sample
             // Result (INDIVIDUAL PATHOLOGY TEST RESULT)
             ITestResult resultGroup = BaseCDAModel.CreateTestResult();
 
-            resultGroup.ResultName = BaseCDAModel.CreateCodableText("14682-9", CodingSystem.LOINC, "Serum Creatinine");
+            resultGroup.ResultName = BaseCDAModel.CreateCodableText("14682-9", CodingSystem.LOINC, "Creatinine [Moles/volume] in Serum or Plasma");
 
             // Individual Pathology Test Result Status
             resultGroup.ResultStatus = BaseCDAModel.CreateCodableText(ResultStatus.Final);
@@ -1139,7 +1138,7 @@ namespace Nehta.VendorLibrary.CDA.Sample
                 var resultValueReferenceRangeDetail = BaseCDAModel.CreateResultValueReferenceRangeDetail();
 
                 // Reference Range
-                resultValueReferenceRangeDetail.Range = BaseCDAModel.CreateQuantityRange(50, 100, "ml");
+                resultValueReferenceRangeDetail.Range = BaseCDAModel.CreateQuantityRange(100, 50, "ml");
 
                 // Reference Range Meaning
                 resultValueReferenceRangeDetail.ResultValueReferenceRangeMeaning = BaseCDAModel.CreateCodableText("75540009", CodingSystem.SNOMEDCT, "High");
@@ -1206,13 +1205,13 @@ namespace Nehta.VendorLibrary.CDA.Sample
                 specimenDetailOne.ReceivedDateTime = new ISO8601DateTime(DateTime.Now);
 
                 // Parent Specimen Identifier
-                specimenDetailOne.ParentSpecimenIdentifier = BaseCDAModel.CreateInstanceIdentifier("1.2.36.45364", BaseCDAModel.CreateGuid());
+                specimenDetailOne.ParentSpecimenIdentifier = BaseCDAModel.CreateInstanceIdentifier("1.2.36.84425496912", BaseCDAModel.CreateGuid());
 
                 // Container Identifier
-                specimenDetailOne.ContainerIdentifier = BaseCDAModel.CreateInstanceIdentifier("1.2.36.45364", "CNH45218964");
+                specimenDetailOne.ContainerIdentifier = BaseCDAModel.CreateInstanceIdentifier("1.2.36.84425496912", BaseCDAModel.CreateGuid());
 
                 // Specimen Identifier
-                specimenDetailOne.SpecimenIdentifier = BaseCDAModel.CreateInstanceIdentifier("1.2.36.45364", BaseCDAModel.CreateGuid());
+                specimenDetailOne.SpecimenIdentifier = BaseCDAModel.CreateInstanceIdentifier("1.2.36.84425496912", BaseCDAModel.CreateGuid());
 
             }
 
@@ -1252,14 +1251,14 @@ namespace Nehta.VendorLibrary.CDA.Sample
           // Imaging results 
           IImagingResult imagingResult1 = BaseCDAModel.CreateImagingResult();
           imagingResult1.Comments = new List<string> { "Femur measured during ultrasound scan.", "Legs measured during ultrasound scan." };
-          imagingResult1.ResultName = BaseCDAModel.CreateCodableText("14682-9", CodingSystem.LOINC, "Serum Creatinine");
+          imagingResult1.ResultName = BaseCDAModel.CreateCodableText("14682-9", CodingSystem.LOINC, "Creatinine [Moles/volume] in Serum or Plasma");
           imagingResult1.ResultValue = BaseCDAModel.CreateResultValue();
-          imagingResult1.ResultValue.ValueAsCodableText = BaseCDAModel.CreateCodableText("371573008", CodingSystem.SNOMED, "Ultrasonography");
+          imagingResult1.ResultValue.ValueAsCodableText = BaseCDAModel.CreateCodableText("16310003", CodingSystem.SNOMED, "Ultrasound");
           imagingResult1.NormalStatus = HL7ObservationInterpretationNormality.Normal;
           imagingResult1.ResultValueReferenceRangeDetails = new List<ResultValueReferenceRangeDetail>
                                                                   {
                                                                       CreateReferenceRange("260395002", "Normal range", "ml", 17, 13), 
-                                                                      CreateReferenceRange("75540009", "High", "ml", 50, 100)
+                                                                      CreateReferenceRange("75540009", "High", "ml", 100, 50)
                                                                   };
 
           // Imaging results 
@@ -1271,23 +1270,23 @@ namespace Nehta.VendorLibrary.CDA.Sample
           imagingResult2.NormalStatus = HL7ObservationInterpretationNormality.Normal;
           imagingResult2.ResultValueReferenceRangeDetails = new List<ResultValueReferenceRangeDetail>
                                                                   {
-                                                                      CreateReferenceRange("260395002", "Normal range", "kg", 15, 18), 
-                                                                      CreateReferenceRange("75540009", "High", "kg", 60, 110)
+                                                                      CreateReferenceRange("260395002", "Normal range", "kg", 18, 15), 
+                                                                      CreateReferenceRange("75540009", "High", "kg", 110, 60)
                                                                   };
 
           // Image Details
           IImageDetails imageDetails1 = BaseCDAModel.CreateImageDetails();
-          imageDetails1.DateTime = new ISO8601DateTime(DateTime.Now);
+          imageDetails1.DateTime = new ISO8601DateTime(DateTime.Now.AddDays(-3));
           imageDetails1.ImageIdentifier = BaseCDAModel.CreateInstanceIdentifier(BaseCDAModel.CreateGuid(), "Image Identifer");
-          imageDetails1.SeriesIdentifier = BaseCDAModel.CreateInstanceIdentifier("1.2.3.1.2.2654654654654564", "Series Identifier");
+          imageDetails1.SeriesIdentifier = BaseCDAModel.CreateInstanceIdentifier("2.999.1234567890", BaseCDAModel.CreateGuid());
           imageDetails1.SubjectPosition = "Supine";
           imageDetails1.Image = BaseCDAModel.CreateExternalData(MediaType.JPEG, ImageFileNameAndPath, "Image Details 1 - X-Ray");
 
           // Image details 
           IImageDetails imageDetails2 = BaseCDAModel.CreateImageDetails();
-          imageDetails2.DateTime = new ISO8601DateTime(DateTime.Now);
+          imageDetails2.DateTime = new ISO8601DateTime(DateTime.Now.AddDays(-3));
           imageDetails2.SubjectPosition = "Sublime";
-          imageDetails2.SeriesIdentifier = BaseCDAModel.CreateInstanceIdentifier("1.2.3.1.2.2654654654654564", "Series Identifier");
+          imageDetails2.SeriesIdentifier = BaseCDAModel.CreateInstanceIdentifier("2.999.1234567890", BaseCDAModel.CreateGuid());
           imageDetails2.Image = BaseCDAModel.CreateExternalData(MediaType.JPEG, ImageFileNameAndPath, "Image Details 2 - X-Ray");
 
           // Imaging result group 
@@ -1306,7 +1305,7 @@ namespace Nehta.VendorLibrary.CDA.Sample
           // Imaging result group 
           IImagingResultGroup imagingResultGroup2 = BaseCDAModel.CreateImagingResultGroup();
           imagingResultGroup2.Results = new List<IImagingResult> { imagingResult2 };
-          imagingResultGroup2.ResultGroupName = BaseCDAModel.CreateCodableText("371573008", CodingSystem.SNOMED, "Ultrasonography");
+          imagingResultGroup2.ResultGroupName = BaseCDAModel.CreateCodableText("16310003", CodingSystem.SNOMED, "Ultrasound");
           imagingResultGroup2.AnatomicalSite = CreateAnatomicalSite(
                  BaseCDAModel.CreateCodableText("88738008", CodingSystem.SNOMED, "Subcutaneous tissue structure of lateral surface of index finger"),
                  BaseCDAModel.CreateCodableText("7771000", CodingSystem.SNOMED, "Left")
@@ -1466,22 +1465,20 @@ namespace Nehta.VendorLibrary.CDA.Sample
         private static IImagingExaminationRequest CreateImagingExaminationRequest(string examinationRequestName, List<IImageDetails> imageDetails)
         {
           var imagingExaminationRequest = BaseCDAModel.CreateImagingExaminationRequest();
-          imagingExaminationRequest.ExaminationRequestedName = new List<String> { examinationRequestName, "another name" };
+          imagingExaminationRequest.ExaminationRequestedName = new List<String> { examinationRequestName };
           imagingExaminationRequest.ReportIdentifier = BaseCDAModel.CreateInstanceIdentifier(BaseCDAModel.CreateGuid(), "3355552BHU-23.3");
 
-          if (imageDetails != null && imageDetails.Any())
-          {
-            int index = 1;
-            foreach (IImageDetails imageDetail in imageDetails)
+            if (imageDetails != null && imageDetails.Any())
             {
-              imageDetail.ImageViewName = BaseCDAModel.CreateCodableText(index + " X-Ray - " + examinationRequestName);
-              index++;
+                foreach (IImageDetails imageDetail in imageDetails)
+                {
+                    imageDetail.ImageViewName = BaseCDAModel.CreateCodableText(examinationRequestName);
+                }
+
+                imagingExaminationRequest.ImageDetails = imageDetails;
             }
 
-            imagingExaminationRequest.ImageDetails = imageDetails;
-          }
-
-          imagingExaminationRequest.StudyIdentifier = imagingExaminationRequest.StudyIdentifier = BaseCDAModel.CreateInstanceIdentifier(BaseCDAModel.CreateGuid(), "Accession Number Group: 0008  Element: 0050");
+            imagingExaminationRequest.StudyIdentifier = imagingExaminationRequest.StudyIdentifier = BaseCDAModel.CreateInstanceIdentifier(BaseCDAModel.CreateGuid(), "Accession Number Group: 0008  Element: 0050");
 
           return imagingExaminationRequest;
         }

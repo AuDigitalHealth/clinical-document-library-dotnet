@@ -132,6 +132,12 @@ namespace Nehta.VendorLibrary.CDA.Generator.Enums
         METEOR,
 
         /// <summary>
+        /// METEOREmploymentType
+        /// </summary>
+        [Name(Name = "METeOR Employment type", Code = "2.16.840.1.113883.3.879.314867")]
+        METEOREmploymentType,
+
+        /// <summary>
         /// Episode of admitted patient care-separation mode
         /// </summary>
         [Name(Name = "AIHW Mode of Separation", Code = "2.16.840.1.113883.13.65")]
@@ -380,7 +386,7 @@ namespace Nehta.VendorLibrary.CDA.Generator.Enums
         /// <summary>
         /// ANZSIC 2006
         /// </summary>
-        [Name(Name = "ANSZIC 2006", Code = "1.2.36.1.2001.1005.47")]
+        [Name(Name = "ANZSIC 2006", Code = "1.2.36.1.2001.1005.47")]
         Anzsic2006,
 
         /// <summary>

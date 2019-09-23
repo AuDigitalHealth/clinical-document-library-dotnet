@@ -545,7 +545,7 @@ namespace Nehta.VendorLibrary.CDA.SCSModel.Common
             {
               Role.Validate(vb.Path + "Role", vb.Messages);
 
-              if (!(Role.Code == "2515" && Role.CodeSystemCode == "2.16.840.1.113883.13.62" && Role.DisplayName == "Pharmacists"))
+              if (!(Role.Code.StartsWith("2515") && Role.CodeSystemCode == "2.16.840.1.113883.13.62" && Role.DisplayName.Contains("Pharmacist")))
                 vb.AddValidationMessage(vb.Path + "Role", null, "The Dispenser Role should have a code '2515' and a CodeSystemCode = '2.16.840.1.113883.13.62' and a DisplayName = 'Pharmacists'");
             }
           }

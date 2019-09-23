@@ -16,7 +16,7 @@ using System.Configuration;
 using System.IO;
 using Nehta.VendorLibrary.Common;
 
-namespace CDA.PCML
+namespace CDA.PSML
 {
     class Program
     {
@@ -30,17 +30,17 @@ namespace CDA.PCML
 
             if (folderPath.IsNullOrEmptyWhitespace()) folderPath = ".";
 
-            PCMLSample.OutputFolderPath = folderPath;
+            PSMLSample.OutputFolderPath = folderPath;
 
             PrepareOutputFolder(folderPath);
             
-            var pcmlCda = new PCMLSample();
-            pcmlCda.MaxPopulatedPCMLAuthorHealthcareProviderSample_1A("PSML_AuthorHealthcareProvider_1A_Max.xml");
-            pcmlCda.MinPopulatedPCMLAuthorHealthcareProviderSample_1A("PSML_AuthorHealthcareProvider_1A_Min.xml");
+            var psmlCda = new PSMLSample();
+            psmlCda.MaxPopulatedPSMLAuthorHealthcareProviderSample_1A("PSML_AuthorHealthcareProvider_1A_Max.xml");
+            psmlCda.MinPopulatedPSMLAuthorHealthcareProviderSample_1A("PSML_AuthorHealthcareProvider_1A_Min.xml");
 
             //Test Custom Narrative - not currently allowed
-            //pcmlCda.MaxPopulatedPCMLAuthorHealthcareProviderSample_1B("PSML_AuthorHealthcareProvider_1B_Max.xml");
-            //pcmlCda.MinPopulatedPCMLAuthorHealthcareProviderSample_1B("PSML_AuthorHealthcareProvider_1B_Min.xml");
+            //psmlCda.MaxPopulatedPSMLAuthorHealthcareProviderSample_1B("PSML_AuthorHealthcareProvider_1B_Max.xml");
+            //psmlCda.MinPopulatedPSMLAuthorHealthcareProviderSample_1B("PSML_AuthorHealthcareProvider_1B_Min.xml");
 
         }
 

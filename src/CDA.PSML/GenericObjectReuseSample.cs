@@ -22,7 +22,7 @@ using Nehta.VendorLibrary.CDA.Generator.Enums;
 using Nehta.VendorLibrary.CDA.SCSModel;
 using Nehta.VendorLibrary.CDA.SCSModel.Common;
 
-namespace CDA.PCML
+namespace CDA.PSML
 {
     /// <summary>
     /// Demonstrates the reuse of header objects in the CDA Library 
@@ -671,9 +671,6 @@ namespace CDA.PCML
 
             return author;
         }
-
-       
-
 
     }
 }

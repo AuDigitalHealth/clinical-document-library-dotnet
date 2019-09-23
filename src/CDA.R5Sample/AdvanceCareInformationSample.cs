@@ -272,7 +272,7 @@ namespace CDA.R5Samples
             if (!mandatorySectionsOnly)
             {
                // Document Identifier
-               documentProvenance.DocumentIdentifier = BaseCDAModel.CreateIdentifier("Document Identifier", null, null, "1.2.3.4.5.66666", null);
+               documentProvenance.DocumentIdentifier = BaseCDAModel.CreateIdentifier("Test Authority", null, null, "2.999.1234567890", null);
             }
 
             return documentProvenance;
@@ -327,7 +327,7 @@ namespace CDA.R5Samples
             {
                 // Document Author > Participant > Entity Identifier
                 person.Identifiers = new List<Identifier> { 
-                    BaseCDAModel.CreateIdentifier("SampleAuthority", null, null, "1.2.3.4.5.66666", null), 
+                    BaseCDAModel.CreateIdentifier("Test Authority", null, null, "2.999.1234567890", null), 
                     BaseCDAModel.CreateHealthIdentifier(HealthIdentifierType.HPII, "8003615833334118") 
                 };
 
@@ -341,15 +341,14 @@ namespace CDA.R5Samples
 
                 author.Participant.Addresses = addressList;
 
-                name.GivenNames = new List<string> { "Good" };
-                name.Titles = new List<string> { "Doctor" };
+                name.GivenNames = new List<string> { "Fitun" };
+                name.Titles = new List<string> { "Dr" };
                 name.NameUsages = new List<NameUsage> { NameUsage.Legal };
 
                 address.AustralianAddress.UnstructuredAddressLines = new List<string> { "1 Clinician Street" };
                 address.AustralianAddress.SuburbTownLocality = "Nehtaville";
                 address.AustralianAddress.State = AustralianState.QLD;
                 address.AustralianAddress.PostCode = "5555";
-                address.AustralianAddress.DeliveryPointId = 32568931;
                 address.AddressAbsentIndicator = null;
             }
 

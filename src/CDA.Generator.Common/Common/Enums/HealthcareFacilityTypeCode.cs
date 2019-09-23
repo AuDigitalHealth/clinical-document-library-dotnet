@@ -10,6 +10,10 @@
  * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
  * License for the specific language governing permissions and limitations
  * under the License.
+ *
+ * List taken from the AU Base
+ * http://hl7.org.au/fhir/base/2017Apr/ValueSet-anzsic-restricted-class.html
+ *
  */
 
 using System;
@@ -196,7 +200,7 @@ namespace Nehta.VendorLibrary.CDA.Common.Enums
         /// Other Healthcare Services nec
         /// </summary>
         [EnumMember]
-        [Name(Code = "8599", Name = "Other Healthcare Services nec", CodeSystem = "Anzsic2006")]
+        [Name(Code = "8599", Name = "Other Healthcare Services n.e.c.", CodeSystem = "Anzsic2006")]
         OtherHealthcareServicesnec,
 
         /// <summary>

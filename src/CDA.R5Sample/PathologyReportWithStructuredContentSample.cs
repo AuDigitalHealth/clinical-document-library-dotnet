@@ -253,7 +253,7 @@ namespace CDA.R5Samples
             PathologyTestResult pathologyTestResult = BaseCDAModel.CreatePathologyTestResult();
 
             // Test Result Name
-            pathologyTestResult.TestResultName = BaseCDAModel.CreateCodableText("275711006", CodingSystem.SNOMED, "Serum chemistry test");
+            pathologyTestResult.TestResultName = BaseCDAModel.CreateCodableText("104950002", CodingSystem.SNOMED, "Sulfhaemoglobin measurement");
 
             // Diagnostic Service
             pathologyTestResult.DiagnosticService = DiagnosticServiceSectionID.Chemistry;
@@ -273,7 +273,7 @@ namespace CDA.R5Samples
                 pathologyTestResult.PathologicalDiagnosis = new List<ICodableText>
                                                             {
                                                                 BaseCDAModel.CreateCodableText("17621005", CodingSystem.SNOMED, "Normal"),
-                                                                BaseCDAModel.CreateCodableText("85531003", CodingSystem.SNOMED, "Abnormal")
+                                                                BaseCDAModel.CreateCodableText("263654008", CodingSystem.SNOMED, "Abnormal")
                                                             };
 
                 // Conclusion
@@ -489,7 +489,7 @@ namespace CDA.R5Samples
             // Result (INDIVIDUAL PATHOLOGY TEST RESULT)
             ITestResult resultGroup = BaseCDAModel.CreateTestResult();
 
-            resultGroup.ResultName = BaseCDAModel.CreateCodableText("14682-9", CodingSystem.LOINC, "Serum Creatinine");
+            resultGroup.ResultName = BaseCDAModel.CreateCodableText("14682-9", CodingSystem.LOINC, "Creatinine [Moles/volume] in Serum or Plasma");
 
             // Individual Pathology Test Result Status
             resultGroup.ResultStatus = BaseCDAModel.CreateCodableText(HL7ResultStatus.FinalResultsResultsStoredAndVerifiedCanOnlyBeChangedWithACorrectedResult);
@@ -587,13 +587,13 @@ namespace CDA.R5Samples
                 specimenDetailOne.ReceivedDateTime = new ISO8601DateTime(DateTime.Now);
 
                 // Parent Specimen Identifier
-                specimenDetailOne.ParentSpecimenIdentifier = BaseCDAModel.CreateInstanceIdentifier("1.2.36.45364", BaseCDAModel.CreateGuid());
+                specimenDetailOne.ParentSpecimenIdentifier = BaseCDAModel.CreateInstanceIdentifier("1.2.36.84425496912", BaseCDAModel.CreateGuid());
 
                 // Container Identifier
-                specimenDetailOne.ContainerIdentifier = BaseCDAModel.CreateInstanceIdentifier("1.2.36.45364", "CNH45218964");
+                specimenDetailOne.ContainerIdentifier = BaseCDAModel.CreateInstanceIdentifier("1.2.36.84425496912", BaseCDAModel.CreateGuid());
 
                 // Specimen Identifier
-                specimenDetailOne.SpecimenIdentifier = BaseCDAModel.CreateInstanceIdentifier("1.2.36.45364", BaseCDAModel.CreateGuid());
+                specimenDetailOne.SpecimenIdentifier = BaseCDAModel.CreateInstanceIdentifier("1.2.36.84425496912", BaseCDAModel.CreateGuid());
 
             }
 
@@ -685,7 +685,7 @@ namespace CDA.R5Samples
 
             // Document reportingPathologist > Participant > Person or Organisation or Device > Person > Person Name
             var name = BaseCDAModel.CreatePersonName();
-            name.FamilyName = "Doctor";
+            name.FamilyName = "Healthy";
 
             person.PersonNames = new List<IPersonName> { name };
 
@@ -732,7 +732,7 @@ namespace CDA.R5Samples
             person.Organisation.Name = "Hay Bill Hospital";
             person.Organisation.NameUsage = OrganisationNameUsage.Other;
             person.Organisation.Department = "Some department service provider";
-            person.Organisation.EmploymentType = BaseCDAModel.CreateCodableText(null, null, null, "Casual", null);
+            person.Organisation.EmploymentType = BaseCDAModel.CreateCodableText(EmploymentType.Casual);
             person.Organisation.Occupation = PathologyReportWithStructuredContent.CreateRole(Occupation.GeneralMedicalPractitioner);
             person.Organisation.PositionInOrganisation = BaseCDAModel.CreateCodableText(null, null, null, "Manager", null);
 
@@ -748,21 +748,19 @@ namespace CDA.R5Samples
 
             if (!mandatoryOnly)
             {
-                name.GivenNames = new List<string> { "Good" };
-                name.Titles = new List<string> { "Doctor" };
+                name.GivenNames = new List<string> { "Fitun" };
+                name.Titles = new List<string> { "Dr" };
                 name.NameUsages = new List<NameUsage> { NameUsage.Legal };
 
                 address1.AustralianAddress.UnstructuredAddressLines = new List<string> { "1 Clinician Street" };
                 address1.AustralianAddress.SuburbTownLocality = "Nehtaville";
                 address1.AustralianAddress.State = AustralianState.QLD;
                 address1.AustralianAddress.PostCode = "5555";
-                address1.AustralianAddress.DeliveryPointId = 32568931;
 
                 address2.AustralianAddress.UnstructuredAddressLines = new List<string> { "2 Clinician Street" };
                 address2.AustralianAddress.SuburbTownLocality = "Nehtaville";
                 address2.AustralianAddress.State = AustralianState.QLD;
                 address2.AustralianAddress.PostCode = "5555";
-                address2.AustralianAddress.DeliveryPointId = 32568931;
 
                 // Qualifications
                 reportingPathologist.Participant.Qualifications = "FRACGP";

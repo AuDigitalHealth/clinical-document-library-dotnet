@@ -49,14 +49,17 @@ namespace Nehta.VendorLibrary.CDA.Generator
     public partial class CDANarrativeGenerator : INarrativeGenerator
     {
         #region Constants
+
         /// <summary>
         /// This constant indicates if an entry has no entries
         /// </summary>
         public const String SECTIONEMPTYTEXT = "This section contains no entries.";
+
         /// <summary>
         /// This constant indicates if an exclusion statement is included
         /// </summary>
         public const String SECTIONEXCLUSIONSTATEMENT = "This section contains an Exclusion Statement.";
+
         private const String DELIMITER = "<CR>";
         private const String DELIMITERBREAK = "<BR>";
         private const String DELIMITERBOLD = "<B>";
@@ -74,118 +77,145 @@ namespace Nehta.VendorLibrary.CDA.Generator
         /// <param name="showEntitlements">Show the entitlements for the subjectOfCare</param>
         /// <param name="earliestDateForFiltering">Earliest Date For Filtering</param>
         /// <param name="latestDateForFiltering">Latest Date For Filtering</param>
+        /// <param name="specialty">List of specialties</param>
         /// <returns>StrucDocText</returns>
-        public StrucDocText CreateNarrative(IParticipationSubjectOfCare subjectOfCareParticipation, String patientId, Boolean showEntitlements, ISO8601DateTime earliestDateForFiltering, ISO8601DateTime latestDateForFiltering)
+        public StrucDocText CreateNarrative(IParticipationSubjectOfCare subjectOfCareParticipation, String patientId,
+            Boolean showEntitlements, ISO8601DateTime earliestDateForFiltering, ISO8601DateTime latestDateForFiltering,
+            List<ICodableText> specialty = null)
         {
             var strucDocTableList = new List<StrucDocTable>();
             var narrative = new List<List<String>>();
 
-            if (subjectOfCareParticipation != null && subjectOfCareParticipation.Participant != null && subjectOfCareParticipation.Participant.Person != null)
+            if (subjectOfCareParticipation != null && subjectOfCareParticipation.Participant != null &&
+                subjectOfCareParticipation.Participant.Person != null)
             {
                 var person = subjectOfCareParticipation.Participant.Person;
 
                 if (
-                        person.DateOfBirthCalculatedFromAge.HasValue ||
-                        person.DateOfBirthAccuracyIndicator != null ||
-                        person.Age.HasValue ||
-                        person.AgeAccuracyIndicator != null ||
-                        person.BirthPlurality.HasValue ||
-                        person.DateOfDeathAccuracyIndicator != null ||
-                        person.MothersOriginalFamilyName != null ||
-                        person.SourceOfDeathNotification != null ||
-                        person.InterpreterRequired != null
-                    )
-                    {
-                    var columnHeaders = new List<string> { "Field", "Value" };
+                    person.DateOfBirthCalculatedFromAge.HasValue ||
+                    person.DateOfBirthAccuracyIndicator != null ||
+                    person.Age.HasValue ||
+                    person.AgeAccuracyIndicator != null ||
+                    person.BirthPlurality.HasValue ||
+                    person.DateOfDeathAccuracyIndicator != null ||
+                    person.MothersOriginalFamilyName != null ||
+                    person.SourceOfDeathNotification != null ||
+                    person.InterpreterRequired != null ||
+                    specialty != null
+                )
+                {
+                    var columnHeaders = new List<string> {"Field", "Value"};
 
                     //Date of Birth calculated from age
                     if (person.DateOfBirthCalculatedFromAge.HasValue)
-                    narrative.Add
-                    (
-                        CreateNarrativeEntry("Date of Birth is Calculated From Age", (person.DateOfBirthCalculatedFromAge))
-                    );
+                        narrative.Add
+                        (
+                            CreateNarrativeEntry("Date of Birth is Calculated From Age",
+                                (person.DateOfBirthCalculatedFromAge))
+                        );
 
                     //Date of Birth accuracy indicatory
-                    if (person.DateOfBirthAccuracyIndicator  != null)
-                    narrative.Add
-                    (
-                        CreateNarrativeEntry("Date of Birth Accuracy Indicator", person.DateOfBirthAccuracyIndicator)
-                    );
+                    if (person.DateOfBirthAccuracyIndicator != null)
+                        narrative.Add
+                        (
+                            CreateNarrativeEntry("Date of Birth Accuracy Indicator",
+                                person.DateOfBirthAccuracyIndicator)
+                        );
 
                     //Age Accuracy Indicator
                     if (person.AgeAccuracyIndicator.HasValue)
-                    narrative.Add
-                    (
-                        CreateNarrativeEntry("Age Accuracy Indicator", person.AgeAccuracyIndicator)
-                    );
-                   
+                        narrative.Add
+                        (
+                            CreateNarrativeEntry("Age Accuracy Indicator", person.AgeAccuracyIndicator)
+                        );
+
                     //Birth Plurality
                     if (person.BirthPlurality.HasValue)
-                    narrative.Add                   
-                    (
-                       CreateNarrativeEntry("Birth Plurality", person.BirthPlurality, null)
-                    );
+                        narrative.Add
+                        (
+                            CreateNarrativeEntry("Birth Plurality", person.BirthPlurality, null)
+                        );
 
                     //Age
                     if (person.Age.HasValue)
-                    narrative.Add
-                    (
-                       CreateNarrativeEntry("Age", person.Age, person.AgeUnitOfMeasure.HasValue ? person.AgeUnitOfMeasure.Value.GetAttributeValue<NameAttribute, String>(x => x.Comment) : AgeUnitOfMeasure.Year.GetAttributeValue<NameAttribute, String>(x => x.Comment))
-                    );
+                        narrative.Add
+                        (
+                            CreateNarrativeEntry("Age", person.Age,
+                                person.AgeUnitOfMeasure.HasValue
+                                    ? person.AgeUnitOfMeasure.Value.GetAttributeValue<NameAttribute, String>(x =>
+                                        x.Comment)
+                                    : AgeUnitOfMeasure.Year.GetAttributeValue<NameAttribute, String>(x => x.Comment))
+                        );
 
                     //Date of Death accuracy indicatory
                     if (person.DateOfDeathAccuracyIndicator != null)
-                    narrative.Add
-                    (
-                       CreateNarrativeEntry("Date of Death Accuracy Indicator", person.DateOfDeathAccuracyIndicator)
-                    );
+                        narrative.Add
+                        (
+                            CreateNarrativeEntry("Date of Death Accuracy Indicator",
+                                person.DateOfDeathAccuracyIndicator)
+                        );
 
                     // Source Of Death Notification
                     if (person.SourceOfDeathNotification.HasValue)
                         narrative.Add
                         (
-                           CreateNarrativeEntry("Source Of Death Notification", person.SourceOfDeathNotification.GetAttributeValue<NameAttribute, String>(x => x.Name))
+                            CreateNarrativeEntry("Source Of Death Notification",
+                                person.SourceOfDeathNotification.GetAttributeValue<NameAttribute, String>(x => x.Name))
                         );
 
                     // MothersOriginalFamilyName
                     if (person.MothersOriginalFamilyName != null)
                         narrative.Add
-                            (  
-                                CreateNarrativeEntry("Mothers Original Family Name", BuildPersonNames(new List<IPersonName> { person.MothersOriginalFamilyName }))
-                            );
+                        (
+                            CreateNarrativeEntry("Mothers Original Family Name",
+                                BuildPersonNames(new List<IPersonName> {person.MothersOriginalFamilyName}))
+                        );
 
                     // Earliest Date For FilteringCDANarrativeGenerator
                     if (earliestDateForFiltering != null)
-                      narrative.Add
-                          (
-                              CreateNarrativeEntry("Earliest Date for Filtering", earliestDateForFiltering)
-                          );
+                        narrative.Add
+                        (
+                            CreateNarrativeEntry("Earliest Date for Filtering", earliestDateForFiltering)
+                        );
 
                     // Latest Date For Filtering
                     if (latestDateForFiltering != null)
-                      narrative.Add
-                          (
-                              CreateNarrativeEntry("Latest Date for Filtering", latestDateForFiltering)
-                          );
+                        narrative.Add
+                        (
+                            CreateNarrativeEntry("Latest Date for Filtering", latestDateForFiltering)
+                        );
 
                     // Latest Date For Filtering
-                    if (person.InterpreterRequired != null && person.InterpreterRequired.PreferredLanguage != null &&  person.InterpreterRequired.PreferredLanguage.Any())
+                    if (person.InterpreterRequired != null && person.InterpreterRequired.PreferredLanguage != null &&
+                        person.InterpreterRequired.PreferredLanguage.Any())
                         narrative.Add
-                            (
-                                CreateNarrativeEntry("Interpreter Required", string.Join<string>(", ", person.InterpreterRequired.PreferredLanguage))
-                            );
+                        (
+                            CreateNarrativeEntry("Interpreter Required",
+                                string.Join<string>(", ", person.InterpreterRequired.PreferredLanguage))
+                        );
+
+                    // specialty
+                    if (specialty != null)
+                    {
+                        var spec = specialty.Select(x => x.DisplayName).ToList();
+                        narrative.Add
+                        (
+                            CreateNarrativeEntry("Specialty", string.Join<string>(", ", spec))
+                        );
+                    }
+
 
                     strucDocTableList.Add
+                    (
+                        PopulateTable
                         (
-                            PopulateTable
-                                (
-                                    "Observations details",
-                                    null,
-                                    columnHeaders.ToArray(),
-                                    null,
-                                    narrative
-                                )
-                        );
+                            "Observations details",
+                            null,
+                            columnHeaders.ToArray(),
+                            null,
+                            narrative
+                        )
+                    );
                 }
             }
 
@@ -197,7 +227,7 @@ namespace Nehta.VendorLibrary.CDA.Generator
             }
             else
             {
-               strucDocText.paragraph = CreateParagraph(SECTIONEMPTYTEXT);
+                strucDocText.paragraph = CreateParagraph(SECTIONEMPTYTEXT);
             }
 
             return strucDocText;
@@ -215,42 +245,44 @@ namespace Nehta.VendorLibrary.CDA.Generator
 
             if (allergiesAndAdverseReactions != null && allergiesAndAdverseReactions.Any())
             {
-                    foreach (var reaction in allergiesAndAdverseReactions)
-                    {
-                        var manfestationDesc = String.Empty;
+                foreach (var reaction in allergiesAndAdverseReactions)
+                {
+                    var manfestationDesc = String.Empty;
 
-                        if (reaction.ReactionEvent != null)
-                            if (reaction.ReactionEvent.Manifestations != null && reaction.ReactionEvent.Manifestations.Any())
-                            {
-                                manfestationDesc = reaction.ReactionEvent.Manifestations.Aggregate(manfestationDesc, (current, manifestation) => current + (manifestation.NarrativeText + DELIMITER));
-                            }
+                    if (reaction.ReactionEvent != null)
+                        if (reaction.ReactionEvent.Manifestations != null &&
+                            reaction.ReactionEvent.Manifestations.Any())
+                        {
+                            manfestationDesc = reaction.ReactionEvent.Manifestations.Aggregate(manfestationDesc,
+                                (current, manifestation) => current + (manifestation.NarrativeText + DELIMITER));
+                        }
 
-                        narrative.Add(
-                            new List<string>
-                                {
-                                    reaction.SubstanceOrAgent != null
-                                        ? reaction.SubstanceOrAgent.NarrativeText
-                                        : String.Empty,
-                                    manfestationDesc
-                                }
-                            );
-                    }
+                    narrative.Add(
+                        new List<string>
+                        {
+                            reaction.SubstanceOrAgent != null
+                                ? reaction.SubstanceOrAgent.NarrativeText
+                                : String.Empty,
+                            manfestationDesc
+                        }
+                    );
+                }
 
-                    strucDocTableList.Add
-                        (
-                        PopulateTable
-                            (
-                            "Adverse Reactions",
-                            null,
-                            new[]
-                                {
-                                    "Substance/Agent",
-                                    "Manifestations"
-                                },
-                            new string[0],
-                            narrative
-                            )
-                        );
+                strucDocTableList.Add
+                (
+                    PopulateTable
+                    (
+                        "Adverse Reactions",
+                        null,
+                        new[]
+                        {
+                            "Substance/Agent",
+                            "Manifestations"
+                        },
+                        new string[0],
+                        narrative
+                    )
+                );
             }
 
             var strucDocText = new StrucDocText();
@@ -275,11 +307,11 @@ namespace Nehta.VendorLibrary.CDA.Generator
             var narrativeParagraph = new List<StrucDocParagraph>();
 
             var narativeHeader = new List<string>
-                {
-                    "Substance/Agent",
-                    "Manifestations",
-                    "Reaction Type",
-                };
+            {
+                "Substance/Agent",
+                "Manifestations",
+                "Reaction Type",
+            };
 
             if (adverseSubstanceReactions != null)
             {
@@ -310,37 +342,40 @@ namespace Nehta.VendorLibrary.CDA.Generator
 
                         narrative.Add(
                             new List<string>
-                                {
-                                    adverserReaction.SubstanceOrAgent != null ? adverserReaction.SubstanceOrAgent.NarrativeText : String.Empty,
-                                    manfestationDesc,
-                                    reactionType
-                                }
-                            );
+                            {
+                                adverserReaction.SubstanceOrAgent != null
+                                    ? adverserReaction.SubstanceOrAgent.NarrativeText
+                                    : String.Empty,
+                                manfestationDesc,
+                                reactionType
+                            }
+                        );
                     }
 
-                    StripEmptyColoums(ref narativeHeader, ref narrative, new List<int> { 2 });
+                    StripEmptyColoums(ref narativeHeader, ref narrative, new List<int> {2});
 
                     strucDocTableList.Add
-                        (
+                    (
                         PopulateTable
-                            (
+                        (
                             "Adverse Reactions",
                             null,
                             narativeHeader.ToArray(),
                             new string[0],
                             narrative
-                            )
-                        );
+                        )
+                    );
                 }
 
-               // Exclusion statement
-              if (adverseSubstanceReactions.ExclusionStatement != null)
-              {
-                  narrativeParagraph.Add(CreateExclusionStatementNarrative("Adverse Reactions", adverseSubstanceReactions.ExclusionStatement));
-              }
+                // Exclusion statement
+                if (adverseSubstanceReactions.ExclusionStatement != null)
+                {
+                    narrativeParagraph.Add(CreateExclusionStatementNarrative("Adverse Reactions",
+                        adverseSubstanceReactions.ExclusionStatement));
+                }
 
             }
-        
+
             var strucDocText = new StrucDocText();
 
             // Table
@@ -352,8 +387,8 @@ namespace Nehta.VendorLibrary.CDA.Generator
             // Narrative Paragraph
             if (narrativeParagraph.Any())
             {
-              strucDocText.paragraph = narrativeParagraph.ToArray();
-            } 
+                strucDocText.paragraph = narrativeParagraph.ToArray();
+            }
 
             return strucDocText;
         }
@@ -369,62 +404,63 @@ namespace Nehta.VendorLibrary.CDA.Generator
             var strucDocTableList = new List<StrucDocTable>();
 
             var narativeHeader = new List<string>
-                {
-                    "Medication",
-                    "Directions",
-                    "Clinical Indication"
-                };
+            {
+                "Medication",
+                "Directions",
+                "Clinical Indication"
+            };
 
             if (medications != null && medications.Any())
             {
-                    narrative = new List<List<String>>();
+                narrative = new List<List<String>>();
 
-                    foreach (var medication in medications)
+                foreach (var medication in medications)
+                {
+                    //medicine_list + clinical Indication
+                    if (medication.Medicine != null)
                     {
-                        //medicine_list + clinical Indication
-                        if (medication.Medicine != null)
+
+                        var medicationList = new List<String>
                         {
+                            medication.Medicine.NarrativeText,
+                            medication.Directions != null ? medication.Directions.NarrativeText : null,
+                            medication.ClinicalIndication
+                        };
 
-                            var medicationList = new List<String>
-                                                 {
-                                                    medication.Medicine.NarrativeText,
-                                                    medication.Directions  != null ? medication.Directions.NarrativeText : null,
-                                                    medication.ClinicalIndication
-                                                 };
+                        // Dynamical add comment is it is not null
+                        if (!medication.Comment.IsNullOrEmptyWhitespace())
+                        {
+                            medicationList.Add(medication.Comment);
 
-                            // Dynamical add comment is it is not null
-                            if (!medication.Comment.IsNullOrEmptyWhitespace())
+                            if (narativeHeader.Contains("Comment") == false)
                             {
-                                medicationList.Add(medication.Comment);
-
-                                if (narativeHeader.Contains("Comment") == false)
-                                {
-                                    narativeHeader.Add("Comment");
-                                }
+                                narativeHeader.Add("Comment");
                             }
-
-                            //medicine_list + clinical Indication
-                            narrative.Add(medicationList);
                         }
-                    }
 
-                    // Close empty cells
-                    foreach (var narrativeEntry in narrative.Where(narrativeEntry => narativeHeader.Contains("Comment") && narrativeEntry.Count == 3))
-                    {
-                        narrativeEntry.Add(string.Empty);
+                        //medicine_list + clinical Indication
+                        narrative.Add(medicationList);
                     }
+                }
 
-                    strucDocTableList.Add
+                // Close empty cells
+                foreach (var narrativeEntry in narrative.Where(narrativeEntry =>
+                    narativeHeader.Contains("Comment") && narrativeEntry.Count == 3))
+                {
+                    narrativeEntry.Add(string.Empty);
+                }
+
+                strucDocTableList.Add
+                (
+                    PopulateTable
                     (
-                        PopulateTable
-                        (
-                            "Medications",
-                            null,
-                            narativeHeader.ToArray(),
-                            new string[0],
-                            narrative
-                        )
-                    );
+                        "Medications",
+                        null,
+                        narativeHeader.ToArray(),
+                        new string[0],
+                        narrative
+                    )
+                );
             }
 
             var strucDocText = new StrucDocText();
@@ -455,11 +491,11 @@ namespace Nehta.VendorLibrary.CDA.Generator
                     narrative = new List<List<String>>();
 
                     var narativeHeader = new List<string>()
-                                             {
-                                                 "Medication",
-                                                 "Directions",
-                                                 "Clinical Indication"
-                                             };
+                    {
+                        "Medication",
+                        "Directions",
+                        "Clinical Indication"
+                    };
 
 
                     foreach (var medication in reviewedMedications.Medications)
@@ -469,11 +505,11 @@ namespace Nehta.VendorLibrary.CDA.Generator
                         if (medication.Medicine != null)
                         {
                             var medicationList = new List<String>
-                                                     {
-                                                         medication.Medicine.NarrativeText,
-                                                         medication.Directions != null ? medication.Directions.NarrativeText : null,
-                                                         medication.ClinicalIndication
-                                                     };
+                            {
+                                medication.Medicine.NarrativeText,
+                                medication.Directions != null ? medication.Directions.NarrativeText : null,
+                                medication.ClinicalIndication
+                            };
 
                             // Dynamical add comment is it is not null
                             if (!medication.Comment.IsNullOrEmptyWhitespace())
@@ -492,7 +528,8 @@ namespace Nehta.VendorLibrary.CDA.Generator
                     }
 
                     // Close empty cells
-                    foreach (var narrativeEntry in narrative.Where(narrativeEntry => narativeHeader.Contains("Comment") && narrativeEntry.Count == 3))
+                    foreach (var narrativeEntry in narrative.Where(narrativeEntry =>
+                        narativeHeader.Contains("Comment") && narrativeEntry.Count == 3))
                     {
                         narrativeEntry.Add(string.Empty);
                     }
@@ -513,7 +550,8 @@ namespace Nehta.VendorLibrary.CDA.Generator
                 // Exclusions
                 if (reviewedMedications.ExclusionStatement != null)
                 {
-                  narrativeParagraph.Add(CreateExclusionStatementNarrative("Medications", reviewedMedications.ExclusionStatement));
+                    narrativeParagraph.Add(CreateExclusionStatementNarrative("Medications",
+                        reviewedMedications.ExclusionStatement));
                 }
             }
 
@@ -528,8 +566,8 @@ namespace Nehta.VendorLibrary.CDA.Generator
             // Narrative Paragraph
             if (narrativeParagraph.Any())
             {
-              strucDocText.paragraph = narrativeParagraph.ToArray();
-            } 
+                strucDocText.paragraph = narrativeParagraph.ToArray();
+            }
 
             return strucDocText;
         }
@@ -557,14 +595,14 @@ namespace Nehta.VendorLibrary.CDA.Generator
                         {
                             // Medications
                             narrative.Add(
-                                            new List<string>
-                                            {
-                                                medication.Medicine != null ?  medication.Medicine.NarrativeText : String.Empty,
-                                                medication.Directions != null ? medication.Directions.NarrativeText : String.Empty,
-                                            }
-                                          );
+                                new List<string>
+                                {
+                                    medication.Medicine != null ? medication.Medicine.NarrativeText : String.Empty,
+                                    medication.Directions != null ? medication.Directions.NarrativeText : String.Empty,
+                                }
+                            );
                         }
-                       
+
                     }
 
                     strucDocTableList.Add
@@ -574,10 +612,10 @@ namespace Nehta.VendorLibrary.CDA.Generator
                             "Medications",
                             null,
                             new[]
-                                {
-                                    "Medication",
-                                    "Directions"
-                                },
+                            {
+                                "Medication",
+                                "Directions"
+                            },
                             new string[0],
                             narrative
                         )
@@ -587,10 +625,12 @@ namespace Nehta.VendorLibrary.CDA.Generator
                 // Exclusion statement
                 if (medications.ExclusionStatement != null)
                 {
-                    narrativeParagraph.Add(CreateExclusionStatementNarrative("Medications", medications.ExclusionStatement));
+                    narrativeParagraph.Add(
+                        CreateExclusionStatementNarrative("Medications", medications.ExclusionStatement));
                 }
 
             }
+
             var strucDocText = new StrucDocText();
 
             // Structured Tables
@@ -602,8 +642,8 @@ namespace Nehta.VendorLibrary.CDA.Generator
             // Narrative Paragraph
             if (narrativeParagraph.Any())
             {
-              strucDocText.paragraph = narrativeParagraph.ToArray();
-            } 
+                strucDocText.paragraph = narrativeParagraph.ToArray();
+            }
 
             return strucDocText;
         }
@@ -624,50 +664,52 @@ namespace Nehta.VendorLibrary.CDA.Generator
                 if (medications.MedicationsList != null)
                 {
                     var narativeHeader = new List<string>()
-                                             {
-                                                 "Medication",
-                                                 "Directions",
-                                                 "Clinical Indication",
-                                                 "Change Status",
-                                                 "Change Description",
-                                                 "Change Reason",
-                                                 "Comment"
-                                             };
+                    {
+                        "Medication",
+                        "Directions",
+                        "Clinical Indication",
+                        "Change Status",
+                        "Change Description",
+                        "Change Reason",
+                        "Comment"
+                    };
 
                     narrative = new List<List<String>>();
 
                     foreach (var medication in medications.MedicationsList)
                     {
-                      //string changeStatus;
-                      //if (medication.ChangeType != null && medication.ChangeType.NullFlavour != null) // because if there is no change status, the fact of whether this is a recommendation or change is irrelevant
-                      //  changeStatus = "No change";
-                      //else
-                      //{
-                      //  changeStatus = medication.ChangeType != null ? medication.ChangeType.NarrativeText : string.Empty;
-                      //  // if there's no change, or recommendation or change value, we don't say anything about it
-                      //  if (medication.ChangeType != null && (medication.ChangeType.Code != ChangeType.Unchanged.GetAttributeValue<NameAttribute, string>(x => x.Code) || 
-                      //                                       medication.ChangeType.Code != ChangeType.Unchanged.GetAttributeValue<NameAttribute, string>(x => x.Identifier)))
-                      //  {
-                      //      if (!(medication.RecommendationOrChange != null && medication.RecommendationOrChange.Code == RecomendationOrChange.TheChangeHasBeenMade.GetAttributeValue<NameAttribute, string>(x => x.Code)))
-                      //      changeStatus = "Recommendation: " + changeStatus;
-                      //  }
-                      //}
+                        //string changeStatus;
+                        //if (medication.ChangeType != null && medication.ChangeType.NullFlavour != null) // because if there is no change status, the fact of whether this is a recommendation or change is irrelevant
+                        //  changeStatus = "No change";
+                        //else
+                        //{
+                        //  changeStatus = medication.ChangeType != null ? medication.ChangeType.NarrativeText : string.Empty;
+                        //  // if there's no change, or recommendation or change value, we don't say anything about it
+                        //  if (medication.ChangeType != null && (medication.ChangeType.Code != ChangeType.Unchanged.GetAttributeValue<NameAttribute, string>(x => x.Code) || 
+                        //                                       medication.ChangeType.Code != ChangeType.Unchanged.GetAttributeValue<NameAttribute, string>(x => x.Identifier)))
+                        //  {
+                        //      if (!(medication.RecommendationOrChange != null && medication.RecommendationOrChange.Code == RecomendationOrChange.TheChangeHasBeenMade.GetAttributeValue<NameAttribute, string>(x => x.Code)))
+                        //      changeStatus = "Recommendation: " + changeStatus;
+                        //  }
+                        //}
 
-                      var medicationList = new List<String>
-                                              {
-                                                  medication.Medicine != null ? medication.Medicine.NarrativeText : null,
-                                                  medication.Directions != null ? medication.Directions.NarrativeText : null,
-                                                  medication.ClinicalIndication,
-                                                  medication.ChangeStatus != null ?  medication.ChangeStatus.NarrativeText : null,
-                                                  !medication.ChangeDescription.IsNullOrEmptyWhitespace() ? medication.ChangeDescription : null,
-                                                  medication.ChangeReason != null ? medication.ChangeReason.NarrativeText : null,
-                                                  !medication.Comment.IsNullOrEmptyWhitespace() ? medication.Comment : null
-                                              };
+                        var medicationList = new List<String>
+                        {
+                            medication.Medicine != null ? medication.Medicine.NarrativeText : null,
+                            medication.Directions != null ? medication.Directions.NarrativeText : null,
+                            medication.ClinicalIndication,
+                            medication.ChangeStatus != null ? medication.ChangeStatus.NarrativeText : null,
+                            !medication.ChangeDescription.IsNullOrEmptyWhitespace()
+                                ? medication.ChangeDescription
+                                : null,
+                            medication.ChangeReason != null ? medication.ChangeReason.NarrativeText : null,
+                            !medication.Comment.IsNullOrEmptyWhitespace() ? medication.Comment : null
+                        };
 
-                      narrative.Add(medicationList);
+                        narrative.Add(medicationList);
                     }
 
-                    StripEmptyColoums(ref narativeHeader, ref narrative, new List<int> {3,4,5,6});
+                    StripEmptyColoums(ref narativeHeader, ref narrative, new List<int> {3, 4, 5, 6});
 
                     strucDocTableList.Add
                     (
@@ -685,7 +727,8 @@ namespace Nehta.VendorLibrary.CDA.Generator
                 // Exclusions
                 if (medications.ExclusionStatement != null)
                 {
-                    narrativeParagraph.Add(CreateExclusionStatementNarrative("Medications", medications.ExclusionStatement));
+                    narrativeParagraph.Add(
+                        CreateExclusionStatementNarrative("Medications", medications.ExclusionStatement));
                 }
             }
 
@@ -700,8 +743,8 @@ namespace Nehta.VendorLibrary.CDA.Generator
             // Narrative Paragraph
             if (narrativeParagraph.Any())
             {
-              strucDocText.paragraph = narrativeParagraph.ToArray();
-            } 
+                strucDocText.paragraph = narrativeParagraph.ToArray();
+            }
 
             return strucDocText;
         }
@@ -713,7 +756,7 @@ namespace Nehta.VendorLibrary.CDA.Generator
         /// <param name="showExclusionStatements">This indicates wether exclusion statements should be shown in the narrative</param>
         /// <returns>StrucDocText</returns>
         public StrucDocText CreateNarrative(MedicalHistory medicalHistory, bool showExclusionStatements)
-       {
+        {
             var strucDocItemList = new List<StrucDocItem>();
             StrucDocTable table = null;
 
@@ -722,19 +765,20 @@ namespace Nehta.VendorLibrary.CDA.Generator
                 List<ProblemDiagnosis> problemDiagnosisList = null;
                 if (medicalHistory.ProblemDiagnosis != null)
                 {
-                  problemDiagnosisList = medicalHistory.ProblemDiagnosis.ConvertAll(x => x as ProblemDiagnosis);
+                    problemDiagnosisList = medicalHistory.ProblemDiagnosis.ConvertAll(x => x as ProblemDiagnosis);
                 }
 
                 List<Procedure> proceduresList = null;
                 if (medicalHistory.Procedures != null)
                 {
-                  proceduresList = medicalHistory.Procedures.ConvertAll(x => x);
+                    proceduresList = medicalHistory.Procedures.ConvertAll(x => x);
                 }
 
                 List<MedicalHistoryItem> medicalHistoryItemList = null;
                 if (medicalHistory.MedicalHistoryItems != null)
                 {
-                  medicalHistoryItemList = medicalHistory.MedicalHistoryItems.ConvertAll(x => x as MedicalHistoryItem);
+                    medicalHistoryItemList =
+                        medicalHistory.MedicalHistoryItems.ConvertAll(x => x as MedicalHistoryItem);
                 }
 
                 table = CreateNarrative(problemDiagnosisList, proceduresList, medicalHistoryItemList, true);
@@ -744,13 +788,15 @@ namespace Nehta.VendorLibrary.CDA.Generator
                     // PROCEDURE EXCLUSIONS
                     if (medicalHistory.ProceduresExclusionStatement != null)
                     {
-                        strucDocItemList.Add(CreateExclusionStatement("Procedures", medicalHistory.ProceduresExclusionStatement));
+                        strucDocItemList.Add(CreateExclusionStatement("Procedures",
+                            medicalHistory.ProceduresExclusionStatement));
                     }
 
                     // PROBLEM DIAGNOSIS EXCLUSIONS
                     if (medicalHistory.ProblemDiagnosisExclusionStatement != null)
                     {
-                        strucDocItemList.Add(CreateExclusionStatement("Problem Diagnosis", medicalHistory.ProblemDiagnosisExclusionStatement));
+                        strucDocItemList.Add(CreateExclusionStatement("Problem Diagnosis",
+                            medicalHistory.ProblemDiagnosisExclusionStatement));
                     }
                 }
             }
@@ -760,18 +806,18 @@ namespace Nehta.VendorLibrary.CDA.Generator
             // Structured Tables
             if (table != null)
             {
-              strucDocText.table = new [] {  table };
+                strucDocText.table = new[] {table};
             }
 
             // Narrative Paragraph
             if (strucDocItemList.Any())
             {
-              strucDocText.list = new [] { new StrucDocList { item = strucDocItemList.ToArray() } };
+                strucDocText.list = new[] {new StrucDocList {item = strucDocItemList.ToArray()}};
             }
 
             if (table == null && !strucDocItemList.Any())
             {
-              strucDocText.paragraph = CreateParagraph(SECTIONEMPTYTEXT);
+                strucDocText.paragraph = CreateParagraph(SECTIONEMPTYTEXT);
             }
 
             return strucDocText;
@@ -795,15 +841,16 @@ namespace Nehta.VendorLibrary.CDA.Generator
                 if (immunisations.AdministeredImmunisation != null && immunisations.AdministeredImmunisation.Any())
                 {
                     strucDocTableList.AddRange
-                        (
-                                CreateNarrativeEntry(immunisations.AdministeredImmunisation)
-                        );
+                    (
+                        CreateNarrativeEntry(immunisations.AdministeredImmunisation)
+                    );
                 }
 
                 //EXCLUSION STATEMENT
                 if (immunisations.ExclusionStatement != null)
                 {
-                  narrativeParagraph.Add(CreateExclusionStatementNarrative("Immunisations", immunisations.ExclusionStatement));
+                    narrativeParagraph.Add(
+                        CreateExclusionStatementNarrative("Immunisations", immunisations.ExclusionStatement));
                 }
             }
 
@@ -818,8 +865,8 @@ namespace Nehta.VendorLibrary.CDA.Generator
             // Narrative Paragraph
             if (narrativeParagraph.Any())
             {
-              strucDocText.paragraph = narrativeParagraph.ToArray();
-            } 
+                strucDocText.paragraph = narrativeParagraph.ToArray();
+            }
 
             return strucDocText;
         }
@@ -832,79 +879,89 @@ namespace Nehta.VendorLibrary.CDA.Generator
         [NotNull]
         public StrucDocText CreateNarrative(IResponseDetails responseDetails)
         {
-          var strucDocItemList = new List<StrucDocItem>();
+            var strucDocItemList = new List<StrucDocItem>();
 
-          if (responseDetails != null)
-          {
-            // ResponseDetails
-            if (responseDetails.Procedures != null && responseDetails.Procedures.Any())
+            if (responseDetails != null)
             {
-               foreach(var procedure in responseDetails.Procedures)
-               {
-                 if (procedure.ProcedureName != null)
-                   strucDocItemList.Add(new StrucDocItem { Text = new[] { string.Format("{0} {1}", procedure.ProcedureName.NarrativeText, "(procedure)") } });
-               }
+                // ResponseDetails
+                if (responseDetails.Procedures != null && responseDetails.Procedures.Any())
+                {
+                    foreach (var procedure in responseDetails.Procedures)
+                    {
+                        if (procedure.ProcedureName != null)
+                            strucDocItemList.Add(new StrucDocItem
+                            {
+                                Text = new[]
+                                    {string.Format("{0} {1}", procedure.ProcedureName.NarrativeText, "(procedure)")}
+                            });
+                    }
+                }
+
+                //Diagnoses 
+                if (responseDetails.Diagnoses != null)
+                {
+                    foreach (var diagnoses in responseDetails.Diagnoses)
+                    {
+                        if (diagnoses != null)
+                            strucDocItemList.Add(new StrucDocItem
+                                {Text = new[] {string.Format("{0} {1}", diagnoses.NarrativeText, "(diagnoses)")}});
+                    }
+                }
+
+                //Other Diagnoses 
+                if (responseDetails.OtherDiagnosisEntries != null && responseDetails.OtherDiagnosisEntries.Any())
+                {
+                    foreach (var otherDiagnosisEntries in responseDetails.OtherDiagnosisEntries)
+                    {
+                        if (otherDiagnosisEntries != null)
+                            strucDocItemList.Add(new StrucDocItem
+                                {Text = new[] {string.Format("{0} {1}", otherDiagnosisEntries, "(other entry)")}});
+                    }
+                }
             }
 
-            //Diagnoses 
-            if (responseDetails.Diagnoses != null)
+            var responseNarrative = new List<String>();
+            var strucDocTableList = new List<StrucDocTable>();
+            responseNarrative.Add
+            (
+                !responseDetails.ResponseNarrative.IsNullOrEmptyWhitespace()
+                    ? responseDetails.ResponseNarrative
+                    : String.Empty
+            );
+
+            strucDocTableList.Add
+            (
+                PopulateTable
+                (
+                    "Response Narrative",
+                    null,
+                    null,
+                    null,
+                    new List<List<String>> {responseNarrative}
+                )
+            );
+
+
+            var strucDocText = new StrucDocText();
+
+            if (strucDocItemList.Any())
             {
-              foreach (var diagnoses in responseDetails.Diagnoses)
-              {
-                if (diagnoses != null)
-                  strucDocItemList.Add(new StrucDocItem { Text = new[] { string.Format("{0} {1}", diagnoses.NarrativeText, "(diagnoses)") } });
-              }
+                strucDocText.list = new[]
+                {
+                    new StrucDocList
+                    {
+                        caption = new StrucDocCaption {Text = new[] {"Diagnoses"}},
+                        item = strucDocItemList.ToArray()
+                    }
+                };
             }
 
-            //Other Diagnoses 
-            if (responseDetails.OtherDiagnosisEntries != null && responseDetails.OtherDiagnosisEntries.Any())
+            if (strucDocTableList.Any())
             {
-              foreach (var otherDiagnosisEntries in responseDetails.OtherDiagnosisEntries)
-              {
-                if (otherDiagnosisEntries != null)
-                  strucDocItemList.Add(new StrucDocItem { Text = new[] { string.Format("{0} {1}", otherDiagnosisEntries, "(other entry)") } });
-              }
+                strucDocText.table = strucDocTableList.ToArray();
             }
-          }
 
-          var responseNarrative = new List<String>();
-          var strucDocTableList = new List<StrucDocTable>();
-          responseNarrative.Add
-                     (
-                     !responseDetails.ResponseNarrative.IsNullOrEmptyWhitespace() ? responseDetails.ResponseNarrative : String.Empty
-                     );
-
-          strucDocTableList.Add
-                     (
-                         PopulateTable
-                             (
-                                 "Response Narrative",
-                                 null,
-                                 null,
-                                 null,
-                                 new List<List<String>> { responseNarrative }
-                             )
-                     );
-
-
-          var strucDocText = new StrucDocText();
-
-          if (strucDocItemList.Any())
-          {
-            strucDocText.list = new[] { new StrucDocList
-                                          {
-                                            caption = new StrucDocCaption {  Text = new [] { "Diagnoses" }},
-                                            item =  strucDocItemList.ToArray()
-                                          } 
-                                      };
-          }
-
-          if (strucDocTableList.Any())
-          {
-            strucDocText.table = strucDocTableList.ToArray();
-          }
- 
-          return strucDocText;
+            return strucDocText;
         }
 
         /// <summary>
@@ -927,58 +984,61 @@ namespace Nehta.VendorLibrary.CDA.Generator
                     var narrativeEntry = new List<String>();
 
                     recommendations.Recommendation.ForEach
-                        (                            
-                            recommendation =>
-                                {
-                                narrativeEntry = new List<String>();
-                                narrativeEntry.Add(recommendation.Narrative);
-                                narrativeEntry.Add(CreateDuration(recommendation.TimeFrame));
+                    (
+                        recommendation =>
+                        {
+                            narrativeEntry = new List<String>();
+                            narrativeEntry.Add(recommendation.Narrative);
+                            narrativeEntry.Add(CreateDuration(recommendation.TimeFrame));
 
-                               var addressee = string.Empty;
+                            var addressee = string.Empty;
 
-                                if (recommendation.Addressee != null
-                                    && recommendation.Addressee.Participant != null)
+                            if (recommendation.Addressee != null
+                                && recommendation.Addressee.Participant != null)
+                            {
+                                if (recommendation.Addressee.Participant.Person != null)
+                                    addressee +=
+                                        BuildPersonNames(recommendation.Addressee.Participant.Person.PersonNames);
+                                else
                                 {
-                                  if (recommendation.Addressee.Participant.Person != null)
-                                    addressee += BuildPersonNames(recommendation.Addressee.Participant.Person.PersonNames);
-                                  else
-                                  {
                                     if (recommendation.Addressee.Participant.Organisation != null)
-                                      addressee += recommendation.Addressee.Participant.Organisation.Name;
-                                  }
-
-                                  if (recommendation.Addressee.Role != null)
-                                  {
-                                    addressee +=  string.Format(" ({0}) ", recommendation.Addressee.Role.NarrativeText);
-                                  }
-
-                                  addressee += CreateAddress(null, recommendation.Addressee.Participant.ElectronicCommunicationDetails);
+                                        addressee += recommendation.Addressee.Participant.Organisation.Name;
                                 }
 
-                                narrativeEntry.Add(addressee);
-                                narrative.Add(narrativeEntry);
-                            }
-                        );
+                                if (recommendation.Addressee.Role != null)
+                                {
+                                    addressee += string.Format(" ({0}) ", recommendation.Addressee.Role.NarrativeText);
+                                }
 
-                    
-                    
+                                addressee += CreateAddress(null,
+                                    recommendation.Addressee.Participant.ElectronicCommunicationDetails);
+                            }
+
+                            narrativeEntry.Add(addressee);
+                            narrative.Add(narrativeEntry);
+                        }
+                    );
+
+
+
                     strucDocTableList.Add
+                    (
+                        PopulateTable
                         (
-                            PopulateTable
-                                (
-                                    "Recommendations",
-                                    null,
-                                    new[] {  "Recommendation", "Time frame", "Addressee"},
-                                    new String[] { },
-                                    narrative
-                                )
-                        );
+                            "Recommendations",
+                            null,
+                            new[] {"Recommendation", "Time frame", "Addressee"},
+                            new String[] { },
+                            narrative
+                        )
+                    );
                 }
 
                 // Exclusions
                 if (recommendations.ExclusionStatement != null)
                 {
-                  narrativeParagraph.Add(CreateExclusionStatementNarrative("Exclusion Statement", recommendations.ExclusionStatement));
+                    narrativeParagraph.Add(CreateExclusionStatementNarrative("Exclusion Statement",
+                        recommendations.ExclusionStatement));
                 }
             }
 
@@ -987,13 +1047,13 @@ namespace Nehta.VendorLibrary.CDA.Generator
             // Structured Tables
             if (strucDocTableList.Any())
             {
-              strucDocText.table = strucDocTableList.ToArray();
+                strucDocText.table = strucDocTableList.ToArray();
             }
 
             // Narrative Paragraph
             if (narrativeParagraph.Any())
             {
-              strucDocText.paragraph = narrativeParagraph.ToArray();
+                strucDocText.paragraph = narrativeParagraph.ToArray();
             }
 
             return strucDocText;
@@ -1011,89 +1071,90 @@ namespace Nehta.VendorLibrary.CDA.Generator
             var narrative = new List<List<Object>>();
             var strucDocTableList = new List<StrucDocTable>();
             var renderMultiMediaList = new List<StrucDocRenderMultiMedia>();
-            var header = new[] { "Field", "Value" };
+            var header = new[] {"Field", "Value"};
 
             if (otherTestResult != null)
             {
-              // Report Date
-              if (otherTestResult.ReportDate != null)
-                narrative.Add
-                  (
-                    new List<Object>
-                      {
-                        "Report Date",
-                        otherTestResult.ReportDate.NarrativeText()
-                      }
-                  );
+                // Report Date
+                if (otherTestResult.ReportDate != null)
+                    narrative.Add
+                    (
+                        new List<Object>
+                        {
+                            "Report Date",
+                            otherTestResult.ReportDate.NarrativeText()
+                        }
+                    );
 
-              // Report Name
-              if (otherTestResult.ReportName != null)
-                narrative.Add
-                  (
-                    new List<Object>
-                      {
-                        "Report Name",
-                        otherTestResult.ReportName.NarrativeText
-                      }
-                  );
+                // Report Name
+                if (otherTestResult.ReportName != null)
+                    narrative.Add
+                    (
+                        new List<Object>
+                        {
+                            "Report Name",
+                            otherTestResult.ReportName.NarrativeText
+                        }
+                    );
 
-              // Report Status 
-              if (otherTestResult.ReportStatus != null)
-                narrative.Add
-                  (
-                    new List<Object>
-                      {
-                        "Report Status",
-                        otherTestResult.ReportStatus.NarrativeText
-                      }
-                  );
+                // Report Status 
+                if (otherTestResult.ReportStatus != null)
+                    narrative.Add
+                    (
+                        new List<Object>
+                        {
+                            "Report Status",
+                            otherTestResult.ReportStatus.NarrativeText
+                        }
+                    );
 
                 // Report Content ExternalData
                 // PW: 30/5/17 Should be LinkHtml 
                 // PW: 23/01/19 Changed back to Encapsulated Data as added the observationMedia section in
                 if (otherTestResult.ReportContent != null && otherTestResult.ReportContent.ExternalData != null)
-                narrative.Add
-                  (
-                    new List<Object>
-                      {
-                        "Report Content",
-                        CreateEncapsulatedData(otherTestResult.ReportContent.ExternalData, ref renderMultiMediaList)   
-                        //CreateSimpleHtmlLink(otherTestResult.ReportContent.ExternalData)
-                      }
-                  );
+                    narrative.Add
+                    (
+                        new List<Object>
+                        {
+                            "Report Content",
+                            CreateEncapsulatedData(otherTestResult.ReportContent.ExternalData, ref renderMultiMediaList)
+                            //CreateSimpleHtmlLink(otherTestResult.ReportContent.ExternalData)
+                        }
+                    );
 
                 // Report Content Text
-                if (otherTestResult.ReportContent != null && !otherTestResult.ReportContent.Text.IsNullOrEmptyWhitespace())
-                narrative.Add
-                  (
-                    new List<Object>
-                      {
-                        "Report Content",
-                        otherTestResult.ReportContent.Text
-                      }
-                  );
-
-              strucDocTableList.Add
-                (
-                  PopulateTable
+                if (otherTestResult.ReportContent != null &&
+                    !otherTestResult.ReportContent.Text.IsNullOrEmptyWhitespace())
+                    narrative.Add
                     (
-                      "Other Test Result",
-                      null,
-                      header,
-                      null,
-                      narrative
+                        new List<Object>
+                        {
+                            "Report Content",
+                            otherTestResult.ReportContent.Text
+                        }
+                    );
+
+                strucDocTableList.Add
+                (
+                    PopulateTable
+                    (
+                        "Other Test Result",
+                        null,
+                        header,
+                        null,
+                        narrative
                     )
                 );
 
-              strucDocText.table = strucDocTableList.ToArray();
+                strucDocText.table = strucDocTableList.ToArray();
 
-              if (renderMultiMediaList.Any())
-              {
-                strucDocText.renderMultiMedia = renderMultiMediaList.ToArray();
-              }
+                if (renderMultiMediaList.Any())
+                {
+                    strucDocText.renderMultiMedia = renderMultiMediaList.ToArray();
+                }
             }
 
-          return strucDocText;
+            return strucDocText;
 
         }
 
@@ -1134,7 +1195,7 @@ namespace Nehta.VendorLibrary.CDA.Generator
             var narrative = new List<List<Object>>();
             var strucDocTableList = new List<StrucDocTable>();
             var renderMultiMediaList = new List<StrucDocRenderMultiMedia>();
-            var header = new[] { "Field", "Value" };
+            var header = new[] {"Field", "Value"};
 
             // Simple narrative
             if (!pathologyTestResult.XPreNarrative.IsNullOrEmptyWhitespace())
@@ -1144,10 +1205,10 @@ namespace Nehta.VendorLibrary.CDA.Generator
                     narrative.Add
                     (
                         new List<Object>
-                            {
-                                "Test Name",
-                                pathologyTestResult.TestResultName.NarrativeText
-                            }
+                        {
+                            "Test Name",
+                            pathologyTestResult.TestResultName.NarrativeText
+                        }
                     );
 
                 //Overall Test Result Status 
@@ -1155,10 +1216,10 @@ namespace Nehta.VendorLibrary.CDA.Generator
                     narrative.Add
                     (
                         new List<Object>
-                            {
-                                "Result Status",
-                                pathologyTestResult.OverallTestResultStatus.NarrativeText
-                            }
+                        {
+                            "Result Status",
+                            pathologyTestResult.OverallTestResultStatus.NarrativeText
+                        }
                     );
 
                 //Overall Test Result Status 
@@ -1166,10 +1227,10 @@ namespace Nehta.VendorLibrary.CDA.Generator
                     narrative.Add
                     (
                         new List<Object>
-                            {
-                                "Date Time",
-                                pathologyTestResult.ObservationDateTime.NarrativeText()
-                            }
+                        {
+                            "Date Time",
+                            pathologyTestResult.ObservationDateTime.NarrativeText()
+                        }
                     );
 
                 //Comment 
@@ -1177,30 +1238,30 @@ namespace Nehta.VendorLibrary.CDA.Generator
                     narrative.Add
                     (
                         new List<Object>
-                            {
-                                "Comment",
-                                pathologyTestResult.TestComment
-                            }
+                        {
+                            "Comment",
+                            pathologyTestResult.TestComment
+                        }
                     );
 
                 strucDocTableList.Add
-                   (
-                        PopulateTable
-                            (
-                               "Pathology Test Result",
-                               null,
-                               header,
-                               null,
-                               narrative
-                            )
-                   );
+                (
+                    PopulateTable
+                    (
+                        "Pathology Test Result",
+                        null,
+                        header,
+                        null,
+                        narrative
+                    )
+                );
 
-                strucDocTableList.Add(populateTablexPreNarrative(pathologyTestResult.XPreNarrative));                
+                strucDocTableList.Add(populateTablexPreNarrative(pathologyTestResult.XPreNarrative));
 
                 strucDocText.table = strucDocTableList.ToArray();
 
                 return strucDocText;
-            } 
+            }
 
             // Complex Narrative
             if (pathologyTestResult != null)
@@ -1208,9 +1269,10 @@ namespace Nehta.VendorLibrary.CDA.Generator
                 if (pathologyTestResult.TestSpecimenDetail != null)
                 {
                     strucDocTableList.AddRange
-                        (
-                            CreateNarrativeEntry(pathologyTestResult.TestSpecimenDetail, "Pathology Test Specimen Detail", ref narrative, ref renderMultiMediaList)
-                        );
+                    (
+                        CreateNarrativeEntry(pathologyTestResult.TestSpecimenDetail, "Pathology Test Specimen Detail",
+                            ref narrative, ref renderMultiMediaList)
+                    );
                 }
 
                 if (pathologyTestResult.ResultGroup != null)
@@ -1231,88 +1293,118 @@ namespace Nehta.VendorLibrary.CDA.Generator
 
                                 if (pathologyTestResults.ResultValueReferenceRangeDetails != null)
                                 {
-                                    foreach (var resultValueReferenceRange in pathologyTestResults.ResultValueReferenceRangeDetails)
+                                    foreach (var resultValueReferenceRange in pathologyTestResults
+                                        .ResultValueReferenceRangeDetails)
                                     {
-                                        resultValueReferenceRangeDetails += resultValueReferenceRange.Range.NarrativeText + (resultValueReferenceRange.ResultValueReferenceRangeMeaning != null ? string.Format(" ({0})", resultValueReferenceRange.ResultValueReferenceRangeMeaning.NarrativeText) : string.Empty) + DELIMITER;
+                                        resultValueReferenceRangeDetails +=
+                                            resultValueReferenceRange.Range.NarrativeText +
+                                            (resultValueReferenceRange.ResultValueReferenceRangeMeaning != null
+                                                ? string.Format(" ({0})",
+                                                    resultValueReferenceRange.ResultValueReferenceRangeMeaning
+                                                        .NarrativeText)
+                                                : string.Empty) + DELIMITER;
                                     }
                                 }
 
                                 if (pathologyTestResults.Comments != null)
                                 {
-                                    pathologyTestResultsComments = pathologyTestResults.Comments.Aggregate(pathologyTestResultsComments, (current, comment) => current + (comment + DELIMITER));
+                                    pathologyTestResultsComments =
+                                        pathologyTestResults.Comments.Aggregate(pathologyTestResultsComments,
+                                            (current, comment) => current + (comment + DELIMITER));
                                 }
 
                                 if (!testResultGroup.ResultGroupName.NarrativeText.IsNullOrEmptyWhitespace())
                                     pathologyTestResultsList.Add
                                     (
-                                         new List<Object> { "Result Group Name", testResultGroup.ResultGroupName.NarrativeText }
+                                        new List<Object>
+                                            {"Result Group Name", testResultGroup.ResultGroupName.NarrativeText}
                                     );
 
                                 if (pathologyTestResults.ResultName != null)
                                     pathologyTestResultsList.Add
                                     (
-                                         new List<Object> { "Test Result Name", pathologyTestResults.ResultName.NarrativeText }
+                                        new List<Object>
+                                            {"Test Result Name", pathologyTestResults.ResultName.NarrativeText}
                                     );
 
                                 if (pathologyTestResults.ResultValue != null)
                                     pathologyTestResultsList.Add
                                     (
-                                         new List<Object> { "Test Result Value", 
-                                         
-                                              (pathologyTestResults.ResultValue.ValueAsCodableText == null  ? 
-                                              String.Empty :
-                                              pathologyTestResults.ResultValue.ValueAsCodableText.NarrativeText + DELIMITER) + (pathologyTestResults.ResultValue.TestResultValue == null  ? 
-                                              String.Empty : 
-                                              pathologyTestResults.ResultValue.TestResultValue.NarrativeText + DELIMITER) + (pathologyTestResults.ResultValue.ValueAsQuantityRange == null  ? 
-                                              String.Empty : pathologyTestResults.ResultValue.ValueAsQuantityRange.NarrativeText + DELIMITER)                                         
-                                         }
+                                        new List<Object>
+                                        {
+                                            "Test Result Value",
+
+                                            (pathologyTestResults.ResultValue.ValueAsCodableText == null
+                                                ? String.Empty
+                                                : pathologyTestResults.ResultValue.ValueAsCodableText.NarrativeText +
+                                                  DELIMITER) +
+                                            (pathologyTestResults.ResultValue.TestResultValue == null
+                                                ? String.Empty
+                                                : pathologyTestResults.ResultValue.TestResultValue.NarrativeText +
+                                                  DELIMITER) +
+                                            (pathologyTestResults.ResultValue.ValueAsQuantityRange == null
+                                                ? String.Empty
+                                                : pathologyTestResults.ResultValue.ValueAsQuantityRange.NarrativeText +
+                                                  DELIMITER)
+                                        }
                                     );
 
                                 if (pathologyTestResults.NormalStatus.HasValue)
                                     pathologyTestResultsList.Add
                                     (
-                                         new List<Object> { "Reference Ranges - Normal Status", pathologyTestResults.NormalStatus.Value.GetAttributeValue<NameAttribute, string>(x => x.Name) }
+                                        new List<Object>
+                                        {
+                                            "Reference Ranges - Normal Status",
+                                            pathologyTestResults.NormalStatus.Value
+                                                .GetAttributeValue<NameAttribute, string>(x => x.Name)
+                                        }
                                     );
 
 
                                 if (!resultValueReferenceRangeDetails.IsNullOrEmptyWhitespace())
                                     pathologyTestResultsList.Add
                                     (
-                                         new List<Object> { "Reference Ranges - Reference Range Details", resultValueReferenceRangeDetails }
+                                        new List<Object>
+                                        {
+                                            "Reference Ranges - Reference Range Details",
+                                            resultValueReferenceRangeDetails
+                                        }
                                     );
 
                                 if (!pathologyTestResultsComments.IsNullOrEmptyWhitespace())
                                     pathologyTestResultsList.Add
                                     (
-                                         new List<Object> { "Test Result Comment", pathologyTestResultsComments }
+                                        new List<Object> {"Test Result Comment", pathologyTestResultsComments}
                                     );
 
                                 if (!pathologyTestResults.ReferenceRangeGuidance.IsNullOrEmptyWhitespace())
                                     pathologyTestResultsList.Add
                                     (
-                                         new List<Object> { "Reference Range Guidance", pathologyTestResults.ReferenceRangeGuidance }
+                                        new List<Object>
+                                            {"Reference Range Guidance", pathologyTestResults.ReferenceRangeGuidance}
                                     );
 
                                 if (pathologyTestResults.ResultStatus != null)
                                     pathologyTestResultsList.Add
                                     (
-                                         new List<Object> { "Result Status", pathologyTestResults.ResultStatus.NarrativeText }
+                                        new List<Object>
+                                            {"Result Status", pathologyTestResults.ResultStatus.NarrativeText}
                                     );
 
 
-                                var testResulColumnHeaders = new List<string> { "Field", "Value" };
+                                var testResulColumnHeaders = new List<string> {"Field", "Value"};
 
                                 strucDocTableList.Add
-                                   (
-                                        PopulateTable
-                                            (
-                                               "Individual Test Result Group",
-                                               null,
-                                               testResulColumnHeaders.ToArray(),
-                                               null,
-                                               pathologyTestResultsList
-                                            )
-                                   );
+                                (
+                                    PopulateTable
+                                    (
+                                        "Individual Test Result Group",
+                                        null,
+                                        testResulColumnHeaders.ToArray(),
+                                        null,
+                                        pathologyTestResultsList
+                                    )
+                                );
 
                                 pathologyTestResultsList = new List<List<object>>();
                             }
@@ -1321,7 +1413,9 @@ namespace Nehta.VendorLibrary.CDA.Generator
 
                         if (testResultGroup.ResultGroupSpecimenDetail != null)
                         {
-                            var specimenDetail = CreateNarrativeEntry(new List<SpecimenDetail> { testResultGroup.ResultGroupSpecimenDetail }, "Result Group Specimen Detail", ref narrative, ref renderMultiMediaList);
+                            var specimenDetail = CreateNarrativeEntry(
+                                new List<SpecimenDetail> {testResultGroup.ResultGroupSpecimenDetail},
+                                "Result Group Specimen Detail", ref narrative, ref renderMultiMediaList);
 
                             if (specimenDetail != null)
                             {
@@ -1341,7 +1435,7 @@ namespace Nehta.VendorLibrary.CDA.Generator
                     }
                 }
 
-                var columnHeaders = new List<string> { "Field", "Value" };
+                var columnHeaders = new List<string> {"Field", "Value"};
 
                 var narrativepathologyTestResult = new List<List<Object>>();
 
@@ -1349,68 +1443,85 @@ namespace Nehta.VendorLibrary.CDA.Generator
                 if (pathologyTestResult.ObservationDateTime != null)
                     narrativepathologyTestResult.Add
                     (
-                         new List<Object> { "Observation DateTime", pathologyTestResult.ObservationDateTime.NarrativeText() }
+                        new List<Object>
+                            {"Observation DateTime", pathologyTestResult.ObservationDateTime.NarrativeText()}
                     );
 
                 // Observation Date Time
                 if (pathologyTestResult.TestResultName != null)
                     narrativepathologyTestResult.Add
-                         (
-                              new List<Object> { "Pathology Test Result Name", pathologyTestResult.TestResultName.NarrativeText }
-                         );
+                    (
+                        new List<Object>
+                            {"Pathology Test Result Name", pathologyTestResult.TestResultName.NarrativeText}
+                    );
 
                 // Diagnostic Service
                 if (pathologyTestResult.DiagnosticService.HasValue)
                     narrativepathologyTestResult.Add
-                         (
-                              new List<Object> { "Diagnostic Service", pathologyTestResult.DiagnosticService.Value.GetAttributeValue<NameAttribute, String>(x => x.Name) }
-                         );
+                    (
+                        new List<Object>
+                        {
+                            "Diagnostic Service",
+                            pathologyTestResult.DiagnosticService.Value.GetAttributeValue<NameAttribute, String>(x =>
+                                x.Name)
+                        }
+                    );
 
                 // Overall Pathology Test Result Status
                 if (pathologyTestResult.OverallTestResultStatus != null)
                     narrativepathologyTestResult.Add
-                         (
-                              new List<Object> { "Overall Pathology Test Result Status", pathologyTestResult.OverallTestResultStatus.NarrativeText}
-                         );
+                    (
+                        new List<Object>
+                        {
+                            "Overall Pathology Test Result Status",
+                            pathologyTestResult.OverallTestResultStatus.NarrativeText
+                        }
+                    );
 
                 // Clinical Information Provided
                 if (!pathologyTestResult.ClinicalInformationProvided.IsNullOrEmptyWhitespace())
                     narrativepathologyTestResult.Add
-                         (
-                              new List<Object> { "Clinical Information Provided", pathologyTestResult.ClinicalInformationProvided }
-                         );
+                    (
+                        new List<Object>
+                            {"Clinical Information Provided", pathologyTestResult.ClinicalInformationProvided}
+                    );
 
                 // Pathological Diagnosis
-                if (pathologyTestResult.PathologicalDiagnosis != null && pathologyTestResult.PathologicalDiagnosis.Any())
+                if (pathologyTestResult.PathologicalDiagnosis != null &&
+                    pathologyTestResult.PathologicalDiagnosis.Any())
                     narrativepathologyTestResult.Add
-                         (
-                              new List<Object> { "Pathological Diagnosis", pathologicalDiagnosis }
-                         );
+                    (
+                        new List<Object> {"Pathological Diagnosis", pathologicalDiagnosis}
+                    );
 
                 // Pathology Test Conclusion
                 if (!pathologyTestResult.Conclusion.IsNullOrEmptyWhitespace())
                     narrativepathologyTestResult.Add
-                         (
-                              new List<Object> { "Pathology Test Conclusion", pathologyTestResult.Conclusion }
-                         );
+                    (
+                        new List<Object> {"Pathology Test Conclusion", pathologyTestResult.Conclusion}
+                    );
 
                 // Test Comment
                 if (!pathologyTestResult.TestComment.IsNullOrEmptyWhitespace())
                     narrativepathologyTestResult.Add
-                         (
-                              new List<Object> { "Test Comment", pathologyTestResult.TestComment }
-                         );
+                    (
+                        new List<Object> {"Test Comment", pathologyTestResult.TestComment}
+                    );
 
 
                 // Test Result Representation - PW: 30/5/17 Should be LinkHtml
                 if (pathologyTestResult.TestResultRepresentation != null)
                     narrativepathologyTestResult.Add
-                         (
-                              //new List<Object> { "Test Result Representation", CreateEncapsulatedData(pathologyTestResult.TestResultRepresentation, ref renderMultiMediaList) }
-                              new List<Object> { "Test Result Representation", CreateSimpleHtmlLink(pathologyTestResult.TestResultRepresentation.ExternalData) }
-                         );
+                    (
+                        //new List<Object> { "Test Result Representation", CreateEncapsulatedData(pathologyTestResult.TestResultRepresentation, ref renderMultiMediaList) }
+                        new List<Object>
+                        {
+                            "Test Result Representation",
+                            CreateSimpleHtmlLink(pathologyTestResult.TestResultRepresentation.ExternalData)
+                        }
+                    );
 
-               
+
                 if (pathologyTestResult.TestRequestDetails != null && pathologyTestResult.TestRequestDetails.Any())
                 {
                     var testRequestDetails = string.Empty;
@@ -1420,11 +1531,12 @@ namespace Nehta.VendorLibrary.CDA.Generator
                         {
                             foreach (var testsRequested in requestDetails.TestsRequestedName)
                             {
-                                if (requestDetails.TestsRequestedName != null && requestDetails.TestsRequestedName.Any())
+                                if (requestDetails.TestsRequestedName != null &&
+                                    requestDetails.TestsRequestedName.Any())
                                 {
                                     testRequestDetails += testsRequested.NarrativeText + DELIMITER;
                                 }
-                           
+
                             }
                         }
                     }
@@ -1432,52 +1544,65 @@ namespace Nehta.VendorLibrary.CDA.Generator
 
                     string personName = null;
                     // Provider Person Name
-                    if (pathologyTestResult.ReportingPathologist != null && pathologyTestResult.ReportingPathologist.Participant != null && pathologyTestResult.ReportingPathologist.Participant.Person != null)
-                        personName = BuildPersonNames(pathologyTestResult.ReportingPathologist.Participant.Person.PersonNames);
+                    if (pathologyTestResult.ReportingPathologist != null &&
+                        pathologyTestResult.ReportingPathologist.Participant != null &&
+                        pathologyTestResult.ReportingPathologist.Participant.Person != null)
+                        personName =
+                            BuildPersonNames(pathologyTestResult.ReportingPathologist.Participant.Person.PersonNames);
 
                     // Reporting Pathologist
                     if (!personName.IsNullOrEmptyWhitespace())
                         narrativepathologyTestResult.Add
-                             (
-                                  new List<Object> { "Reporting Pathologist - Person Name", personName }
-                             );
+                        (
+                            new List<Object> {"Reporting Pathologist - Person Name", personName}
+                        );
 
                     // Address
-                    if ((pathologyTestResult.ReportingPathologist != null && pathologyTestResult.ReportingPathologist.Participant != null && pathologyTestResult.ReportingPathologist.Participant.Addresses != null && pathologyTestResult.ReportingPathologist.Participant.Addresses.Any()) || pathologyTestResult.ReportingPathologist != null && pathologyTestResult.ReportingPathologist.Participant.ElectronicCommunicationDetails != null)
+                    if ((pathologyTestResult.ReportingPathologist != null &&
+                         pathologyTestResult.ReportingPathologist.Participant != null &&
+                         pathologyTestResult.ReportingPathologist.Participant.Addresses != null &&
+                         pathologyTestResult.ReportingPathologist.Participant.Addresses.Any()) ||
+                        pathologyTestResult.ReportingPathologist != null && pathologyTestResult.ReportingPathologist
+                            .Participant.ElectronicCommunicationDetails != null)
                         narrativepathologyTestResult.Add
-                               (
-                                    new List<Object> { "Reporting Pathologist - Address / Contact", CreateAddress(pathologyTestResult.ReportingPathologist.Participant.Addresses, pathologyTestResult.ReportingPathologist.Participant.ElectronicCommunicationDetails) }
-                               );    
+                        (
+                            new List<Object>
+                            {
+                                "Reporting Pathologist - Address / Contact",
+                                CreateAddress(pathologyTestResult.ReportingPathologist.Participant.Addresses,
+                                    pathologyTestResult.ReportingPathologist.Participant.ElectronicCommunicationDetails)
+                            }
+                        );
 
 
                     if (!testRequestDetails.IsNullOrEmptyWhitespace())
                     {
                         narrativepathologyTestResult.Add
                         (
-                         new List<Object>
-                               {
-                                    "Test Requested Name",
-                                    testRequestDetails
-                               }
+                            new List<Object>
+                            {
+                                "Test Requested Name",
+                                testRequestDetails
+                            }
                         );
                     }
 
-                 }
+                }
 
                 strucDocTableList.Insert
+                (
+                    0,
                     (
-                        0,
+                        PopulateTable
                         (
-                            PopulateTable
-                                (
-                                    "Pathology Test Result(s)",
-                                    null,
-                                    columnHeaders.ToArray(),
-                                    null,
-                                    narrativepathologyTestResult
-                                )
+                            "Pathology Test Result(s)",
+                            null,
+                            columnHeaders.ToArray(),
+                            null,
+                            narrativepathologyTestResult
                         )
-                    );
+                    )
+                );
             }
 
             if (strucDocTableList.Any())
@@ -1500,124 +1625,132 @@ namespace Nehta.VendorLibrary.CDA.Generator
         /// <returns>StrucDocText</returns>
         public StrucDocText CreateNarrative(IImagingExaminationResult imagingExaminationResult)
         {
-          List<List<Object>> narrative;
-          var strucDocTableList = new List<StrucDocTable>();
-          var renderMultiMediaList = new List<StrucDocRenderMultiMedia>();
+            List<List<Object>> narrative;
+            var strucDocTableList = new List<StrucDocTable>();
+            var renderMultiMediaList = new List<StrucDocRenderMultiMedia>();
 
-          if (imagingExaminationResult != null)
-          {
-
-            if (imagingExaminationResult.AnatomicalSite != null)
-              strucDocTableList.Add(CreateAnatomicalSites(imagingExaminationResult.AnatomicalSite, ref renderMultiMediaList));
-
-            //Imaging examination name, modality, status, additional information provided and findings
-            narrative = new List<List<Object>>();
-
-            //Imaging Examination Result Name 
-            if (imagingExaminationResult.ResultDateTime != null)
+            if (imagingExaminationResult != null)
             {
-              narrative.Add
+
+                if (imagingExaminationResult.AnatomicalSite != null)
+                    strucDocTableList.Add(CreateAnatomicalSites(imagingExaminationResult.AnatomicalSite,
+                        ref renderMultiMediaList));
+
+                //Imaging examination name, modality, status, additional information provided and findings
+                narrative = new List<List<Object>>();
+
+                //Imaging Examination Result Name 
+                if (imagingExaminationResult.ResultDateTime != null)
+                {
+                    narrative.Add
                     (
-                         new List<Object> { "Imaging Examination Result Date Time", imagingExaminationResult.ResultDateTime.NarrativeText() }
+                        new List<Object>
+                        {
+                            "Imaging Examination Result Date Time",
+                            imagingExaminationResult.ResultDateTime.NarrativeText()
+                        }
                     );
-            }
+                }
 
-            //Imaging Examination Result Name 
-            if (imagingExaminationResult.ExaminationResultName != null)
-            {
-              narrative.Add
+                //Imaging Examination Result Name 
+                if (imagingExaminationResult.ExaminationResultName != null)
+                {
+                    narrative.Add
                     (
-                         new List<Object> { "Result name", imagingExaminationResult.ExaminationResultName.NarrativeText }
+                        new List<Object> {"Result name", imagingExaminationResult.ExaminationResultName.NarrativeText}
                     );
-            }
+                }
 
-            //Imaging examination result modality
-            if (imagingExaminationResult.Modality != null)
-              narrative.Add
-                (
-                       new List<Object> { "Modality", imagingExaminationResult.Modality.NarrativeText }
-                );
+                //Imaging examination result modality
+                if (imagingExaminationResult.Modality != null)
+                    narrative.Add
+                    (
+                        new List<Object> {"Modality", imagingExaminationResult.Modality.NarrativeText}
+                    );
 
-            //Imaging examination result status
-            if (imagingExaminationResult.ExaminationResultStatus != null)
-              narrative.Add
-                (
-                      new List<Object> { "Result Status", imagingExaminationResult.ExaminationResultStatus.NarrativeText }
-                );
+                //Imaging examination result status
+                if (imagingExaminationResult.ExaminationResultStatus != null)
+                    narrative.Add
+                    (
+                        new List<Object>
+                            {"Result Status", imagingExaminationResult.ExaminationResultStatus.NarrativeText}
+                    );
 
-            //Clinical information provided
-            if (!imagingExaminationResult.ClinicalInformationProvided.IsNullOrEmptyWhitespace())
-              narrative.Add
-                (
-                     new List<Object> { "Clinical Information", imagingExaminationResult.ClinicalInformationProvided }
-                );
+                //Clinical information provided
+                if (!imagingExaminationResult.ClinicalInformationProvided.IsNullOrEmptyWhitespace())
+                    narrative.Add
+                    (
+                        new List<Object> {"Clinical Information", imagingExaminationResult.ClinicalInformationProvided}
+                    );
 
-            //Findings
-            if (!imagingExaminationResult.Findings.IsNullOrEmptyWhitespace())
-              narrative.Add
-                (
-                      new List<Object> { "Findings", imagingExaminationResult.Findings }
-                );
+                //Findings
+                if (!imagingExaminationResult.Findings.IsNullOrEmptyWhitespace())
+                    narrative.Add
+                    (
+                        new List<Object> {"Findings", imagingExaminationResult.Findings}
+                    );
 
-            //Result representation
-            if (!imagingExaminationResult.ExaminationResultRepresentation.IsNullOrEmptyWhitespace())
-              narrative.Add
-                (
-                      new List<Object> { "Result Representation", imagingExaminationResult.ExaminationResultRepresentation }
-                );
+                //Result representation
+                if (!imagingExaminationResult.ExaminationResultRepresentation.IsNullOrEmptyWhitespace())
+                    narrative.Add
+                    (
+                        new List<Object>
+                            {"Result Representation", imagingExaminationResult.ExaminationResultRepresentation}
+                    );
 
-            strucDocTableList.Add
+                strucDocTableList.Add
                 (
                     PopulateTable
-                        (
-                            "Imaging Examination Result Details",
-                            null,
-                            new[]
-                            {
-                                "Field", "Value"
-                            },
-                            null,
-                            narrative
-                        )
+                    (
+                        "Imaging Examination Result Details",
+                        null,
+                        new[]
+                        {
+                            "Field", "Value"
+                        },
+                        null,
+                        narrative
+                    )
                 );
 
 
-            //Examination result group
-            if (imagingExaminationResult.ResultGroup != null && imagingExaminationResult.ResultGroup.Any())
-            {
-              strucDocTableList.AddRange
-                  (
-                      CreateNarrativeEntry(imagingExaminationResult.ResultGroup, ref renderMultiMediaList)
-                  );
+                //Examination result group
+                if (imagingExaminationResult.ResultGroup != null && imagingExaminationResult.ResultGroup.Any())
+                {
+                    strucDocTableList.AddRange
+                    (
+                        CreateNarrativeEntry(imagingExaminationResult.ResultGroup, ref renderMultiMediaList)
+                    );
+                }
+
+                //Examination request details
+                if (imagingExaminationResult.ExaminationRequestDetails != null)
+                {
+                    strucDocTableList.AddRange
+                    (
+                        CreateNarrativeEntry(imagingExaminationResult.ExaminationRequestDetails,
+                            ref renderMultiMediaList)
+                    );
+                }
             }
 
-            //Examination request details
-            if (imagingExaminationResult.ExaminationRequestDetails != null)
+            var strucDocText = new StrucDocText();
+
+            if (strucDocTableList.Any())
             {
-              strucDocTableList.AddRange
-                  (
-                      CreateNarrativeEntry(imagingExaminationResult.ExaminationRequestDetails, ref renderMultiMediaList)
-                  );
+                strucDocText.table = strucDocTableList.ToArray();
             }
-          }
+            else
+            {
+                strucDocText.paragraph = CreateParagraph(SECTIONEMPTYTEXT);
+            }
 
-          var strucDocText = new StrucDocText();
+            if (renderMultiMediaList.Any())
+            {
+                strucDocText.renderMultiMedia = renderMultiMediaList.ToArray();
+            }
 
-          if (strucDocTableList.Any())
-          {
-            strucDocText.table = strucDocTableList.ToArray();
-          }
-          else
-          {
-            strucDocText.paragraph = CreateParagraph(SECTIONEMPTYTEXT);
-          }
-
-          if (renderMultiMediaList.Any())
-          {
-            strucDocText.renderMultiMedia = renderMultiMediaList.ToArray();
-          }
-
-          return strucDocText;
+            return strucDocText;
         }
 
         /// <summary>
@@ -1630,78 +1763,79 @@ namespace Nehta.VendorLibrary.CDA.Generator
         /// <param name="heading">heading</param>
         /// <returns>StrucDocText</returns>
         [NotNull]
-        public StrucDocText CreateNarrative(ISO8601DateTime dateTime, CdaInterval duration, string narrative, String heading)
+        public StrucDocText CreateNarrative(ISO8601DateTime dateTime, CdaInterval duration, string narrative,
+            String heading)
         {
-          var narrativeText = new List<List<String>>();
-          var strucDocTableList = new List<StrucDocTable>();
-          var tableHeading = String.Empty;
-          var strucDocText = new StrucDocText();
-          var date = String.Empty;
+            var narrativeText = new List<List<String>>();
+            var strucDocTableList = new List<StrucDocTable>();
+            var tableHeading = String.Empty;
+            var strucDocText = new StrucDocText();
+            var date = String.Empty;
 
-          if (narrative != null && !narrative.IsNullOrEmptyWhitespace())
-          {
-            var durationAsString = String.Empty;
-            var columHeaders = new List<String>();
-
-            if (dateTime != null)
+            if (narrative != null && !narrative.IsNullOrEmptyWhitespace())
             {
-              columHeaders.Add("Date");
-              tableHeading = "Date ";
+                var durationAsString = String.Empty;
+                var columHeaders = new List<String>();
 
-              date = dateTime.NarrativeText();
-            }
+                if (dateTime != null)
+                {
+                    columHeaders.Add("Date");
+                    tableHeading = "Date ";
 
-            if (duration != null)
-            {
-              columHeaders.Add("Duration");
+                    date = dateTime.NarrativeText();
+                }
 
-              tableHeading += tableHeading == String.Empty ? "Duration" : "and Duration";
+                if (duration != null)
+                {
+                    columHeaders.Add("Duration");
 
-              durationAsString = CreateDuration(duration);
-            }
+                    tableHeading += tableHeading == String.Empty ? "Duration" : "and Duration";
 
-            var narrativeEntry = new List<String>();
+                    durationAsString = CreateDuration(duration);
+                }
 
-            if (!date.IsNullOrEmptyWhitespace())
-            {
-              narrativeEntry.Add(date);
-            }
+                var narrativeEntry = new List<String>();
 
-            if (!durationAsString.IsNullOrEmptyWhitespace())
-            {
-              narrativeEntry.Add(durationAsString);
-            }
+                if (!date.IsNullOrEmptyWhitespace())
+                {
+                    narrativeEntry.Add(date);
+                }
 
-            narrativeText.Add(narrativeEntry);
+                if (!durationAsString.IsNullOrEmptyWhitespace())
+                {
+                    narrativeEntry.Add(durationAsString);
+                }
 
-            strucDocTableList.Add
+                narrativeText.Add(narrativeEntry);
+
+                strucDocTableList.Add
                 (
                     PopulateTable
-                        (
-                            "Reason for Referral",
-                            null,
-                            null,
-                            null,
-                            new List<List<String>> { new List<string> { narrative } }
-                          )
-                        );
+                    (
+                        "Reason for Referral",
+                        null,
+                        null,
+                        null,
+                        new List<List<String>> {new List<string> {narrative}}
+                    )
+                );
 
-            strucDocTableList.Add
+                strucDocTableList.Add
                 (
                     PopulateTable
-                        (
-                            tableHeading,
-                            null,
-                            columHeaders.ToArray(),
-                            null,
-                            narrativeText
-                          )
-                        );
+                    (
+                        tableHeading,
+                        null,
+                        columHeaders.ToArray(),
+                        null,
+                        narrativeText
+                    )
+                );
 
-            strucDocText.table = strucDocTableList.ToArray();
-          }
+                strucDocText.table = strucDocTableList.ToArray();
+            }
 
-          return strucDocText;
+            return strucDocText;
         }
 
         /// <summary>
@@ -1715,14 +1849,15 @@ namespace Nehta.VendorLibrary.CDA.Generator
             var strucDocText = new StrucDocText();
             var renderMultiMediaList = new List<StrucDocRenderMultiMedia>();
 
-            if(externalData != null)
+            if (externalData != null)
             {
-                if (!renderMultiMediaList.Select(multiMediaItem => multiMediaItem.referencedObject).Contains(externalData.ID))
+                if (!renderMultiMediaList.Select(multiMediaItem => multiMediaItem.referencedObject)
+                    .Contains(externalData.ID))
                 {
                     renderMultiMediaList.Add
-                                 (
-                                   externalData.ConvertToStrucDocRenderMultiMedia()
-                                 );
+                    (
+                        externalData.ConvertToStrucDocRenderMultiMedia()
+                    );
                 }
 
                 strucDocText.renderMultiMedia = renderMultiMediaList.ToArray();
@@ -1743,23 +1878,24 @@ namespace Nehta.VendorLibrary.CDA.Generator
             var renderMultiMediaList = new List<StrucDocRenderMultiMedia>();
 
             if (
-                    externalDataList != null &&
-                    externalDataList.Any()
-                )
+                externalDataList != null &&
+                externalDataList.Any()
+            )
             {
                 externalDataList.ForEach
-                    (
-                        externalData =>
+                (
+                    externalData =>
+                    {
+                        if (!renderMultiMediaList.Select(multiMediaItem => multiMediaItem.referencedObject)
+                            .Contains(externalData.ID))
                         {
-                            if (!renderMultiMediaList.Select(multiMediaItem => multiMediaItem.referencedObject).Contains(externalData.ID))
-                            {
-                                renderMultiMediaList.Add
-                                (
-                                    externalData.ConvertToStrucDocRenderMultiMedia()
-                                );
-                            }
+                            renderMultiMediaList.Add
+                            (
+                                externalData.ConvertToStrucDocRenderMultiMedia()
+                            );
                         }
-                    );
+                    }
+                );
 
                 // 31/05/2017 PW
                 // HIPS Enhancement: put each rendered multimedia item into a separate paragraph.
@@ -1767,7 +1903,7 @@ namespace Nehta.VendorLibrary.CDA.Generator
                 // The next line was previously: strucDocText.renderMultiMedia = renderMultiMediaList.ToArray();
                 strucDocText.paragraph = renderMultiMediaList.Select(item => new StrucDocParagraph()
                 {
-                    renderMultiMedia = new StrucDocRenderMultiMedia[] { item }
+                    renderMultiMedia = new StrucDocRenderMultiMedia[] {item}
                 }).ToArray();
             }
 
@@ -1779,47 +1915,53 @@ namespace Nehta.VendorLibrary.CDA.Generator
         /// </summary>
         /// <param name="problemDiagnosesThisVisit">A list of IDischargeSummaryProblemDiagnosis</param>
         /// <returns>StrucDocText</returns>
-        public StrucDocText CreateNarrative(SCSModel.DischargeSummary.ProblemDiagnosesThisVisit problemDiagnosesThisVisit)
+        public StrucDocText CreateNarrative(
+            SCSModel.DischargeSummary.ProblemDiagnosesThisVisit problemDiagnosesThisVisit)
         {
             var strucDocList = new List<StrucDocList>();
             var narrativeParagraph = new List<StrucDocParagraph>();
             var strucDocTableList = new List<StrucDocTable>();
             var narrative = new List<List<Object>>();
-            var header = new[] { "Type", "Description" };
+            var header = new[] {"Type", "Description"};
 
             if (problemDiagnosesThisVisit.ProblemDiagnosis != null && problemDiagnosesThisVisit.ProblemDiagnosis.Any())
             {
                 foreach (var problemDiagnoses in problemDiagnosesThisVisit.ProblemDiagnosis)
                 {
-                   // Medications
+                    // Medications
                     narrative.Add(
                         new List<object>
-                          {
-                              problemDiagnoses.ProblemDiagnosisType == null ? String.Empty : problemDiagnoses.ProblemDiagnosisType.NarrativeText,
-                              problemDiagnoses.ProblemDiagnosisDescription == null ? String.Empty : problemDiagnoses.ProblemDiagnosisDescription.NarrativeText,
-                          }
+                        {
+                            problemDiagnoses.ProblemDiagnosisType == null
+                                ? String.Empty
+                                : problemDiagnoses.ProblemDiagnosisType.NarrativeText,
+                            problemDiagnoses.ProblemDiagnosisDescription == null
+                                ? String.Empty
+                                : problemDiagnoses.ProblemDiagnosisDescription.NarrativeText,
+                        }
                     );
                 }
             }
 
             if (narrative.Any())
-            strucDocTableList.Add
-               (
+                strucDocTableList.Add
+                (
                     PopulateTable
-                        (
-                           null,
-                           null,
-                           header,
-                           null,
-                           narrative
-                        )
-               );
+                    (
+                        null,
+                        null,
+                        header,
+                        null,
+                        narrative
+                    )
+                );
 
 
             // Add any exclusion statements
             if (problemDiagnosesThisVisit.ExclusionStatement != null)
             {
-              narrativeParagraph.Add(CreateExclusionStatementNarrative("Problem/Diagnoses", problemDiagnosesThisVisit.ExclusionStatement));
+                narrativeParagraph.Add(CreateExclusionStatementNarrative("Problem/Diagnoses",
+                    problemDiagnosesThisVisit.ExclusionStatement));
             }
 
             var strucDocText = new StrucDocText();
@@ -1827,7 +1969,7 @@ namespace Nehta.VendorLibrary.CDA.Generator
             // Structured Tables
             if (strucDocList.Any())
             {
-              strucDocText.list = strucDocList.ToArray();
+                strucDocText.list = strucDocList.ToArray();
             }
 
             if (strucDocTableList.Any())
@@ -1838,8 +1980,8 @@ namespace Nehta.VendorLibrary.CDA.Generator
             // Narrative Paragraph
             if (narrativeParagraph.Any())
             {
-              strucDocText.paragraph = narrativeParagraph.ToArray();
-            } 
+                strucDocText.paragraph = narrativeParagraph.ToArray();
+            }
 
             return strucDocText;
         }
@@ -1850,109 +1992,126 @@ namespace Nehta.VendorLibrary.CDA.Generator
         /// <returns>List of tables for use with a StrucDocText</returns>
         public StrucDocText CreateNarrative(List<Document> documents)
         {
-          StrucDocText strucDocText = null;
-          var showAuthorInHeader = false;
-          var showAuthorAddressInHeader = false;
-          var showDateTimeHealthEventEndedInHeader = false;
+            StrucDocText strucDocText = null;
+            var showAuthorInHeader = false;
+            var showAuthorAddressInHeader = false;
+            var showDateTimeHealthEventEndedInHeader = false;
 
-          if (documents != null && documents.Any())
-          {
-            var strucDocTableList = new List<StrucDocTable>();
-
-            var narrative = new List<List<object>>();
-
-            // Add any problem diagnosis entries
-            foreach (var document in documents)
+            if (documents != null && documents.Any())
             {
-              strucDocTableList = new List<StrucDocTable>();
+                var strucDocTableList = new List<StrucDocTable>();
 
-              if (document != null && document.Link != null && document.Link.TemplateId != null)
-              {
-                // Add Date Time Authored
-                var narrativeTable = new List<object>
-                              {
-                                document.DateTimeAuthored != null ? document.DateTimeAuthored.NarrativeText() : null
-                              };
+                var narrative = new List<List<object>>();
 
-                if (document.DateTimeHealthEventEnded != null)
+                // Add any problem diagnosis entries
+                foreach (var document in documents)
                 {
-                   showDateTimeHealthEventEndedInHeader = true;
-                   narrativeTable.AddRange(
-                      new List<object>
+                    strucDocTableList = new List<StrucDocTable>();
+
+                    if (document != null && document.Link != null && document.Link.TemplateId != null)
+                    {
+                        // Add Date Time Authored
+                        var narrativeTable = new List<object>
                         {
-                          document.DateTimeHealthEventEnded.NarrativeText(),
-                        });
+                            document.DateTimeAuthored != null ? document.DateTimeAuthored.NarrativeText() : null
+                        };
+
+                        if (document.DateTimeHealthEventEnded != null)
+                        {
+                            showDateTimeHealthEventEndedInHeader = true;
+                            narrativeTable.AddRange(
+                                new List<object>
+                                {
+                                    document.DateTimeHealthEventEnded.NarrativeText(),
+                                });
+                        }
+
+                        narrativeTable.AddRange(
+                            new List<object>
+                            {
+                                CreateLink(document.Link)
+                            });
+
+                        if (document.Author != null && document.Author.Participant != null)
+                        {
+                            showAuthorInHeader = true;
+
+                            var personOrganisation =
+                                document.Author.Participant.Person != null &&
+                                document.Author.Participant.Person.PersonNames != null
+                                    ? BuildPersonNames(document.Author.Participant.Person.PersonNames)
+                                    : null;
+                            if (document.Author.Participant.Person != null &&
+                                document.Author.Participant.Person.Organisation != null && !document.Author.Participant
+                                    .Person.Organisation.Name.IsNullOrEmptyWhitespace())
+                            {
+                                personOrganisation = string.Format("{0}{1}({2})", personOrganisation, DELIMITERBREAK,
+                                    document.Author.Participant.Person.Organisation.Name);
+                            }
+
+                            narrativeTable.AddRange(
+                                new List<object>
+                                {
+                                    personOrganisation
+                                });
+
+                            if (document.Author.Participant.Addresses != null ||
+                                document.Author.Participant.ElectronicCommunicationDetails != null)
+                            {
+                                showAuthorAddressInHeader = true;
+                                narrativeTable.AddRange(
+                                    new List<object>
+                                    {
+                                        CreateAddress(document.Author.Participant.Addresses,
+                                            document.Author.Participant.ElectronicCommunicationDetails)
+                                    });
+                            }
+
+
+                        }
+
+                        narrative.Add(narrativeTable);
+                    }
                 }
 
-                narrativeTable.AddRange(
-                               new List<object>{
-                                    CreateLink(document.Link)
-                               });
-
-                if (document.Author != null && document.Author.Participant != null)
+                var header = new List<string>
                 {
-                  showAuthorInHeader = true;
+                    "Date Time Authored", "Health Event Ended", "Document", "Author / Organisation", "Address / Contact"
+                };
+                // Remove author to Table Header
+                if (!showAuthorInHeader) header.Remove("Author / Organisation");
 
-                  var personOrganisation = document.Author.Participant.Person != null && document.Author.Participant.Person.PersonNames != null ? BuildPersonNames(document.Author.Participant.Person.PersonNames) : null;
-                  if (document.Author.Participant.Person != null && document.Author.Participant.Person.Organisation != null && !document.Author.Participant.Person.Organisation.Name.IsNullOrEmptyWhitespace())
-                  {
-                    personOrganisation = string.Format("{0}{1}({2})", personOrganisation, DELIMITERBREAK, document.Author.Participant.Person.Organisation.Name);
-                  }
+                // Remove author address to Table Header
+                if (!showAuthorAddressInHeader) header.Remove("Address / Contact");
 
-                  narrativeTable.AddRange(
-                               new List<object>
-                                          {
-                                            personOrganisation
-                                          });
+                // Remove author to Table Header
+                if (!showDateTimeHealthEventEndedInHeader) header.Remove("Health Event Ended");
 
-                  if (document.Author.Participant.Addresses != null || document.Author.Participant.ElectronicCommunicationDetails != null)
-                  {
-                    showAuthorAddressInHeader = true;
-                    narrativeTable.AddRange(
-                               new List<object>
-                                          {
-                                            CreateAddress(document.Author.Participant.Addresses, document.Author.Participant.ElectronicCommunicationDetails)
-                                          });
-                  }
+                strucDocTableList.Add
+                (
+                    PopulateTable
+                    (
+                        "Documents",
+                        null,
+                        header.ToArray(),
+                        null,
+                        narrative
+                    )
+                );
 
 
-                }
-
-                narrative.Add(narrativeTable);
-              }
+                strucDocText = new StrucDocText {table = strucDocTableList.ToArray()};
+            }
+            else
+            {
+                strucDocText = new StrucDocText
+                {
+                    paragraph = new[]
+                        {new StrucDocParagraph {Text = new[] {"Not Known (Insufficient Information Available)"}}}
+                };
             }
 
-            var header = new List<string> { "Date Time Authored", "Health Event Ended", "Document", "Author / Organisation", "Address / Contact" };
-            // Remove author to Table Header
-            if (!showAuthorInHeader) header.Remove("Author / Organisation");
-
-            // Remove author address to Table Header
-            if (!showAuthorAddressInHeader) header.Remove("Address / Contact");
-            
-            // Remove author to Table Header
-            if (!showDateTimeHealthEventEndedInHeader) header.Remove("Health Event Ended");
-            
-            strucDocTableList.Add
-              (
-                PopulateTable
-                  (
-                    "Documents",
-                    null,
-                    header.ToArray(),
-                    null,
-                    narrative
-                  )
-              );
-
-
-            strucDocText = new StrucDocText { table = strucDocTableList.ToArray() };
-          }
-          else
-          {
-            strucDocText = new StrucDocText { paragraph = new[] { new StrucDocParagraph { Text = new[] { "Not Known (Insufficient Information Available)" } } } };
-          }
-
-          return strucDocText;
+            return strucDocText;
         }
 
         /// <summary>
@@ -1964,9 +2123,10 @@ namespace Nehta.VendorLibrary.CDA.Generator
             var documentList = new List<Document>();
             if (documents != null)
             {
-              // Add any problem diagnosis entries
-              documentList.AddRange(documents.Select(document => document as Document));
+                // Add any problem diagnosis entries
+                documentList.AddRange(documents.Select(document => document as Document));
             }
+
             return CreateNarrative(documentList);
         }
 
@@ -1979,9 +2139,10 @@ namespace Nehta.VendorLibrary.CDA.Generator
             var documentList = new List<Document>();
             if (documents != null)
             {
-              // Add any problem diagnosis entries
-              documentList.AddRange(documents.Select(document => document as Document));
+                // Add any problem diagnosis entries
+                documentList.AddRange(documents.Select(document => document as Document));
             }
+
             return CreateNarrative(documentList);
         }
 
@@ -2008,6 +2169,7 @@ namespace Nehta.VendorLibrary.CDA.Generator
                 }
 
             }
+
             var strucDocText = new StrucDocText();
 
             if (strucDocList.Any())
@@ -2016,7 +2178,7 @@ namespace Nehta.VendorLibrary.CDA.Generator
             }
             else
             {
-              strucDocText.paragraph = CreateParagraph(SECTIONEMPTYTEXT);
+                strucDocText.paragraph = CreateParagraph(SECTIONEMPTYTEXT);
             }
 
             return strucDocText;
@@ -2038,11 +2200,11 @@ namespace Nehta.VendorLibrary.CDA.Generator
 
                 // CLINICAL SYNOPSIS
                 narrative.Add(
-                                new List<string>
-                                      {
-                                          clinicalSynopsis.Description
-                                      }
-                             );
+                    new List<string>
+                    {
+                        clinicalSynopsis.Description
+                    }
+                );
 
                 strucDocTableList.Add
                 (
@@ -2050,12 +2212,13 @@ namespace Nehta.VendorLibrary.CDA.Generator
                     (
                         "Clinical Summary",
                         null,
-                        new[] { "Description" },
+                        new[] {"Description"},
                         new string[0],
                         narrative
                     )
                 );
             }
+
             var strucDocText = new StrucDocText();
 
             if (strucDocTableList.Any())
@@ -2089,7 +2252,8 @@ namespace Nehta.VendorLibrary.CDA.Generator
             // Add the exclusion statements
             if (currentMedication.ExclusionStatement != null)
             {
-              narrativeParagraph.Add(CreateExclusionStatementNarrative("Current Medications", currentMedication.ExclusionStatement));
+                narrativeParagraph.Add(CreateExclusionStatementNarrative("Current Medications",
+                    currentMedication.ExclusionStatement));
             }
 
             var strucDocText = new StrucDocText();
@@ -2101,10 +2265,10 @@ namespace Nehta.VendorLibrary.CDA.Generator
             else if (narrativeParagraph.Any()) // Narrative Paragraph
             {
                 strucDocText.paragraph = narrativeParagraph.ToArray();
-            } 
+            }
             else
             {
-              strucDocText.paragraph = CreateParagraph(SECTIONEMPTYTEXT);
+                strucDocText.paragraph = CreateParagraph(SECTIONEMPTYTEXT);
             }
 
             return strucDocText;
@@ -2123,20 +2287,20 @@ namespace Nehta.VendorLibrary.CDA.Generator
             if (therapeuticGoods != null)
             {
 
-              narrative = new List<List<String>>();
+                narrative = new List<List<String>>();
 
-              var narativeHeader = new List<String>
-                        { 
-                            "Medicine",
-                            "Directions",
-                            "Duration",
-                            "Status",
-                            "Clinical Indication",
-                            "Change Description",
-                            "Change Reason",
-                            "Quantity Supplied",
-                            "Comments"
-                        };
+                var narativeHeader = new List<String>
+                {
+                    "Medicine",
+                    "Directions",
+                    "Duration",
+                    "Status",
+                    "Clinical Indication",
+                    "Change Description",
+                    "Change Reason",
+                    "Quantity Supplied",
+                    "Comments"
+                };
 
 
                 foreach (ITherapeuticGood therapeuticGood in therapeuticGoods)
@@ -2145,17 +2309,31 @@ namespace Nehta.VendorLibrary.CDA.Generator
                     {
                         // Current Medications On Discharge
                         var medicationList = new List<String>
-                                      {
-                                        therapeuticGood.TherapeuticGoodIdentification == null ? null : therapeuticGood.TherapeuticGoodIdentification.NarrativeText,
-                                        therapeuticGood.DoseInstruction,
-                                        therapeuticGood.MedicationHistory.MedicationDuration == null ? "-" : CreateIntervalText(therapeuticGood.MedicationHistory.MedicationDuration),
-                                        therapeuticGood.MedicationHistory.ItemStatus != null  ? therapeuticGood.MedicationHistory.ItemStatus.NarrativeText : null,
-                                        therapeuticGood.ReasonForTherapeuticGood,
-                                        therapeuticGood.MedicationHistory.ChangesMade != null ? therapeuticGood.MedicationHistory.ChangesMade.NarrativeText : "-",
-                                        !therapeuticGood.MedicationHistory.ReasonForChange.IsNullOrEmptyWhitespace() ? therapeuticGood.MedicationHistory.ReasonForChange : "-",
-                                        therapeuticGood.UnitOfUseQuantityDispensed.IsNullOrEmptyWhitespace() ? "-" : therapeuticGood.UnitOfUseQuantityDispensed,
-                                        !therapeuticGood.AdditionalComments.IsNullOrEmptyWhitespace() ? therapeuticGood.AdditionalComments : "-"
-                                      };
+                        {
+                            therapeuticGood.TherapeuticGoodIdentification == null
+                                ? null
+                                : therapeuticGood.TherapeuticGoodIdentification.NarrativeText,
+                            therapeuticGood.DoseInstruction,
+                            therapeuticGood.MedicationHistory.MedicationDuration == null
+                                ? "-"
+                                : CreateIntervalText(therapeuticGood.MedicationHistory.MedicationDuration),
+                            therapeuticGood.MedicationHistory.ItemStatus != null
+                                ? therapeuticGood.MedicationHistory.ItemStatus.NarrativeText
+                                : null,
+                            therapeuticGood.ReasonForTherapeuticGood,
+                            therapeuticGood.MedicationHistory.ChangesMade != null
+                                ? therapeuticGood.MedicationHistory.ChangesMade.NarrativeText
+                                : "-",
+                            !therapeuticGood.MedicationHistory.ReasonForChange.IsNullOrEmptyWhitespace()
+                                ? therapeuticGood.MedicationHistory.ReasonForChange
+                                : "-",
+                            therapeuticGood.UnitOfUseQuantityDispensed.IsNullOrEmptyWhitespace()
+                                ? "-"
+                                : therapeuticGood.UnitOfUseQuantityDispensed,
+                            !therapeuticGood.AdditionalComments.IsNullOrEmptyWhitespace()
+                                ? therapeuticGood.AdditionalComments
+                                : "-"
+                        };
 
                         //medicine_list + clinical Indication
                         narrative.Add(medicationList);
@@ -2200,7 +2378,8 @@ namespace Nehta.VendorLibrary.CDA.Generator
             // Add the exclusion statements
             if (ceasedMedications.ExclusionStatement != null)
             {
-                narrativeParagraph.Add(CreateExclusionStatementNarrative("Ceased Medications", ceasedMedications.ExclusionStatement));
+                narrativeParagraph.Add(CreateExclusionStatementNarrative("Ceased Medications",
+                    ceasedMedications.ExclusionStatement));
             }
 
             var strucDocText = new StrucDocText();
@@ -2213,12 +2392,12 @@ namespace Nehta.VendorLibrary.CDA.Generator
             // Narrative Paragraph
             else if (narrativeParagraph.Any())
             {
-              strucDocText.paragraph = narrativeParagraph.ToArray();
-            } 
+                strucDocText.paragraph = narrativeParagraph.ToArray();
+            }
 
             else
             {
-              strucDocText.paragraph = CreateParagraph(SECTIONEMPTYTEXT);
+                strucDocText.paragraph = CreateParagraph(SECTIONEMPTYTEXT);
             }
 
             return strucDocText;
@@ -2229,21 +2408,22 @@ namespace Nehta.VendorLibrary.CDA.Generator
         /// </summary>
         /// <param name="therapeuticGoodCeaseds">List of ceased medications.</param>
         /// <returns>List of tables for inclusion in the narrative.</returns>
-        public IList<StrucDocTable> CreatedCeasedMedicationsNarrative(IList<ITherapeuticGoodCeased> therapeuticGoodCeaseds)
+        public IList<StrucDocTable> CreatedCeasedMedicationsNarrative(
+            IList<ITherapeuticGoodCeased> therapeuticGoodCeaseds)
         {
-            var headerList = new List<String>() 
-            { 
-                "Medication", 
-                "Change Made", 
-                "Change Status", 
-                "Change Reason" 
+            var headerList = new List<String>()
+            {
+                "Medication",
+                "Change Made",
+                "Change Status",
+                "Change Reason"
             };
 
             var strucDocTableList = new List<StrucDocTable>();
 
             if (therapeuticGoodCeaseds != null && therapeuticGoodCeaseds.Any())
             {
-                var narrative = new List<List<String>>(); 
+                var narrative = new List<List<String>>();
 
                 foreach (ITherapeuticGoodCeased therapeuticGood in therapeuticGoodCeaseds)
                 {
@@ -2251,14 +2431,20 @@ namespace Nehta.VendorLibrary.CDA.Generator
                     {
                         // Ceased Medications On Discharge
                         narrative.Add(
-                                        new List<string>
-                                      {
-                                          therapeuticGood.TherapeuticGoodIdentification  == null ? String.Empty : therapeuticGood.TherapeuticGoodIdentification.NarrativeText,
-                                          therapeuticGood.MedicationHistory.ChangesMade == null ? String.Empty :therapeuticGood.MedicationHistory.ChangesMade.NarrativeText,
-                                          therapeuticGood.MedicationHistory.ItemStatus == null ? String.Empty : therapeuticGood.MedicationHistory.ItemStatus.NarrativeText,
-                                          therapeuticGood.MedicationHistory.ReasonForChange
-                                      }
-                                     );
+                            new List<string>
+                            {
+                                therapeuticGood.TherapeuticGoodIdentification == null
+                                    ? String.Empty
+                                    : therapeuticGood.TherapeuticGoodIdentification.NarrativeText,
+                                therapeuticGood.MedicationHistory.ChangesMade == null
+                                    ? String.Empty
+                                    : therapeuticGood.MedicationHistory.ChangesMade.NarrativeText,
+                                therapeuticGood.MedicationHistory.ItemStatus == null
+                                    ? String.Empty
+                                    : therapeuticGood.MedicationHistory.ItemStatus.NarrativeText,
+                                therapeuticGood.MedicationHistory.ReasonForChange
+                            }
+                        );
                     }
                 }
 
@@ -2295,7 +2481,8 @@ namespace Nehta.VendorLibrary.CDA.Generator
 
             if (adverseReactions.ExclusionStatement != null)
             {
-              narrativeParagraph.Add(CreateExclusionStatementNarrative("Adverse Reactions", adverseReactions.ExclusionStatement));
+                narrativeParagraph.Add(CreateExclusionStatementNarrative("Adverse Reactions",
+                    adverseReactions.ExclusionStatement));
             }
 
             var strucDocText = new StrucDocText();
@@ -2309,8 +2496,8 @@ namespace Nehta.VendorLibrary.CDA.Generator
             // Narrative Paragraph
             if (narrativeParagraph.Any())
             {
-              strucDocText.paragraph = narrativeParagraph.ToArray();
-            } 
+                strucDocText.paragraph = narrativeParagraph.ToArray();
+            }
 
             return strucDocText;
         }
@@ -2320,21 +2507,22 @@ namespace Nehta.VendorLibrary.CDA.Generator
         /// </summary>
         /// <param name="adverseReactions">A list of IAdverseReactionDischargeSummary's</param>
         /// <returns>StrucDocText</returns>
-        public IList<StrucDocTable> CreateAdverseReactionsNarrative(ICollection<IAdverseReactionDischargeSummary> adverseReactions)
+        public IList<StrucDocTable> CreateAdverseReactionsNarrative(
+            ICollection<IAdverseReactionDischargeSummary> adverseReactions)
         {
             List<List<String>> narrative;
             var strucDocTableList = new List<StrucDocTable>();
 
-            if (adverseReactions != null &&  adverseReactions.Any())
+            if (adverseReactions != null && adverseReactions.Any())
             {
                 narrative = new List<List<String>>();
 
                 var narativeHeader = new List<string>
-                                             {
-                                                 "Substance/Agent", 
-                                                 "Manifestations",
-                                                 "Adverse Reaction Type"
-                                             };
+                {
+                    "Substance/Agent",
+                    "Manifestations",
+                    "Adverse Reaction Type"
+                };
 
                 foreach (var adverseReaction in adverseReactions)
                 {
@@ -2343,21 +2531,27 @@ namespace Nehta.VendorLibrary.CDA.Generator
                     if (adverseReaction.ReactionDescriptions != null)
                     {
                         adverseReaction.ReactionDescriptions.ForEach
-                            (
-                                reaction => { 
-                                                reactionDescriptions +=  reaction == null ? String.Empty : reaction.NarrativeText + DELIMITER; 
-                                            }
-                            );
+                        (
+                            reaction =>
+                            {
+                                reactionDescriptions +=
+                                    reaction == null ? String.Empty : reaction.NarrativeText + DELIMITER;
+                            }
+                        );
                     }
 
 
                     var adverseReactionEntry = new List<string>
-                                               {
-                                                 adverseReaction.AgentDescription == null ? String.Empty : adverseReaction.AgentDescription.NarrativeText,
-                                                 reactionDescriptions,
-                                                 adverseReaction.AdverseReactionType != null ? adverseReaction.AdverseReactionType.NarrativeText : null
-                                               };
-     
+                    {
+                        adverseReaction.AgentDescription == null
+                            ? String.Empty
+                            : adverseReaction.AgentDescription.NarrativeText,
+                        reactionDescriptions,
+                        adverseReaction.AdverseReactionType != null
+                            ? adverseReaction.AdverseReactionType.NarrativeText
+                            : null
+                    };
+
 
                     narrative.Add(adverseReactionEntry);
                 }
@@ -2394,31 +2588,36 @@ namespace Nehta.VendorLibrary.CDA.Generator
                 foreach (var alert in alerts)
                 {
                     strucItemList.Add(
-                                      new StrucDocItem
-                                        {
-                                          Text = new [] 
-                                                 {                                          
-                                                   string.Format("{0} ({1})",alert.AlertDescription == null ? String.Empty : alert.AlertDescription.NarrativeText, alert.AlertType == null ? String.Empty : alert.AlertType.NarrativeText)
-                                                 }
-                                        }
-                                 );
-               }
+                        new StrucDocItem
+                        {
+                            Text = new[]
+                            {
+                                string.Format("{0} ({1})",
+                                    alert.AlertDescription == null
+                                        ? String.Empty
+                                        : alert.AlertDescription.NarrativeText,
+                                    alert.AlertType == null ? String.Empty : alert.AlertType.NarrativeText)
+                            }
+                        }
+                    );
+                }
 
             }
+
             var strucDocText = new StrucDocText();
 
             if (strucItemList.Any())
             {
-              strucDocText.list = new[] {new StrucDocList {item = strucItemList.ToArray()}};
+                strucDocText.list = new[] {new StrucDocList {item = strucItemList.ToArray()}};
             }
             else
             {
-               strucDocText.paragraph = CreateParagraph(SECTIONEMPTYTEXT);
+                strucDocText.paragraph = CreateParagraph(SECTIONEMPTYTEXT);
             }
 
             return strucDocText;
         }
-  
+
         /// <summary>
         /// IParticipationAcdCustodian
         /// </summary>
@@ -2428,13 +2627,13 @@ namespace Nehta.VendorLibrary.CDA.Generator
         {
             List<List<String>> narrative;
             var headerList = new List<String>
-            { 
-                "Date", 
-                "Date Of Birth",  
-                "Gender",  
-                "Person Name", 
-                "Organisation", 
-                "Address / Contact" 
+            {
+                "Date",
+                "Date Of Birth",
+                "Gender",
+                "Person Name",
+                "Organisation",
+                "Address / Contact"
             };
 
             var strucDocTableList = new List<StrucDocTable>();
@@ -2463,25 +2662,37 @@ namespace Nehta.VendorLibrary.CDA.Generator
                             if (participation.Participant.Person != null)
                                 if (participation.Participant.Person.Organisation != null)
                                     if (!participation.Participant.Person.Organisation.Name.IsNullOrEmptyWhitespace())
-                                        organisationName =participation.Participant.Person.Organisation.Name;
+                                        organisationName = participation.Participant.Person.Organisation.Name;
                     }
 
                     narrative.Add(
-                            new List<string>
-                                {
-                                    durationAsString,
-                                    participation != null && participation.Participant != null && participation.Participant.Person != null && participation.Participant.Person.DateOfBirth != null ? participation.Participant.Person.DateOfBirth.NarrativeText() : String.Empty,
-                                    participation != null && participation.Participant != null && participation.Participant.Person != null && participation.Participant.Person.Gender != null ? participation.Participant.Person.Gender.Value.GetAttributeValue<NameAttribute, String>(x => x.Name) : String.Empty,
-                                    participation != null &&
-                                    participation.Participant != null &&
-                                    participation.Participant.Person != null
-                                        ? BuildPersonNames(
-                                              participation.Participant.Person.PersonNames)
-                                        : String.Empty,
-                                    (organisationName.IsNullOrEmptyWhitespace() ? string.Empty : organisationName),
-                                    participation != null && participation.Participant != null && participation.Participant.Addresses != null ? CreateAddress(participation.Participant.Addresses.Cast<IAddress>(), participation.Participant.ElectronicCommunicationDetails) : string.Empty,
-                                    }
-                                );
+                        new List<string>
+                        {
+                            durationAsString,
+                            participation != null && participation.Participant != null &&
+                            participation.Participant.Person != null &&
+                            participation.Participant.Person.DateOfBirth != null
+                                ? participation.Participant.Person.DateOfBirth.NarrativeText()
+                                : String.Empty,
+                            participation != null && participation.Participant != null &&
+                            participation.Participant.Person != null && participation.Participant.Person.Gender != null
+                                ? participation.Participant.Person.Gender.Value
+                                    .GetAttributeValue<NameAttribute, String>(x => x.Name)
+                                : String.Empty,
+                            participation != null &&
+                            participation.Participant != null &&
+                            participation.Participant.Person != null
+                                ? BuildPersonNames(
+                                    participation.Participant.Person.PersonNames)
+                                : String.Empty,
+                            (organisationName.IsNullOrEmptyWhitespace() ? string.Empty : organisationName),
+                            participation != null && participation.Participant != null &&
+                            participation.Participant.Addresses != null
+                                ? CreateAddress(participation.Participant.Addresses.Cast<IAddress>(),
+                                    participation.Participant.ElectronicCommunicationDetails)
+                                : string.Empty,
+                        }
+                    );
 
                 }
 
@@ -2498,6 +2709,7 @@ namespace Nehta.VendorLibrary.CDA.Generator
                         )
                     );
             }
+
             var strucDocText = new StrucDocText();
 
             if (strucDocTableList.Any())
@@ -2506,7 +2718,7 @@ namespace Nehta.VendorLibrary.CDA.Generator
             }
             else
             {
-              strucDocText.paragraph = CreateParagraph(SECTIONEMPTYTEXT);
+                strucDocText.paragraph = CreateParagraph(SECTIONEMPTYTEXT);
             }
 
             return strucDocText;
@@ -2524,9 +2736,9 @@ namespace Nehta.VendorLibrary.CDA.Generator
             var strucDocTableList = new List<StrucDocTable>();
 
             var headerList = new List<String>()
-            { 
-                "Description", 
-                "Commencement", 
+            {
+                "Description",
+                "Commencement",
                 "Status",
                 "Name",
                 "Details",
@@ -2535,7 +2747,7 @@ namespace Nehta.VendorLibrary.CDA.Generator
             };
 
             if (arrangedServices != null && arrangedServices.Any())
-             
+
                 foreach (var arrangedService in arrangedServices)
                 {
                     var durationAsString = string.Empty;
@@ -2594,37 +2806,51 @@ namespace Nehta.VendorLibrary.CDA.Generator
                     }
 
 
-                    var arrangedServiceEntry = 
-                            new List<string>
-                                {
-                                    arrangedService.ArrangedServiceDescription != null ? arrangedService.ArrangedServiceDescription.NarrativeText : null,
-                                    durationAsString,
-                                    arrangedService.Status != EventTypes.Undefined ? arrangedService.Status.GetAttributeValue<NameAttribute, String>(x => x.Name): null,
-                                    name,
-                                    details,
-                                    arrangedService.ServiceProvider != null && arrangedService.ServiceProvider.Participant != null && arrangedService.ServiceProvider.Participant.ElectronicCommunicationDetails != null ? CreatePhone(arrangedService.ServiceProvider.Participant.ElectronicCommunicationDetails) : null,
-                                    arrangedService.ServiceProvider != null && arrangedService.ServiceProvider.Participant != null && arrangedService.ServiceProvider.Participant.ElectronicCommunicationDetails != null ? CreateEmail(arrangedService.ServiceProvider.Participant.ElectronicCommunicationDetails) : null
-                             };
+                    var arrangedServiceEntry =
+                        new List<string>
+                        {
+                            arrangedService.ArrangedServiceDescription != null
+                                ? arrangedService.ArrangedServiceDescription.NarrativeText
+                                : null,
+                            durationAsString,
+                            arrangedService.Status != EventTypes.Undefined
+                                ? arrangedService.Status.GetAttributeValue<NameAttribute, String>(x => x.Name)
+                                : null,
+                            name,
+                            details,
+                            arrangedService.ServiceProvider != null &&
+                            arrangedService.ServiceProvider.Participant != null &&
+                            arrangedService.ServiceProvider.Participant.ElectronicCommunicationDetails != null
+                                ? CreatePhone(
+                                    arrangedService.ServiceProvider.Participant.ElectronicCommunicationDetails)
+                                : null,
+                            arrangedService.ServiceProvider != null &&
+                            arrangedService.ServiceProvider.Participant != null &&
+                            arrangedService.ServiceProvider.Participant.ElectronicCommunicationDetails != null
+                                ? CreateEmail(
+                                    arrangedService.ServiceProvider.Participant.ElectronicCommunicationDetails)
+                                : null
+                        };
 
 
-                     narrative.Add(arrangedServiceEntry);
+                    narrative.Add(arrangedServiceEntry);
 
-                   }
+                }
 
-                   StripEmptyColoums(ref headerList, ref narrative, null);
+            StripEmptyColoums(ref headerList, ref narrative, null);
 
-                    if (arrangedServices.Any())
-                    strucDocTableList.Add
-                        (
-                          PopulateTable
-                          (
-                              "Follow-up Appointments",
-                              null,
-                              headerList.ToArray(), 
-                              null,
-                              narrative
-                          )
-                        );
+            if (arrangedServices.Any())
+                strucDocTableList.Add
+                (
+                    PopulateTable
+                    (
+                        "Follow-up Appointments",
+                        null,
+                        headerList.ToArray(),
+                        null,
+                        narrative
+                    )
+                );
 
             var strucDocText = new StrucDocText();
 
@@ -2639,14 +2865,15 @@ namespace Nehta.VendorLibrary.CDA.Generator
 
             return strucDocText;
 
-         }
+        }
 
         /// <summary>
         /// Create the Recommendations Information Provided Narrative
         /// </summary>
         /// <param name="recommendationsInformationProvided">RecommendationsInformationProvided</param>
         /// <returns>StrucDocText</returns>
-        public StrucDocText CreateNarrative(SCSModel.DischargeSummary.RecommendationsInformationProvided recommendationsInformationProvided)
+        public StrucDocText CreateNarrative(
+            SCSModel.DischargeSummary.RecommendationsInformationProvided recommendationsInformationProvided)
         {
             var narrative = new List<List<String>>();
             var headerList = new List<String>()
@@ -2744,7 +2971,8 @@ namespace Nehta.VendorLibrary.CDA.Generator
         /// </summary>
         /// <param name="diagnosticInvestigations">IDiagnosticInvestigationsDischargeSummary</param>
         /// <returns>StrucDocText</returns>
-        public StrucDocText CreateNarrative(SCSModel.DischargeSummary.IDiagnosticInvestigationsDischargeSummary diagnosticInvestigations)
+        public StrucDocText CreateNarrative(
+            SCSModel.DischargeSummary.IDiagnosticInvestigationsDischargeSummary diagnosticInvestigations)
         {
             var strucDocTableList = new List<StrucDocTable>();
 
@@ -2763,208 +2991,227 @@ namespace Nehta.VendorLibrary.CDA.Generator
             return strucDocText;
         }
 
-      /// <summary>
-      /// Generates the Prescription Item for the narrative
-      /// </summary>
-      /// <param name="item">IEPrescriptionItem</param>
-      /// <param name="prescriber">IParticipationPrescriber</param>
-      /// <param name="subjectOfCare">IParticipationSubjectOfCare</param>
-      /// <returns>StrucDocText</returns>
-      public StrucDocText CreateNarrative(PCEHRPrescriptionItem item, IParticipationPrescriber prescriber, IParticipationSubjectOfCare subjectOfCare)
+        /// <summary>
+        /// Generates the Prescription Item for the narrative
+        /// </summary>
+        /// <param name="item">IEPrescriptionItem</param>
+        /// <param name="prescriber">IParticipationPrescriber</param>
+        /// <param name="subjectOfCare">IParticipationSubjectOfCare</param>
+        /// <returns>StrucDocText</returns>
+        public StrucDocText CreateNarrative(PCEHRPrescriptionItem item, IParticipationPrescriber prescriber,
+            IParticipationSubjectOfCare subjectOfCare)
         {
             var strucDocTableList = new List<StrucDocTable>();
             var narrative = new List<List<String>>();
             var narrativeObject = new List<List<Object>>();
-            var entitlementsColumnHeaders = new List<string> { "Entitlement Type", "Validity Duration", "Entitlement Number" };
+            var entitlementsColumnHeaders = new List<string>
+                {"Entitlement Type", "Validity Duration", "Entitlement Number"};
             var narrativePrescriberEntitlements = new List<List<String>>();
 
             if (item != null)
             {
-                    var columnHeaders = new List<string> { "Field", "Value" };
+                var columnHeaders = new List<string> {"Field", "Value"};
 
-                    //DateTime Prescription Written
-                    if (item.DateTimePrescriptionWritten != null)
-                      narrative.Add
-                          (
-                              CreateNarrativeEntry("Date and Time Prescription Written", item.DateTimePrescriptionWritten)
-                          );
+                //DateTime Prescription Written
+                if (item.DateTimePrescriptionWritten != null)
+                    narrative.Add
+                    (
+                        CreateNarrativeEntry("Date and Time Prescription Written", item.DateTimePrescriptionWritten)
+                    );
 
-                    //Therapeutic Good Identification
-                    if (item.TherapeuticGoodId != null)
-                      narrative.Add
-                         (
-                             CreateNarrativeEntry("Therapeutic Good Identification", item.TherapeuticGoodId.NarrativeText)
-                         );
+                //Therapeutic Good Identification
+                if (item.TherapeuticGoodId != null)
+                    narrative.Add
+                    (
+                        CreateNarrativeEntry("Therapeutic Good Identification", item.TherapeuticGoodId.NarrativeText)
+                    );
 
-                    //Therapeutic Good Generic Name
-                    if (item.TherapeuticGoodGenericName != null)
-                      narrative.Add
-                         (
-                             CreateNarrativeEntry("Therapeutic Good Generic Name (Additional Therapeutic Good Detail)", item.TherapeuticGoodGenericName)
-                         );
+                //Therapeutic Good Generic Name
+                if (item.TherapeuticGoodGenericName != null)
+                    narrative.Add
+                    (
+                        CreateNarrativeEntry("Therapeutic Good Generic Name (Additional Therapeutic Good Detail)",
+                            item.TherapeuticGoodGenericName)
+                    );
 
-                    //Therapeutic Good Strength
-                    if (item.TherapeuticGoodStrength != null)
-                      narrative.Add
-                         (
-                             CreateNarrativeEntry("Therapeutic Good Strength (Additional Therapeutic Good Detail)", item.TherapeuticGoodStrength)
-                         );
+                //Therapeutic Good Strength
+                if (item.TherapeuticGoodStrength != null)
+                    narrative.Add
+                    (
+                        CreateNarrativeEntry("Therapeutic Good Strength (Additional Therapeutic Good Detail)",
+                            item.TherapeuticGoodStrength)
+                    );
 
-                    //DateTime Prescription Expires
-                    if (item.DateTimePrescriptionExpires != null)
-                      narrative.Add
-                          (
-                              CreateNarrativeEntry("Date and Time Prescription Expires", item.DateTimePrescriptionExpires)
-                          );
+                //DateTime Prescription Expires
+                if (item.DateTimePrescriptionExpires != null)
+                    narrative.Add
+                    (
+                        CreateNarrativeEntry("Date and Time Prescription Expires", item.DateTimePrescriptionExpires)
+                    );
 
-                    //Formula
-                    if (!item.Formula.IsNullOrEmptyWhitespace())
-                      narrative.Add
-                        (
-                            CreateNarrativeEntry("Formula", item.Formula)
-                        );
+                //Formula
+                if (!item.Formula.IsNullOrEmptyWhitespace())
+                    narrative.Add
+                    (
+                        CreateNarrativeEntry("Formula", item.Formula)
+                    );
 
-                    //Formula
-                    if (item.Form != null)
-                      narrative.Add
-                        (
-                            CreateNarrativeEntry("Form", item.Form.NarrativeText)
-                        );
+                //Formula
+                if (item.Form != null)
+                    narrative.Add
+                    (
+                        CreateNarrativeEntry("Form", item.Form.NarrativeText)
+                    );
 
-                    //Directions
-                    if (!item.Directions.IsNullOrEmptyWhitespace())
-                      narrative.Add
-                         (
-                             CreateNarrativeEntry("Directions", item.Directions)
-                         );
+                //Directions
+                if (!item.Directions.IsNullOrEmptyWhitespace())
+                    narrative.Add
+                    (
+                        CreateNarrativeEntry("Directions", item.Directions)
+                    );
 
-                    //Clinical Indication
-                    if (item.ClinicalIndication != null)
-                      narrative.Add
-                         (
-                             CreateNarrativeEntry("Clinical Indication", item.ClinicalIndication)
-                         );
+                //Clinical Indication
+                if (item.ClinicalIndication != null)
+                    narrative.Add
+                    (
+                        CreateNarrativeEntry("Clinical Indication", item.ClinicalIndication)
+                    );
 
-                    //Route
-                    if (item.Route != null)
-                      narrative.Add
-                         (
-                             CreateNarrativeEntry("Route", item.Route.NarrativeText)
-                         );
+                //Route
+                if (item.Route != null)
+                    narrative.Add
+                    (
+                        CreateNarrativeEntry("Route", item.Route.NarrativeText)
+                    );
 
-                    //Quantity Description
-                    if (item.DispensingInformation != null && !item.DispensingInformation.QuantityDescription.IsNullOrEmptyWhitespace())
-                      narrative.Add
-                         (
-                             CreateNarrativeEntry("Quantity Description", item.DispensingInformation.QuantityDescription)
-                         );
+                //Quantity Description
+                if (item.DispensingInformation != null &&
+                    !item.DispensingInformation.QuantityDescription.IsNullOrEmptyWhitespace())
+                    narrative.Add
+                    (
+                        CreateNarrativeEntry("Quantity Description", item.DispensingInformation.QuantityDescription)
+                    );
 
-                    //Maximum Number of Repeats
-                    if (item.DispensingInformation != null && item.DispensingInformation.MaximumNumberOfRepeats != null)
-                      narrative.Add
-                         (
-                             CreateNarrativeEntry("Maximum Number of Repeats (Number of Repeats)", item.DispensingInformation.MaximumNumberOfRepeats, null)
-                         );
+                //Maximum Number of Repeats
+                if (item.DispensingInformation != null && item.DispensingInformation.MaximumNumberOfRepeats != null)
+                    narrative.Add
+                    (
+                        CreateNarrativeEntry("Maximum Number of Repeats (Number of Repeats)",
+                            item.DispensingInformation.MaximumNumberOfRepeats, null)
+                    );
 
-                    // Minimum Interval Between Repeats
-                    if (item.DispensingInformation != null && item.DispensingInformation.MinimumIntervalBetweenRepeats != null)
-                      narrative.Add
-                         (
-                             CreateNarrativeEntry("Minimum Interval Between Repeats", CreateIntervalText(item.DispensingInformation.MinimumIntervalBetweenRepeats))
-                         );
+                // Minimum Interval Between Repeats
+                if (item.DispensingInformation != null &&
+                    item.DispensingInformation.MinimumIntervalBetweenRepeats != null)
+                    narrative.Add
+                    (
+                        CreateNarrativeEntry("Minimum Interval Between Repeats",
+                            CreateIntervalText(item.DispensingInformation.MinimumIntervalBetweenRepeats))
+                    );
 
-                    // PBS Manufacturer Code
-                    if (item.PBSManufacturerCode != null)
-                      narrative.Add
-                         (
-                             CreateNarrativeEntry("PBS Manufacturer Code (Administrative Manufacturer Code)", item.PBSManufacturerCode.NarrativeText)
-                         );
+                // PBS Manufacturer Code
+                if (item.PBSManufacturerCode != null)
+                    narrative.Add
+                    (
+                        CreateNarrativeEntry("PBS Manufacturer Code (Administrative Manufacturer Code)",
+                            item.PBSManufacturerCode.NarrativeText)
+                    );
 
-                    // Brand Substitution Permitted
-                    if (item.DispensingInformation.BrandSubstitutionPermitted.HasValue)
-                      narrative.Add
-                         (
-                             CreateNarrativeEntry("Brand Substitution Permitted", item.DispensingInformation.BrandSubstitutionPermitted)
-                         );
+                // Brand Substitution Permitted
+                if (item.DispensingInformation.BrandSubstitutionPermitted.HasValue)
+                    narrative.Add
+                    (
+                        CreateNarrativeEntry("Brand Substitution Permitted",
+                            item.DispensingInformation.BrandSubstitutionPermitted)
+                    );
 
-                    // Comment
-                    if (!item.Comment.IsNullOrEmptyWhitespace())
-                      narrative.Add
-                         (
-                             CreateNarrativeEntry("Comment", item.Comment)
-                         );
+                // Comment
+                if (!item.Comment.IsNullOrEmptyWhitespace())
+                    narrative.Add
+                    (
+                        CreateNarrativeEntry("Comment", item.Comment)
+                    );
 
-                    //Prescription Item Identifier
-                    if (item.PrescriptionItemIdentifier != null)
-                      narrative.Add
-                          (
-                              CreateNarrativeEntry("Prescription Item Identifier", item.PrescriptionItemIdentifier.NarrativeText) 
-                          );
+                //Prescription Item Identifier
+                if (item.PrescriptionItemIdentifier != null)
+                    narrative.Add
+                    (
+                        CreateNarrativeEntry("Prescription Item Identifier",
+                            item.PrescriptionItemIdentifier.NarrativeText)
+                    );
 
-                    // Convert the List<string> to a List<Object>
-                    narrativeObject.AddRange(narrative.Select(narrativeItem => narrativeItem.Select(s => (object) s).ToList()));
+                // Convert the List<string> to a List<Object>
+                narrativeObject.AddRange(narrative.Select(narrativeItem =>
+                    narrativeItem.Select(s => (object) s).ToList()));
 
-                    // Prescription Record Link
-                    if (item.PrescriptionRecordLink != null)
-                      narrativeObject.Add(
-                                   new List<object>{
-                                   "Prescription Record Link",
-                                   CreateLink(item.PrescriptionRecordLink)
-                               });
-
-                    // Entitlements Prescriber
-                    if (prescriber != null && prescriber.Participant != null && prescriber.Participant.Person != null && prescriber.Participant.Person.Entitlements != null && prescriber.Participant.Person.Entitlements.Any())
-                    {
-                        foreach (var entitlement in prescriber.Participant.Person.Entitlements)
+                // Prescription Record Link
+                if (item.PrescriptionRecordLink != null)
+                    narrativeObject.Add(
+                        new List<object>
                         {
-                            CodableText codeableTextEntry = null;
+                            "Prescription Record Link",
+                            CreateLink(item.PrescriptionRecordLink)
+                        });
 
-                            if (entitlement.Type != EntitlementType.Undefined)
+                // Entitlements Prescriber
+                if (prescriber != null && prescriber.Participant != null && prescriber.Participant.Person != null &&
+                    prescriber.Participant.Person.Entitlements != null &&
+                    prescriber.Participant.Person.Entitlements.Any())
+                {
+                    foreach (var entitlement in prescriber.Participant.Person.Entitlements)
+                    {
+                        CodableText codeableTextEntry = null;
+
+                        if (entitlement.Type != EntitlementType.Undefined)
+                        {
+                            codeableTextEntry = new CodableText
                             {
-                                codeableTextEntry = new CodableText
-                                {
-                                    Code = entitlement.Type.GetAttributeValue<NameAttribute, String>(x => x.Code),
-                                    DisplayName = entitlement.Type.GetAttributeValue<NameAttribute, String>(x => x.Name),
-                                    OriginalText = entitlement.Type.GetAttributeValue<NameAttribute, String>(x => x.Name),
-                                    CodeSystem = CodingSystem.NCTISEntitlementTypeValues
-                                };
-                            }
-
-                            narrativePrescriberEntitlements.Add
-                                (
-                                    new List<String>
-                                     {
-                                         codeableTextEntry != null ? codeableTextEntry.NarrativeText : "Undefined Entitlement",
-                                         entitlement.ValidityDuration == null ? string.Empty : CreateIntervalText(entitlement.ValidityDuration),  
-                                         entitlement.Id != null ? entitlement.Id.NarrativeText : String.Empty
-                                     }
-                                );
+                                Code = entitlement.Type.GetAttributeValue<NameAttribute, String>(x => x.Code),
+                                DisplayName = entitlement.Type.GetAttributeValue<NameAttribute, String>(x => x.Name),
+                                OriginalText = entitlement.Type.GetAttributeValue<NameAttribute, String>(x => x.Name),
+                                CodeSystem = CodingSystem.NCTISEntitlementTypeValues
+                            };
                         }
-                    }
 
-                    strucDocTableList.AddRange
+                        narrativePrescriberEntitlements.Add
                         (
-                           new List<StrucDocTable>
-                           {
-                                PopulateTable
-                                        (
-                                            "Prescription Item",
-                                            null,
-                                            columnHeaders.ToArray(),
-                                            null,
-                                            narrativeObject
-                                        ),
-                                narrativePrescriberEntitlements.Any() ?  PopulateTable
-                                        (
-                                            "Prescriber Entitlement",
-                                            null,
-                                            entitlementsColumnHeaders.ToArray(),
-                                            null,
-                                            narrativePrescriberEntitlements
-                                        ) : null,
-                           }
+                            new List<String>
+                            {
+                                codeableTextEntry != null ? codeableTextEntry.NarrativeText : "Undefined Entitlement",
+                                entitlement.ValidityDuration == null
+                                    ? string.Empty
+                                    : CreateIntervalText(entitlement.ValidityDuration),
+                                entitlement.Id != null ? entitlement.Id.NarrativeText : String.Empty
+                            }
                         );
+                    }
                 }
+
+                strucDocTableList.AddRange
+                (
+                    new List<StrucDocTable>
+                    {
+                        PopulateTable
+                        (
+                            "Prescription Item",
+                            null,
+                            columnHeaders.ToArray(),
+                            null,
+                            narrativeObject
+                        ),
+                        narrativePrescriberEntitlements.Any()
+                            ? PopulateTable
+                            (
+                                "Prescriber Entitlement",
+                                null,
+                                entitlementsColumnHeaders.ToArray(),
+                                null,
+                                narrativePrescriberEntitlements
+                            )
+                            : null,
+                    }
+                );
+            }
 
             var strucDocText = new StrucDocText();
 
@@ -2976,284 +3223,306 @@ namespace Nehta.VendorLibrary.CDA.Generator
             return strucDocText;
         }
 
-      /// <summary>
-      /// Create a Narrative for an IEDispenseItem
-      /// </summary>
-      /// <param name="item">A IEPrescriptionItem</param>
-      /// <param name="dispenser">A IParticipationDispenser</param>
-      /// <param name="dispenserOrganisation">A IParticipationDispenserOrganisation</param>
-      /// <param name="subjectOfCare">A IParticipationSubjectOfCare</param>
-      /// <returns>StrucDocText</returns>
-        public StrucDocText CreateNarrative(PCEHRDispenseItem item, IParticipationDispenser dispenser, IParticipationDispenserOrganisation dispenserOrganisation, IParticipationSubjectOfCare subjectOfCare)
+        /// <summary>
+        /// Create a Narrative for an IEDispenseItem
+        /// </summary>
+        /// <param name="item">A IEPrescriptionItem</param>
+        /// <param name="dispenser">A IParticipationDispenser</param>
+        /// <param name="dispenserOrganisation">A IParticipationDispenserOrganisation</param>
+        /// <param name="subjectOfCare">A IParticipationSubjectOfCare</param>
+        /// <returns>StrucDocText</returns>
+        public StrucDocText CreateNarrative(PCEHRDispenseItem item, IParticipationDispenser dispenser,
+            IParticipationDispenserOrganisation dispenserOrganisation, IParticipationSubjectOfCare subjectOfCare)
         {
-          var strucDocTableList = new List<StrucDocTable>();
-          var narrative = new List<List<String>>();
-          var narrativeObject = new List<List<Object>>();
+            var strucDocTableList = new List<StrucDocTable>();
+            var narrative = new List<List<String>>();
+            var narrativeObject = new List<List<Object>>();
 
-          var entitlementsColumnHeaders = new List<string> { "Entitlement Type", "Validity Duration", "Entitlement Number" };
-          var narrativePrescriberEntitlements = new List<List<String>>();
+            var entitlementsColumnHeaders = new List<string>
+                {"Entitlement Type", "Validity Duration", "Entitlement Number"};
+            var narrativePrescriberEntitlements = new List<List<String>>();
 
-          if (item != null)
-          {
-            var columnHeaders = new List<string> { "Field", "Value" };
-
-            //Therapeutic Good Identification
-            if (item.TherapeuticGoodId != null)
-              narrative.Add
-                 (
-                     CreateNarrativeEntry("Therapeutic Good Identification", item.TherapeuticGoodId.NarrativeText)
-                 );
-
-            //Therapeutic Good Strength
-            if (!item.TherapeuticGoodStrength.IsNullOrEmptyWhitespace())
-              narrative.Add
-                 (
-                     CreateNarrativeEntry("Therapeutic Good Strength", item.TherapeuticGoodStrength)
-                 );
-
-            //Therapeutic Good Generic Name
-            if (!item.TherapeuticGoodGenericName.IsNullOrEmptyWhitespace())
-              narrative.Add
-                 (
-                     CreateNarrativeEntry("Therapeutic Good Generic Name", item.TherapeuticGoodGenericName)
-                 );
-
-            //Additional Dispensed Item Description
-            if (!item.AdditionalDispensedItemDescription.IsNullOrEmptyWhitespace())
-              narrative.Add
-                 (
-                     CreateNarrativeEntry("Additional Dispensed Item Description", item.AdditionalDispensedItemDescription)
-                 );
-
-            //Label Instruction
-            if (!item.LabelInstruction.IsNullOrEmptyWhitespace())
-              narrative.Add
-                 (
-                     CreateNarrativeEntry("Label Instruction", item.LabelInstruction)
-                 );
-
-            //Formula
-            if (!item.Formula.IsNullOrEmptyWhitespace())
-              narrative.Add
-                (
-                    CreateNarrativeEntry("Formula", item.Formula)
-                );
-
-            //Form
-            if (item.Form != null)
-              narrative.Add
-                (
-                    CreateNarrativeEntry("Form", item.Form.NarrativeText)
-                );
-
-            //Quantity Description
-            if (!item.QuantityDescription.IsNullOrEmptyWhitespace())
-              narrative.Add
-                (
-                    CreateNarrativeEntry("Quantity Description", item.QuantityDescription)
-                );
-
-            //Comment
-            if (!item.Comment.IsNullOrEmptyWhitespace())
-              narrative.Add
-                (
-                    CreateNarrativeEntry("Comment", item.Comment)
-                );
-
-            // Brand Substitution Occurred
-            if (item.BrandSubstitutionOccurred != null)
-              narrative.Add
-                 (
-                     CreateNarrativeEntry("Brand Substitution Occurred", item.BrandSubstitutionOccurred)
-                 );
-
-            //Number of this Dispense
-            if (item.NumberOfThisDispense.HasValue)
-              narrative.Add
-                (
-                    CreateNarrativeEntry("Number of this Dispense", item.NumberOfThisDispense.Value.ToString(CultureInfo.InvariantCulture))
-                );
-
-            //Maximum Number of Repeats
-            if (item.MaximumNumberOfRepeats != null)
-              narrative.Add
-                 (
-                     CreateNarrativeEntry("Maximum Number of Repeats", item.MaximumNumberOfRepeats, null)
-                 );
-
-            // PBS Manufacturer Code
-            if (item.PBSManufacturerCode != null)
-              narrative.Add
-                 (
-                     CreateNarrativeEntry("PBS Manufacturer Code", item.PBSManufacturerCode.NarrativeText)
-                 );
-
-
-            // Unique Pharmacy Prescription Number
-            if (!item.UniquePharmacyPrescriptionNumber.IsNullOrEmptyWhitespace())
-              narrative.Add
-                 (
-                     CreateNarrativeEntry("Unique Pharmacy Prescription Number", item.UniquePharmacyPrescriptionNumber)
-                 );
-
-            //Prescription Item Identifier
-            if (item.PrescriptionItemIdentifier != null)
-              narrative.Add
-                  (
-                      CreateNarrativeEntry("Prescription Item Identifier", item.PrescriptionItemIdentifier.NarrativeText)
-                  );
-
-            //DateTime Of Dispense Event
-            if (item.DateTimeOfDispenseEvent != null)
-              narrative.Add
-                  (
-                      CreateNarrativeEntry("DateTime of Dispense Event", item.DateTimeOfDispenseEvent)
-                  );
-
-            //DateTime Of Dispense Event
-            if (item.DispenseItemIdentifier != null)
-              narrative.Add
-                  (
-                      CreateNarrativeEntry("Dispense Item Identifier", item.DispenseItemIdentifier.NarrativeText)
-                  );
-
-            // Convert the List<string> to a List<Object>
-            narrativeObject.AddRange(narrative.Select(narrativeItem => narrativeItem.Select(s => (object)s).ToList()));
-
-            // Prescription Record Link
-            if (item.DispenseRecordLink != null)
-              narrativeObject.Add(
-                           new List<object>{
-                                   "Dispense Record Link",
-                                   CreateLink(item.DispenseRecordLink)
-                               });
-
-            // Entitlements Prescriber
-            if (dispenserOrganisation != null && dispenserOrganisation.Participant != null && dispenserOrganisation.Participant.Entitlements != null && dispenserOrganisation.Participant.Entitlements.Any())
+            if (item != null)
             {
-              foreach (var entitlement in dispenserOrganisation.Participant.Entitlements)
-              {
-                CodableText codeableTextEntry = null;
+                var columnHeaders = new List<string> {"Field", "Value"};
 
-                if (entitlement.Type != EntitlementType.Undefined)
+                //Therapeutic Good Identification
+                if (item.TherapeuticGoodId != null)
+                    narrative.Add
+                    (
+                        CreateNarrativeEntry("Therapeutic Good Identification", item.TherapeuticGoodId.NarrativeText)
+                    );
+
+                //Therapeutic Good Strength
+                if (!item.TherapeuticGoodStrength.IsNullOrEmptyWhitespace())
+                    narrative.Add
+                    (
+                        CreateNarrativeEntry("Therapeutic Good Strength", item.TherapeuticGoodStrength)
+                    );
+
+                //Therapeutic Good Generic Name
+                if (!item.TherapeuticGoodGenericName.IsNullOrEmptyWhitespace())
+                    narrative.Add
+                    (
+                        CreateNarrativeEntry("Therapeutic Good Generic Name", item.TherapeuticGoodGenericName)
+                    );
+
+                //Additional Dispensed Item Description
+                if (!item.AdditionalDispensedItemDescription.IsNullOrEmptyWhitespace())
+                    narrative.Add
+                    (
+                        CreateNarrativeEntry("Additional Dispensed Item Description",
+                            item.AdditionalDispensedItemDescription)
+                    );
+
+                //Label Instruction
+                if (!item.LabelInstruction.IsNullOrEmptyWhitespace())
+                    narrative.Add
+                    (
+                        CreateNarrativeEntry("Label Instruction", item.LabelInstruction)
+                    );
+
+                //Formula
+                if (!item.Formula.IsNullOrEmptyWhitespace())
+                    narrative.Add
+                    (
+                        CreateNarrativeEntry("Formula", item.Formula)
+                    );
+
+                //Form
+                if (item.Form != null)
+                    narrative.Add
+                    (
+                        CreateNarrativeEntry("Form", item.Form.NarrativeText)
+                    );
+
+                //Quantity Description
+                if (!item.QuantityDescription.IsNullOrEmptyWhitespace())
+                    narrative.Add
+                    (
+                        CreateNarrativeEntry("Quantity Description", item.QuantityDescription)
+                    );
+
+                //Comment
+                if (!item.Comment.IsNullOrEmptyWhitespace())
+                    narrative.Add
+                    (
+                        CreateNarrativeEntry("Comment", item.Comment)
+                    );
+
+                // Brand Substitution Occurred
+                if (item.BrandSubstitutionOccurred != null)
+                    narrative.Add
+                    (
+                        CreateNarrativeEntry("Brand Substitution Occurred", item.BrandSubstitutionOccurred)
+                    );
+
+                //Number of this Dispense
+                if (item.NumberOfThisDispense.HasValue)
+                    narrative.Add
+                    (
+                        CreateNarrativeEntry("Number of this Dispense",
+                            item.NumberOfThisDispense.Value.ToString(CultureInfo.InvariantCulture))
+                    );
+
+                //Maximum Number of Repeats
+                if (item.MaximumNumberOfRepeats != null)
+                    narrative.Add
+                    (
+                        CreateNarrativeEntry("Maximum Number of Repeats", item.MaximumNumberOfRepeats, null)
+                    );
+
+                // PBS Manufacturer Code
+                if (item.PBSManufacturerCode != null)
+                    narrative.Add
+                    (
+                        CreateNarrativeEntry("PBS Manufacturer Code", item.PBSManufacturerCode.NarrativeText)
+                    );
+
+
+                // Unique Pharmacy Prescription Number
+                if (!item.UniquePharmacyPrescriptionNumber.IsNullOrEmptyWhitespace())
+                    narrative.Add
+                    (
+                        CreateNarrativeEntry("Unique Pharmacy Prescription Number",
+                            item.UniquePharmacyPrescriptionNumber)
+                    );
+
+                //Prescription Item Identifier
+                if (item.PrescriptionItemIdentifier != null)
+                    narrative.Add
+                    (
+                        CreateNarrativeEntry("Prescription Item Identifier",
+                            item.PrescriptionItemIdentifier.NarrativeText)
+                    );
+
+                //DateTime Of Dispense Event
+                if (item.DateTimeOfDispenseEvent != null)
+                    narrative.Add
+                    (
+                        CreateNarrativeEntry("DateTime of Dispense Event", item.DateTimeOfDispenseEvent)
+                    );
+
+                //DateTime Of Dispense Event
+                if (item.DispenseItemIdentifier != null)
+                    narrative.Add
+                    (
+                        CreateNarrativeEntry("Dispense Item Identifier", item.DispenseItemIdentifier.NarrativeText)
+                    );
+
+                // Convert the List<string> to a List<Object>
+                narrativeObject.AddRange(narrative.Select(narrativeItem =>
+                    narrativeItem.Select(s => (object) s).ToList()));
+
+                // Prescription Record Link
+                if (item.DispenseRecordLink != null)
+                    narrativeObject.Add(
+                        new List<object>
+                        {
+                            "Dispense Record Link",
+                            CreateLink(item.DispenseRecordLink)
+                        });
+
+                // Entitlements Prescriber
+                if (dispenserOrganisation != null && dispenserOrganisation.Participant != null &&
+                    dispenserOrganisation.Participant.Entitlements != null &&
+                    dispenserOrganisation.Participant.Entitlements.Any())
                 {
-                  codeableTextEntry = new CodableText
-                  {
-                    Code = entitlement.Type.GetAttributeValue<NameAttribute, String>(x => x.Code),
-                    DisplayName = entitlement.Type.GetAttributeValue<NameAttribute, String>(x => x.Name),
-                    OriginalText = entitlement.Type.GetAttributeValue<NameAttribute, String>(x => x.Name),
-                    CodeSystem = CodingSystem.NCTISEntitlementTypeValues
-                  };
+                    foreach (var entitlement in dispenserOrganisation.Participant.Entitlements)
+                    {
+                        CodableText codeableTextEntry = null;
+
+                        if (entitlement.Type != EntitlementType.Undefined)
+                        {
+                            codeableTextEntry = new CodableText
+                            {
+                                Code = entitlement.Type.GetAttributeValue<NameAttribute, String>(x => x.Code),
+                                DisplayName = entitlement.Type.GetAttributeValue<NameAttribute, String>(x => x.Name),
+                                OriginalText = entitlement.Type.GetAttributeValue<NameAttribute, String>(x => x.Name),
+                                CodeSystem = CodingSystem.NCTISEntitlementTypeValues
+                            };
+                        }
+
+                        narrativePrescriberEntitlements.Add
+                        (
+                            new List<String>
+                            {
+                                codeableTextEntry != null ? codeableTextEntry.NarrativeText : "Undefined Entitlement",
+                                entitlement.ValidityDuration == null
+                                    ? string.Empty
+                                    : CreateIntervalText(entitlement.ValidityDuration),
+                                entitlement.Id != null ? entitlement.Id.NarrativeText : String.Empty
+                            }
+                        );
+                    }
                 }
 
-                narrativePrescriberEntitlements.Add
-                    (
-                        new List<String>
-                                     {
-                                         codeableTextEntry != null ? codeableTextEntry.NarrativeText : "Undefined Entitlement",
-                                         entitlement.ValidityDuration == null ? string.Empty : CreateIntervalText(entitlement.ValidityDuration),  
-                                         entitlement.Id != null ? entitlement.Id.NarrativeText : String.Empty
-                                     }
-                    );
-              }
+                strucDocTableList.AddRange
+                (
+                    new List<StrucDocTable>
+                    {
+                        PopulateTable
+                        (
+                            "Dispense Item",
+                            null,
+                            columnHeaders.ToArray(),
+                            null,
+                            narrativeObject
+                        ),
+                        narrativePrescriberEntitlements.Any()
+                            ? PopulateTable
+                            (
+                                "Dispensing Organisation Entitlement",
+                                null,
+                                entitlementsColumnHeaders.ToArray(),
+                                null,
+                                narrativePrescriberEntitlements
+                            )
+                            : null,
+
+                    }
+                );
             }
 
-            strucDocTableList.AddRange
-                (
-                   new List<StrucDocTable>
-                           {
-                                PopulateTable
-                                        (
-                                            "Dispense Item",
-                                            null,
-                                            columnHeaders.ToArray(),
-                                            null,
-                                            narrativeObject
-                                        ),
-                                narrativePrescriberEntitlements.Any() ?  PopulateTable
-                                        (
-                                            "Dispensing Organisation Entitlement",
-                                            null,
-                                            entitlementsColumnHeaders.ToArray(),
-                                            null,
-                                            narrativePrescriberEntitlements
-                                        ) : null,
+            var strucDocText = new StrucDocText();
 
-                           }
-                );
-          }
+            if (strucDocTableList.Any())
+            {
+                strucDocText.table = strucDocTableList.ToArray();
+            }
 
-          var strucDocText = new StrucDocText();
-
-          if (strucDocTableList.Any())
-          {
-            strucDocText.table = strucDocTableList.ToArray();
-          }
-
-          return strucDocText;
+            return strucDocText;
         }
 
-       /// <summary>
-       /// Create a Narrative for an (PrescribingAndDispensingReports)
-       /// </summary>
-       /// <param name="prescribingAndDispensingReports">A PrescribingAndDispensingReports</param>
-       /// <returns>StrucDocText</returns>
+        /// <summary>
+        /// Create a Narrative for an (PrescribingAndDispensingReports)
+        /// </summary>
+        /// <param name="prescribingAndDispensingReports">A PrescribingAndDispensingReports</param>
+        /// <returns>StrucDocText</returns>
         public StrucDocText CreateNarrative(PrescribingAndDispensingReports prescribingAndDispensingReports)
-       {              
-          var strucDocTableList = new List<StrucDocTable>();
+        {
+            var strucDocTableList = new List<StrucDocTable>();
 
-          if (prescribingAndDispensingReports.MedicationEntriesWithSummary != null)
-          {
-            foreach (var medicationEntriesWithSummary in prescribingAndDispensingReports.MedicationEntriesWithSummary)
+            if (prescribingAndDispensingReports.MedicationEntriesWithSummary != null)
             {
+                foreach (var medicationEntriesWithSummary in prescribingAndDispensingReports
+                    .MedicationEntriesWithSummary)
+                {
 
-              var narrative = new List<List<String>>();
-              if (medicationEntriesWithSummary != null && medicationEntriesWithSummary.SummaryOfMedicationEntries != null)
-              {
-                var summary = medicationEntriesWithSummary.SummaryOfMedicationEntries;
+                    var narrative = new List<List<String>>();
+                    if (medicationEntriesWithSummary != null &&
+                        medicationEntriesWithSummary.SummaryOfMedicationEntries != null)
+                    {
+                        var summary = medicationEntriesWithSummary.SummaryOfMedicationEntries;
 
-                var columnHeaders = new List<string> { "Field", "Value" };
+                        var columnHeaders = new List<string> {"Field", "Value"};
 
-                if (summary.DateTimeOfLatestDispenseEvent != null)
-                  narrative.Add
-                      (
-                           CreateNarrativeEntry("Date Time Of Latest Dispense Event", summary.DateTimeOfLatestDispenseEvent)
-                      );
+                        if (summary.DateTimeOfLatestDispenseEvent != null)
+                            narrative.Add
+                            (
+                                CreateNarrativeEntry("Date Time Of Latest Dispense Event",
+                                    summary.DateTimeOfLatestDispenseEvent)
+                            );
 
-                if (summary.DateTimeOfEarliestDispenseEvent != null)
-                  narrative.Add
-                      (
-                           CreateNarrativeEntry("DateTime Of Earliest Dispense Event", summary.DateTimeOfEarliestDispenseEvent)
-                      );
+                        if (summary.DateTimeOfEarliestDispenseEvent != null)
+                            narrative.Add
+                            (
+                                CreateNarrativeEntry("DateTime Of Earliest Dispense Event",
+                                    summary.DateTimeOfEarliestDispenseEvent)
+                            );
 
-                if (summary.DateTimePrescriptionWritten != null)
-                  narrative.Add
-                      (
-                           CreateNarrativeEntry("Date Time Prescription Written", summary.DateTimePrescriptionWritten)
-                      );
+                        if (summary.DateTimePrescriptionWritten != null)
+                            narrative.Add
+                            (
+                                CreateNarrativeEntry("Date Time Prescription Written",
+                                    summary.DateTimePrescriptionWritten)
+                            );
 
-                if (summary.MaximumNumberOfPermittedSupplies != null)
-                  narrative.Add
-                      (
-                           CreateNarrativeEntry("Maximum Number Of Permitted Supplies", summary.MaximumNumberOfPermittedSupplies)
-                      );
+                        if (summary.MaximumNumberOfPermittedSupplies != null)
+                            narrative.Add
+                            (
+                                CreateNarrativeEntry("Maximum Number Of Permitted Supplies",
+                                    summary.MaximumNumberOfPermittedSupplies)
+                            );
 
-                if (summary.TherapeuticGoodId != null)
-                  narrative.Add
-                      (
-                           CreateNarrativeEntry("Therapeutic Good Identification", summary.TherapeuticGoodId.NarrativeText)
-                      );
+                        if (summary.TherapeuticGoodId != null)
+                            narrative.Add
+                            (
+                                CreateNarrativeEntry("Therapeutic Good Identification",
+                                    summary.TherapeuticGoodId.NarrativeText)
+                            );
 
-                if (summary.TotalNumberOfKnownSupplies != null)
-                  narrative.Add
-                      (
-                           CreateNarrativeEntry("Total Number Of Known Supplies", summary.TotalNumberOfKnownSupplies)
-                      );
+                        if (summary.TotalNumberOfKnownSupplies != null)
+                            narrative.Add
+                            (
+                                CreateNarrativeEntry("Total Number Of Known Supplies",
+                                    summary.TotalNumberOfKnownSupplies)
+                            );
 
-                // Add body Height Narrative
-                strucDocTableList.Add
-                    (
-                        PopulateTable
+                        // Add body Height Narrative
+                        strucDocTableList.Add
+                        (
+                            PopulateTable
                             (
                                 "Prescribing and Dispensing Reports",
                                 null,
@@ -3261,17 +3530,17 @@ namespace Nehta.VendorLibrary.CDA.Generator
                                 null,
                                 narrative
                             )
-                    );
-              }
+                        );
+                    }
+                }
             }
-          }
-                
-          var strucDocText = new StrucDocText();
 
-          if (strucDocTableList.Any())
-            strucDocText.table = strucDocTableList.ToArray();
- 
-         return strucDocText;
+            var strucDocText = new StrucDocText();
+
+            if (strucDocTableList.Any())
+                strucDocText.table = strucDocTableList.ToArray();
+
+            return strucDocText;
         }
 
         /// <summary>
@@ -3294,49 +3563,51 @@ namespace Nehta.VendorLibrary.CDA.Generator
                     // Weight
                     if (observation.BodyWeight.Quantity != null && observation.BodyWeight.Quantity.Value != null)
                         narrative.Add
-                            (
+                        (
                             new List<String>
-                                {
-                                    observation.BodyWeight.BodyWeightObservationTime != null
-                                        ? observation.BodyWeight.BodyWeightObservationTime.NarrativeText()
-                                        : String.Empty,
-                                    "Body Weight",
-                                    observation.BodyWeight.Quantity.Value + " " +
-                                    observation.BodyWeight.Quantity.Units
-                                }
-                            );
+                            {
+                                observation.BodyWeight.BodyWeightObservationTime != null
+                                    ? observation.BodyWeight.BodyWeightObservationTime.NarrativeText()
+                                    : String.Empty,
+                                "Body Weight",
+                                observation.BodyWeight.Quantity.Value + " " +
+                                observation.BodyWeight.Quantity.Units
+                            }
+                        );
                 }
 
                 // Weight
                 if (observation.BodyHeight != null)
                 {
                     narrative.Add
-                        (
-                            new List<String>
-                                    {
-                                        observation.BodyHeight.BodyHeightObservationTime != null 
-                                            ? observation.BodyHeight.BodyHeightObservationTime.NarrativeText()
-                                            : String.Empty,
-                                        "Body Height",
-                                        observation.BodyHeight.Quantity.Value + " " +
-                                        observation.BodyHeight.Quantity.Units != null ? observation.BodyHeight.Quantity.Units : String.Empty
-                                    }
-                        );
+                    (
+                        new List<String>
+                        {
+                            observation.BodyHeight.BodyHeightObservationTime != null
+                                ? observation.BodyHeight.BodyHeightObservationTime.NarrativeText()
+                                : String.Empty,
+                            "Body Height",
+                            observation.BodyHeight.Quantity.Value + " " +
+                            observation.BodyHeight.Quantity.Units != null
+                                ? observation.BodyHeight.Quantity.Units
+                                : String.Empty
+                        }
+                    );
                 }
 
-                    // Add body Height Narrative
-                    strucDocTableList.Add
-                        (
-                            PopulateTable
-                                (
-                                    "Observation Weight Height",
-                                    null,
-                                    columnHeaders.ToArray(),
-                                    null,
-                                    narrative
-                                )
-                        );
-                }
+                // Add body Height Narrative
+                strucDocTableList.Add
+                (
+                    PopulateTable
+                    (
+                        "Observation Weight Height",
+                        null,
+                        columnHeaders.ToArray(),
+                        null,
+                        narrative
+                    )
+                );
+            }
 
             var strucDocText = new StrucDocText();
 
@@ -3361,26 +3632,26 @@ namespace Nehta.VendorLibrary.CDA.Generator
             if (eventDetails.ClinicalSynopsisDescription != null)
             {
                 narrative.Add
-                    (
-                        new List<String>
-                                    {
-                                        eventDetails.ClinicalSynopsisDescription
-                                    }
-                    );
+                (
+                    new List<String>
+                    {
+                        eventDetails.ClinicalSynopsisDescription
+                    }
+                );
 
 
                 // Add body Height Narrative
                 strucDocTableList.Add
+                (
+                    PopulateTable
                     (
-                        PopulateTable
-                            (
-                                "Clinical Summary",
-                                null,
-                                new[] { "Description" },
-                                null,
-                                narrative
-                            )
-                    );
+                        "Clinical Summary",
+                        null,
+                        new[] {"Description"},
+                        null,
+                        narrative
+                    )
+                );
             }
 
             var strucDocText = new StrucDocText();
@@ -3401,53 +3672,56 @@ namespace Nehta.VendorLibrary.CDA.Generator
         /// <returns>StrucDocText</returns>
         public StrucDocText CreateNarrative(IEnumerable<IMedicationItem> medications)
         {
-          List<List<String>> narrative;
-          var strucDocTableList = new List<StrucDocTable>();
+            List<List<String>> narrative;
+            var strucDocTableList = new List<StrucDocTable>();
 
-          if (medications != null)
+            if (medications != null)
             {
-              var narativeHeader = new List<string>
-                                             {
-                                                 "Medication",
-                                                 "Directions",
-                                                 "Clinical Indication",
-                                                 "Change Status",
-                                                 "Change Description",
-                                                 "Change Reason",
-                                                 "Comment"
-                                             };
+                var narativeHeader = new List<string>
+                {
+                    "Medication",
+                    "Directions",
+                    "Clinical Indication",
+                    "Change Status",
+                    "Change Description",
+                    "Change Reason",
+                    "Comment"
+                };
 
-              narrative = new List<List<String>>();
+                narrative = new List<List<String>>();
 
-              foreach (var medication in medications)
-              {
-                 var medicationList = new List<String>
-                                              {
-                                                  medication.Medicine != null ? medication.Medicine.NarrativeText : null,
-                                                  medication.Directions != null ? medication.Directions.NarrativeText : null,
-                                                  medication.ClinicalIndication,
-                                                  medication.ChangeStatus != null && medication.ChangeType != null ? string.Format("{0} - {1}", medication.ChangeType.NarrativeText, medication.ChangeStatus.NarrativeText)  : null,
-                                                  !medication.ChangeDescription.IsNullOrEmptyWhitespace() ? medication.ChangeDescription : null,
-                                                  medication.ChangeReason != null ? medication.ChangeReason.NarrativeText : null,
-                                                  !medication.Comment.IsNullOrEmptyWhitespace() ? medication.Comment : null
-                                              };
+                foreach (var medication in medications)
+                {
+                    var medicationList = new List<String>
+                    {
+                        medication.Medicine != null ? medication.Medicine.NarrativeText : null,
+                        medication.Directions != null ? medication.Directions.NarrativeText : null,
+                        medication.ClinicalIndication,
+                        medication.ChangeStatus != null && medication.ChangeType != null
+                            ? string.Format("{0} - {1}", medication.ChangeType.NarrativeText,
+                                medication.ChangeStatus.NarrativeText)
+                            : null,
+                        !medication.ChangeDescription.IsNullOrEmptyWhitespace() ? medication.ChangeDescription : null,
+                        medication.ChangeReason != null ? medication.ChangeReason.NarrativeText : null,
+                        !medication.Comment.IsNullOrEmptyWhitespace() ? medication.Comment : null
+                    };
 
-                narrative.Add(medicationList);
-              }
+                    narrative.Add(medicationList);
+                }
 
-              StripEmptyColoums(ref narativeHeader, ref narrative, new List<int> {3, 4, 5, 6});
+                StripEmptyColoums(ref narativeHeader, ref narrative, new List<int> {3, 4, 5, 6});
 
-              strucDocTableList.Add
-              (
-                  PopulateTable
-                  (
-                      "Medications",
-                      null,
-                      narativeHeader.ToArray(),
-                      new string[0],
-                      narrative
-                  )
-              );
+                strucDocTableList.Add
+                (
+                    PopulateTable
+                    (
+                        "Medications",
+                        null,
+                        narativeHeader.ToArray(),
+                        new string[0],
+                        narrative
+                    )
+                );
             }
 
             var strucDocText = new StrucDocText();
@@ -3471,127 +3745,134 @@ namespace Nehta.VendorLibrary.CDA.Generator
         /// <returns>StrucDocText</returns>
         public StrucDocText CreateNarrative(DiagnosesIntervention diagnosesIntervention)
         {
-         var strucDocText = new StrucDocText();
+            var strucDocText = new StrucDocText();
 
-         List<ProblemDiagnosis> problemDiagnosisList = null;
-         if (diagnosesIntervention.ProblemDiagnosis != null)
-         {
-            problemDiagnosisList = diagnosesIntervention.ProblemDiagnosis.ConvertAll(x => x as ProblemDiagnosis);
-         }
+            List<ProblemDiagnosis> problemDiagnosisList = null;
+            if (diagnosesIntervention.ProblemDiagnosis != null)
+            {
+                problemDiagnosisList = diagnosesIntervention.ProblemDiagnosis.ConvertAll(x => x as ProblemDiagnosis);
+            }
 
-         List<Procedure> proceduresList = null;
-         if (diagnosesIntervention.Procedures != null)
-         {
-            proceduresList = diagnosesIntervention.Procedures.ConvertAll(x => x);
-         }
+            List<Procedure> proceduresList = null;
+            if (diagnosesIntervention.Procedures != null)
+            {
+                proceduresList = diagnosesIntervention.Procedures.ConvertAll(x => x);
+            }
 
-         List<MedicalHistoryItem> medicalHistoryItemList = null;
-         if (diagnosesIntervention.UncategorisedMedicalHistoryItem != null)
-         {
-           medicalHistoryItemList = diagnosesIntervention.UncategorisedMedicalHistoryItem.ConvertAll(x => x as MedicalHistoryItem);
-         }
+            List<MedicalHistoryItem> medicalHistoryItemList = null;
+            if (diagnosesIntervention.UncategorisedMedicalHistoryItem != null)
+            {
+                medicalHistoryItemList =
+                    diagnosesIntervention.UncategorisedMedicalHistoryItem.ConvertAll(x => x as MedicalHistoryItem);
+            }
 
-         var table = CreateNarrative(problemDiagnosisList, proceduresList, medicalHistoryItemList, false);
+            var table = CreateNarrative(problemDiagnosisList, proceduresList, medicalHistoryItemList, false);
 
-         if (table != null)
-         {
-            strucDocText.table = new [] {table};
-         }
-         else
-         {
-            strucDocText.paragraph = CreateParagraph(SECTIONEMPTYTEXT);
-         }
+            if (table != null)
+            {
+                strucDocText.table = new[] {table};
+            }
+            else
+            {
+                strucDocText.paragraph = CreateParagraph(SECTIONEMPTYTEXT);
+            }
 
-         return strucDocText;
-       }
+            return strucDocText;
+        }
 
         /// <summary>
         /// This method creates the narrative for Diagnoses Intervention
         /// </summary>
         /// <returns>StrucDocText</returns>
-        public StrucDocTable CreateNarrative(List<ProblemDiagnosis> problemDiagnosisList, List<Procedure> proceduresList, List<MedicalHistoryItem> medicalHistoryItemList, bool dateOfResolutionRemission)
+        public StrucDocTable CreateNarrative(List<ProblemDiagnosis> problemDiagnosisList,
+            List<Procedure> proceduresList, List<MedicalHistoryItem> medicalHistoryItemList,
+            bool dateOfResolutionRemission)
         {
-          var headerList = new List<string>
-                                 {
-                                    "Item", 
-                                    "Date",
-                                    "Comment"
-                                 };
+            var headerList = new List<string>
+            {
+                "Item",
+                "Date",
+                "Comment"
+            };
 
             StrucDocTable strucDocTable = null;
 
             var list = new List<KeyValuePair<DateTime, List<string>>>();
 
-                // Add Problem Diagnosis for Diagnoses Intervention
+            // Add Problem Diagnosis for Diagnoses Intervention
             if (problemDiagnosisList != null && problemDiagnosisList.Any())
             {
                 foreach (var problemDiagnosis in problemDiagnosisList)
                 {
-                       // display dateTime text
-                       var dateTimeText = string.Empty;
+                    // display dateTime text
+                    var dateTimeText = string.Empty;
 
-                       // Sorting dateTime value
-                       var startDate = DateTime.MaxValue;
+                    // Sorting dateTime value
+                    var startDate = DateTime.MaxValue;
 
-                        if (problemDiagnosis.DateOfOnset != null && problemDiagnosis.DateOfResolutionRemission != null)
-                        {
-                            startDate = problemDiagnosis.DateOfOnset.DateTime;
-                            var interval = CdaInterval.CreateLowHigh(problemDiagnosis.DateOfOnset, problemDiagnosis.DateOfResolutionRemission);
-                            dateTimeText = interval.NarrativeText();
-                        }
+                    if (problemDiagnosis.DateOfOnset != null && problemDiagnosis.DateOfResolutionRemission != null)
+                    {
+                        startDate = problemDiagnosis.DateOfOnset.DateTime;
+                        var interval = CdaInterval.CreateLowHigh(problemDiagnosis.DateOfOnset,
+                            problemDiagnosis.DateOfResolutionRemission);
+                        dateTimeText = interval.NarrativeText();
+                    }
 
-                        // NOTE : Show DateOfResolutionRemission as the only date if DateOfOnset is missing
-                        if (problemDiagnosis.DateOfOnset == null && problemDiagnosis.DateOfResolutionRemission != null)
-                        {
-                            startDate = problemDiagnosis.DateOfResolutionRemission.DateTime;
-                            dateTimeText = problemDiagnosis.DateOfResolutionRemission.NarrativeText();
-                        }
+                    // NOTE : Show DateOfResolutionRemission as the only date if DateOfOnset is missing
+                    if (problemDiagnosis.DateOfOnset == null && problemDiagnosis.DateOfResolutionRemission != null)
+                    {
+                        startDate = problemDiagnosis.DateOfResolutionRemission.DateTime;
+                        dateTimeText = problemDiagnosis.DateOfResolutionRemission.NarrativeText();
+                    }
 
+                    // NOTE : Where DateOfResolutionRemission is null
+                    if (problemDiagnosis.DateOfOnset != null && problemDiagnosis.DateOfResolutionRemission == null)
+                    {
+                        dateTimeText = string.Format("{0} ->", problemDiagnosis.DateOfOnset.NarrativeText());
+
+                        if (dateOfResolutionRemission == false)
+                            dateTimeText = problemDiagnosis.DateOfOnset.NarrativeText();
+
+                        startDate = problemDiagnosis.DateOfOnset.DateTime;
+                    }
+
+                    if (problemDiagnosis.ShowOngoingDateInNarrative.HasValue &&
+                        problemDiagnosis.ShowOngoingDateInNarrative.Value)
+                    {
                         // NOTE : Where DateOfResolutionRemission is null
-                        if (problemDiagnosis.DateOfOnset != null && problemDiagnosis.DateOfResolutionRemission == null)
+                        if (problemDiagnosis.DateOfOnset != null &&
+                            problemDiagnosis.DateOfResolutionRemission == null && dateOfResolutionRemission)
                         {
-                            dateTimeText = string.Format("{0} ->", problemDiagnosis.DateOfOnset.NarrativeText());
-
-                            if (dateOfResolutionRemission == false)
-                                dateTimeText = problemDiagnosis.DateOfOnset.NarrativeText();
-
-                            startDate = problemDiagnosis.DateOfOnset.DateTime;
+                            dateTimeText = string.Format("{0} -> (ongoing)",
+                                problemDiagnosis.DateOfOnset.NarrativeText());
                         }
+                        else
+                        {
+                            // NOTE: Add -1 day to nest the ongoing items correctly in the sorting order
+                            startDate = DateTime.MaxValue.AddDays(-1);
+                            dateTimeText = "(ongoing)";
+                        }
+                    }
 
-                       if (problemDiagnosis.ShowOngoingDateInNarrative.HasValue && problemDiagnosis.ShowOngoingDateInNarrative.Value)
-                       {
-                           // NOTE : Where DateOfResolutionRemission is null
-                           if (problemDiagnosis.DateOfOnset != null && problemDiagnosis.DateOfResolutionRemission == null && dateOfResolutionRemission)
-                           {
-                               dateTimeText = string.Format("{0} -> (ongoing)", problemDiagnosis.DateOfOnset.NarrativeText());
-                           }
-                           else
-                           {
-                               // NOTE: Add -1 day to nest the ongoing items correctly in the sorting order
-                               startDate = DateTime.MaxValue.AddDays(-1);
-                               dateTimeText = "(ongoing)";
-                           }
-                       }
+                    list.Add(new KeyValuePair<DateTime, List<string>>
+                        (
+                            startDate,
+                            new List<string>
+                            {
+                                problemDiagnosis.ProblemDiagnosisIdentification != null
+                                    ? problemDiagnosis.ProblemDiagnosisIdentification.NarrativeText
+                                    : null,
+                                dateTimeText,
+                                problemDiagnosis.Comment.IsNullOrEmptyWhitespace() ? null : problemDiagnosis.Comment
 
-                       list.Add(new KeyValuePair<DateTime, List<string>>
-                                   (
-                                      startDate,
-                                      new List<string>
-                                        {
-                                          problemDiagnosis.ProblemDiagnosisIdentification != null
-                                            ? problemDiagnosis.ProblemDiagnosisIdentification.NarrativeText
-                                            : null,
-                                          dateTimeText,
-                                          problemDiagnosis.Comment.IsNullOrEmptyWhitespace() ? null : problemDiagnosis.Comment
+                            }
+                        )
+                    );
+                }
+            }
 
-                                        }
-                                   )
-                                 );
-                    }                
-              }
-
-              // Add procedure for Diagnoses Intervention
-              if (proceduresList != null && proceduresList.Any())
+            // Add procedure for Diagnoses Intervention
+            if (proceduresList != null && proceduresList.Any())
                 foreach (var procedure in proceduresList)
                 {
                     DateTime? procedureDateTime = null;
@@ -3613,14 +3894,18 @@ namespace Nehta.VendorLibrary.CDA.Generator
                     }
 
                     var keyValuePairDateTime = procedureDateTime ?? DateTime.MaxValue;
-                    var keyValuePairNarrative = procedure.ProcedureDateTime != null ? procedure.ProcedureDateTime.NarrativeText() : null;
+                    var keyValuePairNarrative = procedure.ProcedureDateTime != null
+                        ? procedure.ProcedureDateTime.NarrativeText()
+                        : null;
 
                     if (procedure.ShowOngoingInNarrative.HasValue && procedure.ShowOngoingInNarrative.Value)
                     {
-                        if (procedure.ProcedureDateTime.Type == IntervalType.Low || procedure.ProcedureDateTime.Type == IntervalType.LowHigh)
+                        if (procedure.ProcedureDateTime.Type == IntervalType.Low ||
+                            procedure.ProcedureDateTime.Type == IntervalType.LowHigh)
                         {
                             keyValuePairDateTime = procedure.ProcedureDateTime.Low.DateTime;
-                            keyValuePairNarrative = string.Format("{0} -> (ongoing)", procedure.ProcedureDateTime.Low.NarrativeText());
+                            keyValuePairNarrative = string.Format("{0} -> (ongoing)",
+                                procedure.ProcedureDateTime.Low.NarrativeText());
                         }
                         else
                         {
@@ -3630,46 +3915,50 @@ namespace Nehta.VendorLibrary.CDA.Generator
                     }
 
                     list.Add(new KeyValuePair<DateTime, List<string>>
-                               (
-                                  keyValuePairDateTime,
-                                  new List<String>
-                                          {
-                                              procedure.ProcedureName != null ?  procedure.ProcedureName.NarrativeText : null,
-                                              keyValuePairNarrative,
-                                              procedure.Comment.IsNullOrEmptyWhitespace() ? null : procedure.Comment
-                                          }
-                               )
-                             );
-                  }
+                        (
+                            keyValuePairDateTime,
+                            new List<String>
+                            {
+                                procedure.ProcedureName != null ? procedure.ProcedureName.NarrativeText : null,
+                                keyValuePairNarrative,
+                                procedure.Comment.IsNullOrEmptyWhitespace() ? null : procedure.Comment
+                            }
+                        )
+                    );
+                }
 
-                // Add MedicalHistoryItem
-              if (medicalHistoryItemList != null && medicalHistoryItemList.Any())
+            // Add MedicalHistoryItem
+            if (medicalHistoryItemList != null && medicalHistoryItemList.Any())
                 foreach (var medicalHistoryItem in medicalHistoryItemList)
-                  {
+                {
                     list.Add(new KeyValuePair<DateTime, List<string>>
-                                   (
-                                    medicalHistoryItem.DateTimeInterval != null || (medicalHistoryItem.ShowOngoingInNarrative.HasValue && medicalHistoryItem.ShowOngoingInNarrative.Value)
-                                    ? CdaIntervalFormatter.GetFirstDateTimeOfDurrationForNarrativeSorting(medicalHistoryItem.DateTimeInterval, medicalHistoryItem.ShowOngoingInNarrative) 
-                                    : DateTime.MaxValue,
-                                    new List<string>
-                                    {
-                                        medicalHistoryItem.ItemDescription,
-                                        CreateDuration(medicalHistoryItem.DateTimeInterval, medicalHistoryItem.ShowOngoingInNarrative),
-                                        medicalHistoryItem.ItemComment,
-                                    }
-                                   )
-                                 );
-                  }
+                        (
+                            medicalHistoryItem.DateTimeInterval != null ||
+                            (medicalHistoryItem.ShowOngoingInNarrative.HasValue &&
+                             medicalHistoryItem.ShowOngoingInNarrative.Value)
+                                ? CdaIntervalFormatter.GetFirstDateTimeOfDurrationForNarrativeSorting(
+                                    medicalHistoryItem.DateTimeInterval, medicalHistoryItem.ShowOngoingInNarrative)
+                                : DateTime.MaxValue,
+                            new List<string>
+                            {
+                                medicalHistoryItem.ItemDescription,
+                                CreateDuration(medicalHistoryItem.DateTimeInterval,
+                                    medicalHistoryItem.ShowOngoingInNarrative),
+                                medicalHistoryItem.ItemComment,
+                            }
+                        )
+                    );
+                }
 
-              // Sort List
-              list.Sort(Compare);
+            // Sort List
+            list.Sort(Compare);
 
-              // Copy Sorted list into the narrative
-              var narrative = list.Select(item => item.Value).ToList();
+            // Copy Sorted list into the narrative
+            var narrative = list.Select(item => item.Value).ToList();
 
-              StripEmptyColoums(ref headerList, ref narrative, new List<int> {2});
+            StripEmptyColoums(ref headerList, ref narrative, new List<int> {2});
 
-              if (narrative.Any())
+            if (narrative.Any())
                 strucDocTable =
                 (
                     PopulateTable
@@ -3696,11 +3985,11 @@ namespace Nehta.VendorLibrary.CDA.Generator
 
             if (immunisations != null && immunisations.Any())
             {
-              strucDocText.table = CreateNarrativeEntry(immunisations).ToArray();
+                strucDocText.table = CreateNarrativeEntry(immunisations).ToArray();
             }
             else
             {
-              strucDocText.paragraph = CreateParagraph(SECTIONEMPTYTEXT);
+                strucDocText.paragraph = CreateParagraph(SECTIONEMPTYTEXT);
             }
 
             return strucDocText;
@@ -3714,107 +4003,122 @@ namespace Nehta.VendorLibrary.CDA.Generator
         public StrucDocText CreateNarrative(RequestedService requestedService)
         {
             var narrative = new List<List<String>>();
-            var header = new [] {"Field", "Value"};
+            var header = new[] {"Field", "Value"};
 
             var strucDocTableList = new List<StrucDocTable>();
- 
+
             if (requestedService != null)
             {
-                    // Get organisation name
-                    String organisationName = null;
-                    if (requestedService.ServiceProvider != null)
-                        if (requestedService.ServiceProvider.Participant != null)
-                        {
-                            if (requestedService.ServiceProvider.Participant.Organisation != null)
-                                if (!requestedService.ServiceProvider.Participant.Organisation.Name.IsNullOrEmptyWhitespace())
-                                    organisationName = requestedService.ServiceProvider.Participant.Organisation.Name;
+                // Get organisation name
+                String organisationName = null;
+                if (requestedService.ServiceProvider != null)
+                    if (requestedService.ServiceProvider.Participant != null)
+                    {
+                        if (requestedService.ServiceProvider.Participant.Organisation != null)
+                            if (!requestedService.ServiceProvider.Participant.Organisation.Name
+                                .IsNullOrEmptyWhitespace())
+                                organisationName = requestedService.ServiceProvider.Participant.Organisation.Name;
 
-                            if (organisationName.IsNullOrEmptyWhitespace())
-                                if (requestedService.ServiceProvider.Participant.Person != null)
-                                    if (requestedService.ServiceProvider.Participant.Person.Organisation != null)
-                                        if (!requestedService.ServiceProvider.Participant.Person.Organisation.Name.IsNullOrEmptyWhitespace())
-                                            organisationName = requestedService.ServiceProvider.Participant.Person.Organisation.Name;
-                        }
+                        if (organisationName.IsNullOrEmptyWhitespace())
+                            if (requestedService.ServiceProvider.Participant.Person != null)
+                                if (requestedService.ServiceProvider.Participant.Person.Organisation != null)
+                                    if (!requestedService.ServiceProvider.Participant.Person.Organisation.Name
+                                        .IsNullOrEmptyWhitespace())
+                                        organisationName = requestedService.ServiceProvider.Participant.Person
+                                            .Organisation.Name;
+                    }
 
-                    String personName = null;
-                    // Provider Person Name
-                    if (requestedService.ServiceProvider != null && requestedService.ServiceProvider.Participant != null && requestedService.ServiceProvider.Participant.Person != null)
-                            personName = BuildPersonNames(requestedService.ServiceProvider.Participant.Person.PersonNames);
+                String personName = null;
+                // Provider Person Name
+                if (requestedService.ServiceProvider != null && requestedService.ServiceProvider.Participant != null &&
+                    requestedService.ServiceProvider.Participant.Person != null)
+                    personName = BuildPersonNames(requestedService.ServiceProvider.Participant.Person.PersonNames);
 
-                    // Requested Service Description
-                    if (requestedService.RequestedServiceDescription != null)
-                        narrative.Add
-                        (
-                            CreateNarrativeEntry("Requested Service Description", requestedService.RequestedServiceDescription.NarrativeText)
-                        );
+                // Requested Service Description
+                if (requestedService.RequestedServiceDescription != null)
+                    narrative.Add
+                    (
+                        CreateNarrativeEntry("Requested Service Description",
+                            requestedService.RequestedServiceDescription.NarrativeText)
+                    );
 
-                    // Service Requested DateTime
-                    if (requestedService.RequestedServiceDateTime != null)
-                        narrative.Add
-                        (
-                            CreateNarrativeEntry("Service Requested DateTime", requestedService.RequestedServiceDateTime.NarrativeText())
-                        );
+                // Service Requested DateTime
+                if (requestedService.RequestedServiceDateTime != null)
+                    narrative.Add
+                    (
+                        CreateNarrativeEntry("Service Requested DateTime",
+                            requestedService.RequestedServiceDateTime.NarrativeText())
+                    );
 
-                    // DateTime Service Scheduled or Service Commencement Window
-                    if (requestedService.ServiceScheduled != null)
-                        narrative.Add
-                        (
-                            CreateNarrativeEntry("Service Scheduled", requestedService.ServiceScheduled.NarrativeText())
-                        );
+                // DateTime Service Scheduled or Service Commencement Window
+                if (requestedService.ServiceScheduled != null)
+                    narrative.Add
+                    (
+                        CreateNarrativeEntry("Service Scheduled", requestedService.ServiceScheduled.NarrativeText())
+                    );
 
-                    // DateTime Service Scheduled or Service Commencement Window
-                    if (requestedService.ServiceCommencementWindow != null)
-                      narrative.Add
-                      (
-                          CreateNarrativeEntry("Service Commencement Window", requestedService.ServiceCommencementWindow.NarrativeText())
-                      );
+                // DateTime Service Scheduled or Service Commencement Window
+                if (requestedService.ServiceCommencementWindow != null)
+                    narrative.Add
+                    (
+                        CreateNarrativeEntry("Service Commencement Window",
+                            requestedService.ServiceCommencementWindow.NarrativeText())
+                    );
 
-                    // Provider Organisation
-                    if (!organisationName.IsNullOrEmptyWhitespace())
-                        narrative.Add
-                        (
-                            CreateNarrativeEntry("Provider Organisation", organisationName)
-                        );
+                // Provider Organisation
+                if (!organisationName.IsNullOrEmptyWhitespace())
+                    narrative.Add
+                    (
+                        CreateNarrativeEntry("Provider Organisation", organisationName)
+                    );
 
-                    // Provider Person Name
-                    if (!personName.IsNullOrEmptyWhitespace())
-                        narrative.Add
-                        (
-                            CreateNarrativeEntry("Provider Person Name", personName)
-                        );
+                // Provider Person Name
+                if (!personName.IsNullOrEmptyWhitespace())
+                    narrative.Add
+                    (
+                        CreateNarrativeEntry("Provider Person Name", personName)
+                    );
 
-                   // Provider Person Name
-                    if ((requestedService.ServiceProvider != null && requestedService.ServiceProvider.Participant  != null && requestedService.ServiceProvider.Participant.Addresses != null && requestedService.ServiceProvider.Participant.Addresses.Any()) || requestedService.ServiceProvider != null && requestedService.ServiceProvider.Participant.ElectronicCommunicationDetails != null)
-                        narrative.Add
-                        (
-                            CreateNarrativeEntry("Address / Contact", CreateAddress(requestedService.ServiceProvider.Participant.Addresses, requestedService.ServiceProvider.Participant.ElectronicCommunicationDetails))
-                        );
+                // Provider Person Name
+                if ((requestedService.ServiceProvider != null && requestedService.ServiceProvider.Participant != null &&
+                     requestedService.ServiceProvider.Participant.Addresses != null &&
+                     requestedService.ServiceProvider.Participant.Addresses.Any()) ||
+                    requestedService.ServiceProvider != null &&
+                    requestedService.ServiceProvider.Participant.ElectronicCommunicationDetails != null)
+                    narrative.Add
+                    (
+                        CreateNarrativeEntry("Address / Contact",
+                            CreateAddress(requestedService.ServiceProvider.Participant.Addresses,
+                                requestedService.ServiceProvider.Participant.ElectronicCommunicationDetails))
+                    );
 
-                   //  Booking Status
-                    if (requestedService.ServiceBookingStatus != EventTypes.Undefined)
-                        narrative.Add
-                        (
-                            CreateNarrativeEntry( "Booking Status", requestedService.ServiceBookingStatus.GetAttributeValue<NameAttribute, String>(x => x.Name))
-                        );
+                //  Booking Status
+                if (requestedService.ServiceBookingStatus != EventTypes.Undefined)
+                    narrative.Add
+                    (
+                        CreateNarrativeEntry("Booking Status",
+                            requestedService.ServiceBookingStatus.GetAttributeValue<NameAttribute, String>(x => x.Name))
+                    );
 
-                    // Provider Person Name
-                    if (!requestedService.SubjectOfCareInstructionDescription.IsNullOrEmptyWhitespace())
-                        narrative.Add
-                        (
-                            CreateNarrativeEntry("Subject of Care Instruction Description", requestedService.SubjectOfCareInstructionDescription)
-                        );
-                }
+                // Provider Person Name
+                if (!requestedService.SubjectOfCareInstructionDescription.IsNullOrEmptyWhitespace())
+                    narrative.Add
+                    (
+                        CreateNarrativeEntry("Subject of Care Instruction Description",
+                            requestedService.SubjectOfCareInstructionDescription)
+                    );
+            }
 
             strucDocTableList.Add
             (
                 PopulateTable
-                    (
-                        "Requested Service",
-                        null,
-                        header,
-                        new string[0],
-                        narrative
-                    )
+                (
+                    "Requested Service",
+                    null,
+                    header,
+                    new string[0],
+                    narrative
+                )
             );
 
             var strucDocText = new StrucDocText();
@@ -3837,43 +4141,76 @@ namespace Nehta.VendorLibrary.CDA.Generator
         /// </summary>
         /// <param name="australianChildhoodImmunisationRegisterHistory">AustralianChildhoodImmunisationRegisterHistory</param>
         /// <returns>StrucDocText</returns>
-        public StrucDocText CreateNarrative(AustralianChildhoodImmunisationRegisterHistory australianChildhoodImmunisationRegisterHistory)
+        public StrucDocText CreateNarrative(
+            AustralianChildhoodImmunisationRegisterHistory australianChildhoodImmunisationRegisterHistory)
         {
             var strucDocTableList = new List<StrucDocTable>();
             var narrative = new List<List<Object>>();
 
             var narativeHeader = new List<string>
-                {
-                    "Type",
-                    "Date",
-                    "Dose"
-                };
-
-            if (australianChildhoodImmunisationRegisterHistory != null && australianChildhoodImmunisationRegisterHistory.AustralianChildhoodImmunisationRegisterEntries != null && 
-                australianChildhoodImmunisationRegisterHistory.AustralianChildhoodImmunisationRegisterEntries.AustralianChildhoodImmunisationRegisterEntry != null )
             {
-                foreach (var australianChildhoodImmunisationRegisterEntry in australianChildhoodImmunisationRegisterHistory.AustralianChildhoodImmunisationRegisterEntries.AustralianChildhoodImmunisationRegisterEntry)
+                "Type",
+                "Date",
+                "Dose"
+            };
+
+            if (australianChildhoodImmunisationRegisterHistory != null && australianChildhoodImmunisationRegisterHistory
+                    .AustralianChildhoodImmunisationRegisterEntries != null &&
+                australianChildhoodImmunisationRegisterHistory.AustralianChildhoodImmunisationRegisterEntries
+                    .AustralianChildhoodImmunisationRegisterEntry != null)
+            {
+                foreach (var australianChildhoodImmunisationRegisterEntry in
+                    australianChildhoodImmunisationRegisterHistory.AustralianChildhoodImmunisationRegisterEntries
+                        .AustralianChildhoodImmunisationRegisterEntry)
                 {
                     if (australianChildhoodImmunisationRegisterEntry.VaccineAdministrationEntry != null)
                     {
                         var medicationList = new List<Object>
-                                                  {
-                                                      CreateLink(australianChildhoodImmunisationRegisterHistory.AustralianChildhoodImmunisationRegisterEntries.AustralianChildhoodImmunisationRegisterDocumentLink, true, australianChildhoodImmunisationRegisterEntry.VaccineAdministrationEntry.VaccineType.NarrativeText),
-                                                      australianChildhoodImmunisationRegisterEntry.VaccineAdministrationEntry != null &&  australianChildhoodImmunisationRegisterEntry.VaccineAdministrationEntry.DateVaccinationReceived != null ? australianChildhoodImmunisationRegisterEntry.VaccineAdministrationEntry.DateVaccinationReceived.NarrativeText() : null,
-                                                      australianChildhoodImmunisationRegisterEntry.VaccineAdministrationEntry.VaccineDoseNumber.HasValue ? australianChildhoodImmunisationRegisterEntry.VaccineAdministrationEntry.VaccineDoseNumber.Value.ToString(CultureInfo.InvariantCulture): null
-                                                 };
+                        {
+                            CreateLink(
+                                australianChildhoodImmunisationRegisterHistory
+                                    .AustralianChildhoodImmunisationRegisterEntries
+                                    .AustralianChildhoodImmunisationRegisterDocumentLink, true,
+                                australianChildhoodImmunisationRegisterEntry.VaccineAdministrationEntry.VaccineType
+                                    .NarrativeText),
+                            australianChildhoodImmunisationRegisterEntry.VaccineAdministrationEntry != null &&
+                            australianChildhoodImmunisationRegisterEntry.VaccineAdministrationEntry
+                                .DateVaccinationReceived != null
+                                ? australianChildhoodImmunisationRegisterEntry.VaccineAdministrationEntry
+                                    .DateVaccinationReceived.NarrativeText()
+                                : null,
+                            australianChildhoodImmunisationRegisterEntry.VaccineAdministrationEntry.VaccineDoseNumber
+                                .HasValue
+                                ? australianChildhoodImmunisationRegisterEntry.VaccineAdministrationEntry
+                                    .VaccineDoseNumber.Value.ToString(CultureInfo.InvariantCulture)
+                                : null
+                        };
 
-                        narrative.Add(medicationList);                        
+                        narrative.Add(medicationList);
                     }
 
                     if (australianChildhoodImmunisationRegisterEntry.VaccineCancellationEntry != null)
                     {
                         var medicationList = new List<Object>
-                                                  {
-                                                      CreateLink(australianChildhoodImmunisationRegisterHistory.AustralianChildhoodImmunisationRegisterEntries.AustralianChildhoodImmunisationRegisterDocumentLink, true, australianChildhoodImmunisationRegisterEntry.VaccineCancellationEntry.VaccineType.NarrativeText),
-                                                      australianChildhoodImmunisationRegisterEntry.VaccineCancellationEntry != null &&  australianChildhoodImmunisationRegisterEntry.VaccineCancellationEntry.DateVaccinationCancelled != null ? australianChildhoodImmunisationRegisterEntry.VaccineCancellationEntry.DateVaccinationCancelled.NarrativeText() : null,
-                                                      australianChildhoodImmunisationRegisterEntry.VaccineCancellationEntry.VaccineDoseNumber.HasValue ? australianChildhoodImmunisationRegisterEntry.VaccineCancellationEntry.VaccineDoseNumber.Value.ToString(CultureInfo.InvariantCulture): null
-                                                 };
+                        {
+                            CreateLink(
+                                australianChildhoodImmunisationRegisterHistory
+                                    .AustralianChildhoodImmunisationRegisterEntries
+                                    .AustralianChildhoodImmunisationRegisterDocumentLink, true,
+                                australianChildhoodImmunisationRegisterEntry.VaccineCancellationEntry.VaccineType
+                                    .NarrativeText),
+                            australianChildhoodImmunisationRegisterEntry.VaccineCancellationEntry != null &&
+                            australianChildhoodImmunisationRegisterEntry.VaccineCancellationEntry
+                                .DateVaccinationCancelled != null
+                                ? australianChildhoodImmunisationRegisterEntry.VaccineCancellationEntry
+                                    .DateVaccinationCancelled.NarrativeText()
+                                : null,
+                            australianChildhoodImmunisationRegisterEntry.VaccineCancellationEntry.VaccineDoseNumber
+                                .HasValue
+                                ? australianChildhoodImmunisationRegisterEntry.VaccineCancellationEntry
+                                    .VaccineDoseNumber.Value.ToString(CultureInfo.InvariantCulture)
+                                : null
+                        };
 
                         narrative.Add(medicationList);
                     }
@@ -3881,16 +4218,16 @@ namespace Nehta.VendorLibrary.CDA.Generator
             }
 
             strucDocTableList.Add
-              (
-                  PopulateTable
-                  (
-                      null,
-                      null,
-                      narativeHeader.ToArray(),
-                      new string[0],
-                      narrative
-                  )
-              );
+            (
+                PopulateTable
+                (
+                    null,
+                    null,
+                    narativeHeader.ToArray(),
+                    new string[0],
+                    narrative
+                )
+            );
 
             var strucDocText = new StrucDocText();
 
@@ -3913,13 +4250,13 @@ namespace Nehta.VendorLibrary.CDA.Generator
         /// <returns>StrucDocText</returns>
         public StrucDocText CreateNarrative(ExclusionStatement exclusionStatement)
         {
-          var strucDocText = new StrucDocText();
-          if (exclusionStatement != null)
-          {
-            strucDocText.paragraph = CreateParagraph(exclusionStatement.GeneralStatement);
-          }
+            var strucDocText = new StrucDocText();
+            if (exclusionStatement != null)
+            {
+                strucDocText.paragraph = CreateParagraph(exclusionStatement.GeneralStatement);
+            }
 
-          return strucDocText;
+            return strucDocText;
         }
 
         /// <summary>
@@ -3933,28 +4270,43 @@ namespace Nehta.VendorLibrary.CDA.Generator
             var narrative = new List<List<Object>>();
 
             var narativeHeader = new List<string>
-                {
-                    "Date",
-                    "Number",
-                    "Description",
-                    "Service Provider",
-                    "In Hospital?",
-                };
+            {
+                "Date",
+                "Number",
+                "Description",
+                "Service Provider",
+                "In Hospital?",
+            };
 
-            if (medicareDVAFundedServices != null && medicareDVAFundedServices.MedicareDVAFundedService != null )
+            if (medicareDVAFundedServices != null && medicareDVAFundedServices.MedicareDVAFundedService != null)
             {
                 foreach (var medicareDVAFundedService in medicareDVAFundedServices.MedicareDVAFundedService)
                 {
                     if (medicareDVAFundedService != null)
                     {
                         var medicareList = new List<Object>
-                                                  {
-                                                      medicareDVAFundedService.DateOfService != null ? medicareDVAFundedService.DateOfService.NarrativeText() : null,
-                                                      medicareDVAFundedService.MedicareMBSDVAItem != null && medicareDVAFundedService.MedicareMBSDVAItem.Code != null ?  medicareDVAFundedService.MedicareMBSDVAItem.Code : null,
-                                                      CreateLink(medicareDVAFundedService.MedicareDVAFundedServicesDocumentLink, medicareDVAFundedService.MedicareMBSDVAItem != null ? medicareDVAFundedService.MedicareMBSDVAItem.NarrativeText : null),
-                                                      medicareDVAFundedService.ServiceProvider != null && medicareDVAFundedService.ServiceProvider.Participant != null && medicareDVAFundedService.ServiceProvider.Participant.Person != null ?  BuildPersonNames(medicareDVAFundedService.ServiceProvider.Participant.Person.PersonNames) : null,
-                                                      medicareDVAFundedService.ServiceInHospitalIndicator.HasValue ? medicareDVAFundedService.ServiceInHospitalIndicator.Value ? "Yes" : "No" : null
-                                                 };
+                        {
+                            medicareDVAFundedService.DateOfService != null
+                                ? medicareDVAFundedService.DateOfService.NarrativeText()
+                                : null,
+                            medicareDVAFundedService.MedicareMBSDVAItem != null &&
+                            medicareDVAFundedService.MedicareMBSDVAItem.Code != null
+                                ? medicareDVAFundedService.MedicareMBSDVAItem.Code
+                                : null,
+                            CreateLink(medicareDVAFundedService.MedicareDVAFundedServicesDocumentLink,
+                                medicareDVAFundedService.MedicareMBSDVAItem != null
+                                    ? medicareDVAFundedService.MedicareMBSDVAItem.NarrativeText
+                                    : null),
+                            medicareDVAFundedService.ServiceProvider != null &&
+                            medicareDVAFundedService.ServiceProvider.Participant != null &&
+                            medicareDVAFundedService.ServiceProvider.Participant.Person != null
+                                ? BuildPersonNames(medicareDVAFundedService.ServiceProvider.Participant.Person
+                                    .PersonNames)
+                                : null,
+                            medicareDVAFundedService.ServiceInHospitalIndicator.HasValue
+                                ? medicareDVAFundedService.ServiceInHospitalIndicator.Value ? "Yes" : "No"
+                                : null
+                        };
 
                         narrative.Add(medicareList);
                     }
@@ -3962,16 +4314,16 @@ namespace Nehta.VendorLibrary.CDA.Generator
             }
 
             strucDocTableList.Add
-              (
-                  PopulateTable
-                  (
-                      null,
-                      null,
-                      narativeHeader.ToArray(),
-                      new string[0],
-                      narrative
-                  )
-              );
+            (
+                PopulateTable
+                (
+                    null,
+                    null,
+                    narativeHeader.ToArray(),
+                    new string[0],
+                    narrative
+                )
+            );
 
             var strucDocText = new StrucDocText();
 
@@ -4001,135 +4353,139 @@ namespace Nehta.VendorLibrary.CDA.Generator
             if (australianOrganDonorRegisterDetails.AustralianOrganDonorRegisterEntry != null)
             {
                 // Organ And Tissue Donation Details
-                if (australianOrganDonorRegisterDetails.AustralianOrganDonorRegisterEntry.OrganAndTissueDonationDetails != null)
+                if (australianOrganDonorRegisterDetails.AustralianOrganDonorRegisterEntry
+                        .OrganAndTissueDonationDetails != null)
                 {
                     var narrativeOrganAndTissueDonationDetails = new List<List<object>>();
 
                     var item = australianOrganDonorRegisterDetails.AustralianOrganDonorRegisterEntry;
-                    var detail = australianOrganDonorRegisterDetails.AustralianOrganDonorRegisterEntry.OrganAndTissueDonationDetails;
+                    var detail = australianOrganDonorRegisterDetails.AustralianOrganDonorRegisterEntry
+                        .OrganAndTissueDonationDetails;
 
                     if (item.DonationDecision.HasValue)
                         narrativeOrganAndTissueDonationDetails.Add
-                          (
+                        (
                             new List<object>
                             {
-                              DELIMITERBOLD + "Donor decision",
-                              CreateLink(australianOrganDonorRegisterDetails.AustralianOrganDonorRegisterDetailsDocumentLink, item.DonationDecision.Value ? "Yes" : "No") 
+                                DELIMITERBOLD + "Donor decision",
+                                CreateLink(
+                                    australianOrganDonorRegisterDetails.AustralianOrganDonorRegisterDetailsDocumentLink,
+                                    item.DonationDecision.Value ? "Yes" : "No")
                             }
-                     );
+                        );
 
                     if (item.DateOfInitialRegistration != null)
                         narrativeOrganAndTissueDonationDetails.Add
-                          (
+                        (
                             new List<object>
                             {
-                              "Date Of Initial Registration",
-                              item.DateOfInitialRegistration.NarrativeText()
+                                "Date Of Initial Registration",
+                                item.DateOfInitialRegistration.NarrativeText()
                             }
-                     );
+                        );
 
                     if (detail.BoneTissueIndicator.HasValue)
                         narrativeOrganAndTissueDonationDetails.Add
-                          (
+                        (
                             new List<object>
                             {
-                              "Bone Tissue Indicator",
-                              detail.BoneTissueIndicator.Value ? DELIMITERBOLD +  "Yes" : "No"
+                                "Bone Tissue Indicator",
+                                detail.BoneTissueIndicator.Value ? DELIMITERBOLD + "Yes" : "No"
                             }
-                     );
+                        );
 
                     if (detail.EyeTissueIndicator.HasValue)
                         narrativeOrganAndTissueDonationDetails.Add
-                          (
+                        (
                             new List<object>
                             {
-                              "Eye Tissue Indicator",
-                              detail.EyeTissueIndicator.Value ? DELIMITERBOLD + "Yes" : "No"
+                                "Eye Tissue Indicator",
+                                detail.EyeTissueIndicator.Value ? DELIMITERBOLD + "Yes" : "No"
                             }
-                          );
+                        );
 
                     if (detail.HeartIndicator.HasValue)
                         narrativeOrganAndTissueDonationDetails.Add
-                          (
+                        (
                             new List<object>
                             {
-                              "Heart Indicator",
-                              detail.HeartIndicator.Value ? DELIMITERBOLD + "Yes" : "No"
+                                "Heart Indicator",
+                                detail.HeartIndicator.Value ? DELIMITERBOLD + "Yes" : "No"
                             }
-                          );
+                        );
 
                     if (detail.HeartValveIndicator.HasValue)
                         narrativeOrganAndTissueDonationDetails.Add
-                          (
+                        (
                             new List<object>
                             {
-                              "Heart Valve Indicator",
-                              detail.HeartValveIndicator.Value ? DELIMITERBOLD + "Yes" : "No"
+                                "Heart Valve Indicator",
+                                detail.HeartValveIndicator.Value ? DELIMITERBOLD + "Yes" : "No"
                             }
-                          );
+                        );
 
 
                     if (detail.KidneyIndicator.HasValue)
                         narrativeOrganAndTissueDonationDetails.Add
-                          (
+                        (
                             new List<object>
                             {
-                              "Kidney Indicator",
-                              detail.KidneyIndicator.Value ? DELIMITERBOLD + "Yes" : "No"
+                                "Kidney Indicator",
+                                detail.KidneyIndicator.Value ? DELIMITERBOLD + "Yes" : "No"
                             }
-                          );
+                        );
 
                     if (detail.LiverIndicator.HasValue)
                         narrativeOrganAndTissueDonationDetails.Add
-                          (
+                        (
                             new List<object>
                             {
-                              "Liver Indicator",
-                              detail.LiverIndicator.Value ? DELIMITERBOLD + "Yes" : "No"
+                                "Liver Indicator",
+                                detail.LiverIndicator.Value ? DELIMITERBOLD + "Yes" : "No"
                             }
-                          );
+                        );
 
                     if (detail.LungsIndicator.HasValue)
                         narrativeOrganAndTissueDonationDetails.Add
-                          (
+                        (
                             new List<object>
                             {
-                              "Lungs Indicator",
-                              detail.LungsIndicator.Value ? DELIMITERBOLD + "Yes" : "No"
+                                "Lungs Indicator",
+                                detail.LungsIndicator.Value ? DELIMITERBOLD + "Yes" : "No"
                             }
-                          );
+                        );
 
                     if (detail.PancreasIndicator.HasValue)
                         narrativeOrganAndTissueDonationDetails.Add
-                          (
+                        (
                             new List<object>
                             {
-                              "Pancreas Indicator",
-                              detail.PancreasIndicator.Value ? DELIMITERBOLD + "Yes" : "No"
+                                "Pancreas Indicator",
+                                detail.PancreasIndicator.Value ? DELIMITERBOLD + "Yes" : "No"
                             }
-                          );
+                        );
 
                     if (detail.SkinTissueIndicator.HasValue)
                         narrativeOrganAndTissueDonationDetails.Add
-                          (
+                        (
                             new List<object>
                             {
-                              "Skin Tissue Indicator",
-                              detail.SkinTissueIndicator.Value ? DELIMITERBOLD + "Yes" : "No"
+                                "Skin Tissue Indicator",
+                                detail.SkinTissueIndicator.Value ? DELIMITERBOLD + "Yes" : "No"
                             }
-                          );
+                        );
 
                     strucDocTableList.Add
-                      (
+                    (
                         PopulateTable
-                          (
+                        (
                             null,
                             null,
-                            new[] { "Field", "Value" },
+                            new[] {"Field", "Value"},
                             null,
                             narrativeOrganAndTissueDonationDetails
-                          )
-                      );
+                        )
+                    );
                 }
 
             }
@@ -4145,97 +4501,103 @@ namespace Nehta.VendorLibrary.CDA.Generator
         /// <returns>StrucDocText</returns>
         public StrucDocText CreateNarrative(List<Achievement> achievements)
         {
-          var strucDocText = new StrucDocText();
-          var strucDocTableList = new List<StrucDocTable>();
-          var header = new[] { "Field", "Value" };
+            var strucDocText = new StrucDocText();
+            var strucDocTableList = new List<StrucDocTable>();
+            var header = new[] {"Field", "Value"};
 
-          var count = 0;
+            var count = 0;
 
-          foreach (var achievement in achievements)
-          {
-            var narrative = new List<List<Object>>();
-
-            count++;
-
-            if (achievement != null)
+            foreach (var achievement in achievements)
             {
-              // Achievement Date
-              if (achievement.AchievementDate != null)
-                narrative.Add
-                  (
-                    new List<Object>
-                        {
-                          "Achievement Date",
-                          achievement.AchievementDate.NarrativeText()
-                        }
-                  );
+                var narrative = new List<List<Object>>();
 
-              // Achievement Topic
-              if (achievement.AchievementTopic != null)
-                narrative.Add
-                  (
-                    new List<Object>
-                        {
-                          "Achievement Topic",
-                          achievement.AchievementTopic
-                        }
-                  );
+                count++;
 
-              // Achievement Description
-              if (achievement.AchievementDescription != null)
-                narrative.Add
-                  (
-                    new List<Object>
-                        {
-                          "Achievement Description",
-                          achievement.AchievementDescription
-                        }
-                  );
-
-              if (achievement.InformationProvider != null && achievement.InformationProvider.Participant != null)
-              {
-
-                var personOrganisation = achievement.InformationProvider.Participant.Person != null && achievement.InformationProvider.Participant.Person.PersonNames != null ? BuildPersonNames(achievement.InformationProvider.Participant.Person.PersonNames) : null;
-
-                narrative.Add
-                  (
-                    new List<Object>
-                        {
-                          "Information Provider",
-                          personOrganisation
-                        }
-                  );
-
-                if (achievement.InformationProvider.Participant.Addresses != null || achievement.InformationProvider.Participant.ElectronicCommunicationDetails != null)
+                if (achievement != null)
                 {
-                  narrative.Add
-                    (
-                      new List<Object>
+                    // Achievement Date
+                    if (achievement.AchievementDate != null)
+                        narrative.Add
+                        (
+                            new List<Object>
+                            {
+                                "Achievement Date",
+                                achievement.AchievementDate.NarrativeText()
+                            }
+                        );
+
+                    // Achievement Topic
+                    if (achievement.AchievementTopic != null)
+                        narrative.Add
+                        (
+                            new List<Object>
+                            {
+                                "Achievement Topic",
+                                achievement.AchievementTopic
+                            }
+                        );
+
+                    // Achievement Description
+                    if (achievement.AchievementDescription != null)
+                        narrative.Add
+                        (
+                            new List<Object>
+                            {
+                                "Achievement Description",
+                                achievement.AchievementDescription
+                            }
+                        );
+
+                    if (achievement.InformationProvider != null && achievement.InformationProvider.Participant != null)
+                    {
+
+                        var personOrganisation =
+                            achievement.InformationProvider.Participant.Person != null &&
+                            achievement.InformationProvider.Participant.Person.PersonNames != null
+                                ? BuildPersonNames(achievement.InformationProvider.Participant.Person.PersonNames)
+                                : null;
+
+                        narrative.Add
+                        (
+                            new List<Object>
+                            {
+                                "Information Provider",
+                                personOrganisation
+                            }
+                        );
+
+                        if (achievement.InformationProvider.Participant.Addresses != null ||
+                            achievement.InformationProvider.Participant.ElectronicCommunicationDetails != null)
                         {
-                          "Information Provider - Details",
-                          CreateAddress(achievement.InformationProvider.Participant.Addresses, achievement.InformationProvider.Participant.ElectronicCommunicationDetails)
+                            narrative.Add
+                            (
+                                new List<Object>
+                                {
+                                    "Information Provider - Details",
+                                    CreateAddress(achievement.InformationProvider.Participant.Addresses,
+                                        achievement.InformationProvider.Participant.ElectronicCommunicationDetails)
+                                }
+                            );
                         }
+                    }
+
+                    strucDocTableList.Add
+                    (
+                        PopulateTable
+                        (
+                            string.Format("Achievement {0}", count.ToString(CultureInfo.InvariantCulture)),
+                            null,
+                            header,
+                            null,
+                            narrative
+                        )
                     );
                 }
-              }
-
-              strucDocTableList.Add
-                (
-                  PopulateTable
-                    (
-                      string.Format("Achievement {0}", count.ToString(CultureInfo.InvariantCulture)),
-                      null,
-                      header,
-                      null,
-                      narrative
-                    )
-                );
             }
-          }
 
-          strucDocText.table = strucDocTableList.ToArray();
-          
-          return strucDocText;
+            strucDocText.table = strucDocTableList.ToArray();
+
+            return strucDocText;
         }
 
         /// <summary>
@@ -4245,486 +4607,532 @@ namespace Nehta.VendorLibrary.CDA.Generator
         /// <param name="prescriber">IParticipationPrescriber</param>
         /// <param name="subjectOfCare">IParticipationSubjectOfCare</param>
         /// <returns>StrucDocText</returns>
-        public StrucDocText CreateNarrative(IEPrescriptionItem item, IParticipationPrescriber prescriber, IParticipationSubjectOfCare subjectOfCare)
+        public StrucDocText CreateNarrative(IEPrescriptionItem item, IParticipationPrescriber prescriber,
+            IParticipationSubjectOfCare subjectOfCare)
         {
-          var strucDocTableList = new List<StrucDocTable>();
-          var narrative = new List<List<String>>();
-          var narrativeTiming = new List<List<String>>();
-          var narrativeAdministrationDetails = new List<List<String>>();
-          var narrativeStructuredDose = new List<List<String>>();
-          var narrativeQuantityToDispense = new List<List<String>>();
-          var narrativePBSExtemporaneousIngredient = new List<List<String>>();
-          var narrativeEntitlements = new List<List<String>>();
+            var strucDocTableList = new List<StrucDocTable>();
+            var narrative = new List<List<String>>();
+            var narrativeTiming = new List<List<String>>();
+            var narrativeAdministrationDetails = new List<List<String>>();
+            var narrativeStructuredDose = new List<List<String>>();
+            var narrativeQuantityToDispense = new List<List<String>>();
+            var narrativePBSExtemporaneousIngredient = new List<List<String>>();
+            var narrativeEntitlements = new List<List<String>>();
 
-          if (item != null)
-          {
-
-            //DateTime Prescription Written
-            if (item.DateTimePrescriptionWritten != null)
-              narrative.Add
-                  (
-                      CreateNarrativeEntry("Date and Time Prescription Written", item.DateTimePrescriptionWritten)
-                  );
-
-            //DateTime Prescription Expires
-            if (item.DateTimePrescriptionExpires != null)
-              narrative.Add
-                  (
-                      CreateNarrativeEntry("Date and Time Prescription Expires", item.DateTimePrescriptionExpires)
-                  );
-
-            //Prescription Item Identifier
-            if (item.PrescriptionItemIdentifier != null)
-              narrative.Add
-                  (
-                      CreateNarrativeEntry("Prescription Item Identifier", item.PrescriptionItemIdentifier.NarrativeText)
-                  );
-
-            //Therapeutic Good Identification
-            if (item.TherapeuticGoodIdentification != null)
-              narrative.Add
-                 (
-                     CreateNarrativeEntry("Therapeutic Good Identification", item.TherapeuticGoodIdentification.NarrativeText)
-                 );
-
-            //Formula
-            if (!item.Formula.IsNullOrEmptyWhitespace())
-              narrative.Add
-                (
-                    CreateNarrativeEntry("Formula", item.Formula)
-                );
-
-            //Instruction
-            if (!item.Directions.IsNullOrEmptyWhitespace())
-              narrative.Add
-                 (
-                     CreateNarrativeEntry("Directions", item.Directions)
-                 );
-
-            if (item.StructuredDose != null)
+            if (item != null)
             {
-              //Quantity of Therapeutic Good
-              if (item.StructuredDose.Quantity != null)
-                narrativeStructuredDose.Add
-                   (
-                       CreateNarrativeEntry("Quantity", item.StructuredDose.Quantity.NarrativeText)
-                   );
 
-              //Structured Dose - Dose Unit
-              if (item.StructuredDose.Unit != null)
-                narrativeStructuredDose.Add
-                   (
-                       CreateNarrativeEntry("Dose Unit", item.StructuredDose.Unit.NarrativeText)
-                   );
-
-              //Structured Dose - Quantity Description
-              if (item.StructuredDose.QuantityDescription != null)
-                narrativeStructuredDose.Add
-                   (
-                       CreateNarrativeEntry("Quantity Description", item.StructuredDose.QuantityDescription)
-                   );
-            }
-
-            if (item.Timing != null)
-            {
-              //Timing
-              if (!item.Timing.TimingDescription.IsNullOrEmptyWhitespace())
-                narrativeTiming.Add
-                   (
-                       CreateNarrativeEntry("Timing Description", item.Timing.TimingDescription)
-                   );
-
-              //Structured Timing EffectiveTime
-              if (item.Timing.StructuredTiming != null && item.Timing.StructuredTiming.EffectiveTime != null)
-              {
-
-                if (!item.Timing.StructuredTiming.NarrativeText.IsNullOrEmptyWhitespace())
-                {
-
-                  narrativeTiming.Add
-                     (
-                         CreateNarrativeEntry("EffectiveTime", item.Timing.StructuredTiming.NarrativeText)
-                     );
-
-                } else
-                {
-                  //Structured Timing EffectiveTime
-                    narrativeTiming.Add
-                        (
-                          new List<string>
-                        {
-                          "EffectiveTime",
-                          CreateTimingEntry(item.Timing.StructuredTiming.EffectiveTime)
-                        }
-                      );
-                }
-              }
-
-              //PRN
-              if (item.Timing.PRN.HasValue)
-                narrativeTiming.Add
-                   (
-                       CreateNarrativeEntry("PRN", item.Timing.PRN.Value.ToString(CultureInfo.InvariantCulture))
-                   );
-
-              //Timing - StartCriterion
-              if (item.Timing.StartCriterion.HasValue)
-                narrativeTiming.Add
-                   (
-                       CreateNarrativeEntry("StartCriterion", item.Timing.StartCriterion.Value.ToString(CultureInfo.InvariantCulture))
-                   );
-
-              //Timing - StartDate
-              if (item.Timing.StartDate != null)
-                narrativeTiming.Add
-                   (
-                       CreateNarrativeEntry("StartDate", item.Timing.StartDate)
-                   );
-
-              //Timing - StopCriterion
-              if (item.Timing.StopCriterion.HasValue)
-                narrativeTiming.Add
-                   (
-                       CreateNarrativeEntry("StopCriterion", item.Timing.StopCriterion.Value.ToString(CultureInfo.InvariantCulture))
-                   );
-
-              //Timing - StopDate
-              if (item.Timing.StopDate != null)
-                narrativeTiming.Add
-                   (
-                       CreateNarrativeEntry("StopDate", item.Timing.StopDate)
-                   );
-
-              if (item.Timing.NumberOfAdministrations != null)
-              {
-                  var numberOfAdministrations = string.Empty;
-
-                  //Timing - Number of Administrations - Numerator
-                  if ( item.Timing.NumberOfAdministrations.NullFlavor != null)
-                    numberOfAdministrations += item.Timing.NumberOfAdministrations.NullFlavor.Value.GetAttributeValue<NameAttribute, String>(x => x.Name) + " ";
-
-                  //Timing - Number of Administrations - Denominator
-                  if (item.Timing.NumberOfAdministrations.Denominator != null)
-                    numberOfAdministrations += item.Timing.NumberOfAdministrations.Denominator.NarrativeText ;
- 
-                  //Timing - Number of Administrations - Numerator
-                  if (item.Timing.NumberOfAdministrations.Numerator != null)
-                  {
-                    if (!numberOfAdministrations.IsNullOrEmptyWhitespace())
-                      numberOfAdministrations += " - ";
-
-                    numberOfAdministrations += item.Timing.NumberOfAdministrations.Numerator.NarrativeText + " ";
-                  }
-
-                  if (!numberOfAdministrations.IsNullOrEmptyWhitespace())
-                    narrativeTiming.Add
-                       (
-                           CreateNarrativeEntry("Number of Administrations", numberOfAdministrations)
-                       );
-              }
-
-              //Timing - LongTerm
-              if (item.Timing.LongTerm.HasValue)
-                narrativeTiming.Add
-                   (
-                       CreateNarrativeEntry("Long Term", item.Timing.LongTerm.Value.ToString(CultureInfo.InvariantCulture))
-                   );
-            }
-
-            if (item.AdministrationDetails != null)
-            {
-                //AdministrationDetails - Route
-                if (item.AdministrationDetails.Route != null)
-                  narrativeAdministrationDetails.Add
-                     (
-                         CreateNarrativeEntry("Route", item.AdministrationDetails.Route.NarrativeText)
-                     );
-
-                //AdministrationDetails - AnatomicalSite
-                if (item.AdministrationDetails.AnatomicalSite != null)
-                  narrativeAdministrationDetails.Add
-                     (
-                         CreateNarrativeEntry("AnatomicalSite", item.AdministrationDetails.AnatomicalSite.NarrativeText)
-                     );
-
-                //AdministrationDetails - MedicationDeliveryMethod
-                if (item.AdministrationDetails.MedicationDeliveryMethod != null)
-                  narrativeAdministrationDetails.Add
-                     (
-                         CreateNarrativeEntry("Medication Delivery Method", item.AdministrationDetails.MedicationDeliveryMethod.NarrativeText)
-                     );
-            }
-
-            if (item.QuantityToDispense != null)
-            {
-              //QuantityToDispense - Quantity
-              if (item.QuantityToDispense.Quantity != null)
-                narrativeQuantityToDispense.Add
-                   (
-                       CreateNarrativeEntry("Quantity", item.QuantityToDispense.Quantity.NarrativeText)
-                   );
-
-              //QuantityToDispense - Dispensing Unit
-              if (item.QuantityToDispense.Unit != null)
-                narrativeQuantityToDispense.Add
-                   (
-                       CreateNarrativeEntry("Dispensing Unit", item.QuantityToDispense.Unit.NarrativeText)
-                   );
-
-                //QuantityToDispense - QuantityDescription
-                if (!item.QuantityToDispense.QuantityDescription.IsNullOrEmptyWhitespace())
-                  narrativeQuantityToDispense.Add
-                     (
-                         CreateNarrativeEntry("Quantity Description", item.QuantityToDispense.QuantityDescription)
-                     );
-            }
-
-            //Brand Substitute Allowed
-            if (item.BrandSubstituteNotAllowed != null)
-              narrative.Add
-                 (
-                     CreateNarrativeEntry("Brand Substitute Not Allowed", item.BrandSubstituteNotAllowed)
-                 );
-
-            //Maximum Number of Repeats
-            if (item.MaximumNumberOfRepeats != null)
-              narrative.Add
-                 (
-                     CreateNarrativeEntry("Maximum Number of Repeats", item.MaximumNumberOfRepeats)
-                 );
-
-            // Minimum Interval Between Repeats
-            if (item.MinimumIntervalBetweenRepeats != null)
-              narrative.Add
-                 (
-                    CreateNarrativeEntry("Minimum Interval Between Repeats", item.MinimumIntervalBetweenRepeats.NarrativeText)
-                 );
-
-            // PBS Prescription Type
-            if (item.PBSPrescriptionType.HasValue)
-              narrative.Add
-                 (
-                     CreateNarrativeEntry("PBS Prescription Type", item.PBSPrescriptionType.Value.GetAttributeValue<NameAttribute, String>(x => x.Name))
-                 );
-
-              // Medical Benefit Category Type
-            if (item.MedicalBenefitCategoryType.HasValue && item.MedicalBenefitCategoryType.Value != MedicalBenefitCategoryType.Undefined)
-                narrative.Add
-                   (
-                       CreateNarrativeEntry("Medical Benefit Category Type", item.MedicalBenefitCategoryType.GetAttributeValue<NameAttribute, String>(x => x.Name))
-                   );
-
-            // PBS Close the Gap Benefit
-            if (item.PBSCloseTheGapBenefit != null)
-              narrative.Add
-                 (
-                     CreateNarrativeEntry("PBS Close the Gap Benefit", item.PBSCloseTheGapBenefit.NarrativeText)
-                 );
-
-            // PBS/RPBS Item Code
-            if (item.PBSRPBSItemCode != null)
-              narrative.Add
-                 (
-                     CreateNarrativeEntry("PBS/RPBS Item Code", string.Format("{0} {1}", item.PBSRPBSItemCode.Code, !item.PBSRPBSItemCode.NarrativeText.IsNullOrEmptyWhitespace() ? string.Format("{0}", item.PBSRPBSItemCode.NarrativeText) : string.Empty))
-                 );
-
-            // PBS/RPBS Manufacturer Code
-            if (item.PBSRPBSManufacturerCode != null)
-              narrative.Add
-                 (
-                     CreateNarrativeEntry("PBS/RPBS Manufacturer Code", item.PBSRPBSManufacturerCode.NarrativeText)
-                 );
-
-
-            // PBS/RPBS Manufacturer Code
-            if (item.PBSExtemporaneousIngredient != null)
-            {
-              for (int index = 0; index < item.PBSExtemporaneousIngredient.Count; index++)
-              {
-                var extemporaneousIngredient = item.PBSExtemporaneousIngredient[index];
-
-                if (extemporaneousIngredient != null && extemporaneousIngredient.IngredientName != null || extemporaneousIngredient.IngredientQuantity != null)
-                  narrativePBSExtemporaneousIngredient.Add
-                  (
-                    CreateNarrativeEntry(extemporaneousIngredient.IngredientName != null     ? extemporaneousIngredient.IngredientName.NarrativeText : null,
-                                         extemporaneousIngredient.IngredientQuantity != null ? extemporaneousIngredient.IngredientQuantity.NarrativeText : null)
-                  );
-
-              }
-            }
-
-            // Grounds for Concurrent Supply
-            if (item.GroundsForConcurrentSupply.HasValue && item.GroundsForConcurrentSupply != GroundsForConcurrentSupply.Undefined)
-              narrative.Add
-                 (
-                     CreateNarrativeEntry("Grounds for Concurrent Supply", item.GroundsForConcurrentSupply.GetAttributeValue<NameAttribute, String>(x => x.Name))
-                 );
-
-            // PBS/RPBS Authority Prescription Number
-            if (!item.PBSRPBSAuthorityPrescriptionNumber.IsNullOrEmptyWhitespace())
-              narrative.Add
-                 (
-                     CreateNarrativeEntry("PBS/RPBS Authority Prescription Number", item.PBSRPBSAuthorityPrescriptionNumber)
-                 );
-
-            // PBS/RPBS Authority Approval Number
-            if (!item.PBSRPBSAuthorityApprovalNumber.IsNullOrEmptyWhitespace())
-              narrative.Add
-                 (
-                     CreateNarrativeEntry("PBS/RPBS Authority Approval Number", item.PBSRPBSAuthorityApprovalNumber)
-                 );
-
-
-            // Streamlined Authority Approval Number
-            if (!item.StreamlinedAuthorityApprovalNumber.IsNullOrEmptyWhitespace())
-              narrative.Add
-                 (
-                     CreateNarrativeEntry("Streamlined Authority Approval Number", item.StreamlinedAuthorityApprovalNumber)
-                 );
-
-            // State Authority Number
-            if (item.StateAuthorityNumber != null)
-              narrative.Add
-                 (
-                     CreateNarrativeEntry("State Authority Number", item.StateAuthorityNumber.NarrativeText)
-                 );
-
-
-            // Reason for Therapeutic Good
-            if (!item.ReasonForTherapeuticGood.IsNullOrEmptyWhitespace())
-              narrative.Add
-                 (
-                     CreateNarrativeEntry("Reason for Therapeutic Good", item.ReasonForTherapeuticGood)
-                 );
-
-            // Additional Comments
-            if (!item.AdditionalComments.IsNullOrEmptyWhitespace())
-              narrative.Add
-                 (
-                     CreateNarrativeEntry("Additional Comments", item.AdditionalComments)
-                 );
-
-            // Dispense Item Identifier
-            if (item.DispenseItemIdentifier != null)
-              narrative.Add
-                 (
-                     CreateNarrativeEntry("Dispense Item Identifier", item.DispenseItemIdentifier.NarrativeText)
-                 );
-
-            // Medication Instruction Identifier
-            if (item.MedicationInstructionIdentifier != null)
-              narrative.Add
-                 (
-                     CreateNarrativeEntry("Medication Instruction Identifier", item.MedicationInstructionIdentifier.NarrativeText)
-                 );
-
-            // The Prescription Note
-            if (!item.NoteDetail.IsNullOrEmptyWhitespace())
-            {
-              narrative.Add
-                      (
-                          CreateNarrativeEntry("Prescription Note Detail", item.NoteDetail)
-                      );
-
-            }
-
-            // Entitlements Prescriber
-            if (prescriber.Participant.Person.Entitlements != null && prescriber.Participant.Person.Entitlements.Count > 0)
-            {
-              foreach (var entitlement in prescriber.Participant.Person.Entitlements)
-              {
-                CodableText codeableTextEntry = null;
-
-                if (entitlement.Type != EntitlementType.Undefined)
-                {
-                  codeableTextEntry = new CodableText
-                  {
-                    Code = entitlement.Type.GetAttributeValue<NameAttribute, String>(x => x.Code),
-                    DisplayName = entitlement.Type.GetAttributeValue<NameAttribute, String>(x => x.Name),
-                    OriginalText = entitlement.Type.GetAttributeValue<NameAttribute, String>(x => x.Name),
-                    CodeSystem = CodingSystem.NCTISEntitlementTypeValues
-                  };
-                }
-
-                narrativeEntitlements.Add
+                //DateTime Prescription Written
+                if (item.DateTimePrescriptionWritten != null)
+                    narrative.Add
                     (
-                        CreateNarrativeEntry(entitlement, codeableTextEntry)
+                        CreateNarrativeEntry("Date and Time Prescription Written", item.DateTimePrescriptionWritten)
                     );
-              }
+
+                //DateTime Prescription Expires
+                if (item.DateTimePrescriptionExpires != null)
+                    narrative.Add
+                    (
+                        CreateNarrativeEntry("Date and Time Prescription Expires", item.DateTimePrescriptionExpires)
+                    );
+
+                //Prescription Item Identifier
+                if (item.PrescriptionItemIdentifier != null)
+                    narrative.Add
+                    (
+                        CreateNarrativeEntry("Prescription Item Identifier",
+                            item.PrescriptionItemIdentifier.NarrativeText)
+                    );
+
+                //Therapeutic Good Identification
+                if (item.TherapeuticGoodIdentification != null)
+                    narrative.Add
+                    (
+                        CreateNarrativeEntry("Therapeutic Good Identification",
+                            item.TherapeuticGoodIdentification.NarrativeText)
+                    );
+
+                //Formula
+                if (!item.Formula.IsNullOrEmptyWhitespace())
+                    narrative.Add
+                    (
+                        CreateNarrativeEntry("Formula", item.Formula)
+                    );
+
+                //Instruction
+                if (!item.Directions.IsNullOrEmptyWhitespace())
+                    narrative.Add
+                    (
+                        CreateNarrativeEntry("Directions", item.Directions)
+                    );
+
+                if (item.StructuredDose != null)
+                {
+                    //Quantity of Therapeutic Good
+                    if (item.StructuredDose.Quantity != null)
+                        narrativeStructuredDose.Add
+                        (
+                            CreateNarrativeEntry("Quantity", item.StructuredDose.Quantity.NarrativeText)
+                        );
+
+                    //Structured Dose - Dose Unit
+                    if (item.StructuredDose.Unit != null)
+                        narrativeStructuredDose.Add
+                        (
+                            CreateNarrativeEntry("Dose Unit", item.StructuredDose.Unit.NarrativeText)
+                        );
+
+                    //Structured Dose - Quantity Description
+                    if (item.StructuredDose.QuantityDescription != null)
+                        narrativeStructuredDose.Add
+                        (
+                            CreateNarrativeEntry("Quantity Description", item.StructuredDose.QuantityDescription)
+                        );
+                }
+
+                if (item.Timing != null)
+                {
+                    //Timing
+                    if (!item.Timing.TimingDescription.IsNullOrEmptyWhitespace())
+                        narrativeTiming.Add
+                        (
+                            CreateNarrativeEntry("Timing Description", item.Timing.TimingDescription)
+                        );
+
+                    //Structured Timing EffectiveTime
+                    if (item.Timing.StructuredTiming != null && item.Timing.StructuredTiming.EffectiveTime != null)
+                    {
+
+                        if (!item.Timing.StructuredTiming.NarrativeText.IsNullOrEmptyWhitespace())
+                        {
+
+                            narrativeTiming.Add
+                            (
+                                CreateNarrativeEntry("EffectiveTime", item.Timing.StructuredTiming.NarrativeText)
+                            );
+
+                        }
+                        else
+                        {
+                            //Structured Timing EffectiveTime
+                            narrativeTiming.Add
+                            (
+                                new List<string>
+                                {
+                                    "EffectiveTime",
+                                    CreateTimingEntry(item.Timing.StructuredTiming.EffectiveTime)
+                                }
+                            );
+                        }
+                    }
+
+                    //PRN
+                    if (item.Timing.PRN.HasValue)
+                        narrativeTiming.Add
+                        (
+                            CreateNarrativeEntry("PRN", item.Timing.PRN.Value.ToString(CultureInfo.InvariantCulture))
+                        );
+
+                    //Timing - StartCriterion
+                    if (item.Timing.StartCriterion.HasValue)
+                        narrativeTiming.Add
+                        (
+                            CreateNarrativeEntry("StartCriterion",
+                                item.Timing.StartCriterion.Value.ToString(CultureInfo.InvariantCulture))
+                        );
+
+                    //Timing - StartDate
+                    if (item.Timing.StartDate != null)
+                        narrativeTiming.Add
+                        (
+                            CreateNarrativeEntry("StartDate", item.Timing.StartDate)
+                        );
+
+                    //Timing - StopCriterion
+                    if (item.Timing.StopCriterion.HasValue)
+                        narrativeTiming.Add
+                        (
+                            CreateNarrativeEntry("StopCriterion",
+                                item.Timing.StopCriterion.Value.ToString(CultureInfo.InvariantCulture))
+                        );
+
+                    //Timing - StopDate
+                    if (item.Timing.StopDate != null)
+                        narrativeTiming.Add
+                        (
+                            CreateNarrativeEntry("StopDate", item.Timing.StopDate)
+                        );
+
+                    if (item.Timing.NumberOfAdministrations != null)
+                    {
+                        var numberOfAdministrations = string.Empty;
+
+                        //Timing - Number of Administrations - Numerator
+                        if (item.Timing.NumberOfAdministrations.NullFlavor != null)
+                            numberOfAdministrations +=
+                                item.Timing.NumberOfAdministrations.NullFlavor.Value
+                                    .GetAttributeValue<NameAttribute, String>(x => x.Name) + " ";
+
+                        //Timing - Number of Administrations - Denominator
+                        if (item.Timing.NumberOfAdministrations.Denominator != null)
+                            numberOfAdministrations += item.Timing.NumberOfAdministrations.Denominator.NarrativeText;
+
+                        //Timing - Number of Administrations - Numerator
+                        if (item.Timing.NumberOfAdministrations.Numerator != null)
+                        {
+                            if (!numberOfAdministrations.IsNullOrEmptyWhitespace())
+                                numberOfAdministrations += " - ";
+
+                            numberOfAdministrations +=
+                                item.Timing.NumberOfAdministrations.Numerator.NarrativeText + " ";
+                        }
+
+                        if (!numberOfAdministrations.IsNullOrEmptyWhitespace())
+                            narrativeTiming.Add
+                            (
+                                CreateNarrativeEntry("Number of Administrations", numberOfAdministrations)
+                            );
+                    }
+
+                    //Timing - LongTerm
+                    if (item.Timing.LongTerm.HasValue)
+                        narrativeTiming.Add
+                        (
+                            CreateNarrativeEntry("Long Term",
+                                item.Timing.LongTerm.Value.ToString(CultureInfo.InvariantCulture))
+                        );
+                }
+
+                if (item.AdministrationDetails != null)
+                {
+                    //AdministrationDetails - Route
+                    if (item.AdministrationDetails.Route != null)
+                        narrativeAdministrationDetails.Add
+                        (
+                            CreateNarrativeEntry("Route", item.AdministrationDetails.Route.NarrativeText)
+                        );
+
+                    //AdministrationDetails - AnatomicalSite
+                    if (item.AdministrationDetails.AnatomicalSite != null)
+                        narrativeAdministrationDetails.Add
+                        (
+                            CreateNarrativeEntry("AnatomicalSite",
+                                item.AdministrationDetails.AnatomicalSite.NarrativeText)
+                        );
+
+                    //AdministrationDetails - MedicationDeliveryMethod
+                    if (item.AdministrationDetails.MedicationDeliveryMethod != null)
+                        narrativeAdministrationDetails.Add
+                        (
+                            CreateNarrativeEntry("Medication Delivery Method",
+                                item.AdministrationDetails.MedicationDeliveryMethod.NarrativeText)
+                        );
+                }
+
+                if (item.QuantityToDispense != null)
+                {
+                    //QuantityToDispense - Quantity
+                    if (item.QuantityToDispense.Quantity != null)
+                        narrativeQuantityToDispense.Add
+                        (
+                            CreateNarrativeEntry("Quantity", item.QuantityToDispense.Quantity.NarrativeText)
+                        );
+
+                    //QuantityToDispense - Dispensing Unit
+                    if (item.QuantityToDispense.Unit != null)
+                        narrativeQuantityToDispense.Add
+                        (
+                            CreateNarrativeEntry("Dispensing Unit", item.QuantityToDispense.Unit.NarrativeText)
+                        );
+
+                    //QuantityToDispense - QuantityDescription
+                    if (!item.QuantityToDispense.QuantityDescription.IsNullOrEmptyWhitespace())
+                        narrativeQuantityToDispense.Add
+                        (
+                            CreateNarrativeEntry("Quantity Description", item.QuantityToDispense.QuantityDescription)
+                        );
+                }
+
+                //Brand Substitute Allowed
+                if (item.BrandSubstituteNotAllowed != null)
+                    narrative.Add
+                    (
+                        CreateNarrativeEntry("Brand Substitute Not Allowed", item.BrandSubstituteNotAllowed)
+                    );
+
+                //Maximum Number of Repeats
+                if (item.MaximumNumberOfRepeats != null)
+                    narrative.Add
+                    (
+                        CreateNarrativeEntry("Maximum Number of Repeats", item.MaximumNumberOfRepeats)
+                    );
+
+                // Minimum Interval Between Repeats
+                if (item.MinimumIntervalBetweenRepeats != null)
+                    narrative.Add
+                    (
+                        CreateNarrativeEntry("Minimum Interval Between Repeats",
+                            item.MinimumIntervalBetweenRepeats.NarrativeText)
+                    );
+
+                // PBS Prescription Type
+                if (item.PBSPrescriptionType.HasValue)
+                    narrative.Add
+                    (
+                        CreateNarrativeEntry("PBS Prescription Type",
+                            item.PBSPrescriptionType.Value.GetAttributeValue<NameAttribute, String>(x => x.Name))
+                    );
+
+                // Medical Benefit Category Type
+                if (item.MedicalBenefitCategoryType.HasValue &&
+                    item.MedicalBenefitCategoryType.Value != MedicalBenefitCategoryType.Undefined)
+                    narrative.Add
+                    (
+                        CreateNarrativeEntry("Medical Benefit Category Type",
+                            item.MedicalBenefitCategoryType.GetAttributeValue<NameAttribute, String>(x => x.Name))
+                    );
+
+                // PBS Close the Gap Benefit
+                if (item.PBSCloseTheGapBenefit != null)
+                    narrative.Add
+                    (
+                        CreateNarrativeEntry("PBS Close the Gap Benefit", item.PBSCloseTheGapBenefit.NarrativeText)
+                    );
+
+                // PBS/RPBS Item Code
+                if (item.PBSRPBSItemCode != null)
+                    narrative.Add
+                    (
+                        CreateNarrativeEntry("PBS/RPBS Item Code",
+                            string.Format("{0} {1}", item.PBSRPBSItemCode.Code,
+                                !item.PBSRPBSItemCode.NarrativeText.IsNullOrEmptyWhitespace()
+                                    ? string.Format("{0}", item.PBSRPBSItemCode.NarrativeText)
+                                    : string.Empty))
+                    );
+
+                // PBS/RPBS Manufacturer Code
+                if (item.PBSRPBSManufacturerCode != null)
+                    narrative.Add
+                    (
+                        CreateNarrativeEntry("PBS/RPBS Manufacturer Code", item.PBSRPBSManufacturerCode.NarrativeText)
+                    );
+
+
+                // PBS/RPBS Manufacturer Code
+                if (item.PBSExtemporaneousIngredient != null)
+                {
+                    for (int index = 0; index < item.PBSExtemporaneousIngredient.Count; index++)
+                    {
+                        var extemporaneousIngredient = item.PBSExtemporaneousIngredient[index];
+
+                        if (extemporaneousIngredient != null && extemporaneousIngredient.IngredientName != null ||
+                            extemporaneousIngredient.IngredientQuantity != null)
+                            narrativePBSExtemporaneousIngredient.Add
+                            (
+                                CreateNarrativeEntry(
+                                    extemporaneousIngredient.IngredientName != null
+                                        ? extemporaneousIngredient.IngredientName.NarrativeText
+                                        : null,
+                                    extemporaneousIngredient.IngredientQuantity != null
+                                        ? extemporaneousIngredient.IngredientQuantity.NarrativeText
+                                        : null)
+                            );
+
+                    }
+                }
+
+                // Grounds for Concurrent Supply
+                if (item.GroundsForConcurrentSupply.HasValue &&
+                    item.GroundsForConcurrentSupply != GroundsForConcurrentSupply.Undefined)
+                    narrative.Add
+                    (
+                        CreateNarrativeEntry("Grounds for Concurrent Supply",
+                            item.GroundsForConcurrentSupply.GetAttributeValue<NameAttribute, String>(x => x.Name))
+                    );
+
+                // PBS/RPBS Authority Prescription Number
+                if (!item.PBSRPBSAuthorityPrescriptionNumber.IsNullOrEmptyWhitespace())
+                    narrative.Add
+                    (
+                        CreateNarrativeEntry("PBS/RPBS Authority Prescription Number",
+                            item.PBSRPBSAuthorityPrescriptionNumber)
+                    );
+
+                // PBS/RPBS Authority Approval Number
+                if (!item.PBSRPBSAuthorityApprovalNumber.IsNullOrEmptyWhitespace())
+                    narrative.Add
+                    (
+                        CreateNarrativeEntry("PBS/RPBS Authority Approval Number", item.PBSRPBSAuthorityApprovalNumber)
+                    );
+
+
+                // Streamlined Authority Approval Number
+                if (!item.StreamlinedAuthorityApprovalNumber.IsNullOrEmptyWhitespace())
+                    narrative.Add
+                    (
+                        CreateNarrativeEntry("Streamlined Authority Approval Number",
+                            item.StreamlinedAuthorityApprovalNumber)
+                    );
+
+                // State Authority Number
+                if (item.StateAuthorityNumber != null)
+                    narrative.Add
+                    (
+                        CreateNarrativeEntry("State Authority Number", item.StateAuthorityNumber.NarrativeText)
+                    );
+
+
+                // Reason for Therapeutic Good
+                if (!item.ReasonForTherapeuticGood.IsNullOrEmptyWhitespace())
+                    narrative.Add
+                    (
+                        CreateNarrativeEntry("Reason for Therapeutic Good", item.ReasonForTherapeuticGood)
+                    );
+
+                // Additional Comments
+                if (!item.AdditionalComments.IsNullOrEmptyWhitespace())
+                    narrative.Add
+                    (
+                        CreateNarrativeEntry("Additional Comments", item.AdditionalComments)
+                    );
+
+                // Dispense Item Identifier
+                if (item.DispenseItemIdentifier != null)
+                    narrative.Add
+                    (
+                        CreateNarrativeEntry("Dispense Item Identifier", item.DispenseItemIdentifier.NarrativeText)
+                    );
+
+                // Medication Instruction Identifier
+                if (item.MedicationInstructionIdentifier != null)
+                    narrative.Add
+                    (
+                        CreateNarrativeEntry("Medication Instruction Identifier",
+                            item.MedicationInstructionIdentifier.NarrativeText)
+                    );
+
+                // The Prescription Note
+                if (!item.NoteDetail.IsNullOrEmptyWhitespace())
+                {
+                    narrative.Add
+                    (
+                        CreateNarrativeEntry("Prescription Note Detail", item.NoteDetail)
+                    );
+
+                }
+
+                // Entitlements Prescriber
+                if (prescriber.Participant.Person.Entitlements != null &&
+                    prescriber.Participant.Person.Entitlements.Count > 0)
+                {
+                    foreach (var entitlement in prescriber.Participant.Person.Entitlements)
+                    {
+                        CodableText codeableTextEntry = null;
+
+                        if (entitlement.Type != EntitlementType.Undefined)
+                        {
+                            codeableTextEntry = new CodableText
+                            {
+                                Code = entitlement.Type.GetAttributeValue<NameAttribute, String>(x => x.Code),
+                                DisplayName = entitlement.Type.GetAttributeValue<NameAttribute, String>(x => x.Name),
+                                OriginalText = entitlement.Type.GetAttributeValue<NameAttribute, String>(x => x.Name),
+                                CodeSystem = CodingSystem.NCTISEntitlementTypeValues
+                            };
+                        }
+
+                        narrativeEntitlements.Add
+                        (
+                            CreateNarrativeEntry(entitlement, codeableTextEntry)
+                        );
+                    }
+                }
+
+                strucDocTableList.AddRange
+                (
+                    new List<StrucDocTable>
+                    {
+                        narrative.Any()
+                            ? PopulateTable
+                            (
+                                "Prescription Item",
+                                null,
+                                new[] {"Field", "Value"},
+                                null,
+                                narrative
+                            )
+                            : null,
+                        narrativeTiming.Any()
+                            ? PopulateTable
+                            (
+                                "Timing",
+                                null,
+                                new[] {"Field", "Value"},
+                                null,
+                                narrativeTiming
+                            )
+                            : null,
+                        narrativeStructuredDose.Any()
+                            ? PopulateTable
+                            (
+                                "Structured Dose",
+                                null,
+                                new[] {"Field", "Value"},
+                                null,
+                                narrativeStructuredDose
+                            )
+                            : null,
+                        narrativeQuantityToDispense.Any()
+                            ? PopulateTable
+                            (
+                                "Quantity To Dispense",
+                                null,
+                                new[] {"Field", "Value"},
+                                null,
+                                narrativeQuantityToDispense
+                            )
+                            : null,
+                        narrativePBSExtemporaneousIngredient.Any()
+                            ? PopulateTable
+                            (
+                                "PBS Extemporaneous Ingredient",
+                                null,
+                                new[] {"Ingredient Name", "Ingredient Quantity"},
+                                null,
+                                narrativePBSExtemporaneousIngredient
+                            )
+                            : null,
+                        narrativeAdministrationDetails.Any()
+                            ? PopulateTable
+                            (
+                                "Administration Details",
+                                null,
+                                new[] {"Field", "Value"},
+                                null,
+                                narrativeAdministrationDetails
+                            )
+                            : null,
+                        narrativeEntitlements.Any()
+                            ? PopulateTable
+                            (
+                                "Entitlements",
+                                null,
+                                new[] {"Entitlements", "Value"},
+                                null,
+                                narrativeEntitlements
+                            )
+                            : null
+                    }
+                );
             }
 
-            strucDocTableList.AddRange
-                (
-                   new List<StrucDocTable>
-                           {
-                                narrative.Any() ? PopulateTable
-                                        (
-                                            "Prescription Item",
-                                            null ,
-                                            new []  { "Field", "Value" },
-                                            null,
-                                            narrative
-                                        ) : null,
-                                narrativeTiming.Any() ? PopulateTable
-                                        (
-                                            "Timing",
-                                            null ,
-                                            new []  { "Field", "Value" },
-                                            null,
-                                            narrativeTiming
-                                        ): null,
-                                narrativeStructuredDose.Any() ? PopulateTable
-                                        (
-                                            "Structured Dose",
-                                            null ,
-                                            new []  { "Field", "Value" },
-                                            null,
-                                            narrativeStructuredDose
-                                        ) : null,
-                                narrativeQuantityToDispense.Any() ? PopulateTable
-                                        (
-                                            "Quantity To Dispense",
-                                            null ,
-                                            new []  { "Field", "Value" },
-                                            null,
-                                            narrativeQuantityToDispense
-                                        ) : null,
-                                narrativePBSExtemporaneousIngredient.Any() ? PopulateTable
-                                        (
-                                            "PBS Extemporaneous Ingredient",
-                                            null ,
-                                            new []  { "Ingredient Name", "Ingredient Quantity" },
-                                            null,
-                                            narrativePBSExtemporaneousIngredient
-                                        ) : null,
-                                narrativeAdministrationDetails.Any() ? PopulateTable
-                                        (
-                                            "Administration Details",
-                                            null ,
-                                            new []  { "Field", "Value" },
-                                            null,
-                                            narrativeAdministrationDetails
-                                        ) : null,
-                                narrativeEntitlements.Any() ?  PopulateTable
-                                        (
-                                            "Entitlements",
-                                            null,
-                                            new []  { "Entitlements", "Value" },
-                                            null,
-                                            narrativeEntitlements
-                                        ) : null
-                           }
-                );
-          }
+            var strucDocText = new StrucDocText();
 
-          var strucDocText = new StrucDocText();
+            if (strucDocTableList.Count > 0)
+            {
+                strucDocText.table = strucDocTableList.ToArray();
+            }
 
-          if (strucDocTableList.Count > 0)
-          {
-            strucDocText.table = strucDocTableList.ToArray();
-          }
-
-          return strucDocText;
+            return strucDocText;
         }
 
         /// <summary>
@@ -4734,221 +5142,244 @@ namespace Nehta.VendorLibrary.CDA.Generator
         /// <returns>StrucDocText</returns>
         public StrucDocText CreateNarrative(DispenseItem item)
         {
-          var strucDocTableList = new List<StrucDocTable>();
-          var narrative = new List<List<String>>();
-          var narrativeQuantityToDispense = new List<List<String>>();
-          var narrativePBSExtemporaneousIngredient = new List<List<String>>();
+            var strucDocTableList = new List<StrucDocTable>();
+            var narrative = new List<List<String>>();
+            var narrativeQuantityToDispense = new List<List<String>>();
+            var narrativePBSExtemporaneousIngredient = new List<List<String>>();
 
-          if (item != null)
-          {
-
-            // Status Code
-            if (item.StatusCode != StatusCode.Undefined)
-              narrative.Add
-                  (
-                      CreateNarrativeEntry("Status", item.StatusCode.ToString())
-                  );
-
-            //DispenseItemIdentifier Item Identifier
-            if (item.DispenseItemIdentifier != null)
-              narrative.Add
-                  (
-                      CreateNarrativeEntry("Dispense Item Identifier", item.DispenseItemIdentifier.NarrativeText)
-                  );
-
-            //Prescription Item Identifier
-            if (item.PrescriptionItemIdentifier != null)
-              narrative.Add
-                  (
-                      CreateNarrativeEntry("Prescription Item Identifier", item.PrescriptionItemIdentifier.NarrativeText)
-                  );
-
-            //Therapeutic Good Identification
-            if (item.TherapeuticGoodIdentification != null)
-              narrative.Add
-                 (
-                     CreateNarrativeEntry("Therapeutic Good Identification", item.TherapeuticGoodIdentification.NarrativeText)
-                 );
-
-            //Formula
-            if (!item.Formula.IsNullOrEmptyWhitespace())
-              narrative.Add
-                (
-                    CreateNarrativeEntry("Formula", item.Formula)
-                );
-
-            //Label Instruction
-            if (!item.LabelInstruction.IsNullOrEmptyWhitespace())
-              narrative.Add
-                (
-                    CreateNarrativeEntry("Label Instruction", item.LabelInstruction)
-                );
-
-            if (item.QuantityToDispense != null)
+            if (item != null)
             {
-              //QuantityToDispense - Quantity
-              if (item.QuantityToDispense.Quantity != null)
-                narrativeQuantityToDispense.Add
-                   (
-                       CreateNarrativeEntry("Quantity", item.QuantityToDispense.Quantity.NarrativeText)
-                   );
 
-              //QuantityToDispense - Dispensing Unit
-              if (item.QuantityToDispense.Unit != null)
-                narrativeQuantityToDispense.Add
-                   (
-                       CreateNarrativeEntry("Dispensing Unit", item.QuantityToDispense.Unit.NarrativeText)
-                   );
-              //QuantityToDispense - QuantityDescription
-              if (!item.QuantityToDispense.QuantityDescription.IsNullOrEmptyWhitespace())
-                narrativeQuantityToDispense.Add
-                   (
-                       CreateNarrativeEntry("Quantity Description", item.QuantityToDispense.QuantityDescription)
-                   );
+                // Status Code
+                if (item.StatusCode != StatusCode.Undefined)
+                    narrative.Add
+                    (
+                        CreateNarrativeEntry("Status", item.StatusCode.ToString())
+                    );
+
+                //DispenseItemIdentifier Item Identifier
+                if (item.DispenseItemIdentifier != null)
+                    narrative.Add
+                    (
+                        CreateNarrativeEntry("Dispense Item Identifier", item.DispenseItemIdentifier.NarrativeText)
+                    );
+
+                //Prescription Item Identifier
+                if (item.PrescriptionItemIdentifier != null)
+                    narrative.Add
+                    (
+                        CreateNarrativeEntry("Prescription Item Identifier",
+                            item.PrescriptionItemIdentifier.NarrativeText)
+                    );
+
+                //Therapeutic Good Identification
+                if (item.TherapeuticGoodIdentification != null)
+                    narrative.Add
+                    (
+                        CreateNarrativeEntry("Therapeutic Good Identification",
+                            item.TherapeuticGoodIdentification.NarrativeText)
+                    );
+
+                //Formula
+                if (!item.Formula.IsNullOrEmptyWhitespace())
+                    narrative.Add
+                    (
+                        CreateNarrativeEntry("Formula", item.Formula)
+                    );
+
+                //Label Instruction
+                if (!item.LabelInstruction.IsNullOrEmptyWhitespace())
+                    narrative.Add
+                    (
+                        CreateNarrativeEntry("Label Instruction", item.LabelInstruction)
+                    );
+
+                if (item.QuantityToDispense != null)
+                {
+                    //QuantityToDispense - Quantity
+                    if (item.QuantityToDispense.Quantity != null)
+                        narrativeQuantityToDispense.Add
+                        (
+                            CreateNarrativeEntry("Quantity", item.QuantityToDispense.Quantity.NarrativeText)
+                        );
+
+                    //QuantityToDispense - Dispensing Unit
+                    if (item.QuantityToDispense.Unit != null)
+                        narrativeQuantityToDispense.Add
+                        (
+                            CreateNarrativeEntry("Dispensing Unit", item.QuantityToDispense.Unit.NarrativeText)
+                        );
+                    //QuantityToDispense - QuantityDescription
+                    if (!item.QuantityToDispense.QuantityDescription.IsNullOrEmptyWhitespace())
+                        narrativeQuantityToDispense.Add
+                        (
+                            CreateNarrativeEntry("Quantity Description", item.QuantityToDispense.QuantityDescription)
+                        );
+                }
+
+                //Brand Substitute Occurred
+                if (item.BrandSubstituteOccurred != null)
+                    narrative.Add
+                    (
+                        CreateNarrativeEntry("Brand Substitute Occurred", item.BrandSubstituteOccurred)
+                    );
+
+                //Maximum Number of Repeats
+                if (item.MaximumNumberOfRepeats != null)
+                    narrative.Add
+                    (
+                        CreateNarrativeEntry("Maximum Number of Repeats", item.MaximumNumberOfRepeats)
+                    );
+
+                //Maximum Number of Repeats
+                if (item.MaximumNumberOfRepeats != null)
+                    narrative.Add
+                    (
+                        CreateNarrativeEntry("Number Of This Dispense", item.NumberOfThisDispense)
+                    );
+
+                // PBS Close the Gap Benefit
+                if (item.PBSCloseTheGapBenefit != null)
+                    narrative.Add
+                    (
+                        CreateNarrativeEntry("PBS Close the Gap Benefit", item.PBSCloseTheGapBenefit.NarrativeText)
+                    );
+
+                // PBS/RPBS Item Code
+                if (item.PBSRPBSItemCode != null)
+                    narrative.Add
+                    (
+                        CreateNarrativeEntry("PBS/RPBS Item Code",
+                            string.Format("{0} {1}", item.PBSRPBSItemCode.Code,
+                                !item.PBSRPBSItemCode.NarrativeText.IsNullOrEmptyWhitespace()
+                                    ? string.Format("{0}", item.PBSRPBSItemCode.NarrativeText)
+                                    : string.Empty))
+                    );
+
+                // PBS/RPBS Manufacturer Code
+                if (item.PBSRPBSManufacturerCode != null)
+                    narrative.Add
+                    (
+                        CreateNarrativeEntry("PBS/RPBS Manufacturer Code", item.PBSRPBSManufacturerCode.NarrativeText)
+                    );
+
+                // Claim Category Type
+                if (item.ClaimCategoryType != ClaimCategoryType.Undefined)
+                    narrative.Add
+                    (
+                        CreateNarrativeEntry("Claim Category Type",
+                            item.ClaimCategoryType.GetAttributeValue<NameAttribute, String>(x => x.Name))
+                    );
+
+                // Claim Category Type
+                if (item.UnderCoPayment != ClaimCategoryType.Undefined)
+                    narrative.Add
+                    (
+                        CreateNarrativeEntry("Under Co-payment",
+                            item.UnderCoPayment.GetAttributeValue<NameAttribute, String>(x => x.Name))
+                    );
+
+                // Claim Category Type
+                if (item.EarySupplyWithPharmaceuticalBenefit.HasValue)
+                    narrative.Add
+                    (
+                        CreateNarrativeEntry("Early Supply With Pharmaceutical Benefit",
+                            item.EarySupplyWithPharmaceuticalBenefit.Value.ToString(CultureInfo.InvariantCulture))
+                    );
+
+
+                // Additional Comments
+                if (!item.AdditionalComments.IsNullOrEmptyWhitespace())
+                    narrative.Add
+                    (
+                        CreateNarrativeEntry("Additional Comments", item.AdditionalComments)
+                    );
+
+
+                // Patient Category
+                if (item.PatientCategory.HasValue)
+                    narrative.Add
+                    (
+                        CreateNarrativeEntry("Patient Category",
+                            item.PatientCategory.GetAttributeValue<NameAttribute, String>(x => x.Name))
+                    );
+
+                // RACFId
+                if (!item.RACFId.IsNullOrEmptyWhitespace())
+                    narrative.Add
+                    (
+                        CreateNarrativeEntry("RACFId", item.RACFId)
+                    );
+
+                // PBS/RPBS Manufacturer Code
+                if (item.PBSExtemporaneousIngredient != null)
+                {
+                    for (int index = 0; index < item.PBSExtemporaneousIngredient.Count; index++)
+                    {
+                        var extemporaneousIngredient = item.PBSExtemporaneousIngredient[index];
+
+                        if (extemporaneousIngredient != null && extemporaneousIngredient.IngredientName != null ||
+                            extemporaneousIngredient.IngredientQuantity != null)
+                            narrativePBSExtemporaneousIngredient.Add
+                            (
+                                CreateNarrativeEntry(
+                                    extemporaneousIngredient.IngredientName != null
+                                        ? extemporaneousIngredient.IngredientName.NarrativeText
+                                        : null,
+                                    extemporaneousIngredient.IngredientQuantity != null
+                                        ? extemporaneousIngredient.IngredientQuantity.NarrativeText
+                                        : null)
+
+                            );
+                    }
+                }
+
+                strucDocTableList.AddRange
+                (
+                    new List<StrucDocTable>
+                    {
+                        narrative.Any()
+                            ? PopulateTable
+                            (
+                                "Dispense Item",
+                                null,
+                                new[] {"Field", "Value"},
+                                null,
+                                narrative
+                            )
+                            : null,
+                        narrativeQuantityToDispense.Any()
+                            ? PopulateTable
+                            (
+                                "Quantity To Dispense",
+                                null,
+                                new[] {"Field", "Value"},
+                                null,
+                                narrativeQuantityToDispense
+                            )
+                            : null,
+                        narrativePBSExtemporaneousIngredient.Any()
+                            ? PopulateTable
+                            (
+                                "PBS Extemporaneous Ingredient",
+                                null,
+                                new[] {"Ingredient Name", "Ingredient Quantity"},
+                                null,
+                                narrativePBSExtemporaneousIngredient
+                            )
+                            : null
+                    }
+                );
             }
 
-            //Brand Substitute Occurred
-            if (item.BrandSubstituteOccurred != null)
-              narrative.Add
-                 (
-                     CreateNarrativeEntry("Brand Substitute Occurred", item.BrandSubstituteOccurred)
-                 );
+            var strucDocText = new StrucDocText();
 
-            //Maximum Number of Repeats
-            if (item.MaximumNumberOfRepeats != null)
-              narrative.Add
-                 (
-                     CreateNarrativeEntry("Maximum Number of Repeats", item.MaximumNumberOfRepeats)
-                 );
-
-            //Maximum Number of Repeats
-            if (item.MaximumNumberOfRepeats != null)
-              narrative.Add
-                 (
-                     CreateNarrativeEntry("Number Of This Dispense", item.NumberOfThisDispense)
-                 );
-
-            // PBS Close the Gap Benefit
-            if (item.PBSCloseTheGapBenefit != null)
-              narrative.Add
-                 (
-                     CreateNarrativeEntry("PBS Close the Gap Benefit", item.PBSCloseTheGapBenefit.NarrativeText)
-                 );
-
-            // PBS/RPBS Item Code
-            if (item.PBSRPBSItemCode != null)
-              narrative.Add
-                 (
-                     CreateNarrativeEntry("PBS/RPBS Item Code", string.Format("{0} {1}", item.PBSRPBSItemCode.Code, !item.PBSRPBSItemCode.NarrativeText.IsNullOrEmptyWhitespace() ? string.Format("{0}", item.PBSRPBSItemCode.NarrativeText) : string.Empty))
-                 );
-
-            // PBS/RPBS Manufacturer Code
-            if (item.PBSRPBSManufacturerCode != null)
-              narrative.Add
-                 (
-                     CreateNarrativeEntry("PBS/RPBS Manufacturer Code", item.PBSRPBSManufacturerCode.NarrativeText)
-                 );
-
-            // Claim Category Type
-            if (item.ClaimCategoryType != ClaimCategoryType.Undefined)
-              narrative.Add
-                 (
-                     CreateNarrativeEntry("Claim Category Type", item.ClaimCategoryType.GetAttributeValue<NameAttribute, String>(x => x.Name))
-                 );
-
-            // Claim Category Type
-            if (item.UnderCoPayment != ClaimCategoryType.Undefined)
-              narrative.Add
-                 (
-                     CreateNarrativeEntry("Under Co-payment", item.UnderCoPayment.GetAttributeValue<NameAttribute, String>(x => x.Name))
-                 );
-
-            // Claim Category Type
-            if (item.EarySupplyWithPharmaceuticalBenefit.HasValue)
-              narrative.Add
-                 (
-                     CreateNarrativeEntry("Early Supply With Pharmaceutical Benefit", item.EarySupplyWithPharmaceuticalBenefit.Value.ToString(CultureInfo.InvariantCulture))
-                 );
-
-
-            // Additional Comments
-            if (!item.AdditionalComments.IsNullOrEmptyWhitespace())
-              narrative.Add
-                 (
-                     CreateNarrativeEntry("Additional Comments", item.AdditionalComments)
-                 );
-
-
-            // Patient Category
-            if (item.PatientCategory.HasValue)
-              narrative.Add
-                 (
-                     CreateNarrativeEntry("Patient Category", item.PatientCategory.GetAttributeValue<NameAttribute, String>(x => x.Name))
-                 );
-
-            // RACFId
-            if (!item.RACFId.IsNullOrEmptyWhitespace())
-              narrative.Add
-                 (
-                     CreateNarrativeEntry("RACFId", item.RACFId)
-                 );
-
-            // PBS/RPBS Manufacturer Code
-            if (item.PBSExtemporaneousIngredient != null)
+            if (strucDocTableList.Count > 0)
             {
-              for (int index = 0; index < item.PBSExtemporaneousIngredient.Count; index++)
-              {
-                var extemporaneousIngredient = item.PBSExtemporaneousIngredient[index];
-
-                if (extemporaneousIngredient != null && extemporaneousIngredient.IngredientName != null || extemporaneousIngredient.IngredientQuantity != null)
-                  narrativePBSExtemporaneousIngredient.Add
-                  (
-                    CreateNarrativeEntry(extemporaneousIngredient.IngredientName != null ? extemporaneousIngredient.IngredientName.NarrativeText : null, extemporaneousIngredient.IngredientQuantity != null ? extemporaneousIngredient.IngredientQuantity.NarrativeText : null)
-                                        
-                  );
-              }
+                strucDocText.table = strucDocTableList.ToArray();
             }
 
-            strucDocTableList.AddRange
-                (
-                   new List<StrucDocTable>
-                           {
-                                narrative.Any() ? PopulateTable
-                                        (
-                                            "Dispense Item",
-                                            null ,
-                                            new []  { "Field", "Value" },
-                                            null,
-                                            narrative
-                                        ) : null,
-                                narrativeQuantityToDispense.Any() ? PopulateTable
-                                        (
-                                            "Quantity To Dispense",
-                                            null ,
-                                            new []  { "Field", "Value" },
-                                            null,
-                                            narrativeQuantityToDispense
-                                        ) : null,
-                                narrativePBSExtemporaneousIngredient.Any() ? PopulateTable
-                                        (
-                                            "PBS Extemporaneous Ingredient",
-                                            null ,
-                                            new []  { "Ingredient Name", "Ingredient Quantity" },
-                                            null,
-                                            narrativePBSExtemporaneousIngredient
-                                        ) : null
-                           }
-                );
-          }
-
-          var strucDocText = new StrucDocText();
-
-          if (strucDocTableList.Count > 0)
-          {
-            strucDocText.table = strucDocTableList.ToArray();
-          }
-
-          return strucDocText;
+            return strucDocText;
         }
 
         /// <summary>
@@ -4962,48 +5393,63 @@ namespace Nehta.VendorLibrary.CDA.Generator
             var narrative = new List<List<Object>>();
 
             var narativeHeader = new List<string>
-                {
-                    "Generic Name",
-                    "Brand",
-                    "Prescribed",
-                    "Supplied",
-                    "Form and Strength",
-                    "Quantity",
-                    "Repeats",
-                    "Code"
-                };
+            {
+                "Generic Name",
+                "Brand",
+                "Prescribed",
+                "Supplied",
+                "Form and Strength",
+                "Quantity",
+                "Repeats",
+                "Code"
+            };
 
             if (pharmaceuticalBenefitItems != null && pharmaceuticalBenefitItems.PharmaceuticalBenefitItemList != null)
             {
                 foreach (var pharmaceuticalBenefitItem in pharmaceuticalBenefitItems.PharmaceuticalBenefitItemList)
                 {
                     var medicationList = new List<Object>
-                                              {
-                                                  CreateLink(pharmaceuticalBenefitItem.PharmaceuticalBenefitItemDocumentLink, true, pharmaceuticalBenefitItem.ItemGenericName),
-                                                  pharmaceuticalBenefitItem.Brand.IsNullOrEmptyWhitespace() ? null : DELIMITERBOLD + pharmaceuticalBenefitItem.Brand,
-                                                  pharmaceuticalBenefitItem.DateOfPrescribing != null ? pharmaceuticalBenefitItem.DateOfPrescribing.NarrativeText() : null,
-                                                  pharmaceuticalBenefitItem.DateOfSupply != null ? pharmaceuticalBenefitItem.DateOfSupply.NarrativeText() : null,
-                                                  pharmaceuticalBenefitItem.ItemFormAndStrength.IsNullOrEmptyWhitespace() ? null :  pharmaceuticalBenefitItem.ItemFormAndStrength,
-                                                  pharmaceuticalBenefitItem.Quantity.HasValue ? pharmaceuticalBenefitItem.Quantity.Value.ToString(CultureInfo.InvariantCulture) : null,
-                                                  pharmaceuticalBenefitItem.NumberOfRepeats.HasValue ? pharmaceuticalBenefitItem.NumberOfRepeats.Value.ToString(CultureInfo.InvariantCulture) : null,
-                                                  pharmaceuticalBenefitItem.PBSRPBSItemCode.IsNullOrEmptyWhitespace() ? null : pharmaceuticalBenefitItem.PBSRPBSItemCode 
-                                              };
+                    {
+                        CreateLink(pharmaceuticalBenefitItem.PharmaceuticalBenefitItemDocumentLink, true,
+                            pharmaceuticalBenefitItem.ItemGenericName),
+                        pharmaceuticalBenefitItem.Brand.IsNullOrEmptyWhitespace()
+                            ? null
+                            : DELIMITERBOLD + pharmaceuticalBenefitItem.Brand,
+                        pharmaceuticalBenefitItem.DateOfPrescribing != null
+                            ? pharmaceuticalBenefitItem.DateOfPrescribing.NarrativeText()
+                            : null,
+                        pharmaceuticalBenefitItem.DateOfSupply != null
+                            ? pharmaceuticalBenefitItem.DateOfSupply.NarrativeText()
+                            : null,
+                        pharmaceuticalBenefitItem.ItemFormAndStrength.IsNullOrEmptyWhitespace()
+                            ? null
+                            : pharmaceuticalBenefitItem.ItemFormAndStrength,
+                        pharmaceuticalBenefitItem.Quantity.HasValue
+                            ? pharmaceuticalBenefitItem.Quantity.Value.ToString(CultureInfo.InvariantCulture)
+                            : null,
+                        pharmaceuticalBenefitItem.NumberOfRepeats.HasValue
+                            ? pharmaceuticalBenefitItem.NumberOfRepeats.Value.ToString(CultureInfo.InvariantCulture)
+                            : null,
+                        pharmaceuticalBenefitItem.PBSRPBSItemCode.IsNullOrEmptyWhitespace()
+                            ? null
+                            : pharmaceuticalBenefitItem.PBSRPBSItemCode
+                    };
 
                     narrative.Add(medicationList);
                 }
             }
 
             strucDocTableList.Add
-              (
-                  PopulateTable
-                  (
-                      null,
-                      null,
-                      narativeHeader.ToArray(),
-                      new string[0],
-                      narrative
-                  )
-              );
+            (
+                PopulateTable
+                (
+                    null,
+                    null,
+                    narativeHeader.ToArray(),
+                    new string[0],
+                    narrative
+                )
+            );
 
             var strucDocText = new StrucDocText();
 
@@ -5027,199 +5473,220 @@ namespace Nehta.VendorLibrary.CDA.Generator
         /// <param name="participationPrescriberOrganisation">A IParticipationPrescriberOrganisation</param>
         /// <returns>StrucDocText</returns>
         public StrucDocText CreateNarrative(
-                PrescriberInstructionDetail prescriberInstructionDetail,
-                IParticipationPrescriber participationPrescriber,
-                IParticipationPrescriberOrganisation participationPrescriberOrganisation
+            PrescriberInstructionDetail prescriberInstructionDetail,
+            IParticipationPrescriber participationPrescriber,
+            IParticipationPrescriberOrganisation participationPrescriberOrganisation
         )
         {
-          var strucDocTableList = new List<StrucDocTable>();
-          var narrative = new List<List<String>>();
+            var strucDocTableList = new List<StrucDocTable>();
+            var narrative = new List<List<String>>();
 
-          if (prescriberInstructionDetail != null)
-          {
-            var columnHeaders = new List<string> { "Field", "Value" };
+            if (prescriberInstructionDetail != null)
+            {
+                var columnHeaders = new List<string> {"Field", "Value"};
 
-            if (prescriberInstructionDetail.PrescriberInstructionReceived != null)
-              narrative.Add
-                  (
-                  CreateNarrativeEntry("Date and Time Prescriber Instruction Received", prescriberInstructionDetail.PrescriberInstructionReceived)
-                  );
+                if (prescriberInstructionDetail.PrescriberInstructionReceived != null)
+                    narrative.Add
+                    (
+                        CreateNarrativeEntry("Date and Time Prescriber Instruction Received",
+                            prescriberInstructionDetail.PrescriberInstructionReceived)
+                    );
 
-            if (!String.IsNullOrEmpty(prescriberInstructionDetail.PrescriberInstruction))
-              narrative.Add
-                  (
-                  CreateNarrativeEntry("Prescriber Instruction", prescriberInstructionDetail.PrescriberInstruction)
-                  );
+                if (!String.IsNullOrEmpty(prescriberInstructionDetail.PrescriberInstruction))
+                    narrative.Add
+                    (
+                        CreateNarrativeEntry("Prescriber Instruction",
+                            prescriberInstructionDetail.PrescriberInstruction)
+                    );
 
-            if (prescriberInstructionDetail.PrescriberInstructionSource != PrescriberInstructionSource.Undefined)
-              narrative.Add
-                  (
-                  CreateNarrativeEntry("Prescriber Instruction Source", prescriberInstructionDetail.PrescriberInstructionSource.GetAttributeValue<NameAttribute, String>(x => x.Name))
-                  );
+                if (prescriberInstructionDetail.PrescriberInstructionSource != PrescriberInstructionSource.Undefined)
+                    narrative.Add
+                    (
+                        CreateNarrativeEntry("Prescriber Instruction Source",
+                            prescriberInstructionDetail.PrescriberInstructionSource
+                                .GetAttributeValue<NameAttribute, String>(x => x.Name))
+                    );
 
-            if (prescriberInstructionDetail.PrescriberInstructionCommunicationMedium != PrescriberInstructionCommunicationMedium.Undefined)
-              narrative.Add
-                  (
-                  CreateNarrativeEntry("Prescriber Instruction Communication Medium", prescriberInstructionDetail.PrescriberInstructionCommunicationMedium.GetAttributeValue<NameAttribute, String>(x => x.Name))
-                  );
+                if (prescriberInstructionDetail.PrescriberInstructionCommunicationMedium !=
+                    PrescriberInstructionCommunicationMedium.Undefined)
+                    narrative.Add
+                    (
+                        CreateNarrativeEntry("Prescriber Instruction Communication Medium",
+                            prescriberInstructionDetail.PrescriberInstructionCommunicationMedium
+                                .GetAttributeValue<NameAttribute, String>(x => x.Name))
+                    );
 
-            strucDocTableList.Add
+                strucDocTableList.Add
                 (
                     PopulateTable
-                        (
+                    (
                         null,
                         null,
                         columnHeaders.ToArray(),
                         null,
                         narrative
-                        )
+                    )
                 );
 
 
-            // Prescriber Instruction Detail
-            if (prescriberInstructionDetail.PrescriberInstructionRecipient != null &&
-                prescriberInstructionDetail.PrescriberInstructionRecipient.Participant != null &&
-                prescriberInstructionDetail.PrescriberInstructionRecipient.Participant.Person != null &&
-                prescriberInstructionDetail.PrescriberInstructionRecipient.Participant.Person.PersonNames != null)
-            {
-              var participant = prescriberInstructionDetail.PrescriberInstructionRecipient.Participant;
+                // Prescriber Instruction Detail
+                if (prescriberInstructionDetail.PrescriberInstructionRecipient != null &&
+                    prescriberInstructionDetail.PrescriberInstructionRecipient.Participant != null &&
+                    prescriberInstructionDetail.PrescriberInstructionRecipient.Participant.Person != null &&
+                    prescriberInstructionDetail.PrescriberInstructionRecipient.Participant.Person.PersonNames != null)
+                {
+                    var participant = prescriberInstructionDetail.PrescriberInstructionRecipient.Participant;
 
-              columnHeaders = new List<string>
-                                            {
-                                                "Provider Person Name",
-                                                "Provider Role",
-                                                "Qualifications",
-                                                "Address/Contact"
-                                            };
+                    columnHeaders = new List<string>
+                    {
+                        "Provider Person Name",
+                        "Provider Role",
+                        "Qualifications",
+                        "Address/Contact"
+                    };
 
-              // Add narrative
-              narrative = new List<List<string>>();
-              narrative.Add(
-                  new List<String>
-                            {
-                                participant.Person.PersonNames == null ? null :  BuildPersonNames(participant.Person.PersonNames),
-                                "Pharmacist",
-                                // Fixed as per Spec
-                                participant.Person.Qualifications,      
-                                CreateAddress(participant.Addresses, participant.ElectronicCommunicationDetails)
+                    // Add narrative
+                    narrative = new List<List<string>>();
+                    narrative.Add(
+                        new List<String>
+                        {
+                            participant.Person.PersonNames == null
+                                ? null
+                                : BuildPersonNames(participant.Person.PersonNames),
+                            "Pharmacist",
+                            // Fixed as per Spec
+                            participant.Person.Qualifications,
+                            CreateAddress(participant.Addresses, participant.ElectronicCommunicationDetails)
 
-                            }
-                  );
+                        }
+                    );
 
-              strucDocTableList.Add
-                  (
-                  PopulateTable
-                      (
-                      "Prescriber Instruction Recipient",
-                      null,
-                      columnHeaders.ToArray(),
-                      null,
-                      narrative
-                      )
-                  );
+                    strucDocTableList.Add
+                    (
+                        PopulateTable
+                        (
+                            "Prescriber Instruction Recipient",
+                            null,
+                            columnHeaders.ToArray(),
+                            null,
+                            narrative
+                        )
+                    );
+                }
+
+                // Prescriber
+                if (participationPrescriber != null && participationPrescriber.Participant != null &&
+                    participationPrescriber.Participant.Person != null)
+                {
+                    var participant = participationPrescriber.Participant;
+
+                    columnHeaders = new List<string>
+                    {
+                        "Provider Person Name",
+                        "Provider Role",
+                        "Entitlements",
+                        "Address/Contact"
+
+                    };
+
+                    // Add narrative
+                    narrative = new List<List<string>>();
+                    narrative.Add(
+                        new List<String>
+                        {
+                            participant.Person == null ? null : BuildPersonNames(participant.Person.PersonNames),
+                            participationPrescriber.Role != null
+                                ? participationPrescriber.Role.NarrativeText
+                                : String.Empty,
+                            // Fixed as per Spec
+                            participant.Person != null && participant.Person.Entitlements != null &&
+                            participant.Person.Entitlements.Count > 0
+                                ? CreateEntitlement(participant.Person.Entitlements)
+                                : String.Empty,
+                            CreateAddress(participant.Addresses, participant.ElectronicCommunicationDetails),
+                            //participationPrescriber.Participant.Person.Occupation != null ? participationPrescriber.Participant.Person.Occupation.Value.GetAttributeValue<NameAttribute, String>(x => x.Name) : String.Empty,
+                            //participationPrescriber.Participant.Person.Qualifications
+                        }
+                    );
+
+                    strucDocTableList.Add
+                    (
+                        PopulateTable
+                        (
+                            "Prescriber",
+                            null,
+                            columnHeaders.ToArray(),
+                            null,
+                            narrative
+                        )
+                    );
+                }
+
+                // Prescriber Organisation
+                if (participationPrescriberOrganisation != null &&
+                    participationPrescriberOrganisation.Participant != null)
+                {
+                    var participant = participationPrescriberOrganisation.Participant;
+
+                    columnHeaders = new List<string>
+                    {
+                        "Organisation Role",
+                        "Address/Contact",
+                        "Organisation Name",
+                        "Organisation Name Usage",
+                        "Department/Unit"
+                    };
+
+                    IOrganisation organisation = null;
+                    if (participationPrescriberOrganisation.Participant.Organisation != null)
+                        organisation = participationPrescriberOrganisation.Participant.Organisation;
+
+                    // Add narrative
+                    narrative = new List<List<string>>();
+                    narrative.Add(
+                        new List<String>
+                        {
+                            participationPrescriberOrganisation.Role != null
+                                ? participationPrescriberOrganisation.Role.NarrativeText
+                                : String.Empty,
+                            // Fixed as per Spec
+                            CreateAddress(participant.Addresses, participant.ElectronicCommunicationDetails),
+                            organisation != null ? organisation.Name : String.Empty,
+                            organisation != null && organisation.NameUsage != null
+                                ? organisation.NameUsage.Value.GetAttributeValue<NameAttribute, String>(x => x.Name)
+                                : String.Empty,
+                            organisation != null
+                                ? participationPrescriberOrganisation.Participant.Organisation.Department
+                                : String.Empty
+                        }
+                    );
+
+                    strucDocTableList.Add
+                    (
+                        PopulateTable
+                        (
+                            "Prescriber Organisation",
+                            null,
+                            columnHeaders.ToArray(),
+                            null,
+                            narrative
+                        )
+                    );
+                }
             }
 
-            // Prescriber
-            if (participationPrescriber != null && participationPrescriber.Participant != null &&
-                participationPrescriber.Participant.Person != null)
+            var strucDocText = new StrucDocText();
+
+            if (strucDocTableList.Count > 0)
             {
-              var participant = participationPrescriber.Participant;
-
-              columnHeaders = new List<string>
-                                            {
-                                                "Provider Person Name",
-                                                "Provider Role",
-                                                "Entitlements",
-                                                "Address/Contact"
-
-                                            };
-
-              // Add narrative
-              narrative = new List<List<string>>();
-              narrative.Add(
-                  new List<String>
-                            {
-                                participant.Person == null ? null : BuildPersonNames(participant.Person.PersonNames),
-                                participationPrescriber.Role != null ? participationPrescriber.Role.NarrativeText : String.Empty,
-                                // Fixed as per Spec
-                                participant.Person != null && participant.Person.Entitlements != null && participant.Person.Entitlements.Count > 0 ? CreateEntitlement(participant.Person.Entitlements) : String.Empty,
-                                CreateAddress(participant.Addresses, participant.ElectronicCommunicationDetails),
-                                //participationPrescriber.Participant.Person.Occupation != null ? participationPrescriber.Participant.Person.Occupation.Value.GetAttributeValue<NameAttribute, String>(x => x.Name) : String.Empty,
-                                //participationPrescriber.Participant.Person.Qualifications
-                            }
-                  );
-
-              strucDocTableList.Add
-                  (
-                  PopulateTable
-                      (
-                      "Prescriber",
-                      null,
-                      columnHeaders.ToArray(),
-                      null,
-                      narrative
-                      )
-                  );
+                strucDocText.table = strucDocTableList.ToArray();
+            }
+            else
+            {
+                strucDocText.paragraph = CreateParagraph(SECTIONEMPTYTEXT);
             }
 
-            // Prescriber Organisation
-            if (participationPrescriberOrganisation != null && participationPrescriberOrganisation.Participant != null)
-            {
-              var participant = participationPrescriberOrganisation.Participant;
-
-              columnHeaders = new List<string>
-                                        {
-                                            "Organisation Role",
-                                            "Address/Contact",
-                                            "Organisation Name",
-                                            "Organisation Name Usage",
-                                            "Department/Unit"
-                                        };
-
-              IOrganisation organisation = null;
-              if (participationPrescriberOrganisation.Participant.Organisation != null)
-                organisation = participationPrescriberOrganisation.Participant.Organisation;
-
-              // Add narrative
-              narrative = new List<List<string>>();
-              narrative.Add(
-                  new List<String>
-                            {
-                                participationPrescriberOrganisation.Role != null ? participationPrescriberOrganisation.Role.NarrativeText : String.Empty,
-                                // Fixed as per Spec
-                                CreateAddress(participant.Addresses, participant.ElectronicCommunicationDetails),
-                                organisation != null ? organisation.Name : String.Empty,
-                                organisation != null && organisation.NameUsage != null ? organisation.NameUsage.Value.GetAttributeValue<NameAttribute, String>(x => x.Name) : String.Empty,
-                                organisation != null ? participationPrescriberOrganisation.Participant.Organisation.Department : String.Empty
-                            }
-                  );
-
-              strucDocTableList.Add
-                  (
-                  PopulateTable
-                      (
-                      "Prescriber Organisation",
-                      null,
-                      columnHeaders.ToArray(),
-                      null,
-                      narrative
-                      )
-                  );
-            }
-          }
-
-          var strucDocText = new StrucDocText();
-
-          if (strucDocTableList.Count > 0)
-          {
-            strucDocText.table = strucDocTableList.ToArray();
-          }
-          else
-          {
-            strucDocText.paragraph = CreateParagraph(SECTIONEMPTYTEXT);
-          }
-
-          return strucDocText;
+            return strucDocText;
         }
 
         /// <summary>
@@ -5230,437 +5697,478 @@ namespace Nehta.VendorLibrary.CDA.Generator
         /// <param name="dispenserOrganisation">The dispenser Organisation</param>
         /// <param name="requesterNote">The requesterNote </param>
         /// <returns>StrucDocText</returns>
-        public StrucDocText CreateNarrative(PrescriptionRequestItem item, IParticipationSubjectOfCare subjectOfCare, IParticipationDispenserOrganisation dispenserOrganisation, String requesterNote)
+        public StrucDocText CreateNarrative(PrescriptionRequestItem item, IParticipationSubjectOfCare subjectOfCare,
+            IParticipationDispenserOrganisation dispenserOrganisation, String requesterNote)
         {
-          var strucDocTableList = new List<StrucDocTable>();
-          var narrative = new List<List<String>>();
-          var narrativeTiming = new List<List<String>>();
-          var narrativeAdministrationDetails = new List<List<String>>();
-          var narrativeStructuredDose = new List<List<String>>();
-          var narrativeQuantityToDispense = new List<List<String>>();
-          var narrativePBSExtemporaneousIngredient = new List<List<String>>();
-          var narrativeEntitlements = new List<List<String>>();
+            var strucDocTableList = new List<StrucDocTable>();
+            var narrative = new List<List<String>>();
+            var narrativeTiming = new List<List<String>>();
+            var narrativeAdministrationDetails = new List<List<String>>();
+            var narrativeStructuredDose = new List<List<String>>();
+            var narrativeQuantityToDispense = new List<List<String>>();
+            var narrativePBSExtemporaneousIngredient = new List<List<String>>();
+            var narrativeEntitlements = new List<List<String>>();
 
-          if (item != null)
-          {
-
-            //Prescription Request Item Identifier
-            if (item.PrescriptionRequestItemIdentifier != null)
-              narrative.Add
-                  (
-                      CreateNarrativeEntry("Prescription Request Item Identifier", item.PrescriptionRequestItemIdentifier.NarrativeText)
-                  );
-
-            //Dispense Item Identifier
-            if (item.DispenseItemIdentifier != null)
-              narrative.Add
-                  (
-                      CreateNarrativeEntry("Dispense Item Identifier", item.DispenseItemIdentifier.NarrativeText)
-                  );
-
-            //Therapeutic Good Identification
-            if (item.TherapeuticGoodIdentification != null)
-              narrative.Add
-                 (
-                     CreateNarrativeEntry("Therapeutic Good Identification", item.TherapeuticGoodIdentification.NarrativeText)
-                 );
-
-            //Formula
-            if (!item.Formula.IsNullOrEmptyWhitespace())
-              narrative.Add
-                (
-                    CreateNarrativeEntry("Formula", item.Formula)
-                );
-
-            //Instruction
-            if (!item.Directions.IsNullOrEmptyWhitespace())
-              narrative.Add
-                 (
-                     CreateNarrativeEntry("Directions", item.Directions)
-                 );
-
-            if (item.StructuredDose != null)
+            if (item != null)
             {
-              //Quantity of Therapeutic Good
-              if (item.StructuredDose.Quantity != null)
-                narrativeStructuredDose.Add
-                   (
-                       CreateNarrativeEntry("Quantity", item.StructuredDose.Quantity.NarrativeText)
-                   );
 
-              //Structured Dose - Dose Unit
-              if (item.StructuredDose.Unit != null)
-                narrativeStructuredDose.Add
-                   (
-                       CreateNarrativeEntry("Dose Unit", item.StructuredDose.Unit.NarrativeText)
-                   );
-
-              //Structured Dose - Quantity Description
-              if (item.StructuredDose.QuantityDescription != null)
-                narrativeStructuredDose.Add
-                   (
-                       CreateNarrativeEntry("Quantity Description", item.StructuredDose.QuantityDescription)
-                   );
-            }
-
-            if (item.Timing != null)
-            {
-              //Timing
-              if (!item.Timing.TimingDescription.IsNullOrEmptyWhitespace())
-                narrativeTiming.Add
-                   (
-                       CreateNarrativeEntry("Timing Description", item.Timing.TimingDescription)
-                   );
-
-              //Structured Timing EffectiveTime
-              if (item.Timing.StructuredTiming != null && item.Timing.StructuredTiming.EffectiveTime != null)
-              {
-
-                if (!item.Timing.StructuredTiming.NarrativeText.IsNullOrEmptyWhitespace())
-                {
-
-                  narrativeTiming.Add
-                     (
-                         CreateNarrativeEntry("EffectiveTime", item.Timing.StructuredTiming.NarrativeText)
-                     );
-
-                }
-                else
-                {
-                  //Structured Timing EffectiveTime
-                  narrativeTiming.Add
-                      (
-                        new List<string>
-                        {
-                          "EffectiveTime",
-                          CreateTimingEntry(item.Timing.StructuredTiming.EffectiveTime)
-                        }
-                    );
-                }
-              }
-
-              //PRN
-              if (item.Timing.PRN.HasValue)
-                narrativeTiming.Add
-                   (
-                       CreateNarrativeEntry("PRN", item.Timing.PRN.Value.ToString(CultureInfo.InvariantCulture))
-                   );
-
-              //Timing - StartCriterion
-              if (item.Timing.StartCriterion.HasValue)
-                narrativeTiming.Add
-                   (
-                       CreateNarrativeEntry("StartCriterion", item.Timing.StartCriterion.Value.ToString(CultureInfo.InvariantCulture))
-                   );
-
-              //Timing - StartDate
-              if (item.Timing.StartDate != null)
-                narrativeTiming.Add
-                   (
-                       CreateNarrativeEntry("StartDate", item.Timing.StartDate)
-                   );
-
-              //Timing - StopCriterion
-              if (item.Timing.StopCriterion.HasValue)
-                narrativeTiming.Add
-                   (
-                       CreateNarrativeEntry("StopCriterion", item.Timing.StopCriterion.Value.ToString(CultureInfo.InvariantCulture))
-                   );
-
-              //Timing - StopDate
-              if (item.Timing.StopDate != null)
-                narrativeTiming.Add
-                   (
-                       CreateNarrativeEntry("StopDate", item.Timing.StopDate)
-                   );
-
-              if (item.Timing.NumberOfAdministrations != null)
-              {
-                var numberOfAdministrations = string.Empty;
-
-                //Timing - Number of Administrations - Numerator
-                if (item.Timing.NumberOfAdministrations.NullFlavor != null)
-                  numberOfAdministrations += item.Timing.NumberOfAdministrations.NullFlavor.Value.GetAttributeValue<NameAttribute, String>(x => x.Name) + " ";
-
-                //Timing - Number of Administrations - Denominator
-                if (item.Timing.NumberOfAdministrations.Denominator != null)
-                  numberOfAdministrations += item.Timing.NumberOfAdministrations.Denominator.NarrativeText;
-
-                //Timing - Number of Administrations - Numerator
-                if (item.Timing.NumberOfAdministrations.Numerator != null)
-                {
-                  if (!numberOfAdministrations.IsNullOrEmptyWhitespace())
-                    numberOfAdministrations += " - ";
-
-                  numberOfAdministrations += item.Timing.NumberOfAdministrations.Numerator.NarrativeText + " ";
-                }
-
-                if (!numberOfAdministrations.IsNullOrEmptyWhitespace())
-                  narrativeTiming.Add
-                     (
-                         CreateNarrativeEntry("Number of Administrations", numberOfAdministrations)
-                     );
-              }
-
-              //Timing - LongTerm
-              if (item.Timing.LongTerm.HasValue)
-                narrativeTiming.Add
-                   (
-                       CreateNarrativeEntry("Long-Term", item.Timing.LongTerm.Value.ToString(CultureInfo.InvariantCulture))
-                   );
-            }
-
-            if (item.AdministrationDetails != null)
-            {
-              //AdministrationDetails - Route
-              if (item.AdministrationDetails.Route != null)
-                narrativeAdministrationDetails.Add
-                   (
-                       CreateNarrativeEntry("Route", item.AdministrationDetails.Route.NarrativeText)
-                   );
-
-              //AdministrationDetails - AnatomicalSite
-              if (item.AdministrationDetails.AnatomicalSite != null)
-                narrativeAdministrationDetails.Add
-                   (
-                       CreateNarrativeEntry("AnatomicalSite", item.AdministrationDetails.AnatomicalSite.NarrativeText)
-                   );
-
-              //AdministrationDetails - MedicationDeliveryMethod
-              if (item.AdministrationDetails.MedicationDeliveryMethod != null)
-                narrativeAdministrationDetails.Add
-                   (
-                       CreateNarrativeEntry("Medication Delivery Method", item.AdministrationDetails.MedicationDeliveryMethod.NarrativeText)
-                   );
-            }
-
-            if (item.QuantityToDispense != null)
-            {
-              //QuantityToDispense - Quantity
-              if (item.QuantityToDispense.Quantity != null)
-                narrativeQuantityToDispense.Add
-                   (
-                       CreateNarrativeEntry("Quantity", item.QuantityToDispense.Quantity.NarrativeText)
-                   );
-
-              //QuantityToDispense - Dispensing Unit
-              if (item.QuantityToDispense.Unit != null)
-                narrativeQuantityToDispense.Add
-                   (
-                       CreateNarrativeEntry("Dispensing Unit", item.QuantityToDispense.Unit.NarrativeText)
-                   );
-
-              //QuantityToDispense - QuantityDescription
-              if (!item.QuantityToDispense.QuantityDescription.IsNullOrEmptyWhitespace())
-                narrativeQuantityToDispense.Add
-                   (
-                       CreateNarrativeEntry("Quantity Description", item.QuantityToDispense.QuantityDescription)
-                   );
-            }
-
-            //Brand Substitute Allowed
-            if (item.BrandSubstituteNotAllowed != null)
-              narrative.Add
-                 (
-                     CreateNarrativeEntry("Brand Substitute Not Allowed", item.BrandSubstituteNotAllowed)
-                 );
-
-            // PBS Prescription Type
-            if (item.PBSPrescriptionType.HasValue)
-              narrative.Add
-                 (
-                     CreateNarrativeEntry("PBS Prescription Type", item.PBSPrescriptionType.Value.GetAttributeValue<NameAttribute, String>(x => x.Name))
-                 );
-
-            // Medical Benefit Category Type
-            if (item.MedicalBenefitCategoryType.HasValue && item.MedicalBenefitCategoryType.Value != MedicalBenefitCategoryType.Undefined)
-              narrative.Add
-                 (
-                     CreateNarrativeEntry("Medical Benefit Category Type", item.MedicalBenefitCategoryType.GetAttributeValue<NameAttribute, String>(x => x.Name))
-                 );
-
-            // PBS Close the Gap Benefit
-            if (item.PBSCloseTheGapBenefit != null)
-              narrative.Add
-                 (
-                     CreateNarrativeEntry("PBS Close the Gap Benefit", item.PBSCloseTheGapBenefit.NarrativeText)
-                 );
-
-            // PBS/RPBS Item Code
-            if (item.PBSRPBSItemCode != null)
-              narrative.Add
-                 (
-                     CreateNarrativeEntry("PBS/RPBS Item Code", string.Format("{0} {1}", item.PBSRPBSItemCode.Code, !item.PBSRPBSItemCode.NarrativeText.IsNullOrEmptyWhitespace() ? string.Format("{0}", item.PBSRPBSItemCode.NarrativeText) : string.Empty))
-                 );
-
-            // PBS/RPBS Manufacturer Code
-            if (item.PBSRPBSManufacturerCode != null)
-              narrative.Add
-                 (
-                     CreateNarrativeEntry("PBS/RPBS Manufacturer Code", item.PBSRPBSManufacturerCode.NarrativeText)
-                 );
-
-
-            // PBS/RPBS Manufacturer Code
-            if (item.PBSExtemporaneousIngredient != null)
-            {
-              for (int index = 0; index < item.PBSExtemporaneousIngredient.Count; index++)
-              {
-                var extemporaneousIngredient = item.PBSExtemporaneousIngredient[index];
-
-                if (extemporaneousIngredient != null && extemporaneousIngredient.IngredientName != null || extemporaneousIngredient.IngredientQuantity != null)
-                  narrativePBSExtemporaneousIngredient.Add
-                  (
-                    CreateNarrativeEntry(extemporaneousIngredient.IngredientQuantity != null ? extemporaneousIngredient.IngredientQuantity.NarrativeText : null,
-                                        extemporaneousIngredient.IngredientName != null ? extemporaneousIngredient.IngredientName.NarrativeText : null)
-                  );
-
-              }
-            }
-
-            // PBS/RPBS Authority Prescription Number
-            if (!item.PBSRPBSAuthorityPrescriptionNumber.IsNullOrEmptyWhitespace())
-              narrative.Add
-                 (
-                     CreateNarrativeEntry("PBS/RPBS Authority Prescription Number", item.PBSRPBSAuthorityPrescriptionNumber)
-                 );
-
-            // PBS/RPBS Authority Approval Number
-            if (!item.PBSRPBSAuthorityApprovalNumber.IsNullOrEmptyWhitespace())
-              narrative.Add
-                 (
-                     CreateNarrativeEntry("PBS/RPBS Authority Approval Number", item.PBSRPBSAuthorityApprovalNumber)
-                 );
-
-
-            // Streamlined Authority Approval Number
-            if (!item.StreamlinedAuthorityApprovalNumber.IsNullOrEmptyWhitespace())
-              narrative.Add
-                 (
-                     CreateNarrativeEntry("Streamlined Authority Approval Number", item.StreamlinedAuthorityApprovalNumber)
-                 );
-
-            // State Authority Number
-            if (item.StateAuthorityNumber != null)
-              narrative.Add
-                 (
-                     CreateNarrativeEntry("State Authority Number", item.StateAuthorityNumber.NarrativeText)
-                 );
-
-
-            // Additional Comments
-            if (!item.AdditionalComments.IsNullOrEmptyWhitespace())
-              narrative.Add
-                 (
-                     CreateNarrativeEntry("Additional Comments", item.AdditionalComments)
-                 );
-
-            // The Prescription Note
-            if (!requesterNote.IsNullOrEmptyWhitespace())
-            {
-              narrative.Add
-                      (
-                          CreateNarrativeEntry("Requester Note", requesterNote)
-                      );
-            }
-
-            // Entitlements Prescriber
-            if (dispenserOrganisation.Participant.Entitlements != null && dispenserOrganisation.Participant.Entitlements.Count > 0)
-            {
-              foreach (var entitlement in dispenserOrganisation.Participant.Entitlements)
-              {
-                CodableText codeableTextEntry = null;
-
-                if (entitlement.Type != EntitlementType.Undefined)
-                {
-                  codeableTextEntry = new CodableText
-                  {
-                    Code = entitlement.Type.GetAttributeValue<NameAttribute, String>(x => x.Code),
-                    DisplayName = entitlement.Type.GetAttributeValue<NameAttribute, String>(x => x.Name),
-                    OriginalText = entitlement.Type.GetAttributeValue<NameAttribute, String>(x => x.Name),
-                    CodeSystem = CodingSystem.NCTISEntitlementTypeValues
-                  };
-                }
-
-                narrativeEntitlements.Add
+                //Prescription Request Item Identifier
+                if (item.PrescriptionRequestItemIdentifier != null)
+                    narrative.Add
                     (
-                        CreateNarrativeEntry(entitlement, codeableTextEntry)
+                        CreateNarrativeEntry("Prescription Request Item Identifier",
+                            item.PrescriptionRequestItemIdentifier.NarrativeText)
                     );
-              }
+
+                //Dispense Item Identifier
+                if (item.DispenseItemIdentifier != null)
+                    narrative.Add
+                    (
+                        CreateNarrativeEntry("Dispense Item Identifier", item.DispenseItemIdentifier.NarrativeText)
+                    );
+
+                //Therapeutic Good Identification
+                if (item.TherapeuticGoodIdentification != null)
+                    narrative.Add
+                    (
+                        CreateNarrativeEntry("Therapeutic Good Identification",
+                            item.TherapeuticGoodIdentification.NarrativeText)
+                    );
+
+                //Formula
+                if (!item.Formula.IsNullOrEmptyWhitespace())
+                    narrative.Add
+                    (
+                        CreateNarrativeEntry("Formula", item.Formula)
+                    );
+
+                //Instruction
+                if (!item.Directions.IsNullOrEmptyWhitespace())
+                    narrative.Add
+                    (
+                        CreateNarrativeEntry("Directions", item.Directions)
+                    );
+
+                if (item.StructuredDose != null)
+                {
+                    //Quantity of Therapeutic Good
+                    if (item.StructuredDose.Quantity != null)
+                        narrativeStructuredDose.Add
+                        (
+                            CreateNarrativeEntry("Quantity", item.StructuredDose.Quantity.NarrativeText)
+                        );
+
+                    //Structured Dose - Dose Unit
+                    if (item.StructuredDose.Unit != null)
+                        narrativeStructuredDose.Add
+                        (
+                            CreateNarrativeEntry("Dose Unit", item.StructuredDose.Unit.NarrativeText)
+                        );
+
+                    //Structured Dose - Quantity Description
+                    if (item.StructuredDose.QuantityDescription != null)
+                        narrativeStructuredDose.Add
+                        (
+                            CreateNarrativeEntry("Quantity Description", item.StructuredDose.QuantityDescription)
+                        );
+                }
+
+                if (item.Timing != null)
+                {
+                    //Timing
+                    if (!item.Timing.TimingDescription.IsNullOrEmptyWhitespace())
+                        narrativeTiming.Add
+                        (
+                            CreateNarrativeEntry("Timing Description", item.Timing.TimingDescription)
+                        );
+
+                    //Structured Timing EffectiveTime
+                    if (item.Timing.StructuredTiming != null && item.Timing.StructuredTiming.EffectiveTime != null)
+                    {
+
+                        if (!item.Timing.StructuredTiming.NarrativeText.IsNullOrEmptyWhitespace())
+                        {
+
+                            narrativeTiming.Add
+                            (
+                                CreateNarrativeEntry("EffectiveTime", item.Timing.StructuredTiming.NarrativeText)
+                            );
+
+                        }
+                        else
+                        {
+                            //Structured Timing EffectiveTime
+                            narrativeTiming.Add
+                            (
+                                new List<string>
+                                {
+                                    "EffectiveTime",
+                                    CreateTimingEntry(item.Timing.StructuredTiming.EffectiveTime)
+                                }
+                            );
+                        }
+                    }
+
+                    //PRN
+                    if (item.Timing.PRN.HasValue)
+                        narrativeTiming.Add
+                        (
+                            CreateNarrativeEntry("PRN", item.Timing.PRN.Value.ToString(CultureInfo.InvariantCulture))
+                        );
+
+                    //Timing - StartCriterion
+                    if (item.Timing.StartCriterion.HasValue)
+                        narrativeTiming.Add
+                        (
+                            CreateNarrativeEntry("StartCriterion",
+                                item.Timing.StartCriterion.Value.ToString(CultureInfo.InvariantCulture))
+                        );
+
+                    //Timing - StartDate
+                    if (item.Timing.StartDate != null)
+                        narrativeTiming.Add
+                        (
+                            CreateNarrativeEntry("StartDate", item.Timing.StartDate)
+                        );
+
+                    //Timing - StopCriterion
+                    if (item.Timing.StopCriterion.HasValue)
+                        narrativeTiming.Add
+                        (
+                            CreateNarrativeEntry("StopCriterion",
+                                item.Timing.StopCriterion.Value.ToString(CultureInfo.InvariantCulture))
+                        );
+
+                    //Timing - StopDate
+                    if (item.Timing.StopDate != null)
+                        narrativeTiming.Add
+                        (
+                            CreateNarrativeEntry("StopDate", item.Timing.StopDate)
+                        );
+
+                    if (item.Timing.NumberOfAdministrations != null)
+                    {
+                        var numberOfAdministrations = string.Empty;
+
+                        //Timing - Number of Administrations - Numerator
+                        if (item.Timing.NumberOfAdministrations.NullFlavor != null)
+                            numberOfAdministrations +=
+                                item.Timing.NumberOfAdministrations.NullFlavor.Value
+                                    .GetAttributeValue<NameAttribute, String>(x => x.Name) + " ";
+
+                        //Timing - Number of Administrations - Denominator
+                        if (item.Timing.NumberOfAdministrations.Denominator != null)
+                            numberOfAdministrations += item.Timing.NumberOfAdministrations.Denominator.NarrativeText;
+
+                        //Timing - Number of Administrations - Numerator
+                        if (item.Timing.NumberOfAdministrations.Numerator != null)
+                        {
+                            if (!numberOfAdministrations.IsNullOrEmptyWhitespace())
+                                numberOfAdministrations += " - ";
+
+                            numberOfAdministrations +=
+                                item.Timing.NumberOfAdministrations.Numerator.NarrativeText + " ";
+                        }
+
+                        if (!numberOfAdministrations.IsNullOrEmptyWhitespace())
+                            narrativeTiming.Add
+                            (
+                                CreateNarrativeEntry("Number of Administrations", numberOfAdministrations)
+                            );
+                    }
+
+                    //Timing - LongTerm
+                    if (item.Timing.LongTerm.HasValue)
+                        narrativeTiming.Add
+                        (
+                            CreateNarrativeEntry("Long-Term",
+                                item.Timing.LongTerm.Value.ToString(CultureInfo.InvariantCulture))
+                        );
+                }
+
+                if (item.AdministrationDetails != null)
+                {
+                    //AdministrationDetails - Route
+                    if (item.AdministrationDetails.Route != null)
+                        narrativeAdministrationDetails.Add
+                        (
+                            CreateNarrativeEntry("Route", item.AdministrationDetails.Route.NarrativeText)
+                        );
+
+                    //AdministrationDetails - AnatomicalSite
+                    if (item.AdministrationDetails.AnatomicalSite != null)
+                        narrativeAdministrationDetails.Add
+                        (
+                            CreateNarrativeEntry("AnatomicalSite",
+                                item.AdministrationDetails.AnatomicalSite.NarrativeText)
+                        );
+
+                    //AdministrationDetails - MedicationDeliveryMethod
+                    if (item.AdministrationDetails.MedicationDeliveryMethod != null)
+                        narrativeAdministrationDetails.Add
+                        (
+                            CreateNarrativeEntry("Medication Delivery Method",
+                                item.AdministrationDetails.MedicationDeliveryMethod.NarrativeText)
+                        );
+                }
+
+                if (item.QuantityToDispense != null)
+                {
+                    //QuantityToDispense - Quantity
+                    if (item.QuantityToDispense.Quantity != null)
+                        narrativeQuantityToDispense.Add
+                        (
+                            CreateNarrativeEntry("Quantity", item.QuantityToDispense.Quantity.NarrativeText)
+                        );
+
+                    //QuantityToDispense - Dispensing Unit
+                    if (item.QuantityToDispense.Unit != null)
+                        narrativeQuantityToDispense.Add
+                        (
+                            CreateNarrativeEntry("Dispensing Unit", item.QuantityToDispense.Unit.NarrativeText)
+                        );
+
+                    //QuantityToDispense - QuantityDescription
+                    if (!item.QuantityToDispense.QuantityDescription.IsNullOrEmptyWhitespace())
+                        narrativeQuantityToDispense.Add
+                        (
+                            CreateNarrativeEntry("Quantity Description", item.QuantityToDispense.QuantityDescription)
+                        );
+                }
+
+                //Brand Substitute Allowed
+                if (item.BrandSubstituteNotAllowed != null)
+                    narrative.Add
+                    (
+                        CreateNarrativeEntry("Brand Substitute Not Allowed", item.BrandSubstituteNotAllowed)
+                    );
+
+                // PBS Prescription Type
+                if (item.PBSPrescriptionType.HasValue)
+                    narrative.Add
+                    (
+                        CreateNarrativeEntry("PBS Prescription Type",
+                            item.PBSPrescriptionType.Value.GetAttributeValue<NameAttribute, String>(x => x.Name))
+                    );
+
+                // Medical Benefit Category Type
+                if (item.MedicalBenefitCategoryType.HasValue &&
+                    item.MedicalBenefitCategoryType.Value != MedicalBenefitCategoryType.Undefined)
+                    narrative.Add
+                    (
+                        CreateNarrativeEntry("Medical Benefit Category Type",
+                            item.MedicalBenefitCategoryType.GetAttributeValue<NameAttribute, String>(x => x.Name))
+                    );
+
+                // PBS Close the Gap Benefit
+                if (item.PBSCloseTheGapBenefit != null)
+                    narrative.Add
+                    (
+                        CreateNarrativeEntry("PBS Close the Gap Benefit", item.PBSCloseTheGapBenefit.NarrativeText)
+                    );
+
+                // PBS/RPBS Item Code
+                if (item.PBSRPBSItemCode != null)
+                    narrative.Add
+                    (
+                        CreateNarrativeEntry("PBS/RPBS Item Code",
+                            string.Format("{0} {1}", item.PBSRPBSItemCode.Code,
+                                !item.PBSRPBSItemCode.NarrativeText.IsNullOrEmptyWhitespace()
+                                    ? string.Format("{0}", item.PBSRPBSItemCode.NarrativeText)
+                                    : string.Empty))
+                    );
+
+                // PBS/RPBS Manufacturer Code
+                if (item.PBSRPBSManufacturerCode != null)
+                    narrative.Add
+                    (
+                        CreateNarrativeEntry("PBS/RPBS Manufacturer Code", item.PBSRPBSManufacturerCode.NarrativeText)
+                    );
+
+
+                // PBS/RPBS Manufacturer Code
+                if (item.PBSExtemporaneousIngredient != null)
+                {
+                    for (int index = 0; index < item.PBSExtemporaneousIngredient.Count; index++)
+                    {
+                        var extemporaneousIngredient = item.PBSExtemporaneousIngredient[index];
+
+                        if (extemporaneousIngredient != null && extemporaneousIngredient.IngredientName != null ||
+                            extemporaneousIngredient.IngredientQuantity != null)
+                            narrativePBSExtemporaneousIngredient.Add
+                            (
+                                CreateNarrativeEntry(
+                                    extemporaneousIngredient.IngredientQuantity != null
+                                        ? extemporaneousIngredient.IngredientQuantity.NarrativeText
+                                        : null,
+                                    extemporaneousIngredient.IngredientName != null
+                                        ? extemporaneousIngredient.IngredientName.NarrativeText
+                                        : null)
+                            );
+
+                    }
+                }
+
+                // PBS/RPBS Authority Prescription Number
+                if (!item.PBSRPBSAuthorityPrescriptionNumber.IsNullOrEmptyWhitespace())
+                    narrative.Add
+                    (
+                        CreateNarrativeEntry("PBS/RPBS Authority Prescription Number",
+                            item.PBSRPBSAuthorityPrescriptionNumber)
+                    );
+
+                // PBS/RPBS Authority Approval Number
+                if (!item.PBSRPBSAuthorityApprovalNumber.IsNullOrEmptyWhitespace())
+                    narrative.Add
+                    (
+                        CreateNarrativeEntry("PBS/RPBS Authority Approval Number", item.PBSRPBSAuthorityApprovalNumber)
+                    );
+
+
+                // Streamlined Authority Approval Number
+                if (!item.StreamlinedAuthorityApprovalNumber.IsNullOrEmptyWhitespace())
+                    narrative.Add
+                    (
+                        CreateNarrativeEntry("Streamlined Authority Approval Number",
+                            item.StreamlinedAuthorityApprovalNumber)
+                    );
+
+                // State Authority Number
+                if (item.StateAuthorityNumber != null)
+                    narrative.Add
+                    (
+                        CreateNarrativeEntry("State Authority Number", item.StateAuthorityNumber.NarrativeText)
+                    );
+
+
+                // Additional Comments
+                if (!item.AdditionalComments.IsNullOrEmptyWhitespace())
+                    narrative.Add
+                    (
+                        CreateNarrativeEntry("Additional Comments", item.AdditionalComments)
+                    );
+
+                // The Prescription Note
+                if (!requesterNote.IsNullOrEmptyWhitespace())
+                {
+                    narrative.Add
+                    (
+                        CreateNarrativeEntry("Requester Note", requesterNote)
+                    );
+                }
+
+                // Entitlements Prescriber
+                if (dispenserOrganisation.Participant.Entitlements != null &&
+                    dispenserOrganisation.Participant.Entitlements.Count > 0)
+                {
+                    foreach (var entitlement in dispenserOrganisation.Participant.Entitlements)
+                    {
+                        CodableText codeableTextEntry = null;
+
+                        if (entitlement.Type != EntitlementType.Undefined)
+                        {
+                            codeableTextEntry = new CodableText
+                            {
+                                Code = entitlement.Type.GetAttributeValue<NameAttribute, String>(x => x.Code),
+                                DisplayName = entitlement.Type.GetAttributeValue<NameAttribute, String>(x => x.Name),
+                                OriginalText = entitlement.Type.GetAttributeValue<NameAttribute, String>(x => x.Name),
+                                CodeSystem = CodingSystem.NCTISEntitlementTypeValues
+                            };
+                        }
+
+                        narrativeEntitlements.Add
+                        (
+                            CreateNarrativeEntry(entitlement, codeableTextEntry)
+                        );
+                    }
+                }
+
+                strucDocTableList.AddRange
+                (
+                    new List<StrucDocTable>
+                    {
+                        narrative.Any()
+                            ? PopulateTable
+                            (
+                                "Prescription Request Item",
+                                null,
+                                new[] {"Field", "Value"},
+                                null,
+                                narrative
+                            )
+                            : null,
+                        narrativeTiming.Any()
+                            ? PopulateTable
+                            (
+                                "Timing",
+                                null,
+                                new[] {"Field", "Value"},
+                                null,
+                                narrativeTiming
+                            )
+                            : null,
+                        narrativeStructuredDose.Any()
+                            ? PopulateTable
+                            (
+                                "Structured Dose",
+                                null,
+                                new[] {"Field", "Value"},
+                                null,
+                                narrativeStructuredDose
+                            )
+                            : null,
+                        narrativeQuantityToDispense.Any()
+                            ? PopulateTable
+                            (
+                                "Quantity To Dispense",
+                                null,
+                                new[] {"Field", "Value"},
+                                null,
+                                narrativeQuantityToDispense
+                            )
+                            : null,
+                        narrativePBSExtemporaneousIngredient.Any()
+                            ? PopulateTable
+                            (
+                                "PBS Extemporaneous Ingredient",
+                                null,
+                                new[] {"Ingredient Name", "Ingredient Quantity"},
+                                null,
+                                narrativePBSExtemporaneousIngredient
+                            )
+                            : null,
+                        narrativeAdministrationDetails.Any()
+                            ? PopulateTable
+                            (
+                                "Administration Details",
+                                null,
+                                new[] {"Field", "Value"},
+                                null,
+                                narrativeAdministrationDetails
+                            )
+                            : null,
+                        narrativeEntitlements.Any()
+                            ? PopulateTable
+                            (
+                                "Entitlements",
+                                null,
+                                new[] {"Entitlements", "Value"},
+                                null,
+                                narrativeEntitlements
+                            )
+                            : null
+                    }
+                );
             }
 
-            strucDocTableList.AddRange
-                (
-                   new List<StrucDocTable>
-                           {
-                                narrative.Any() ? PopulateTable
-                                        (
-                                            "Prescription Request Item",
-                                            null ,
-                                            new []  { "Field", "Value" },
-                                            null,
-                                            narrative
-                                        ) : null,
-                                narrativeTiming.Any() ? PopulateTable
-                                        (
-                                            "Timing",
-                                            null ,
-                                            new []  { "Field", "Value" },
-                                            null,
-                                            narrativeTiming
-                                        ): null,
-                                narrativeStructuredDose.Any() ? PopulateTable
-                                        (
-                                            "Structured Dose",
-                                            null ,
-                                            new []  { "Field", "Value" },
-                                            null,
-                                            narrativeStructuredDose
-                                        ) : null,
-                                narrativeQuantityToDispense.Any() ? PopulateTable
-                                        (
-                                            "Quantity To Dispense",
-                                            null ,
-                                            new []  { "Field", "Value" },
-                                            null,
-                                            narrativeQuantityToDispense
-                                        ) : null,
-                                narrativePBSExtemporaneousIngredient.Any() ? PopulateTable
-                                        (
-                                            "PBS Extemporaneous Ingredient",
-                                            null ,
-                                            new []  { "Ingredient Name", "Ingredient Quantity" },
-                                            null,
-                                            narrativePBSExtemporaneousIngredient
-                                        ) : null,
-                                narrativeAdministrationDetails.Any() ? PopulateTable
-                                        (
-                                            "Administration Details",
-                                            null ,
-                                            new []  { "Field", "Value" },
-                                            null,
-                                            narrativeAdministrationDetails
-                                        ) : null,
-                                narrativeEntitlements.Any() ?  PopulateTable
-                                        (
-                                            "Entitlements",
-                                            null,
-                                            new []  { "Entitlements", "Value" },
-                                            null,
-                                            narrativeEntitlements
-                                        ) : null
-                           }
-                );
-          }
+            var strucDocText = new StrucDocText();
 
-          var strucDocText = new StrucDocText();
+            if (strucDocTableList.Count > 0)
+            {
+                strucDocText.table = strucDocTableList.ToArray();
+            }
 
-          if (strucDocTableList.Count > 0)
-          {
-            strucDocText.table = strucDocTableList.ToArray();
-          }
-
-          return strucDocText;
+            return strucDocText;
         }
 
         /// <summary>
@@ -5669,474 +6177,555 @@ namespace Nehta.VendorLibrary.CDA.Generator
         /// <returns>StrucDocText</returns>
         public StrucDocText CreateNarrative(PhysicalMeasurement physicalMeasurement)
         {
-          var strucDocTableList = new List<StrucDocTable>();
+            var strucDocTableList = new List<StrucDocTable>();
 
-          if (physicalMeasurement != null)
-          {
-
-           if (physicalMeasurement.HeadCircumference != null)
-           {
-            var headCircumferenceNarrative =  new List<List<String>>();
-
-            // Body Part Circumference Date Time
-            if (physicalMeasurement.HeadCircumference.BodyPartCircumferenceDateTime != null)
+            if (physicalMeasurement != null)
             {
-              headCircumferenceNarrative.Add
-                  (
-                      CreateNarrativeEntry("Body Part Circumference DateTime", physicalMeasurement.HeadCircumference.BodyPartCircumferenceDateTime)
-                  );
+
+                if (physicalMeasurement.HeadCircumference != null)
+                {
+                    var headCircumferenceNarrative = new List<List<String>>();
+
+                    // Body Part Circumference Date Time
+                    if (physicalMeasurement.HeadCircumference.BodyPartCircumferenceDateTime != null)
+                    {
+                        headCircumferenceNarrative.Add
+                        (
+                            CreateNarrativeEntry("Body Part Circumference DateTime",
+                                physicalMeasurement.HeadCircumference.BodyPartCircumferenceDateTime)
+                        );
+                    }
+
+                    // Name Of Location
+                    if (physicalMeasurement.HeadCircumference.NameOfLocation != null)
+                    {
+                        headCircumferenceNarrative.Add
+                        (
+                            CreateNarrativeEntry("Name Of Location",
+                                physicalMeasurement.HeadCircumference.NameOfLocation.NarrativeText)
+                        );
+                    }
+
+                    // Circumference
+                    if (physicalMeasurement.HeadCircumference.Circumference != null)
+                    {
+                        headCircumferenceNarrative.Add
+                        (
+                            CreateNarrativeEntry("Circumference",
+                                physicalMeasurement.HeadCircumference.Circumference.NarrativeText)
+                        );
+                    }
+
+                    // Circumference Normal Status
+                    if (physicalMeasurement.HeadCircumference.CircumferenceNormalStatus != null)
+                    {
+                        headCircumferenceNarrative.Add
+                        (
+                            CreateNarrativeEntry("Circumference Normal Status",
+                                physicalMeasurement.HeadCircumference.CircumferenceNormalStatus.Value
+                                    .GetAttributeValue<NameAttribute, string>(x => x.Name))
+                        );
+                    }
+
+                    // Circumference Reference Range Details
+                    if (physicalMeasurement.HeadCircumference.CircumferenceReferenceRangeDetails != null &&
+                        physicalMeasurement.HeadCircumference.CircumferenceReferenceRangeDetails.Any())
+                    {
+                        var narrativeText =
+                            physicalMeasurement.HeadCircumference.CircumferenceReferenceRangeDetails.Aggregate(
+                                string.Empty,
+                                (current, circumferenceReferenceRangeDetails) =>
+                                    current + DELIMITERBREAK + circumferenceReferenceRangeDetails.NarrativeText);
+
+                        headCircumferenceNarrative.Add
+                        (
+                            CreateNarrativeEntry("Circumference Reference Range Details", narrativeText)
+                        );
+                    }
+
+                    // Comment (Measurement Comment)
+                    if (physicalMeasurement.HeadCircumference.Comment != null)
+                    {
+                        headCircumferenceNarrative.Add
+                        (
+                            CreateNarrativeEntry("Comment (Measurement Comment)",
+                                physicalMeasurement.HeadCircumference.Comment)
+                        );
+                    }
+
+                    // Confounding Factor
+                    if (physicalMeasurement.HeadCircumference.ConfoundingFactor != null &&
+                        physicalMeasurement.HeadCircumference.ConfoundingFactor.Any())
+                    {
+                        var narrativeText = physicalMeasurement.HeadCircumference.ConfoundingFactor.Aggregate(
+                            string.Empty,
+                            (current, confoundingFactor) =>
+                                current + (DELIMITERBREAK + confoundingFactor.NarrativeText));
+
+                        headCircumferenceNarrative.Add
+                        (
+                            CreateNarrativeEntry("Confounding Factor", narrativeText)
+                        );
+                    }
+
+                    // Information Provider
+                    if (physicalMeasurement.HeadCircumference.InformationProvider != null)
+                    {
+                        headCircumferenceNarrative.Add
+                        (
+                            CreateNarrativeEntry("Information Provider",
+                                CreateInformationProvider(physicalMeasurement.HeadCircumference.InformationProvider))
+                        );
+                    }
+
+                    if (physicalMeasurement.HeadCircumference.Device != null)
+                        headCircumferenceNarrative.Add
+                        (
+                            CreateNarrativeEntry("Device",
+                                string.Format("{0}", physicalMeasurement.HeadCircumference.Device.SoftwareName))
+                        );
+
+                    strucDocTableList.AddRange
+                    (
+                        new List<StrucDocTable>
+                        {
+                            headCircumferenceNarrative.Any()
+                                ? PopulateTable
+                                (
+                                    "Head Circumference (BODY PART CIRCUMFERENCE)",
+                                    null,
+                                    new[] {"Field", "Value"},
+                                    null,
+                                    headCircumferenceNarrative
+                                )
+                                : null,
+                        }
+                    );
+                }
+
+                if (physicalMeasurement.PhysicalMeasurementBodyWeight != null)
+                {
+                    var physicalMeasurementBodyWeightNarrative = new List<List<String>>();
+
+                    // Body Weight DateTime
+                    if (physicalMeasurement.PhysicalMeasurementBodyWeight.BodyWeightDateTime != null)
+                    {
+                        physicalMeasurementBodyWeightNarrative.Add
+                        (
+                            CreateNarrativeEntry("Body Weight DateTime",
+                                physicalMeasurement.PhysicalMeasurementBodyWeight.BodyWeightDateTime)
+                        );
+                    }
+
+                    // Weight
+                    if (physicalMeasurement.PhysicalMeasurementBodyWeight.Weight != null)
+                    {
+                        physicalMeasurementBodyWeightNarrative.Add
+                        (
+                            CreateNarrativeEntry("Weight",
+                                physicalMeasurement.PhysicalMeasurementBodyWeight.Weight.NarrativeText)
+                        );
+                    }
+
+                    // Weight Normal Status
+                    if (physicalMeasurement.PhysicalMeasurementBodyWeight.WeightNormalStatus != null)
+                    {
+                        physicalMeasurementBodyWeightNarrative.Add
+                        (
+                            CreateNarrativeEntry("Weight Normal Status",
+                                physicalMeasurement.PhysicalMeasurementBodyWeight.WeightNormalStatus.Value
+                                    .GetAttributeValue<NameAttribute, string>(x => x.Name))
+                        );
+                    }
+
+                    // Weight Reference Range Details
+                    if (physicalMeasurement.PhysicalMeasurementBodyWeight.WeightReferenceRangeDetails != null &&
+                        physicalMeasurement.PhysicalMeasurementBodyWeight.WeightReferenceRangeDetails.Any())
+                    {
+                        var narrativeText =
+                            physicalMeasurement.PhysicalMeasurementBodyWeight.WeightReferenceRangeDetails.Aggregate(
+                                string.Empty,
+                                (current, circumferenceReferenceRangeDetails) =>
+                                    current + DELIMITERBREAK + circumferenceReferenceRangeDetails.NarrativeText);
+
+                        physicalMeasurementBodyWeightNarrative.Add
+                        (
+                            CreateNarrativeEntry("Weight Reference Range Details", narrativeText)
+                        );
+                    }
+
+                    // Comment (Measurement Comment)
+                    if (physicalMeasurement.PhysicalMeasurementBodyWeight.Comment != null)
+                    {
+                        physicalMeasurementBodyWeightNarrative.Add
+                        (
+                            CreateNarrativeEntry("Comment (Measurement Comment)",
+                                physicalMeasurement.PhysicalMeasurementBodyWeight.Comment)
+                        );
+                    }
+
+                    // Weight
+                    if (physicalMeasurement.PhysicalMeasurementBodyWeight.StateOfDress != null)
+                    {
+                        physicalMeasurementBodyWeightNarrative.Add
+                        (
+                            CreateNarrativeEntry("State Of Dress",
+                                physicalMeasurement.PhysicalMeasurementBodyWeight.StateOfDress)
+                        );
+                    }
+
+                    // Pregnant?
+                    if (physicalMeasurement.PhysicalMeasurementBodyWeight.Pregnant != null)
+                    {
+                        physicalMeasurementBodyWeightNarrative.Add
+                        (
+                            CreateNarrativeEntry("Pregnant?",
+                                physicalMeasurement.PhysicalMeasurementBodyWeight.Pregnant.ToString())
+                        );
+                    }
+
+                    // Confounding Factor
+                    if (physicalMeasurement.PhysicalMeasurementBodyWeight.ConfoundingFactor != null &&
+                        physicalMeasurement.PhysicalMeasurementBodyWeight.ConfoundingFactor.Any())
+                    {
+                        var narrativeText =
+                            physicalMeasurement.PhysicalMeasurementBodyWeight.ConfoundingFactor.Aggregate(string.Empty,
+                                (current, confoundingFactor) =>
+                                    current + (DELIMITERBREAK + confoundingFactor.NarrativeText));
+
+                        physicalMeasurementBodyWeightNarrative.Add
+                        (
+                            CreateNarrativeEntry("Confounding Factor", narrativeText)
+                        );
+                    }
+
+                    // Weight Estimation Formula
+                    if (physicalMeasurement.PhysicalMeasurementBodyWeight.WeightEstimationFormula != null)
+                    {
+                        physicalMeasurementBodyWeightNarrative.Add
+                        (
+                            CreateNarrativeEntry("Weight Estimation Formula",
+                                physicalMeasurement.PhysicalMeasurementBodyWeight.WeightEstimationFormula)
+                        );
+                    }
+
+                    // Body Weight Instance Identifier
+                    if (physicalMeasurement.PhysicalMeasurementBodyWeight.BodyWeightInstanceIdentifier != null)
+                    {
+                        physicalMeasurementBodyWeightNarrative.Add
+                        (
+                            CreateNarrativeEntry("Body Weight Instance Identifier",
+                                physicalMeasurement.PhysicalMeasurementBodyWeight.BodyWeightInstanceIdentifier
+                                    .NarrativeText)
+                        );
+                    }
+
+                    // Information Provider
+                    if (physicalMeasurement.PhysicalMeasurementBodyWeight.InformationProvider != null)
+                    {
+                        physicalMeasurementBodyWeightNarrative.Add
+                        (
+                            CreateNarrativeEntry("Information Provider",
+                                CreateInformationProvider(physicalMeasurement.PhysicalMeasurementBodyWeight
+                                    .InformationProvider))
+                        );
+                    }
+
+                    if (physicalMeasurement.PhysicalMeasurementBodyWeight.Device != null)
+                        physicalMeasurementBodyWeightNarrative.Add
+                        (
+                            CreateNarrativeEntry("Device",
+                                string.Format("{0}",
+                                    physicalMeasurement.PhysicalMeasurementBodyWeight.Device.SoftwareName))
+                        );
+
+                    strucDocTableList.AddRange
+                    (
+                        new List<StrucDocTable>
+                        {
+                            physicalMeasurementBodyWeightNarrative.Any()
+                                ? PopulateTable
+                                (
+                                    "Body Weight",
+                                    null,
+                                    new[] {"Field", "Value"},
+                                    null,
+                                    physicalMeasurementBodyWeightNarrative
+                                )
+                                : null,
+                        }
+                    );
+                }
+
+                if (physicalMeasurement.PhysicalMeasurementBodyHeightLength != null)
+                {
+                    var physicalMeasurementBodyHeightLengthNarrative = new List<List<String>>();
+
+                    // Body Weight DateTime
+                    if (physicalMeasurement.PhysicalMeasurementBodyHeightLength.BodyHeightLengthDateTime != null)
+                    {
+                        physicalMeasurementBodyHeightLengthNarrative.Add
+                        (
+                            CreateNarrativeEntry("Body Height Length Date Time",
+                                physicalMeasurement.PhysicalMeasurementBodyHeightLength.BodyHeightLengthDateTime)
+                        );
+                    }
+
+                    // Height/Length
+                    if (physicalMeasurement.PhysicalMeasurementBodyHeightLength.HeightLength != null)
+                    {
+                        physicalMeasurementBodyHeightLengthNarrative.Add
+                        (
+                            CreateNarrativeEntry("Height/Length",
+                                physicalMeasurement.PhysicalMeasurementBodyHeightLength.HeightLength.NarrativeText)
+                        );
+                    }
+
+                    // Weight Normal Status
+                    if (physicalMeasurement.PhysicalMeasurementBodyHeightLength.HeightLengthNormalStatus != null)
+                    {
+                        physicalMeasurementBodyHeightLengthNarrative.Add
+                        (
+                            CreateNarrativeEntry("Height Length Normal Status",
+                                physicalMeasurement.PhysicalMeasurementBodyHeightLength.HeightLengthNormalStatus.Value
+                                    .GetAttributeValue<NameAttribute, string>(x => x.Name))
+                        );
+                    }
+
+                    // Height/length Reference Range Details
+                    if (physicalMeasurement.PhysicalMeasurementBodyHeightLength.HeightLengthReferenceRangeDetails !=
+                        null && physicalMeasurement.PhysicalMeasurementBodyHeightLength
+                            .HeightLengthReferenceRangeDetails.Any())
+                    {
+                        var narrativeText =
+                            physicalMeasurement.PhysicalMeasurementBodyHeightLength.HeightLengthReferenceRangeDetails
+                                .Aggregate(string.Empty,
+                                    (current, circumferenceReferenceRangeDetails) =>
+                                        current + DELIMITERBREAK + circumferenceReferenceRangeDetails.NarrativeText);
+
+                        physicalMeasurementBodyHeightLengthNarrative.Add
+                        (
+                            CreateNarrativeEntry("Height/length Reference Range Details", narrativeText)
+                        );
+                    }
+
+                    // Comment (Measurement Comment)
+                    if (physicalMeasurement.PhysicalMeasurementBodyHeightLength.Comment != null)
+                    {
+                        physicalMeasurementBodyHeightLengthNarrative.Add
+                        (
+                            CreateNarrativeEntry("Comment (Measurement Comment)",
+                                physicalMeasurement.PhysicalMeasurementBodyHeightLength.Comment)
+                        );
+                    }
+
+                    // Position
+                    if (physicalMeasurement.PhysicalMeasurementBodyHeightLength.Position != null)
+                    {
+                        physicalMeasurementBodyHeightLengthNarrative.Add
+                        (
+                            CreateNarrativeEntry("Position",
+                                physicalMeasurement.PhysicalMeasurementBodyHeightLength.Position)
+                        );
+                    }
+
+                    // Confounding Factor
+                    if (physicalMeasurement.PhysicalMeasurementBodyHeightLength.ConfoundingFactor != null &&
+                        physicalMeasurement.PhysicalMeasurementBodyHeightLength.ConfoundingFactor.Any())
+                    {
+                        var narrativeText =
+                            physicalMeasurement.PhysicalMeasurementBodyHeightLength.ConfoundingFactor.Aggregate(
+                                string.Empty,
+                                (current, confoundingFactor) => current + (DELIMITERBREAK + confoundingFactor));
+
+                        physicalMeasurementBodyHeightLengthNarrative.Add
+                        (
+                            CreateNarrativeEntry("Confounding Factor", narrativeText)
+                        );
+                    }
+
+                    // Body Weight Instance Identifier
+                    if (physicalMeasurement.PhysicalMeasurementBodyHeightLength.BodyHeightLengthInstanceIdentifier !=
+                        null)
+                    {
+                        physicalMeasurementBodyHeightLengthNarrative.Add
+                        (
+                            CreateNarrativeEntry("Body Height Length Instance Identifier",
+                                physicalMeasurement.PhysicalMeasurementBodyHeightLength
+                                    .BodyHeightLengthInstanceIdentifier.NarrativeText)
+                        );
+                    }
+
+                    // Information Provider
+                    if (physicalMeasurement.PhysicalMeasurementBodyHeightLength.InformationProvider != null)
+                    {
+                        physicalMeasurementBodyHeightLengthNarrative.Add
+                        (
+                            CreateNarrativeEntry("Information Provider",
+                                CreateInformationProvider(physicalMeasurement.PhysicalMeasurementBodyHeightLength
+                                    .InformationProvider))
+                        );
+                    }
+
+                    if (physicalMeasurement.PhysicalMeasurementBodyHeightLength.Device != null)
+                        physicalMeasurementBodyHeightLengthNarrative.Add
+                        (
+                            CreateNarrativeEntry("Device",
+                                string.Format("{0}",
+                                    physicalMeasurement.PhysicalMeasurementBodyHeightLength.Device.SoftwareName))
+                        );
+
+                    strucDocTableList.AddRange
+                    (
+                        new List<StrucDocTable>
+                        {
+                            physicalMeasurementBodyHeightLengthNarrative.Any()
+                                ? PopulateTable
+                                (
+                                    "Body Height/Length",
+                                    null,
+                                    new[] {"Field", "Value"},
+                                    null,
+                                    physicalMeasurementBodyHeightLengthNarrative
+                                )
+                                : null,
+                        }
+                    );
+                }
+
+                if (physicalMeasurement.PhysicalMeasurementBodyMassIndex != null)
+                {
+                    var physicalMeasurementBodyMassIndexNarrative = new List<List<String>>();
+
+                    // Body Mass Index DateTime
+                    if (physicalMeasurement.PhysicalMeasurementBodyMassIndex.BodyMassIndexDateTime != null)
+                    {
+                        physicalMeasurementBodyMassIndexNarrative.Add
+                        (
+                            CreateNarrativeEntry("Body Mass Index DateTime",
+                                physicalMeasurement.PhysicalMeasurementBodyMassIndex.BodyMassIndexDateTime)
+                        );
+                    }
+
+                    // Body Mass Index
+                    if (physicalMeasurement.PhysicalMeasurementBodyMassIndex.BodyMassIndex != null)
+                    {
+                        physicalMeasurementBodyMassIndexNarrative.Add
+                        (
+                            CreateNarrativeEntry("Body Mass Index",
+                                physicalMeasurement.PhysicalMeasurementBodyMassIndex.BodyMassIndex.NarrativeText)
+                        );
+                    }
+
+                    // Body Mass Index Normal Status
+                    if (physicalMeasurement.PhysicalMeasurementBodyMassIndex.BodyMassIndexNormalStatus.HasValue)
+                    {
+                        physicalMeasurementBodyMassIndexNarrative.Add
+                        (
+                            CreateNarrativeEntry("Body Mass Index Normal Status",
+                                physicalMeasurement.PhysicalMeasurementBodyMassIndex.BodyMassIndexNormalStatus.Value
+                                    .GetAttributeValue<NameAttribute, string>(x => x.Name))
+                        );
+                    }
+
+                    // Height/length Reference Range Details
+                    if (physicalMeasurement.PhysicalMeasurementBodyMassIndex.BodyMassIndexReferenceRangeDetails !=
+                        null && physicalMeasurement.PhysicalMeasurementBodyMassIndex.BodyMassIndexReferenceRangeDetails
+                            .Any())
+                    {
+                        var narrativeText =
+                            physicalMeasurement.PhysicalMeasurementBodyMassIndex.BodyMassIndexReferenceRangeDetails
+                                .Aggregate(string.Empty,
+                                    (current, circumferenceReferenceRangeDetails) =>
+                                        current + DELIMITERBREAK + circumferenceReferenceRangeDetails.NarrativeText);
+
+                        physicalMeasurementBodyMassIndexNarrative.Add
+                        (
+                            CreateNarrativeEntry("Body Mass Index Reference Range Details", narrativeText)
+                        );
+                    }
+
+                    // Comment (Measurement Comment)
+                    if (physicalMeasurement.PhysicalMeasurementBodyMassIndex.Comment != null)
+                    {
+                        physicalMeasurementBodyMassIndexNarrative.Add
+                        (
+                            CreateNarrativeEntry("Comment (Measurement Comment)",
+                                physicalMeasurement.PhysicalMeasurementBodyMassIndex.Comment)
+                        );
+                    }
+
+                    // Method
+                    if (physicalMeasurement.PhysicalMeasurementBodyMassIndex.Method != null)
+                    {
+                        physicalMeasurementBodyMassIndexNarrative.Add
+                        (
+                            CreateNarrativeEntry("Method",
+                                physicalMeasurement.PhysicalMeasurementBodyMassIndex.Method.NarrativeText)
+                        );
+                    }
+
+                    // Formula (BMI Calculation Formula)
+                    if (physicalMeasurement.PhysicalMeasurementBodyMassIndex.Formula != null)
+                    {
+                        physicalMeasurementBodyMassIndexNarrative.Add
+                        (
+                            CreateNarrativeEntry("Formula (BMI Calculation Formula)",
+                                physicalMeasurement.PhysicalMeasurementBodyMassIndex.Formula)
+                        );
+                    }
+
+                    // Body Weight Instance Identifier
+                    if (physicalMeasurement.PhysicalMeasurementBodyMassIndex.BodyMassIndexInstanceIdentifier != null)
+                    {
+                        physicalMeasurementBodyMassIndexNarrative.Add
+                        (
+                            CreateNarrativeEntry("Body Mass Index Instance Identifier",
+                                physicalMeasurement.PhysicalMeasurementBodyMassIndex.BodyMassIndexInstanceIdentifier
+                                    .NarrativeText)
+                        );
+                    }
+
+                    // Information Provider
+                    if (physicalMeasurement.PhysicalMeasurementBodyMassIndex.InformationProvider != null)
+                    {
+                        physicalMeasurementBodyMassIndexNarrative.Add
+                        (
+                            CreateNarrativeEntry("Information Provider",
+                                CreateInformationProvider(physicalMeasurement.PhysicalMeasurementBodyMassIndex
+                                    .InformationProvider))
+                        );
+                    }
+
+                    strucDocTableList.AddRange
+                    (
+                        new List<StrucDocTable>
+                        {
+                            physicalMeasurementBodyMassIndexNarrative.Any()
+                                ? PopulateTable
+                                (
+                                    "Body Mass Index",
+                                    null,
+                                    new[] {"Field", "Value"},
+                                    null,
+                                    physicalMeasurementBodyMassIndexNarrative
+                                )
+                                : null,
+                        }
+                    );
+                }
             }
 
-            // Name Of Location
-            if (physicalMeasurement.HeadCircumference.NameOfLocation != null)
+            var strucDocText = new StrucDocText();
+
+            // Structured Tables
+            if (strucDocTableList.Any())
             {
-              headCircumferenceNarrative.Add
-                  (
-                      CreateNarrativeEntry("Name Of Location", physicalMeasurement.HeadCircumference.NameOfLocation.NarrativeText)
-                  );
+                strucDocText.table = strucDocTableList.ToArray();
             }
 
-            // Circumference
-            if (physicalMeasurement.HeadCircumference.Circumference != null)
-            {
-              headCircumferenceNarrative.Add
-                  (
-                      CreateNarrativeEntry("Circumference", physicalMeasurement.HeadCircumference.Circumference.NarrativeText)
-                  );
-            }
-
-            // Circumference Normal Status
-            if (physicalMeasurement.HeadCircumference.CircumferenceNormalStatus != null)
-            {
-              headCircumferenceNarrative.Add
-                  (
-                      CreateNarrativeEntry("Circumference Normal Status", physicalMeasurement.HeadCircumference.CircumferenceNormalStatus.Value.GetAttributeValue<NameAttribute, string>(x => x.Name) )
-                  );
-            }
-
-            // Circumference Reference Range Details
-            if (physicalMeasurement.HeadCircumference.CircumferenceReferenceRangeDetails != null && physicalMeasurement.HeadCircumference.CircumferenceReferenceRangeDetails .Any())
-            {
-              var narrativeText = physicalMeasurement.HeadCircumference.CircumferenceReferenceRangeDetails.Aggregate(string.Empty, (current, circumferenceReferenceRangeDetails) => current + DELIMITERBREAK + circumferenceReferenceRangeDetails.NarrativeText);
-
-              headCircumferenceNarrative.Add
-                  (
-                      CreateNarrativeEntry("Circumference Reference Range Details", narrativeText )
-                  );
-            }
-
-            // Comment (Measurement Comment)
-            if (physicalMeasurement.HeadCircumference.Comment != null)
-            {
-              headCircumferenceNarrative.Add
-                  (
-                      CreateNarrativeEntry("Comment (Measurement Comment)", physicalMeasurement.HeadCircumference.Comment )
-                  );
-            }
-
-            // Confounding Factor
-            if (physicalMeasurement.HeadCircumference.ConfoundingFactor != null && physicalMeasurement.HeadCircumference.ConfoundingFactor.Any())
-            {
-              var narrativeText = physicalMeasurement.HeadCircumference.ConfoundingFactor.Aggregate(string.Empty, (current, confoundingFactor) => current + (DELIMITERBREAK + confoundingFactor.NarrativeText));
-
-              headCircumferenceNarrative.Add
-                  (
-                      CreateNarrativeEntry("Confounding Factor", narrativeText )
-                  );
-            }
-
-            // Information Provider
-            if (physicalMeasurement.HeadCircumference.InformationProvider != null)
-            {
-              headCircumferenceNarrative.Add
-                  (
-                      CreateNarrativeEntry("Information Provider", CreateInformationProvider(physicalMeasurement.HeadCircumference.InformationProvider))
-                  );
-            }
-
-            if (physicalMeasurement.HeadCircumference.Device != null)
-              headCircumferenceNarrative.Add
-                  (
-                      CreateNarrativeEntry("Device", string.Format("{0}", physicalMeasurement.HeadCircumference.Device.SoftwareName))
-                  );
-
-            strucDocTableList.AddRange
-               (
-                 new List<StrucDocTable>
-                   {
-                     headCircumferenceNarrative.Any()
-                       ? PopulateTable
-                           (
-                             "Head Circumference (BODY PART CIRCUMFERENCE)",
-                             null,
-                             new[] {"Field", "Value"},
-                             null,
-                             headCircumferenceNarrative
-                           )
-                       : null,
-                   }
-               );
-            }
-
-           if (physicalMeasurement.PhysicalMeasurementBodyWeight != null)
-           {
-             var physicalMeasurementBodyWeightNarrative = new List<List<String>>();
-
-             // Body Weight DateTime
-             if (physicalMeasurement.PhysicalMeasurementBodyWeight.BodyWeightDateTime != null)
-             {
-               physicalMeasurementBodyWeightNarrative.Add
-                   (
-                       CreateNarrativeEntry("Body Weight DateTime", physicalMeasurement.PhysicalMeasurementBodyWeight.BodyWeightDateTime)
-                   );
-             }
-
-             // Weight
-             if (physicalMeasurement.PhysicalMeasurementBodyWeight.Weight != null)
-             {
-               physicalMeasurementBodyWeightNarrative.Add
-                   (
-                       CreateNarrativeEntry("Weight", physicalMeasurement.PhysicalMeasurementBodyWeight.Weight.NarrativeText)
-                   );
-             }
-
-             // Weight Normal Status
-             if (physicalMeasurement.PhysicalMeasurementBodyWeight.WeightNormalStatus != null)
-             {
-               physicalMeasurementBodyWeightNarrative.Add
-                   (
-                       CreateNarrativeEntry("Weight Normal Status", physicalMeasurement.PhysicalMeasurementBodyWeight.WeightNormalStatus.Value.GetAttributeValue<NameAttribute, string>(x => x.Name))
-                   );
-             }
-
-             // Weight Reference Range Details
-             if (physicalMeasurement.PhysicalMeasurementBodyWeight.WeightReferenceRangeDetails != null && physicalMeasurement.PhysicalMeasurementBodyWeight.WeightReferenceRangeDetails.Any())
-             {
-               var narrativeText = physicalMeasurement.PhysicalMeasurementBodyWeight.WeightReferenceRangeDetails.Aggregate(string.Empty, (current, circumferenceReferenceRangeDetails) => current + DELIMITERBREAK + circumferenceReferenceRangeDetails.NarrativeText);
-
-               physicalMeasurementBodyWeightNarrative.Add
-                   (
-                       CreateNarrativeEntry("Weight Reference Range Details", narrativeText)
-                   );
-             }
-
-             // Comment (Measurement Comment)
-             if (physicalMeasurement.PhysicalMeasurementBodyWeight.Comment != null)
-             {
-               physicalMeasurementBodyWeightNarrative.Add
-                   (
-                       CreateNarrativeEntry("Comment (Measurement Comment)", physicalMeasurement.PhysicalMeasurementBodyWeight.Comment)
-                   );
-             }
-
-             // Weight
-             if (physicalMeasurement.PhysicalMeasurementBodyWeight.StateOfDress != null)
-             {
-               physicalMeasurementBodyWeightNarrative.Add
-                   (
-                       CreateNarrativeEntry("State Of Dress", physicalMeasurement.PhysicalMeasurementBodyWeight.StateOfDress)
-                   );
-             }
-
-             // Pregnant?
-             if (physicalMeasurement.PhysicalMeasurementBodyWeight.Pregnant != null)
-             {
-               physicalMeasurementBodyWeightNarrative.Add
-                   (
-                       CreateNarrativeEntry("Pregnant?", physicalMeasurement.PhysicalMeasurementBodyWeight.Pregnant.ToString())
-                   );
-             }
-
-             // Confounding Factor
-             if (physicalMeasurement.PhysicalMeasurementBodyWeight.ConfoundingFactor != null && physicalMeasurement.PhysicalMeasurementBodyWeight.ConfoundingFactor.Any())
-             {
-               var narrativeText = physicalMeasurement.PhysicalMeasurementBodyWeight.ConfoundingFactor.Aggregate(string.Empty, (current, confoundingFactor) => current + (DELIMITERBREAK + confoundingFactor.NarrativeText));
-
-               physicalMeasurementBodyWeightNarrative.Add
-                   (
-                       CreateNarrativeEntry("Confounding Factor", narrativeText)
-                   );
-             }
-
-             // Weight Estimation Formula
-             if (physicalMeasurement.PhysicalMeasurementBodyWeight.WeightEstimationFormula != null)
-             {
-               physicalMeasurementBodyWeightNarrative.Add
-                   (
-                       CreateNarrativeEntry("Weight Estimation Formula", physicalMeasurement.PhysicalMeasurementBodyWeight.WeightEstimationFormula)
-                   );
-             }
-
-             // Body Weight Instance Identifier
-             if (physicalMeasurement.PhysicalMeasurementBodyWeight.BodyWeightInstanceIdentifier != null)
-             {
-               physicalMeasurementBodyWeightNarrative.Add
-                   (
-                       CreateNarrativeEntry("Body Weight Instance Identifier", physicalMeasurement.PhysicalMeasurementBodyWeight.BodyWeightInstanceIdentifier.NarrativeText)
-                   );
-             }
-
-             // Information Provider
-             if (physicalMeasurement.PhysicalMeasurementBodyWeight.InformationProvider != null)
-             {
-               physicalMeasurementBodyWeightNarrative.Add
-                   (
-                       CreateNarrativeEntry("Information Provider", CreateInformationProvider(physicalMeasurement.PhysicalMeasurementBodyWeight.InformationProvider))
-                   );
-             }
-
-             if (physicalMeasurement.PhysicalMeasurementBodyWeight.Device != null)
-               physicalMeasurementBodyWeightNarrative.Add
-                   (
-                       CreateNarrativeEntry("Device", string.Format("{0}", physicalMeasurement.PhysicalMeasurementBodyWeight.Device.SoftwareName))
-                   );
-
-             strucDocTableList.AddRange
-                (
-                  new List<StrucDocTable>
-                   {
-                     physicalMeasurementBodyWeightNarrative.Any()
-                       ? PopulateTable
-                           (
-                             "Body Weight",
-                             null,
-                             new[] {"Field", "Value"},
-                             null,
-                             physicalMeasurementBodyWeightNarrative
-                           )
-                       : null,
-                   }
-                );
-           }
-
-           if (physicalMeasurement.PhysicalMeasurementBodyHeightLength != null)
-           {
-             var physicalMeasurementBodyHeightLengthNarrative = new List<List<String>>();
-
-             // Body Weight DateTime
-             if (physicalMeasurement.PhysicalMeasurementBodyHeightLength.BodyHeightLengthDateTime != null)
-             {
-               physicalMeasurementBodyHeightLengthNarrative.Add
-                   (
-                       CreateNarrativeEntry("Body Height Length Date Time", physicalMeasurement.PhysicalMeasurementBodyHeightLength.BodyHeightLengthDateTime)
-                   );
-             }
-
-             // Height/Length
-             if (physicalMeasurement.PhysicalMeasurementBodyHeightLength.HeightLength != null)
-             {
-               physicalMeasurementBodyHeightLengthNarrative.Add
-                   (
-                       CreateNarrativeEntry("Height/Length", physicalMeasurement.PhysicalMeasurementBodyHeightLength.HeightLength.NarrativeText)
-                   );
-             }
-
-             // Weight Normal Status
-             if (physicalMeasurement.PhysicalMeasurementBodyHeightLength.HeightLengthNormalStatus != null)
-             {
-               physicalMeasurementBodyHeightLengthNarrative.Add
-                   (
-                       CreateNarrativeEntry("Height Length Normal Status", physicalMeasurement.PhysicalMeasurementBodyHeightLength.HeightLengthNormalStatus.Value.GetAttributeValue<NameAttribute, string>(x => x.Name))
-                   );
-             }
-
-             // Height/length Reference Range Details
-             if (physicalMeasurement.PhysicalMeasurementBodyHeightLength.HeightLengthReferenceRangeDetails != null && physicalMeasurement.PhysicalMeasurementBodyHeightLength.HeightLengthReferenceRangeDetails.Any())
-             {
-               var narrativeText = physicalMeasurement.PhysicalMeasurementBodyHeightLength.HeightLengthReferenceRangeDetails.Aggregate(string.Empty, (current, circumferenceReferenceRangeDetails) => current + DELIMITERBREAK + circumferenceReferenceRangeDetails.NarrativeText);
-
-               physicalMeasurementBodyHeightLengthNarrative.Add
-                   (
-                       CreateNarrativeEntry("Height/length Reference Range Details", narrativeText)
-                   );
-             }
-
-             // Comment (Measurement Comment)
-             if (physicalMeasurement.PhysicalMeasurementBodyHeightLength.Comment != null)
-             {
-               physicalMeasurementBodyHeightLengthNarrative.Add
-                   (
-                       CreateNarrativeEntry("Comment (Measurement Comment)", physicalMeasurement.PhysicalMeasurementBodyHeightLength.Comment)
-                   );
-             }
-
-             // Position
-             if (physicalMeasurement.PhysicalMeasurementBodyHeightLength.Position != null)
-             {
-               physicalMeasurementBodyHeightLengthNarrative.Add
-                   (
-                       CreateNarrativeEntry("Position", physicalMeasurement.PhysicalMeasurementBodyHeightLength.Position)
-                   );
-             }
-
-             // Confounding Factor
-             if (physicalMeasurement.PhysicalMeasurementBodyHeightLength.ConfoundingFactor != null && physicalMeasurement.PhysicalMeasurementBodyHeightLength.ConfoundingFactor.Any())
-             {
-               var narrativeText = physicalMeasurement.PhysicalMeasurementBodyHeightLength.ConfoundingFactor.Aggregate(string.Empty, (current, confoundingFactor) => current + (DELIMITERBREAK + confoundingFactor));
-
-               physicalMeasurementBodyHeightLengthNarrative.Add
-                   (
-                       CreateNarrativeEntry("Confounding Factor", narrativeText)
-                   );
-             }
-
-             // Body Weight Instance Identifier
-             if (physicalMeasurement.PhysicalMeasurementBodyHeightLength.BodyHeightLengthInstanceIdentifier != null)
-             {
-               physicalMeasurementBodyHeightLengthNarrative.Add
-                   (
-                       CreateNarrativeEntry("Body Height Length Instance Identifier", physicalMeasurement.PhysicalMeasurementBodyHeightLength.BodyHeightLengthInstanceIdentifier.NarrativeText)
-                   );
-             }
-
-             // Information Provider
-             if (physicalMeasurement.PhysicalMeasurementBodyHeightLength.InformationProvider != null)
-             {
-               physicalMeasurementBodyHeightLengthNarrative.Add
-                   (
-                       CreateNarrativeEntry("Information Provider", CreateInformationProvider(physicalMeasurement.PhysicalMeasurementBodyHeightLength.InformationProvider))
-                   );
-             }
-
-             if (physicalMeasurement.PhysicalMeasurementBodyHeightLength.Device != null)
-               physicalMeasurementBodyHeightLengthNarrative.Add
-                   (
-                       CreateNarrativeEntry("Device", string.Format("{0}", physicalMeasurement.PhysicalMeasurementBodyHeightLength.Device.SoftwareName))
-                   );
-
-             strucDocTableList.AddRange
-                (
-                  new List<StrucDocTable>
-                   {
-                     physicalMeasurementBodyHeightLengthNarrative.Any()
-                       ? PopulateTable
-                           (
-                             "Body Height/Length",
-                             null,
-                             new[] {"Field", "Value"},
-                             null,
-                             physicalMeasurementBodyHeightLengthNarrative
-                           )
-                       : null,
-                   }
-                );
-           }
-
-           if (physicalMeasurement.PhysicalMeasurementBodyMassIndex != null)
-           {
-             var physicalMeasurementBodyMassIndexNarrative = new List<List<String>>();
-
-             // Body Mass Index DateTime
-             if (physicalMeasurement.PhysicalMeasurementBodyMassIndex.BodyMassIndexDateTime != null)
-             {
-               physicalMeasurementBodyMassIndexNarrative.Add
-                   (
-                       CreateNarrativeEntry("Body Mass Index DateTime", physicalMeasurement.PhysicalMeasurementBodyMassIndex.BodyMassIndexDateTime)
-                   );
-             }
-
-             // Body Mass Index
-             if (physicalMeasurement.PhysicalMeasurementBodyMassIndex.BodyMassIndex != null)
-             {
-               physicalMeasurementBodyMassIndexNarrative.Add
-                   (
-                       CreateNarrativeEntry("Body Mass Index", physicalMeasurement.PhysicalMeasurementBodyMassIndex.BodyMassIndex.NarrativeText)
-                   );
-             }
-
-             // Body Mass Index Normal Status
-             if (physicalMeasurement.PhysicalMeasurementBodyMassIndex.BodyMassIndexNormalStatus.HasValue)
-             {
-               physicalMeasurementBodyMassIndexNarrative.Add
-                   (
-                       CreateNarrativeEntry("Body Mass Index Normal Status", physicalMeasurement.PhysicalMeasurementBodyMassIndex.BodyMassIndexNormalStatus.Value.GetAttributeValue<NameAttribute, string>(x => x.Name))
-                   );
-             }
-
-             // Height/length Reference Range Details
-             if (physicalMeasurement.PhysicalMeasurementBodyMassIndex.BodyMassIndexReferenceRangeDetails != null && physicalMeasurement.PhysicalMeasurementBodyMassIndex.BodyMassIndexReferenceRangeDetails.Any())
-             {
-               var narrativeText = physicalMeasurement.PhysicalMeasurementBodyMassIndex.BodyMassIndexReferenceRangeDetails.Aggregate(string.Empty, (current, circumferenceReferenceRangeDetails) => current + DELIMITERBREAK + circumferenceReferenceRangeDetails.NarrativeText);
-
-               physicalMeasurementBodyMassIndexNarrative.Add
-                   (
-                       CreateNarrativeEntry("Body Mass Index Reference Range Details", narrativeText)
-                   );
-             }
-
-             // Comment (Measurement Comment)
-             if (physicalMeasurement.PhysicalMeasurementBodyMassIndex.Comment != null)
-             {
-               physicalMeasurementBodyMassIndexNarrative.Add
-                   (
-                       CreateNarrativeEntry("Comment (Measurement Comment)", physicalMeasurement.PhysicalMeasurementBodyMassIndex.Comment)
-                   );
-             }
-
-             // Method
-             if (physicalMeasurement.PhysicalMeasurementBodyMassIndex.Method != null)
-             {
-               physicalMeasurementBodyMassIndexNarrative.Add
-                   (
-                       CreateNarrativeEntry("Method", physicalMeasurement.PhysicalMeasurementBodyMassIndex.Method.NarrativeText)
-                   );
-             }
-
-             // Formula (BMI Calculation Formula)
-             if (physicalMeasurement.PhysicalMeasurementBodyMassIndex.Formula != null)
-             {
-               physicalMeasurementBodyMassIndexNarrative.Add
-                   (
-                       CreateNarrativeEntry("Formula (BMI Calculation Formula)", physicalMeasurement.PhysicalMeasurementBodyMassIndex.Formula)
-                   );
-             }
-
-             // Body Weight Instance Identifier
-             if (physicalMeasurement.PhysicalMeasurementBodyMassIndex.BodyMassIndexInstanceIdentifier != null)
-             {
-               physicalMeasurementBodyMassIndexNarrative.Add
-                   (
-                       CreateNarrativeEntry("Body Mass Index Instance Identifier", physicalMeasurement.PhysicalMeasurementBodyMassIndex.BodyMassIndexInstanceIdentifier.NarrativeText)
-                   );
-             }
-
-             // Information Provider
-             if (physicalMeasurement.PhysicalMeasurementBodyMassIndex.InformationProvider != null)
-             {
-               physicalMeasurementBodyMassIndexNarrative.Add
-                   (
-                       CreateNarrativeEntry("Information Provider", CreateInformationProvider(physicalMeasurement.PhysicalMeasurementBodyMassIndex.InformationProvider))
-                   );
-             }
-
-             strucDocTableList.AddRange
-                (
-                  new List<StrucDocTable>
-                   {
-                     physicalMeasurementBodyMassIndexNarrative.Any()
-                       ? PopulateTable
-                           (
-                             "Body Mass Index",
-                             null,
-                             new[] {"Field", "Value"},
-                             null,
-                             physicalMeasurementBodyMassIndexNarrative
-                           )
-                       : null,
-                   }
-                );
-            }
-          }
-
-          var strucDocText = new StrucDocText();
-
-          // Structured Tables
-          if (strucDocTableList.Any())
-          {
-            strucDocText.table = strucDocTableList.ToArray();
-          }
-          return strucDocText;
-    }
+            return strucDocText;
+        }
 
         /// <summary>
         /// Create a Narrative for the Measurement Information
@@ -6144,81 +6733,97 @@ namespace Nehta.VendorLibrary.CDA.Generator
         /// <returns>StrucDocText</returns>
         public StrucDocText CreateNarrative(MeasurementInformation measurementInformation)
         {
-          StrucDocText strucDocText = null;
-          List<StrucDocTable> strucDocTableList = null;
+            StrucDocText strucDocText = null;
+            List<StrucDocTable> strucDocTableList = null;
 
-          if (measurementInformation != null)
-          {
+            if (measurementInformation != null)
+            {
 
-            strucDocTableList = new List<StrucDocTable>();
+                strucDocTableList = new List<StrucDocTable>();
 
-            var headerList = new List<String>() 
-              { 
-                  "Observation Date", 
-                  "Measurement Type", 
-                  "Measurement" 
-              };
+                var headerList = new List<String>()
+                {
+                    "Observation Date",
+                    "Measurement Type",
+                    "Measurement"
+                };
 
                 var narrative = new List<List<String>>();
 
-                if (measurementInformation.HeadCircumference != null) 
+                if (measurementInformation.HeadCircumference != null)
                     narrative.Add(new List<string>
                     {
-                        measurementInformation.ObservationDate != null ? measurementInformation.ObservationDate.NarrativeText() : string.Empty,
+                        measurementInformation.ObservationDate != null
+                            ? measurementInformation.ObservationDate.NarrativeText()
+                            : string.Empty,
                         "Head Circumference",
-                        measurementInformation.HeadCircumference != null ? measurementInformation.HeadCircumference.NarrativeText : string.Empty
+                        measurementInformation.HeadCircumference != null
+                            ? measurementInformation.HeadCircumference.NarrativeText
+                            : string.Empty
                     });
 
                 if (measurementInformation.BodyHeight != null)
                     narrative.Add(new List<string>
                     {
-                        measurementInformation.ObservationDate != null ? measurementInformation.ObservationDate.NarrativeText() : string.Empty,
+                        measurementInformation.ObservationDate != null
+                            ? measurementInformation.ObservationDate.NarrativeText()
+                            : string.Empty,
                         "Body Height",
-                        measurementInformation.BodyHeight != null ? measurementInformation.BodyHeight.NarrativeText : string.Empty
-                    }); 
+                        measurementInformation.BodyHeight != null
+                            ? measurementInformation.BodyHeight.NarrativeText
+                            : string.Empty
+                    });
 
                 if (measurementInformation.BodyWeight != null)
                     narrative.Add(new List<string>
                     {
-                        measurementInformation.ObservationDate != null ? measurementInformation.ObservationDate.NarrativeText() : string.Empty,
+                        measurementInformation.ObservationDate != null
+                            ? measurementInformation.ObservationDate.NarrativeText()
+                            : string.Empty,
                         "Body Weight",
-                        measurementInformation.BodyWeight != null ? measurementInformation.BodyWeight.NarrativeText : string.Empty
+                        measurementInformation.BodyWeight != null
+                            ? measurementInformation.BodyWeight.NarrativeText
+                            : string.Empty
                     });
 
                 if (measurementInformation.BodyMassIndex != null)
-                narrative.Add(new List<string>
+                    narrative.Add(new List<string>
                     {
-                        measurementInformation.ObservationDate != null ? measurementInformation.ObservationDate.NarrativeText() : string.Empty,
+                        measurementInformation.ObservationDate != null
+                            ? measurementInformation.ObservationDate.NarrativeText()
+                            : string.Empty,
                         "Body Mass Index",
-                        measurementInformation.BodyMassIndex != null ? measurementInformation.BodyMassIndex.NarrativeText : string.Empty
+                        measurementInformation.BodyMassIndex != null
+                            ? measurementInformation.BodyMassIndex.NarrativeText
+                            : string.Empty
                     });
 
 
-            strucDocTableList.Add
-            (
-                PopulateTable
+                strucDocTableList.Add
                 (
-                    "Measurement Information",
-                    null,
-                    headerList.ToArray(),
-                    new string[0],
-                    narrative
-                )
-            );
+                    PopulateTable
+                    (
+                        "Measurement Information",
+                        null,
+                        headerList.ToArray(),
+                        new string[0],
+                        narrative
+                    )
+                );
 
-              strucDocText = new StrucDocText();
-              // Structured Tables
-              if (strucDocTableList.Any() && narrative.Any())
-              {
-                 strucDocText.table = strucDocTableList.ToArray();
-              } 
-              else
-              {
-                 strucDocText.paragraph = CreateParagraph(SECTIONEMPTYTEXT);
-              }
-          }
+                strucDocText = new StrucDocText();
+                // Structured Tables
+                if (strucDocTableList.Any() && narrative.Any())
+                {
+                    strucDocText.table = strucDocTableList.ToArray();
+                }
+                else
+                {
+                    strucDocText.paragraph = CreateParagraph(SECTIONEMPTYTEXT);
+                }
+            }
 
-          return strucDocText;
+            return strucDocText;
         }
 
         /// <summary>
@@ -6227,61 +6832,61 @@ namespace Nehta.VendorLibrary.CDA.Generator
         /// <returns>StrucDocText</returns>
         public StrucDocText CreateNarrative(List<MeasurementInformation> measurementInformations)
         {
-          StrucDocText strucDocText = null;
-          List<StrucDocTable> strucDocTableList = null;
+            StrucDocText strucDocText = null;
+            List<StrucDocTable> strucDocTableList = null;
 
-          if (measurementInformations != null && measurementInformations.Any())
-          {
-              var headerList = new List<String>() 
-              { 
-                  "Observation Date", 
-                  "Head Circumference", 
-                  "Body Height",
- 	                "Body Mass Index",
- 
-              };
+            if (measurementInformations != null && measurementInformations.Any())
+            {
+                var headerList = new List<String>()
+                {
+                    "Observation Date",
+                    "Head Circumference",
+                    "Body Height",
+                    "Body Mass Index",
 
-              var narrative = new List<List<String>>();
-              foreach (var item in measurementInformations)
-              {
+                };
 
-                  strucDocText = new StrucDocText();
-                  strucDocTableList = new List<StrucDocTable>();
+                var narrative = new List<List<String>>();
+                foreach (var item in measurementInformations)
+                {
 
-                  narrative.Add(new List<string>
-                                {
-                                   item.ObservationDate != null ? item.ObservationDate.NarrativeText() : string.Empty,
-                                   item.HeadCircumference != null ? item.HeadCircumference.NarrativeText : string.Empty,
-                                   item.BodyHeight != null ? item.BodyHeight.NarrativeText : string.Empty,
-                                   item.BodyWeight != null ? item.BodyWeight.NarrativeText : string.Empty,
-                                   item.BodyMassIndex != null ? item.BodyMassIndex.NarrativeText : string.Empty
-                                }
-                               );
-              }
+                    strucDocText = new StrucDocText();
+                    strucDocTableList = new List<StrucDocTable>();
 
-              strucDocTableList.Add
-              (
-                  PopulateTable
-                  (
-                      "Measurement Information",
-                      null,
-                      headerList.ToArray(),
-                      new string[0],
-                      narrative
-                  )
-              );
+                    narrative.Add(new List<string>
+                        {
+                            item.ObservationDate != null ? item.ObservationDate.NarrativeText() : string.Empty,
+                            item.HeadCircumference != null ? item.HeadCircumference.NarrativeText : string.Empty,
+                            item.BodyHeight != null ? item.BodyHeight.NarrativeText : string.Empty,
+                            item.BodyWeight != null ? item.BodyWeight.NarrativeText : string.Empty,
+                            item.BodyMassIndex != null ? item.BodyMassIndex.NarrativeText : string.Empty
+                        }
+                    );
+                }
+
+                strucDocTableList.Add
+                (
+                    PopulateTable
+                    (
+                        "Measurement Information",
+                        null,
+                        headerList.ToArray(),
+                        new string[0],
+                        narrative
+                    )
+                );
 
 
-              // Structured Tables
-              if (strucDocTableList.Any())
-              {
-                  strucDocText.table = strucDocTableList.ToArray();
-              }
-          }
-          else
-          {
-              strucDocText = new StrucDocText {Text = new [] { "This section contains no entries" } };
-          }
+                // Structured Tables
+                if (strucDocTableList.Any())
+                {
+                    strucDocText.table = strucDocTableList.ToArray();
+                }
+            }
+            else
+            {
+                strucDocText = new StrucDocText {Text = new[] {"This section contains no entries"}};
+            }
 
             return strucDocText;
         }
@@ -6292,68 +6897,71 @@ namespace Nehta.VendorLibrary.CDA.Generator
         /// <returns>StrucDocText</returns>
         public StrucDocText CreateNarrative(Questionnaire questionnaire)
         {
-          StrucDocText strucDocText = null;
-          List<StrucDocTable> strucDocTableList = null;
+            StrucDocText strucDocText = null;
+            List<StrucDocTable> strucDocTableList = null;
 
-          if (questionnaire != null)
-          {
-            var headerList = new List<String>() 
-              { 
-                  "Date Time", 
-                  "Question", 
-                  "Responses"
-              };
-
-            strucDocText = new StrucDocText();
-            strucDocTableList = new List<StrucDocTable>();
-
-            var narrative = new List<List<String>>();
-
-            if (questionnaire.AssessmentItems != null)
-              foreach (var assessmentItem in questionnaire.AssessmentItems)
-              {
-
-                string response = string.Empty;
-                if (!assessmentItem.FreeText.IsNullOrEmptyWhitespace())
-                {
-                  response = assessmentItem.FreeText;
-                }
-
-                if (assessmentItem.AnswersValue.HasValue)
-                {
-                    response = assessmentItem.AnswersValue.Value.GetAttributeValue<NameAttribute, String>(x => x.Name);
-                }
-
-                narrative.Add(
-                                new List<string>
-                                      {
-                                          assessmentItem.DateTime != null ? assessmentItem.DateTime .NarrativeText() : null,
-                                          assessmentItem.QuestionData != null ? assessmentItem.QuestionData.NarrativeText: null,
-                                          response
-                                      }
-                             );
-              }
-
-            strucDocTableList.Add
-            (
-                PopulateTable
-                (
-                questionnaire.SectionCode.HasValue ? questionnaire.SectionCode.Value.GetAttributeValue<NameAttribute, String>(x => x.Name) : null,
-                    null,
-                    headerList.ToArray(),
-                    new string[0],
-                    narrative
-                )
-            );
-
-            // Structured Tables
-            if (strucDocTableList.Any())
+            if (questionnaire != null)
             {
-              strucDocText.table = strucDocTableList.ToArray();
-            }
-          }
+                var headerList = new List<String>()
+                {
+                    "Date Time",
+                    "Question",
+                    "Responses"
+                };
 
-          return strucDocText;
+                strucDocText = new StrucDocText();
+                strucDocTableList = new List<StrucDocTable>();
+
+                var narrative = new List<List<String>>();
+
+                if (questionnaire.AssessmentItems != null)
+                    foreach (var assessmentItem in questionnaire.AssessmentItems)
+                    {
+
+                        string response = string.Empty;
+                        if (!assessmentItem.FreeText.IsNullOrEmptyWhitespace())
+                        {
+                            response = assessmentItem.FreeText;
+                        }
+
+                        if (assessmentItem.AnswersValue.HasValue)
+                        {
+                            response =
+                                assessmentItem.AnswersValue.Value.GetAttributeValue<NameAttribute, String>(x => x.Name);
+                        }
+
+                        narrative.Add(
+                            new List<string>
+                            {
+                                assessmentItem.DateTime != null ? assessmentItem.DateTime.NarrativeText() : null,
+                                assessmentItem.QuestionData != null ? assessmentItem.QuestionData.NarrativeText : null,
+                                response
+                            }
+                        );
+                    }
+
+                strucDocTableList.Add
+                (
+                    PopulateTable
+                    (
+                        questionnaire.SectionCode.HasValue
+                            ? questionnaire.SectionCode.Value.GetAttributeValue<NameAttribute, String>(x => x.Name)
+                            : null,
+                        null,
+                        headerList.ToArray(),
+                        new string[0],
+                        narrative
+                    )
+                );
+
+                // Structured Tables
+                if (strucDocTableList.Any())
+                {
+                    strucDocText.table = strucDocTableList.ToArray();
+                }
+            }
+
+            return strucDocText;
         }
 
         /// <summary>
@@ -6362,68 +6970,72 @@ namespace Nehta.VendorLibrary.CDA.Generator
         /// <returns>StrucDocText</returns>
         public StrucDocText CreateNarrative(HealthCheckAssesment healthCheckAssesment)
         {
-          StrucDocText strucDocText = null;
-          List<StrucDocTable> strucDocTableList = null;
+            StrucDocText strucDocText = null;
+            List<StrucDocTable> strucDocTableList = null;
 
-          if (healthCheckAssesment != null)
-          {
-            var headerList = new List<String>() 
-              { 
-                  "Date Time", 
-                  "Question", 
-                  "Responses"
-              };
-
-            strucDocText = new StrucDocText();
-            strucDocTableList = new List<StrucDocTable>();
-
-            var narrative = new List<List<String>>();
-
-            if (healthCheckAssesment.AssessmentItems != null)
-            foreach (var assessmentItem in healthCheckAssesment.AssessmentItems)
+            if (healthCheckAssesment != null)
             {
+                var headerList = new List<String>()
+                {
+                    "Date Time",
+                    "Question",
+                    "Responses"
+                };
 
-              string response = string.Empty;
-              if (!assessmentItem.FreeText.IsNullOrEmptyWhitespace())
-              {
-                response = assessmentItem.FreeText;
-              }
+                strucDocText = new StrucDocText();
+                strucDocTableList = new List<StrucDocTable>();
 
-              if (assessmentItem.AnswersValue.HasValue)
-              {
-                  response = assessmentItem.AnswersValue.Value.GetAttributeValue<NameAttribute, String>(x => x.Name);
-              }
+                var narrative = new List<List<String>>();
 
-              narrative.Add(
-                             new List<string>
-                                            {
-                                                assessmentItem.DateTime != null ? assessmentItem.DateTime .NarrativeText() : null,
-                                                assessmentItem.QuestionData != null ? assessmentItem.QuestionData.NarrativeText: null,
-                                                response
-                                            }
-                             );
-            }
+                if (healthCheckAssesment.AssessmentItems != null)
+                    foreach (var assessmentItem in healthCheckAssesment.AssessmentItems)
+                    {
 
-            strucDocTableList.Add
-            (
-                PopulateTable
+                        string response = string.Empty;
+                        if (!assessmentItem.FreeText.IsNullOrEmptyWhitespace())
+                        {
+                            response = assessmentItem.FreeText;
+                        }
+
+                        if (assessmentItem.AnswersValue.HasValue)
+                        {
+                            response =
+                                assessmentItem.AnswersValue.Value.GetAttributeValue<NameAttribute, String>(x => x.Name);
+                        }
+
+                        narrative.Add(
+                            new List<string>
+                            {
+                                assessmentItem.DateTime != null ? assessmentItem.DateTime.NarrativeText() : null,
+                                assessmentItem.QuestionData != null ? assessmentItem.QuestionData.NarrativeText : null,
+                                response
+                            }
+                        );
+                    }
+
+                strucDocTableList.Add
                 (
-                   healthCheckAssesment.SectionCode.HasValue ? healthCheckAssesment.SectionCode.Value.GetAttributeValue<NameAttribute, String>(x => x.Name) : null,
-                    null,
-                    headerList.ToArray(),
-                    new string[0],
-                    narrative
-                )
-            );
+                    PopulateTable
+                    (
+                        healthCheckAssesment.SectionCode.HasValue
+                            ? healthCheckAssesment.SectionCode.Value.GetAttributeValue<NameAttribute, String>(x =>
+                                x.Name)
+                            : null,
+                        null,
+                        headerList.ToArray(),
+                        new string[0],
+                        narrative
+                    )
+                );
 
-            // Structured Tables
-            if (strucDocTableList.Any())
-            {
-              strucDocText.table = strucDocTableList.ToArray();
+                // Structured Tables
+                if (strucDocTableList.Any())
+                {
+                    strucDocText.table = strucDocTableList.ToArray();
+                }
             }
-          }
 
-          return strucDocText;
+            return strucDocText;
         }
 
         /// <summary>
@@ -6432,62 +7044,62 @@ namespace Nehta.VendorLibrary.CDA.Generator
         /// <returns>StrucDocText</returns>
         public StrucDocText CreateNarrative(BirthDetails birthDetails)
         {
-          StrucDocText strucDocText = null;
-          List<StrucDocTable> strucDocTableList = null;
-          var renderMultiMediaList = new List<StrucDocRenderMultiMedia>();
+            StrucDocText strucDocText = null;
+            List<StrucDocTable> strucDocTableList = null;
+            var renderMultiMediaList = new List<StrucDocRenderMultiMedia>();
 
-          if (birthDetails != null)
-          {
-            var headerList = new List<String>() 
-              { 
-                  "Attachment Name", 
-                  "Attachment"
-              };
+            if (birthDetails != null)
+            {
+                var headerList = new List<String>()
+                {
+                    "Attachment Name",
+                    "Attachment"
+                };
 
-            strucDocText = new StrucDocText();
-            strucDocTableList = new List<StrucDocTable>();
+                strucDocText = new StrucDocText();
+                strucDocTableList = new List<StrucDocTable>();
 
-            var narrative = new List<List<Object>>();
+                var narrative = new List<List<Object>>();
 
-              foreach (var externalData in birthDetails.ExternalData)
-              {
+                foreach (var externalData in birthDetails.ExternalData)
+                {
 
-                narrative.Add(
-                  new List<Object>
-                    {
-                      externalData.Caption,
-                      CreateEncapsulatedData(externalData, ref renderMultiMediaList)
-                    }
-                 );
+                    narrative.Add(
+                        new List<Object>
+                        {
+                            externalData.Caption,
+                            CreateEncapsulatedData(externalData, ref renderMultiMediaList)
+                        }
+                    );
 
-              }
+                }
 
-            strucDocTableList.Add
-            (
-                PopulateTable
+                strucDocTableList.Add
                 (
-                    "Attachments",
-                    null,
-                    headerList.ToArray(),
-                    new string[0],
-                    narrative
-                )
-            );
+                    PopulateTable
+                    (
+                        "Attachments",
+                        null,
+                        headerList.ToArray(),
+                        new string[0],
+                        narrative
+                    )
+                );
 
-            // Structured Tables
-            if (strucDocTableList.Any())
-            {
-              strucDocText.table = strucDocTableList.ToArray();
+                // Structured Tables
+                if (strucDocTableList.Any())
+                {
+                    strucDocText.table = strucDocTableList.ToArray();
+                }
+
+                if (renderMultiMediaList.Any())
+                {
+                    strucDocText.renderMultiMedia = renderMultiMediaList.ToArray();
+                }
             }
 
-            if (renderMultiMediaList.Any())
-            {
-              strucDocText.renderMultiMedia = renderMultiMediaList.ToArray();
-            }
-          }
 
-
-          return strucDocText;
+            return strucDocText;
         }
 
 
@@ -6500,7 +7112,7 @@ namespace Nehta.VendorLibrary.CDA.Generator
         public StrucDocText CreateNarrative(EncapsulatedData pcml)
         {
             StrucDocText strucDocText = null;
-            
+
             var renderMultiMediaList = new List<StrucDocRenderMultiMedia>();
 
             if (pcml != null)
@@ -6523,7 +7135,7 @@ namespace Nehta.VendorLibrary.CDA.Generator
                 };
                 ai.referencedObject = pcml.ExternalData.ID;
 
-                strucDocText.renderMultiMedia = new StrucDocRenderMultiMedia[]{ ai };
+                strucDocText.renderMultiMedia = new StrucDocRenderMultiMedia[] {ai};
             }
 
 
@@ -6537,55 +7149,70 @@ namespace Nehta.VendorLibrary.CDA.Generator
         /// <returns>StrucDocText</returns>
         public StrucDocText CreateNarrative(QuestionnaireDocumentData questionnaireDocumentData)
         {
-          var strucDocText = new StrucDocText();
-          var strucDocTableList = new List<StrucDocTable>();
-          var header = new[] { "Assessment", "Status", "Creation Date", "Author" };
+            var strucDocText = new StrucDocText();
+            var strucDocTableList = new List<StrucDocTable>();
+            var header = new[] {"Assessment", "Status", "Creation Date", "Author"};
 
-          if (questionnaireDocumentData != null )
-          {
-            var narrativeLink = new List<List<object>>();
-
-            if (questionnaireDocumentData.DocumentLink != null || questionnaireDocumentData.Assessment.HasValue || questionnaireDocumentData.DocumentDate != null || !questionnaireDocumentData.AuthorName.IsNullOrEmptyWhitespace())
+            if (questionnaireDocumentData != null)
             {
-              narrativeLink.Add(
-                   new List<object>
-                  {
-                     questionnaireDocumentData.DocumentLink != null ? CreateLink(questionnaireDocumentData.DocumentLink) : null,
-                     questionnaireDocumentData.Assessment.HasValue ? questionnaireDocumentData.Assessment.Value ? "Completed" : "Incomplete" : null,
-                     questionnaireDocumentData.DocumentDate != null ? questionnaireDocumentData.DocumentDate.NarrativeText() : null,
-                     !questionnaireDocumentData.AuthorName.IsNullOrEmptyWhitespace() ? questionnaireDocumentData.AuthorName : null
-                  });
+                var narrativeLink = new List<List<object>>();
 
-              strucDocTableList.Add
-                (
-                  PopulateTable
+                if (questionnaireDocumentData.DocumentLink != null || questionnaireDocumentData.Assessment.HasValue ||
+                    questionnaireDocumentData.DocumentDate != null ||
+                    !questionnaireDocumentData.AuthorName.IsNullOrEmptyWhitespace())
+                {
+                    narrativeLink.Add(
+                        new List<object>
+                        {
+                            questionnaireDocumentData.DocumentLink != null
+                                ? CreateLink(questionnaireDocumentData.DocumentLink)
+                                : null,
+                            questionnaireDocumentData.Assessment.HasValue
+                                ? questionnaireDocumentData.Assessment.Value ? "Completed" : "Incomplete"
+                                : null,
+                            questionnaireDocumentData.DocumentDate != null
+                                ? questionnaireDocumentData.DocumentDate.NarrativeText()
+                                : null,
+                            !questionnaireDocumentData.AuthorName.IsNullOrEmptyWhitespace()
+                                ? questionnaireDocumentData.AuthorName
+                                : null
+                        });
+
+                    strucDocTableList.Add
                     (
-                      null,
-                      null,
-                      header,
-                      null,
-                      narrativeLink
-                    )
-                );
-            } else
-            {
-              strucDocText.paragraph = CreateParagraph(SECTIONEMPTYTEXT);
+                        PopulateTable
+                        (
+                            null,
+                            null,
+                            header,
+                            null,
+                            narrativeLink
+                        )
+                    );
+                }
+                else
+                {
+                    strucDocText.paragraph = CreateParagraph(SECTIONEMPTYTEXT);
+                }
+
+                strucDocText.content = new[]
+                {
+                    new StrucDocContent
+                    {
+                        styleCode = "Bold Underline",
+                        Text = new[]
+                        {
+                            questionnaireDocumentData.QuestionnairesData.GetAttributeValue<NameAttribute, String>(x =>
+                                x.Title)
+                        }
+                    }
+                };
+
+                strucDocText.table = strucDocTableList.ToArray();
+
             }
-           
-           strucDocText.content = new []
-                                   {
-                                     new StrucDocContent
-                                       {
-                                         styleCode = "Bold Underline",
-                                         Text = new [] { questionnaireDocumentData.QuestionnairesData.GetAttributeValue<NameAttribute, String>(x => x.Title) }
-                                       }
-                                   };
 
-          strucDocText.table = strucDocTableList.ToArray();
-
-          }
-
-          return strucDocText;
+            return strucDocText;
 
         }
 
@@ -6595,93 +7222,110 @@ namespace Nehta.VendorLibrary.CDA.Generator
         /// <returns>StrucDocText</returns>
         public StrucDocText CreateNarrative(List<MeasurementEntry> measurementEntrys)
         {
-          var strucDocText = new StrucDocText();
-          var strucDocTableList = new List<StrucDocTable>();
-          var narrativeLink = new List<List<object>>();
-          var header = new List<string> { "Observation Date", "Document", "Body height", "Body weight", "Head circumference", "Body mass index" };
+            var strucDocText = new StrucDocText();
+            var strucDocTableList = new List<StrucDocTable>();
+            var narrativeLink = new List<List<object>>();
+            var header = new List<string>
+                {"Observation Date", "Document", "Body height", "Body weight", "Head circumference", "Body mass index"};
 
-          if (measurementEntrys != null && measurementEntrys.Any())
-          {
-               foreach (var measurementEntry in measurementEntrys)
-               {
-                 var narrativeList = new List<object>();
+            if (measurementEntrys != null && measurementEntrys.Any())
+            {
+                foreach (var measurementEntry in measurementEntrys)
+                {
+                    var narrativeList = new List<object>();
 
-                   narrativeList.Add(measurementEntry.ObservationDate != null ? measurementEntry.ObservationDate.NarrativeText() : null);
-                   narrativeList.Add(measurementEntry.DocumentLink != null ? CreateLink(measurementEntry.DocumentLink) : null);
+                    narrativeList.Add(measurementEntry.ObservationDate != null
+                        ? measurementEntry.ObservationDate.NarrativeText()
+                        : null);
+                    narrativeList.Add(measurementEntry.DocumentLink != null
+                        ? CreateLink(measurementEntry.DocumentLink)
+                        : null);
 
-                   // Body Height Measure Narrative
-                   string bodyHeightMeasureNarrative = string.Empty;
-                   if (measurementEntry.BodyHeightMeasure != null && measurementEntry.BodyHeightMeasure.ComponentValue != null)
-                   {
-                     bodyHeightMeasureNarrative = measurementEntry.BodyHeightMeasure.ComponentValue.NarrativeText;
+                    // Body Height Measure Narrative
+                    string bodyHeightMeasureNarrative = string.Empty;
+                    if (measurementEntry.BodyHeightMeasure != null &&
+                        measurementEntry.BodyHeightMeasure.ComponentValue != null)
+                    {
+                        bodyHeightMeasureNarrative = measurementEntry.BodyHeightMeasure.ComponentValue.NarrativeText;
 
-                     if (measurementEntry.BodyHeightMeasure.PercentileValue != null)
-                     {
-                       bodyHeightMeasureNarrative += string.Format(" (Percentile: {0})", measurementEntry.BodyHeightMeasure.PercentileValue.NarrativeText);
-                     }
+                        if (measurementEntry.BodyHeightMeasure.PercentileValue != null)
+                        {
+                            bodyHeightMeasureNarrative += string.Format(" (Percentile: {0})",
+                                measurementEntry.BodyHeightMeasure.PercentileValue.NarrativeText);
+                        }
 
-                   }
-                   narrativeList.Add(bodyHeightMeasureNarrative);
+                    }
 
-                   // Body Weight Measure Narrative
-                   string bodyWeightMeasureNarrative = string.Empty;
-                   if (measurementEntry.BodyWeightMeasure != null && measurementEntry.BodyWeightMeasure.ComponentValue != null)
-                   {
-                     bodyWeightMeasureNarrative = measurementEntry.BodyWeightMeasure.ComponentValue.NarrativeText;
+                    narrativeList.Add(bodyHeightMeasureNarrative);
 
-                     if (measurementEntry.BodyWeightMeasure.PercentileValue != null)
-                     {
-                       bodyWeightMeasureNarrative += string.Format(" (Percentile: {0})", measurementEntry.BodyWeightMeasure.PercentileValue.NarrativeText);
-                     }
-                   }
-                   narrativeList.Add(bodyWeightMeasureNarrative);
+                    // Body Weight Measure Narrative
+                    string bodyWeightMeasureNarrative = string.Empty;
+                    if (measurementEntry.BodyWeightMeasure != null &&
+                        measurementEntry.BodyWeightMeasure.ComponentValue != null)
+                    {
+                        bodyWeightMeasureNarrative = measurementEntry.BodyWeightMeasure.ComponentValue.NarrativeText;
 
-                   // Head Circumference Measure Narrative
-                   string headCircumferenceMeasureNarrative = string.Empty;
-                   if (measurementEntry.HeadCircumferenceMeasure != null && measurementEntry.HeadCircumferenceMeasure.ComponentValue != null)
-                   {
-                     headCircumferenceMeasureNarrative = measurementEntry.HeadCircumferenceMeasure.ComponentValue.NarrativeText;
+                        if (measurementEntry.BodyWeightMeasure.PercentileValue != null)
+                        {
+                            bodyWeightMeasureNarrative += string.Format(" (Percentile: {0})",
+                                measurementEntry.BodyWeightMeasure.PercentileValue.NarrativeText);
+                        }
+                    }
 
-                     if (measurementEntry.HeadCircumferenceMeasure.PercentileValue != null)
-                     {
-                       headCircumferenceMeasureNarrative += string.Format(" (Percentile: {0})", measurementEntry.HeadCircumferenceMeasure.PercentileValue.NarrativeText);
-                     }
-                   }
-                   narrativeList.Add(headCircumferenceMeasureNarrative);
+                    narrativeList.Add(bodyWeightMeasureNarrative);
 
-                   // Body Mass Index Narrative
-                   string bodyMassIndexNarrative = string.Empty;
-                   if (measurementEntry.BodyMassIndex != null && measurementEntry.BodyMassIndex.ComponentValue != null)
-                   {
-                     bodyMassIndexNarrative = measurementEntry.BodyMassIndex.ComponentValue.NarrativeText;
+                    // Head Circumference Measure Narrative
+                    string headCircumferenceMeasureNarrative = string.Empty;
+                    if (measurementEntry.HeadCircumferenceMeasure != null &&
+                        measurementEntry.HeadCircumferenceMeasure.ComponentValue != null)
+                    {
+                        headCircumferenceMeasureNarrative =
+                            measurementEntry.HeadCircumferenceMeasure.ComponentValue.NarrativeText;
 
-                     if (measurementEntry.BodyMassIndex.PercentileValue != null)
-                     {
-                       bodyMassIndexNarrative += string.Format(" (Percentile: {0})", measurementEntry.BodyMassIndex.PercentileValue.NarrativeText);
-                     }
-                   }
-                   narrativeList.Add(bodyMassIndexNarrative);
+                        if (measurementEntry.HeadCircumferenceMeasure.PercentileValue != null)
+                        {
+                            headCircumferenceMeasureNarrative += string.Format(" (Percentile: {0})",
+                                measurementEntry.HeadCircumferenceMeasure.PercentileValue.NarrativeText);
+                        }
+                    }
 
-                narrativeLink.Add(narrativeList);
-            }
+                    narrativeList.Add(headCircumferenceMeasureNarrative);
 
-              StripEmptyColoums(ref header, ref narrativeLink, new List<int> { 2, 3, 4, 5 });
+                    // Body Mass Index Narrative
+                    string bodyMassIndexNarrative = string.Empty;
+                    if (measurementEntry.BodyMassIndex != null && measurementEntry.BodyMassIndex.ComponentValue != null)
+                    {
+                        bodyMassIndexNarrative = measurementEntry.BodyMassIndex.ComponentValue.NarrativeText;
 
-              strucDocTableList.Add
+                        if (measurementEntry.BodyMassIndex.PercentileValue != null)
+                        {
+                            bodyMassIndexNarrative += string.Format(" (Percentile: {0})",
+                                measurementEntry.BodyMassIndex.PercentileValue.NarrativeText);
+                        }
+                    }
+
+                    narrativeList.Add(bodyMassIndexNarrative);
+
+                    narrativeLink.Add(narrativeList);
+                }
+
+                StripEmptyColoums(ref header, ref narrativeLink, new List<int> {2, 3, 4, 5});
+
+                strucDocTableList.Add
                 (
-                  PopulateTable
+                    PopulateTable
                     (
-                      null,
-                      null,
-                      header.ToArray(),
-                      null,
-                      narrativeLink
+                        null,
+                        null,
+                        header.ToArray(),
+                        null,
+                        narrativeLink
                     )
                 );
             }
             else
             {
-              strucDocText.paragraph = CreateParagraph(SECTIONEXCLUSIONSTATEMENT);
+                strucDocText.paragraph = CreateParagraph(SECTIONEXCLUSIONSTATEMENT);
             }
 
             strucDocText.table = strucDocTableList.ToArray();
@@ -6705,7 +7349,7 @@ namespace Nehta.VendorLibrary.CDA.Generator
                 "Procedure",
                 "Anatomical Region",
                 "Status"
-          };
+            };
 
             var narrative = new List<List<Object>>();
             var anatomicalSiteNarrative = new List<List<String>>();
@@ -6714,50 +7358,69 @@ namespace Nehta.VendorLibrary.CDA.Generator
             if (imagingExaminationResult != null)
             {
 
-            //  Reporting Radiologist
-            if (imagingExaminationResult.ReportingRadiologistForImagingExaminationResult != null)
+                //  Reporting Radiologist
+                if (imagingExaminationResult.ReportingRadiologistForImagingExaminationResult != null)
                     strucDocText.content = new[]
                     {
-                    new StrucDocContent {
-                        Text = new[]
+                        new StrucDocContent
                         {
-                            "Reporting Radiologist: ",
-                            imagingExaminationResult.ReportingRadiologistForImagingExaminationResult,
-                        }}
-              };
-
-              narrative.Add
-                         (
-                            new List<Object>
+                            Text = new[]
                             {
-                               imagingExaminationResult.ExaminationDetails != null && imagingExaminationResult.ExaminationDetails.ImageDateTime != null ? XCOLWIDTHDATE + imagingExaminationResult.ExaminationDetails.ImageDateTime.NarrativeText() : null,
-                               imagingExaminationResult.ObservationDateTime != null ? XCOLWIDTHDATE + imagingExaminationResult.ObservationDateTime.NarrativeText() :  null,
-                               (imagingExaminationResult.RelatedImage != null ? CreateExternalLink(imagingExaminationResult.RelatedImage, imagingExaminationResult.ExaminationResultName.NarrativeText) : null) ?? (object) imagingExaminationResult.ExaminationResultName.NarrativeText,
-                               imagingExaminationResult.Modality != null ? imagingExaminationResult.Modality.NarrativeText : null,
-                               !imagingExaminationResult.ExaminationProcedure.IsNullOrEmptyWhitespace() ? imagingExaminationResult.ExaminationProcedure : null,
-                               imagingExaminationResult.AnatomicalRegion.HasValue ? imagingExaminationResult.AnatomicalRegion.Value.GetAttributeValue<NameAttribute, String>(x => x.Name) : null,
-                               imagingExaminationResult.OverallResultStatus != null ? imagingExaminationResult.OverallResultStatus.NarrativeText : null,
+                                "Reporting Radiologist: ",
+                                imagingExaminationResult.ReportingRadiologistForImagingExaminationResult,
                             }
+                        }
+                    };
+
+                narrative.Add
+                (
+                    new List<Object>
+                    {
+                        imagingExaminationResult.ExaminationDetails != null &&
+                        imagingExaminationResult.ExaminationDetails.ImageDateTime != null
+                            ? XCOLWIDTHDATE + imagingExaminationResult.ExaminationDetails.ImageDateTime.NarrativeText()
+                            : null,
+                        imagingExaminationResult.ObservationDateTime != null
+                            ? XCOLWIDTHDATE + imagingExaminationResult.ObservationDateTime.NarrativeText()
+                            : null,
+                        (imagingExaminationResult.RelatedImage != null
+                            ? CreateExternalLink(imagingExaminationResult.RelatedImage,
+                                imagingExaminationResult.ExaminationResultName.NarrativeText)
+                            : null) ?? (object) imagingExaminationResult.ExaminationResultName.NarrativeText,
+                        imagingExaminationResult.Modality != null
+                            ? imagingExaminationResult.Modality.NarrativeText
+                            : null,
+                        !imagingExaminationResult.ExaminationProcedure.IsNullOrEmptyWhitespace()
+                            ? imagingExaminationResult.ExaminationProcedure
+                            : null,
+                        imagingExaminationResult.AnatomicalRegion.HasValue
+                            ? imagingExaminationResult.AnatomicalRegion.Value.GetAttributeValue<NameAttribute, String>(
+                                x => x.Name)
+                            : null,
+                        imagingExaminationResult.OverallResultStatus != null
+                            ? imagingExaminationResult.OverallResultStatus.NarrativeText
+                            : null,
+                    }
                 );
 
                 strucDocTableList.Add
-                    (
+                (
                     PopulateTable
-                        (
+                    (
                         "Imaging Examination Result",
                         null,
                         header,
                         null,
                         narrative
-                        )
-                    );
+                    )
+                );
 
                 // Anatomical Site (Anatomical location)
                 var narativeHeader = new List<string>
-                                     {
-                                        "Name of Location/Description",
-                                        "Side"
-                                     };
+                {
+                    "Name of Location/Description",
+                    "Side"
+                };
 
                 if (imagingExaminationResult.AnatomicalSite != null && imagingExaminationResult.AnatomicalSite.Any())
                 {
@@ -6765,7 +7428,8 @@ namespace Nehta.VendorLibrary.CDA.Generator
                     {
                         ICodableText nameOfLocationAndDescription = new CodableText();
 
-                        if (anatomicalSite.SpecificLocation != null && anatomicalSite.SpecificLocation.NameOfLocation != null)
+                        if (anatomicalSite.SpecificLocation != null &&
+                            anatomicalSite.SpecificLocation.NameOfLocation != null)
                             nameOfLocationAndDescription = anatomicalSite.SpecificLocation.NameOfLocation;
 
                         if (!anatomicalSite.Description.IsNullOrEmptyWhitespace())
@@ -6774,7 +7438,9 @@ namespace Nehta.VendorLibrary.CDA.Generator
                         anatomicalSiteNarrative.Add(new List<String>
                         {
                             nameOfLocationAndDescription != null ? nameOfLocationAndDescription.NarrativeText : null,
-                            anatomicalSite.SpecificLocation != null && anatomicalSite.SpecificLocation.Side != null ? anatomicalSite.SpecificLocation.Side.NarrativeText : null
+                            anatomicalSite.SpecificLocation != null && anatomicalSite.SpecificLocation.Side != null
+                                ? anatomicalSite.SpecificLocation.Side.NarrativeText
+                                : null
                         });
                     }
                 }
@@ -6782,16 +7448,16 @@ namespace Nehta.VendorLibrary.CDA.Generator
                 if (anatomicalSiteNarrative.Any())
                 {
                     strucDocTableList.Add
-                     (
-                         PopulateTable
-                         (
-                             "Anatomical Site",
-                             null,
-                             narativeHeader.ToArray(),
-                             null,
-                             anatomicalSiteNarrative
-                         )
-                     );
+                    (
+                        PopulateTable
+                        (
+                            "Anatomical Site",
+                            null,
+                            narativeHeader.ToArray(),
+                            null,
+                            anatomicalSiteNarrative
+                        )
+                    );
 
                 }
 
@@ -6815,173 +7481,190 @@ namespace Nehta.VendorLibrary.CDA.Generator
             var strucDocText = new StrucDocText();
             var strucDocTableList = new List<StrucDocTable>();
             var narrative = new List<List<Object>>();
-            var header = new[] { "Field", "Value" };
+            var header = new[] {"Field", "Value"};
 
             if (authorityToPost != null)
             {
                 // Report Identifier
                 if (authorityToPost.ReportIdentifier != null)
                     narrative.Add
-                        (
-                            new List<Object>
-                            {
-                                "Pathology Report Identifier (Document Instance Identifier)",
-                                authorityToPost.ReportIdentifier.NarrativeText
-                            }
-                        );
+                    (
+                        new List<Object>
+                        {
+                            "Pathology Report Identifier (Document Instance Identifier)",
+                            authorityToPost.ReportIdentifier.NarrativeText
+                        }
+                    );
 
                 // Service Request Identifier
                 if (authorityToPost.ServiceRequestIdentifier != null)
                     narrative.Add
-                        (
-                            new List<Object>
-                            {
-                                "Service Request Identifier",
-                                authorityToPost.ServiceRequestIdentifier.NarrativeText
-                            }
-                        );
+                    (
+                        new List<Object>
+                        {
+                            "Service Request Identifier",
+                            authorityToPost.ServiceRequestIdentifier.NarrativeText
+                        }
+                    );
 
                 // Struc Doc Table List
                 strucDocTableList.Add
-                      (
+                (
+                    PopulateTable
+                    (
+                        string.Format("Authority To Post"),
+                        null,
+                        header,
+                        null,
+                        narrative
+                    )
+                );
+
+                narrative = new List<List<Object>>();
+                if (authorityToPost.Authoriser != null && authorityToPost.Authoriser.Participant != null)
+                {
+                    var personOrganisation =
+                        authorityToPost.Authoriser.Participant.Person != null &&
+                        authorityToPost.Authoriser.Participant.Person.PersonNames != null
+                            ? BuildPersonNames(authorityToPost.Authoriser.Participant.Person.PersonNames)
+                            : null;
+
+                    narrative.Add
+                    (
+                        new List<Object>
+                        {
+                            "Authoriser",
+                            personOrganisation
+                        }
+                    );
+
+                    if (authorityToPost.Authoriser.Participant.Addresses != null ||
+                        authorityToPost.Authoriser.Participant.ElectronicCommunicationDetails != null)
+                    {
+                        narrative.Add
+                        (
+                            new List<Object>
+                            {
+                                "Authoriser - Details",
+                                CreateAddress(authorityToPost.Authoriser.Participant.Addresses,
+                                    authorityToPost.Authoriser.Participant.ElectronicCommunicationDetails)
+                            }
+                        );
+                    }
+
+                    if (authorityToPost.Authoriser.Participant.Person != null &&
+                        authorityToPost.Authoriser.Participant.Person.Organisation != null && !authorityToPost
+                            .Authoriser.Participant.Person.Organisation.Name.IsNullOrEmptyWhitespace())
+                    {
+                        narrative.Add(
+                            new List<Object>
+                            {
+                                "Authoriser - Organisation Name",
+                                authorityToPost.Authoriser.Participant.Person.Organisation.Name
+                            }
+                        );
+                    }
+
+                    if (authorityToPost.Authoriser.Participant.Entitlements != null ||
+                        authorityToPost.Authoriser.Participant.Entitlements != null)
+                    {
+                        narrative.Add
+                        (
+                            new List<Object>
+                            {
+                                "Authoriser - Entitlements",
+                                CreateEntitlement(authorityToPost.Authoriser.Participant.Entitlements)
+                            }
+                        );
+                    }
+
+                    strucDocTableList.Add
+                    (
                         PopulateTable
-                          (
-                            string.Format("Authority To Post"),
+                        (
+                            string.Format("Authoriser"),
                             null,
                             header,
                             null,
                             narrative
-                          )
-                      );
-
-            narrative = new List<List<Object>>();
-            if (authorityToPost.Authoriser != null && authorityToPost.Authoriser.Participant != null)
-            {
-                var personOrganisation = authorityToPost.Authoriser.Participant.Person != null && authorityToPost.Authoriser.Participant.Person.PersonNames != null ? BuildPersonNames(authorityToPost.Authoriser.Participant.Person.PersonNames) : null;
-
-                narrative.Add
-                    (
-                    new List<Object>
-                    {
-                        "Authoriser",
-                        personOrganisation
-                    }
-                    );
-
-                if (authorityToPost.Authoriser.Participant.Addresses != null || authorityToPost.Authoriser.Participant.ElectronicCommunicationDetails != null)
-                {
-                    narrative.Add
-                    (
-                        new List<Object>
-                        {
-                            "Authoriser - Details",
-                            CreateAddress(authorityToPost.Authoriser.Participant.Addresses, authorityToPost.Authoriser.Participant.ElectronicCommunicationDetails)
-                        }
-                    );
-                }
-
-                if (authorityToPost.Authoriser.Participant.Person != null && authorityToPost.Authoriser.Participant.Person.Organisation != null && !authorityToPost.Authoriser.Participant.Person.Organisation.Name.IsNullOrEmptyWhitespace())
-                {
-                    narrative.Add(
-                        new List<Object>
-                    {
-                        "Authoriser - Organisation Name",
-                        authorityToPost.Authoriser.Participant.Person.Organisation.Name
-                    }
-                  );
-                }
-
-                if (authorityToPost.Authoriser.Participant.Entitlements != null || authorityToPost.Authoriser.Participant.Entitlements != null)
-                {
-                    narrative.Add
-                    (
-                        new List<Object>
-                        {
-                            "Authoriser - Entitlements",
-                            CreateEntitlement(authorityToPost.Authoriser.Participant.Entitlements)
-                        }
-                    );
-                }
-
-                strucDocTableList.Add
-                    (
-                    PopulateTable
-                        (
-                        string.Format("Authoriser"),
-                        null,
-                        header,
-                        null,
-                        narrative
                         )
                     );
-            }
-
-            narrative = new List<List<Object>>();
-            if (authorityToPost.Authorisee != null && authorityToPost.Authorisee.Participant != null)
-            {
-                var organisation = authorityToPost.Authorisee.Participant.Organisation != null && !authorityToPost.Authorisee.Participant.Organisation.Name.IsNullOrEmptyWhitespace() ? authorityToPost.Authorisee.Participant.Organisation.Name : null;
-
-                narrative.Add
-                    (
-                    new List<Object>
-                    {
-                        "Authorisee",
-                        organisation
-                    }
-                    );
-
-                if (authorityToPost.Authorisee.Participant.Addresses != null || authorityToPost.Authorisee.Participant.ElectronicCommunicationDetails != null)
-                {
-                    narrative.Add
-                        (
-                        new List<Object>
-                        {
-                            "Authorisee - Details",
-                            CreateAddress(authorityToPost.Authorisee.Participant.Addresses, authorityToPost.Authorisee.Participant.ElectronicCommunicationDetails)
-                        }
-                );
                 }
 
-                strucDocTableList.Add
+                narrative = new List<List<Object>>();
+                if (authorityToPost.Authorisee != null && authorityToPost.Authorisee.Participant != null)
+                {
+                    var organisation =
+                        authorityToPost.Authorisee.Participant.Organisation != null && !authorityToPost.Authorisee
+                            .Participant.Organisation.Name.IsNullOrEmptyWhitespace()
+                            ? authorityToPost.Authorisee.Participant.Organisation.Name
+                            : null;
+
+                    narrative.Add
                     (
-                    PopulateTable
+                        new List<Object>
+                        {
+                            "Authorisee",
+                            organisation
+                        }
+                    );
+
+                    if (authorityToPost.Authorisee.Participant.Addresses != null ||
+                        authorityToPost.Authorisee.Participant.ElectronicCommunicationDetails != null)
+                    {
+                        narrative.Add
                         (
-                        string.Format("Authorisee"),
-                        null,
-                        header,
-                        null,
-                        narrative
+                            new List<Object>
+                            {
+                                "Authorisee - Details",
+                                CreateAddress(authorityToPost.Authorisee.Participant.Addresses,
+                                    authorityToPost.Authorisee.Participant.ElectronicCommunicationDetails)
+                            }
+                        );
+                    }
+
+                    strucDocTableList.Add
+                    (
+                        PopulateTable
+                        (
+                            string.Format("Authorisee"),
+                            null,
+                            header,
+                            null,
+                            narrative
                         )
                     );
-            }
+                }
 
-            narrative = new List<List<Object>>();
-            if (authorityToPost.Repository != null && authorityToPost.Repository != null)
-            {
-                var softwareName = !authorityToPost.Repository.SoftwareName.IsNullOrEmptyWhitespace() ? authorityToPost.Repository.SoftwareName : null;
+                narrative = new List<List<Object>>();
+                if (authorityToPost.Repository != null && authorityToPost.Repository != null)
+                {
+                    var softwareName = !authorityToPost.Repository.SoftwareName.IsNullOrEmptyWhitespace()
+                        ? authorityToPost.Repository.SoftwareName
+                        : null;
 
-                narrative.Add
+                    narrative.Add
                     (
                         new List<Object>
                         {
                             "Software Name",
-                             softwareName
+                            softwareName
                         }
                     );
 
-                strucDocTableList.Add
+                    strucDocTableList.Add
                     (
-                    PopulateTable
+                        PopulateTable
                         (
-                        string.Format("Repository"),
-                        null,
-                        header,
-                        null,
-                        narrative
+                            string.Format("Repository"),
+                            null,
+                            header,
+                            null,
+                            narrative
                         )
                     );
+                }
             }
-          }
 
             if (strucDocTableList.Any())
                 strucDocText.table = strucDocTableList.ToArray();
@@ -6999,67 +7682,67 @@ namespace Nehta.VendorLibrary.CDA.Generator
             var narrative = new List<List<Object>>();
             var renderMultiMediaList = new List<StrucDocRenderMultiMedia>();
 
-            var header = new[] { "Field", "Value" };
+            var header = new[] {"Field", "Value"};
 
             if (information != null)
             {
                 // Report Identifier
                 if (information.ReportIdentifier != null)
                     narrative.Add
-                        (
-                            new List<Object>
-                            {
-                                "Report Identifier",
-                                 information.ReportIdentifier.NarrativeText
-                            }
-                        );
+                    (
+                        new List<Object>
+                        {
+                            "Report Identifier",
+                            information.ReportIdentifier.NarrativeText
+                        }
+                    );
 
                 // Link Nature
                 if (information.LinkNature != null)
                     narrative.Add
-                        (
-                            new List<Object>
-                            {
-                                "Link Nature",
-                                information.LinkNature.NarrativeText
-                            }
-                        );
+                    (
+                        new List<Object>
+                        {
+                            "Link Nature",
+                            information.LinkNature.NarrativeText
+                        }
+                    );
 
                 // Report Status
                 if (information.ReportStatus.HasValue)
                     narrative.Add
-                      (
+                    (
                         new List<Object>
-                            {
-                              "Report Status",
-                              information.ReportStatus.Value.GetAttributeValue<NameAttribute, String>(x => x.Name)
-                            }
-                      );
+                        {
+                            "Report Status",
+                            information.ReportStatus.Value.GetAttributeValue<NameAttribute, String>(x => x.Name)
+                        }
+                    );
 
                 if (information.ExternalData != null)
                 {
                     narrative.Add
-                      (
+                    (
                         new List<Object>
-                                {
-                                  "Result Status - Image",
-                                  CreateEncapsulatedData(information.ExternalData, ref renderMultiMediaList)    
-                                }
-                      );
+                        {
+                            "Result Status - Image",
+                            CreateEncapsulatedData(information.ExternalData, ref renderMultiMediaList)
+                        }
+                    );
                 }
 
                 // Struc Doc Table List
                 strucDocTableList.Add
-                      (
-                        PopulateTable
-                          (
-                            "Related Information",
-                            null,
-                            header,
-                            null,
-                            narrative
-                          )
-                      );
+                (
+                    PopulateTable
+                    (
+                        "Related Information",
+                        null,
+                        header,
+                        null,
+                        narrative
+                    )
+                );
             }
 
 
@@ -7080,90 +7763,97 @@ namespace Nehta.VendorLibrary.CDA.Generator
         /// <returns>StrucDocText</returns>
         public StrucDocText CreateNarrative(SCSModel.Pathology.RequestedService requestedService)
         {
-          var strucDocText = new StrucDocText();
-          var strucDocTableList = new List<StrucDocTable>();
-          var narrative = new List<List<Object>>();
-          var header = new[] { "Field", "Value" };
+            var strucDocText = new StrucDocText();
+            var strucDocTableList = new List<StrucDocTable>();
+            var narrative = new List<List<Object>>();
+            var header = new[] {"Field", "Value"};
 
-          if (requestedService != null)
-          {
-            // Requested Service DateTime
-            if (requestedService.RequestedServiceDateTime != null)
-              narrative.Add
-                (
-                  new List<Object>
-                      {
-                        "Requested Service DateTime",
-                        requestedService.RequestedServiceDateTime.NarrativeText()
-                      }
-                );
-
-            // Requested Service Description
-            if (requestedService.RequestedServiceDescription != null)
-              narrative.Add
-                (
-                  new List<Object>
-                      {
-                        "Requested Service Description",
-                        requestedService.RequestedServiceDescription.NarrativeText  
-                      }
-                );
-
-            // Service Booking Status
-            if (requestedService.ServiceBookingStatus.HasValue)
-              narrative.Add
-                (
-                  new List<Object>
-                      {
-                        "Service Booking Status",
-                        requestedService.ServiceBookingStatus.Value.GetAttributeValue<NameAttribute, String>(x => x.Name)
-                      }
-                );
-
-            // Service Requester
-            if (requestedService.ServiceRequester != null && requestedService.ServiceRequester.Participant != null)
+            if (requestedService != null)
             {
-              var personOrganisation = requestedService.ServiceRequester.Participant.Person != null && requestedService.ServiceRequester.Participant.Person.PersonNames != null ? BuildPersonNames(requestedService.ServiceRequester.Participant.Person.PersonNames) : null;
+                // Requested Service DateTime
+                if (requestedService.RequestedServiceDateTime != null)
+                    narrative.Add
+                    (
+                        new List<Object>
+                        {
+                            "Requested Service DateTime",
+                            requestedService.RequestedServiceDateTime.NarrativeText()
+                        }
+                    );
 
-              narrative.Add
+                // Requested Service Description
+                if (requestedService.RequestedServiceDescription != null)
+                    narrative.Add
+                    (
+                        new List<Object>
+                        {
+                            "Requested Service Description",
+                            requestedService.RequestedServiceDescription.NarrativeText
+                        }
+                    );
+
+                // Service Booking Status
+                if (requestedService.ServiceBookingStatus.HasValue)
+                    narrative.Add
+                    (
+                        new List<Object>
+                        {
+                            "Service Booking Status",
+                            requestedService.ServiceBookingStatus.Value.GetAttributeValue<NameAttribute, String>(x =>
+                                x.Name)
+                        }
+                    );
+
+                // Service Requester
+                if (requestedService.ServiceRequester != null && requestedService.ServiceRequester.Participant != null)
+                {
+                    var personOrganisation =
+                        requestedService.ServiceRequester.Participant.Person != null &&
+                        requestedService.ServiceRequester.Participant.Person.PersonNames != null
+                            ? BuildPersonNames(requestedService.ServiceRequester.Participant.Person.PersonNames)
+                            : null;
+
+                    narrative.Add
+                    (
+                        new List<Object>
+                        {
+                            "Reporting Pathologist",
+                            personOrganisation
+                        }
+                    );
+
+                    // Service Requester
+                    if (requestedService.ServiceRequester.Participant.Addresses != null ||
+                        requestedService.ServiceRequester.Participant.ElectronicCommunicationDetails != null)
+                    {
+                        narrative.Add
+                        (
+                            new List<Object>
+                            {
+                                "Reporting Pathologist - Details",
+                                CreateAddress(requestedService.ServiceRequester.Participant.Addresses,
+                                    requestedService.ServiceRequester.Participant.ElectronicCommunicationDetails)
+                            }
+                        );
+                    }
+                }
+
+                strucDocTableList.Add
                 (
-                  new List<Object>
-                      {
-                        "Reporting Pathologist",
-                        personOrganisation
-                      }
+                    PopulateTable
+                    (
+                        "Requested Service",
+                        null,
+                        header,
+                        null,
+                        narrative
+                    )
                 );
-
-              // Service Requester
-              if (requestedService.ServiceRequester.Participant.Addresses != null || requestedService.ServiceRequester.Participant.ElectronicCommunicationDetails != null)
-              {
-                narrative.Add
-                  (
-                    new List<Object>
-                      {
-                        "Reporting Pathologist - Details",
-                        CreateAddress(requestedService.ServiceRequester.Participant.Addresses, requestedService.ServiceRequester.Participant.ElectronicCommunicationDetails)
-                      }
-                  );
-              }
             }
 
-            strucDocTableList.Add
-              (
-                PopulateTable
-                  (
-                    "Requested Service",
-                    null,
-                    header,
-                    null,
-                    narrative
-                  )
-              );
-          }
+            strucDocText.table = strucDocTableList.ToArray();
 
-          strucDocText.table = strucDocTableList.ToArray();
-
-          return strucDocText;
+            return strucDocText;
         }
 
         /// <summary>
@@ -7178,34 +7868,34 @@ namespace Nehta.VendorLibrary.CDA.Generator
             var narrativedDocumentProvenance = new List<List<Object>>();
             var renderMultiMediaList = new List<StrucDocRenderMultiMedia>();
 
-            var header = new[] { "Document details", "Value" };
+            var header = new[] {"Document details", "Value"};
 
             if (documentDetails != null)
             {
                 if (documentDetails.ExternalData != null)
                 {
                     narrativeImage.Add
-                      (
+                    (
                         new List<Object>
-                                {
-                                  "Document Target",
-                                  CreateSimpleHtmlLink(documentDetails.ExternalData)
-                                }
-                      );
+                        {
+                            "Document Target",
+                            CreateSimpleHtmlLink(documentDetails.ExternalData)
+                        }
+                    );
                 }
-               
+
                 // Struc Doc Table List
                 strucDocTableList.Add
-                      (
-                        PopulateTable
-                          (
-                            "Related Document Information",
-                            null,
-                            header,
-                            null,
-                            narrativeImage
-                          )
-                      );
+                (
+                    PopulateTable
+                    (
+                        "Related Document Information",
+                        null,
+                        header,
+                        null,
+                        narrativeImage
+                    )
+                );
             }
 
             if (documentDetails != null && documentDetails.DocumentProvenance != null)
@@ -7213,23 +7903,25 @@ namespace Nehta.VendorLibrary.CDA.Generator
                 // Link Nature
                 if (documentDetails.DocumentProvenance.DocumentType.HasValue)
                     narrativedDocumentProvenance.Add
-                        (
-                            new List<Object>
-                            {
-                                "Document Type",
-                                 documentDetails.DocumentProvenance.DocumentType.Value.GetAttributeValue<NameAttribute, String>(x => x.Name)
-                            }
-                        );
-
-                if (documentDetails.DocumentProvenance != null && documentDetails.DocumentProvenance.DocumentIdentifier != null)
-                    narrativeImage.Add
-                      (
+                    (
                         new List<Object>
-                                {
-                                  "Document Identifier",
-                                  documentDetails.DocumentProvenance.DocumentIdentifier.NarrativeText    
-                                }
-                      );
+                        {
+                            "Document Type",
+                            documentDetails.DocumentProvenance.DocumentType.Value
+                                .GetAttributeValue<NameAttribute, String>(x => x.Name)
+                        }
+                    );
+
+                if (documentDetails.DocumentProvenance != null &&
+                    documentDetails.DocumentProvenance.DocumentIdentifier != null)
+                    narrativeImage.Add
+                    (
+                        new List<Object>
+                        {
+                            "Document Identifier",
+                            documentDetails.DocumentProvenance.DocumentIdentifier.NarrativeText
+                        }
+                    );
 
                 if (documentDetails.DocumentProvenance.Author != null)
                 {
@@ -7239,9 +7931,11 @@ namespace Nehta.VendorLibrary.CDA.Generator
 
                     if (author.Participant != null)
                     {
-                        if (author.Participant.Addresses != null && author.Participant.Addresses.Any() || author.Participant.ElectronicCommunicationDetails != null)
+                        if (author.Participant.Addresses != null && author.Participant.Addresses.Any() ||
+                            author.Participant.ElectronicCommunicationDetails != null)
 
-                        addresses = CreateAddress(author.Participant.Addresses, author.Participant.ElectronicCommunicationDetails); 
+                            addresses = CreateAddress(author.Participant.Addresses,
+                                author.Participant.ElectronicCommunicationDetails);
 
                         if (author.Participant.Person != null)
                         {
@@ -7256,7 +7950,7 @@ namespace Nehta.VendorLibrary.CDA.Generator
                             new List<Object>
                             {
                                 "Author Organisation",
-                                 organisationName
+                                organisationName
                             }
                         );
 
@@ -7264,10 +7958,10 @@ namespace Nehta.VendorLibrary.CDA.Generator
                     if (!personName.IsNullOrEmptyWhitespace())
                         narrativedDocumentProvenance.Add
                         (
-                             new List<Object>
+                            new List<Object>
                             {
                                 "Author Person Name",
-                                 personName
+                                personName
                             }
                         );
 
@@ -7275,26 +7969,26 @@ namespace Nehta.VendorLibrary.CDA.Generator
                     if (!addresses.IsNullOrEmptyWhitespace())
                         narrativedDocumentProvenance.Add
                         (
-                             new List<Object>
+                            new List<Object>
                             {
-                                "Address / Contact", 
-                                 addresses
+                                "Address / Contact",
+                                addresses
                             }
                         );
                 }
 
                 // Struc Doc Table List
                 strucDocTableList.Add
-                      (
-                        PopulateTable
-                          (
-                            "Document Provenance",
-                            null,
-                            header,
-                            null,
-                            narrativedDocumentProvenance
-                          )
-                      );
+                (
+                    PopulateTable
+                    (
+                        "Document Provenance",
+                        null,
+                        header,
+                        null,
+                        narrativedDocumentProvenance
+                    )
+                );
             }
 
             if (renderMultiMediaList.Any())
@@ -7326,44 +8020,58 @@ namespace Nehta.VendorLibrary.CDA.Generator
             };
 
             if (pathologyTestResult.ReportingPathologistForTestResult != null)
-            strucDocText.content = new []
-            {  
-                new StrucDocContent { 
-                    Text = 
-                    new[]
+                strucDocText.content = new[]
+                {
+                    new StrucDocContent
                     {
-                        "Reporting Pathologist: ",
-                        pathologyTestResult.ReportingPathologistForTestResult,
-                    }}
-            };
+                        Text =
+                            new[]
+                            {
+                                "Reporting Pathologist: ",
+                                pathologyTestResult.ReportingPathologistForTestResult,
+                            }
+                    }
+                };
 
             var narrative = new List<List<Object>>();
 
             if (pathologyTestResult != null)
             {
-                    narrative.Add
-                        (
-                            new List<Object>
-                            {
-                              pathologyTestResult.TestSpecimenDetail != null && pathologyTestResult.TestSpecimenDetail.CollectionDateTime != null ? XCOLWIDTHDATE + pathologyTestResult.TestSpecimenDetail.CollectionDateTime.NarrativeText() : null,
-                              pathologyTestResult.ObservationDateTime != null ? XCOLWIDTHDATE + pathologyTestResult.ObservationDateTime.NarrativeText() : null,
-                              pathologyTestResult.TestResultName != null ? pathologyTestResult.TestResultName.NarrativeText : null,
-                              pathologyTestResult.PathologyDiscipline.HasValue ? pathologyTestResult.PathologyDiscipline.Value.GetAttributeValue<NameAttribute, String>(x => x.Name) : null,
-                              pathologyTestResult.OverallTestResultStatus != null ? pathologyTestResult.OverallTestResultStatus.NarrativeText : null
-                            }
-                        );
+                narrative.Add
+                (
+                    new List<Object>
+                    {
+                        pathologyTestResult.TestSpecimenDetail != null &&
+                        pathologyTestResult.TestSpecimenDetail.CollectionDateTime != null
+                            ? XCOLWIDTHDATE + pathologyTestResult.TestSpecimenDetail.CollectionDateTime.NarrativeText()
+                            : null,
+                        pathologyTestResult.ObservationDateTime != null
+                            ? XCOLWIDTHDATE + pathologyTestResult.ObservationDateTime.NarrativeText()
+                            : null,
+                        pathologyTestResult.TestResultName != null
+                            ? pathologyTestResult.TestResultName.NarrativeText
+                            : null,
+                        pathologyTestResult.PathologyDiscipline.HasValue
+                            ? pathologyTestResult.PathologyDiscipline.Value.GetAttributeValue<NameAttribute, String>(
+                                x => x.Name)
+                            : null,
+                        pathologyTestResult.OverallTestResultStatus != null
+                            ? pathologyTestResult.OverallTestResultStatus.NarrativeText
+                            : null
+                    }
+                );
 
-                    strucDocTableList.Add
-                      (
-                        PopulateTable
-                          (
-                            "Pathology Test Result",
-                            null,
-                            header,
-                            null,
-                            narrative
-                          )
-                      );
+                strucDocTableList.Add
+                (
+                    PopulateTable
+                    (
+                        "Pathology Test Result",
+                        null,
+                        header,
+                        null,
+                        narrative
+                    )
+                );
             }
 
             if (strucDocTableList.Any())
@@ -7378,11 +8086,12 @@ namespace Nehta.VendorLibrary.CDA.Generator
         /// Create Related Document / Reporting Pathologist
         /// </summary>
         /// <returns>StrucDocText</returns>
-        public StrucDocText CreateNarrative(IParticipationReportingPathologist reportingPathologist, RelatedDocument relatedDocument)
+        public StrucDocText CreateNarrative(IParticipationReportingPathologist reportingPathologist,
+            RelatedDocument relatedDocument)
         {
             var strucDocText = new StrucDocText();
             var strucDocTableList = new List<StrucDocTable>();
-            var header = new[] { "Report DateTime", "Report Name", "Reporting Pathologist", "Report Status" };
+            var header = new[] {"Report DateTime", "Report Name", "Reporting Pathologist", "Report Status"};
             var narrativeRelatedDocument = new List<List<Object>>();
 
             string reportingPathologistDisplay = string.Empty;
@@ -7390,43 +8099,61 @@ namespace Nehta.VendorLibrary.CDA.Generator
             if (reportingPathologist != null && reportingPathologist.Participant != null)
             {
                 var reportingPathologistOrganisationName = string.Empty;
-                var reportingPathologistPersonName = reportingPathologist.Participant.Person != null && reportingPathologist.Participant.Person.PersonNames != null ? BuildPersonNames(reportingPathologist.Participant.Person.PersonNames) : null;
+                var reportingPathologistPersonName =
+                    reportingPathologist.Participant.Person != null &&
+                    reportingPathologist.Participant.Person.PersonNames != null
+                        ? BuildPersonNames(reportingPathologist.Participant.Person.PersonNames)
+                        : null;
 
-                if (reportingPathologist.Participant.Person != null && reportingPathologist.Participant.Person.Organisation != null && !reportingPathologist.Participant.Person.Organisation.Name.IsNullOrEmptyWhitespace())
+                if (reportingPathologist.Participant.Person != null &&
+                    reportingPathologist.Participant.Person.Organisation != null && !reportingPathologist.Participant
+                        .Person.Organisation.Name.IsNullOrEmptyWhitespace())
                 {
-                    reportingPathologistOrganisationName = string.Format("({0})", reportingPathologist.Participant.Person.Organisation.Name);
+                    reportingPathologistOrganisationName = string.Format("({0})",
+                        reportingPathologist.Participant.Person.Organisation.Name);
                 }
 
-                reportingPathologistDisplay = string.Format("{0}{1}{2}", reportingPathologistPersonName, DELIMITERBREAK, reportingPathologistOrganisationName);
+                reportingPathologistDisplay = string.Format("{0}{1}{2}", reportingPathologistPersonName, DELIMITERBREAK,
+                    reportingPathologistOrganisationName);
             }
 
-            if (relatedDocument.ExaminationResultRepresentation != null && relatedDocument.DocumentDetails != null && relatedDocument.DocumentDetails.ReportDescription != null)
+            if (relatedDocument.ExaminationResultRepresentation != null && relatedDocument.DocumentDetails != null &&
+                relatedDocument.DocumentDetails.ReportDescription != null)
             {
-                relatedDocument.ExaminationResultRepresentation.Caption = relatedDocument.DocumentDetails != null && relatedDocument.DocumentDetails.ReportDescription != null ? relatedDocument.DocumentDetails.ReportDescription : null;
+                relatedDocument.ExaminationResultRepresentation.Caption =
+                    relatedDocument.DocumentDetails != null && relatedDocument.DocumentDetails.ReportDescription != null
+                        ? relatedDocument.DocumentDetails.ReportDescription
+                        : null;
             }
 
             narrativeRelatedDocument.Add
-                (
+            (
                 new List<Object>
-                        {
-                            relatedDocument.DocumentDetails != null && relatedDocument.DocumentDetails.ReportDate != null ? XCOLWIDTHDATE + relatedDocument.DocumentDetails.ReportDate.NarrativeText() : null,
-                            relatedDocument.ExaminationResultRepresentation != null ? CreateSimpleHtmlLink(relatedDocument.ExaminationResultRepresentation) : null,
-                            reportingPathologistDisplay,
-                            relatedDocument.DocumentDetails != null && relatedDocument.DocumentDetails.ReportStatus != null ? relatedDocument.DocumentDetails.ReportStatus.NarrativeText : null
-                        }
-                );
+                {
+                    relatedDocument.DocumentDetails != null && relatedDocument.DocumentDetails.ReportDate != null
+                        ? XCOLWIDTHDATE + relatedDocument.DocumentDetails.ReportDate.NarrativeText()
+                        : null,
+                    relatedDocument.ExaminationResultRepresentation != null
+                        ? CreateSimpleHtmlLink(relatedDocument.ExaminationResultRepresentation)
+                        : null,
+                    reportingPathologistDisplay,
+                    relatedDocument.DocumentDetails != null && relatedDocument.DocumentDetails.ReportStatus != null
+                        ? relatedDocument.DocumentDetails.ReportStatus.NarrativeText
+                        : null
+                }
+            );
 
-             strucDocTableList.Add
-                      (
-                        PopulateTable
-                          (
-                            null,
-                            null,
-                            header,
-                            null,
-                            narrativeRelatedDocument
-                          )
-                      );
+            strucDocTableList.Add
+            (
+                PopulateTable
+                (
+                    null,
+                    null,
+                    header,
+                    null,
+                    narrativeRelatedDocument
+                )
+            );
 
             strucDocText.table = strucDocTableList.ToArray();
 
@@ -7437,11 +8164,12 @@ namespace Nehta.VendorLibrary.CDA.Generator
         /// Create Participation DI
         /// </summary>
         /// <returns>StrucDocText</returns>
-        public StrucDocText CreateNarrative(IParticipationReportingRadiologist reportingRadiologist, RelatedDocument relatedDocument)
+        public StrucDocText CreateNarrative(IParticipationReportingRadiologist reportingRadiologist,
+            RelatedDocument relatedDocument)
         {
             var strucDocText = new StrucDocText();
             var strucDocTableList = new List<StrucDocTable>();
-            var header = new[] { "Report Date", "Report", "Reporting Radiologist", "Status" };
+            var header = new[] {"Report Date", "Report", "Reporting Radiologist", "Status"};
             var relatedDocumentNarrative = new List<List<Object>>();
 
             string reportingRadiologistDisplay = string.Empty;
@@ -7449,43 +8177,61 @@ namespace Nehta.VendorLibrary.CDA.Generator
             if (reportingRadiologist != null && reportingRadiologist.Participant != null)
             {
                 var reportingRadiologistOrganisationName = string.Empty;
-                var  reportingRadiologistPersonName = reportingRadiologist.Participant.Person != null && reportingRadiologist.Participant.Person.PersonNames != null ? BuildPersonNames(reportingRadiologist.Participant.Person.PersonNames) : null;
+                var reportingRadiologistPersonName =
+                    reportingRadiologist.Participant.Person != null &&
+                    reportingRadiologist.Participant.Person.PersonNames != null
+                        ? BuildPersonNames(reportingRadiologist.Participant.Person.PersonNames)
+                        : null;
 
-                if (reportingRadiologist.Participant.Person != null && reportingRadiologist.Participant.Person.Organisation != null && !reportingRadiologist.Participant.Person.Organisation.Name.IsNullOrEmptyWhitespace())
+                if (reportingRadiologist.Participant.Person != null &&
+                    reportingRadiologist.Participant.Person.Organisation != null && !reportingRadiologist.Participant
+                        .Person.Organisation.Name.IsNullOrEmptyWhitespace())
                 {
-                    reportingRadiologistOrganisationName = string.Format("({0})", reportingRadiologist.Participant.Person.Organisation.Name); 
+                    reportingRadiologistOrganisationName = string.Format("({0})",
+                        reportingRadiologist.Participant.Person.Organisation.Name);
                 }
 
-                reportingRadiologistDisplay = string.Format("{0}{1}{2}", reportingRadiologistPersonName, DELIMITERBREAK, reportingRadiologistOrganisationName);
+                reportingRadiologistDisplay = string.Format("{0}{1}{2}", reportingRadiologistPersonName, DELIMITERBREAK,
+                    reportingRadiologistOrganisationName);
             }
 
-            if (relatedDocument.ExaminationResultRepresentation != null && relatedDocument.DocumentDetails != null && relatedDocument.DocumentDetails.ReportDescription != null)
+            if (relatedDocument.ExaminationResultRepresentation != null && relatedDocument.DocumentDetails != null &&
+                relatedDocument.DocumentDetails.ReportDescription != null)
             {
-                relatedDocument.ExaminationResultRepresentation.Caption = relatedDocument.DocumentDetails != null && relatedDocument.DocumentDetails.ReportDescription != null ? relatedDocument.DocumentDetails.ReportDescription : null;
+                relatedDocument.ExaminationResultRepresentation.Caption =
+                    relatedDocument.DocumentDetails != null && relatedDocument.DocumentDetails.ReportDescription != null
+                        ? relatedDocument.DocumentDetails.ReportDescription
+                        : null;
             }
 
             relatedDocumentNarrative.Add
-                (
+            (
                 new List<Object>
-                        {
-                            relatedDocument.DocumentDetails != null && relatedDocument.DocumentDetails.ReportDate != null ? XCOLWIDTHDATE + relatedDocument.DocumentDetails.ReportDate.NarrativeText() : null,
-                            relatedDocument.ExaminationResultRepresentation != null ? CreateSimpleHtmlLink(relatedDocument.ExaminationResultRepresentation) : null,
-                            reportingRadiologistDisplay,
-                            relatedDocument.DocumentDetails != null && relatedDocument.DocumentDetails.ReportStatus != null ? relatedDocument.DocumentDetails.ReportStatus.NarrativeText : null
-                        }
-                );
+                {
+                    relatedDocument.DocumentDetails != null && relatedDocument.DocumentDetails.ReportDate != null
+                        ? XCOLWIDTHDATE + relatedDocument.DocumentDetails.ReportDate.NarrativeText()
+                        : null,
+                    relatedDocument.ExaminationResultRepresentation != null
+                        ? CreateSimpleHtmlLink(relatedDocument.ExaminationResultRepresentation)
+                        : null,
+                    reportingRadiologistDisplay,
+                    relatedDocument.DocumentDetails != null && relatedDocument.DocumentDetails.ReportStatus != null
+                        ? relatedDocument.DocumentDetails.ReportStatus.NarrativeText
+                        : null
+                }
+            );
 
-                strucDocTableList.Add
-                      (
-                        PopulateTable
-                          (
-                            null,
-                            null,
-                            header,
-                            null,
-                            relatedDocumentNarrative
-                          )
-                      );
+            strucDocTableList.Add
+            (
+                PopulateTable
+                (
+                    null,
+                    null,
+                    header,
+                    null,
+                    relatedDocumentNarrative
+                )
+            );
 
 
             strucDocText.table = strucDocTableList.ToArray();
@@ -7506,7 +8252,8 @@ namespace Nehta.VendorLibrary.CDA.Generator
 
             if (documentDetails?.RequestedService != null)
             {
-                strucDocTableList.AddRange(documentDetails.RequestedService.Select(requestedService => CreateServiceNarative(requestedService as Service)));
+                strucDocTableList.AddRange(documentDetails.RequestedService.Select(requestedService =>
+                    CreateServiceNarative(requestedService as Service)));
             }
 
             if (documentDetails?.OtherAlerts != null)
@@ -7538,7 +8285,8 @@ namespace Nehta.VendorLibrary.CDA.Generator
 
             if (narrativeText != null)
             {
-                strucDocText.paragraph = new[] {
+                strucDocText.paragraph = new[]
+                {
                     new StrucDocParagraph
                     {
                         Text = new[]
@@ -7588,19 +8336,19 @@ namespace Nehta.VendorLibrary.CDA.Generator
         /// <returns>The StrucDocTable</returns>
         public StrucDocTable CreateRelatedDocumentNarative(RelatedDocumentV1 relatedDocument)
         {
-            var header = new[] { "Document details", "Value" };
+            var header = new[] {"Document details", "Value"};
             var narrative = new List<List<object>>();
 
             if (relatedDocument.DocumentDetails?.DocumentTitle != null)
             {
-                    narrative.Add
-                    (
-                        new List<object>
-                        {
-                            "Document Title",
-                            relatedDocument.DocumentDetails.DocumentTitle
-                        }
-                    );
+                narrative.Add
+                (
+                    new List<object>
+                    {
+                        "Document Title",
+                        relatedDocument.DocumentDetails.DocumentTitle
+                    }
+                );
             }
 
             if (relatedDocument.DocumentTarget != null)
@@ -7633,7 +8381,7 @@ namespace Nehta.VendorLibrary.CDA.Generator
         /// <returns>The StrucDocTable</returns>
         public StrucDocTable CreateAlertNarative(Alert alert)
         {
-            var header = new[] { "Field", "Value" };
+            var header = new[] {"Field", "Value"};
             var narrative = new List<List<object>>();
 
             if (alert.AlertType != null)
@@ -7641,10 +8389,10 @@ namespace Nehta.VendorLibrary.CDA.Generator
                 narrative.Add
                 (
                     new List<object>
-                        {
-                            "Alert Type",
-                            alert.AlertType.NarrativeText
-                        }
+                    {
+                        "Alert Type",
+                        alert.AlertType.NarrativeText
+                    }
                 );
             }
 
@@ -7653,22 +8401,22 @@ namespace Nehta.VendorLibrary.CDA.Generator
                 narrative.Add
                 (
                     new List<object>
-                        {
-                            "Alert Description",
-                            alert.AlertDescription.NarrativeText
-                        }
+                    {
+                        "Alert Description",
+                        alert.AlertDescription.NarrativeText
+                    }
                 );
             }
 
             // Struc Doc Table List
             return PopulateTable
-                (
-                    "Other Alert",
-                    null,
-                    header,
-                    null,
-                    narrative
-                );
+            (
+                "Other Alert",
+                null,
+                header,
+                null,
+                narrative
+            );
         }
 
         /// <summary>
@@ -7678,7 +8426,7 @@ namespace Nehta.VendorLibrary.CDA.Generator
         /// <returns>The StrucDocTable</returns>
         public StrucDocTable CreateInterpreterRequiredAlertNarative(InterpreterRequiredAlert alert)
         {
-            var header = new[] { "Field", "Value" };
+            var header = new[] {"Field", "Value"};
             var narrative = new List<List<object>>();
 
             if (alert.PreferredLanguage != null)
@@ -7686,10 +8434,10 @@ namespace Nehta.VendorLibrary.CDA.Generator
                 narrative.Add
                 (
                     new List<object>
-                        {
-                            "Preferred Language",
-                            string.Join(DELIMITERBREAK, alert.PreferredLanguage) 
-                        }
+                    {
+                        "Preferred Language",
+                        string.Join(DELIMITERBREAK, alert.PreferredLanguage)
+                    }
                 );
             }
 
@@ -7712,7 +8460,7 @@ namespace Nehta.VendorLibrary.CDA.Generator
         /// <returns></returns>
         public StrucDocTable CreateServiceNarative(Service service)
         {
-            var header = new[] { "Field", "Value" };
+            var header = new[] {"Field", "Value"};
             var narrative = new List<List<object>>();
 
             if (service.ReasonForService != null)
@@ -7720,10 +8468,10 @@ namespace Nehta.VendorLibrary.CDA.Generator
                 narrative.Add
                 (
                     new List<object>
-                        {
-                            "Reason for Service",
-                            service.ReasonForService.NarrativeText
-                        }
+                    {
+                        "Reason for Service",
+                        service.ReasonForService.NarrativeText
+                    }
                 );
             }
 
@@ -7732,10 +8480,10 @@ namespace Nehta.VendorLibrary.CDA.Generator
                 narrative.Add
                 (
                     new List<object>
-                        {
-                            "Reason for Service Description",
-                            service.ReasonForServiceDescription
-                        }
+                    {
+                        "Reason for Service Description",
+                        service.ReasonForServiceDescription
+                    }
                 );
             }
 
@@ -7744,10 +8492,10 @@ namespace Nehta.VendorLibrary.CDA.Generator
                 narrative.Add
                 (
                     new List<object>
-                        {
-                            "Service Category",
-                            service.ServiceCategory.NarrativeText
-                        }
+                    {
+                        "Service Category",
+                        service.ServiceCategory.NarrativeText
+                    }
                 );
             }
 
@@ -7756,10 +8504,10 @@ namespace Nehta.VendorLibrary.CDA.Generator
                 narrative.Add
                 (
                     new List<object>
-                        {
-                            "Service Description",
-                            service.ServiceDescription.NarrativeText
-                        }
+                    {
+                        "Service Description",
+                        service.ServiceDescription.NarrativeText
+                    }
                 );
             }
 
@@ -7768,10 +8516,10 @@ namespace Nehta.VendorLibrary.CDA.Generator
                 narrative.Add
                 (
                     new List<object>
-                        {
-                            "Service Comment",
-                            service.ServiceComment
-                        }
+                    {
+                        "Service Comment",
+                        service.ServiceComment
+                    }
                 );
             }
 
@@ -7780,10 +8528,10 @@ namespace Nehta.VendorLibrary.CDA.Generator
                 narrative.Add
                 (
                     new List<object>
-                        {
-                            "Date Time Service Scheduled",
-                            service.DateTimeServiceScheduled.NarrativeText()
-                        }
+                    {
+                        "Date Time Service Scheduled",
+                        service.DateTimeServiceScheduled.NarrativeText()
+                    }
                 );
             }
 
@@ -7792,10 +8540,10 @@ namespace Nehta.VendorLibrary.CDA.Generator
                 narrative.Add
                 (
                     new List<object>
-                        {
-                            "Request Urgency",
-                            service.RequestUrgency.Value.ToString()
-                        }
+                    {
+                        "Request Urgency",
+                        service.RequestUrgency.Value.ToString()
+                    }
                 );
             }
 
@@ -7804,10 +8552,10 @@ namespace Nehta.VendorLibrary.CDA.Generator
                 narrative.Add
                 (
                     new List<object>
-                        {
-                            "Request Urgency Notes",
-                            service.RequestUrgencyNotes
-                        }
+                    {
+                        "Request Urgency Notes",
+                        service.RequestUrgencyNotes
+                    }
                 );
             }
 
@@ -7817,32 +8565,32 @@ namespace Nehta.VendorLibrary.CDA.Generator
                 narrative.Add
                 (
                     new List<object>
-                        {
-                            "Service Commencement Window",
-                            service.ServiceCommencementWindow.NarrativeText()
-                        }
+                    {
+                        "Service Commencement Window",
+                        service.ServiceCommencementWindow.NarrativeText()
+                    }
                 );
             }
 
             // Service Booking Status
             narrative.Add
-                  (
-                    new List<object>
-                        {
-                            "Service Booking Status",
-                            service.ServiceBookingStatus.GetAttributeValue<NameAttribute, string>(x => x.Name)
-                        }
-                  );
+            (
+                new List<object>
+                {
+                    "Service Booking Status",
+                    service.ServiceBookingStatus.GetAttributeValue<NameAttribute, string>(x => x.Name)
+                }
+            );
 
             if (service.RequestValidityPeriod != null)
             {
                 narrative.Add
                 (
                     new List<object>
-                        {
-                            "Request Validity Period",
-                            service.RequestValidityPeriod.NarrativeText()
-                        }
+                    {
+                        "Request Validity Period",
+                        service.RequestValidityPeriod.NarrativeText()
+                    }
                 );
             }
 
@@ -7851,10 +8599,10 @@ namespace Nehta.VendorLibrary.CDA.Generator
                 narrative.Add
                 (
                     new List<object>
-                        {
-                            "Subject Of Care Instruction Description",
-                            string.Join(DELIMITERBREAK, service.SubjectOfCareInstructionDescription)
-                        }
+                    {
+                        "Subject Of Care Instruction Description",
+                        string.Join(DELIMITERBREAK, service.SubjectOfCareInstructionDescription)
+                    }
                 );
             }
 
@@ -7863,10 +8611,10 @@ namespace Nehta.VendorLibrary.CDA.Generator
                 narrative.Add
                 (
                     new List<object>
-                        {
-                            "Requested Service DateTime",
-                            service.RequestedServiceDateTime.NarrativeText()
-                        }
+                    {
+                        "Requested Service DateTime",
+                        service.RequestedServiceDateTime.NarrativeText()
+                    }
                 );
             }
 
@@ -7876,14 +8624,19 @@ namespace Nehta.VendorLibrary.CDA.Generator
                 var serviceProviderOrganisationName = string.Empty;
                 var address = string.Empty;
 
-                var serviceProviderPersonName = service.ServiceProvider.Participant?.Person?.PersonNames != null ? BuildPersonNames(service.ServiceProvider.Participant.Person.PersonNames) : null;
+                var serviceProviderPersonName = service.ServiceProvider.Participant?.Person?.PersonNames != null
+                    ? BuildPersonNames(service.ServiceProvider.Participant.Person.PersonNames)
+                    : null;
 
-                if (service.ServiceProvider?.Participant?.Person?.Organisation != null && !service.ServiceProvider.Participant.Person.Organisation.Name.IsNullOrEmptyWhitespace())
+                if (service.ServiceProvider?.Participant?.Person?.Organisation != null && !service.ServiceProvider
+                        .Participant.Person.Organisation.Name.IsNullOrEmptyWhitespace())
                 {
-                    serviceProviderOrganisationName = $"({service.ServiceProvider.Participant.Person.Organisation.Name})";
+                    serviceProviderOrganisationName =
+                        $"({service.ServiceProvider.Participant.Person.Organisation.Name})";
                 }
 
-                if (service.ServiceProvider?.Participant?.Organisation != null && !service.ServiceProvider.Participant.Organisation.Name.IsNullOrEmptyWhitespace())
+                if (service.ServiceProvider?.Participant?.Organisation != null &&
+                    !service.ServiceProvider.Participant.Organisation.Name.IsNullOrEmptyWhitespace())
                 {
                     serviceProviderOrganisationName = $"{service.ServiceProvider.Participant.Organisation.Name}";
                 }
@@ -7892,7 +8645,8 @@ namespace Nehta.VendorLibrary.CDA.Generator
 
                 if (service?.ServiceProvider?.Participant != null)
                 {
-                    address = CreateAddress(service.ServiceProvider.Participant.Addresses, service.ServiceProvider.Participant.ElectronicCommunicationDetails);
+                    address = CreateAddress(service.ServiceProvider.Participant.Addresses,
+                        service.ServiceProvider.Participant.ElectronicCommunicationDetails);
                     serviceProviderText = $"{serviceProviderText}{DELIMITERBREAK}{address}";
                 }
             }
@@ -7926,4 +8680,3 @@ namespace Nehta.VendorLibrary.CDA.Generator
         #endregion
     }
 }
-    

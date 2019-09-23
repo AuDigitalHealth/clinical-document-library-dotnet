@@ -319,7 +319,7 @@ namespace Nehta.VendorLibrary.CDA.Sample
         /// <returns>A Hydrated Event Summary object</returns>
         private static List<IImmunisation> CreateImmunisations()
         { 
-            var immunisation =  BaseCDAModel.CreateCodableText("53705011000036109",CodingSystem.AMTV3, "Advil 200 mg sugar coated tablet");
+            var immunisation =  BaseCDAModel.CreateCodableText("53705011000036109",CodingSystem.AMTV3, "Advil 200 mg tablet");
 
             var immunisationList = new List<IImmunisation>
             {
@@ -358,8 +358,8 @@ namespace Nehta.VendorLibrary.CDA.Sample
         {
             var medicationList = new List<IMedicationItem>
             {
-                CreateMedication("23641011000036102", "paracetamol 500 mg + codeine phosphate 30 mg tablet", true),
-                CreateMedication("45260011000036108", "dextropropoxyphene hydrochloride 32.5 mg + paracetamol 325 mg tablet", false)
+                CreateMedication("79115011000036100", "paracetamol 500 mg + codeine phosphate hemihydrate 30 mg tablet"),
+                CreateMedication("45260011000036108", "dextropropoxyphene hydrochloride 32.5 mg + paracetamol 325 mg tablet")
             };
 
             return medicationList;
@@ -374,22 +374,14 @@ namespace Nehta.VendorLibrary.CDA.Sample
       /// <param name="recomendationOrChangeNullFlavour">The Recommendation Or Change Null Flavour</param>
       /// <param name="changeTypeNullFlavour">The Change Type Null Flavour</param>
       /// <returns></returns>
-        private static IMedicationItem CreateMedication(string code, string name, bool showNullflavor)
+        private static IMedicationItem CreateMedication(string code, string name, bool showNullflavor = false)
         {
             IMedicationItem medication = EventSummary.CreateMedication();
 
-            if (showNullflavor)
-            {
-                medication.Directions = BaseCDAModel.CreateStructuredText(NullFlavour.Other);
-                medication.ChangeStatus = BaseCDAModel.CreateCodableText(NullFlavour.Other, CodingSystem.SNOMED, "Change made"); // Could not find ChangeStatus code for the provided refset
-                medication.ChangeType = BaseCDAModel.CreateCodableText(NullFlavour.Other, CodingSystem.SNOMED, "Changed"); // Could not find ChangeType code for the provided refset
-            }
-            else
-            {
-                medication.Directions = BaseCDAModel.CreateStructuredText("Dose:1, Frequency: 3 times daily");
-                medication.ChangeStatus = BaseCDAModel.CreateCodableText(ChangeStatus.ChangeMade);
-                medication.ChangeType = BaseCDAModel.CreateCodableText(ChangeTypeSnomed.Changed);
-            }
+            // WE SHOULD NEVER USE showNullflavor as the defined refsets are very simple ones
+            medication.Directions = BaseCDAModel.CreateStructuredText("Dose:1, Frequency: 3 times daily");
+            medication.ChangeStatus = BaseCDAModel.CreateCodableText(ChangeStatus.ChangeMade);
+            medication.ChangeType = BaseCDAModel.CreateCodableText(ChangeTypeSnomed.Changed);
 
             medication.ChangeDescription = "Change Description";
             medication.ChangeReason = BaseCDAModel.CreateStructuredText("Change Reason");
@@ -419,7 +411,7 @@ namespace Nehta.VendorLibrary.CDA.Sample
             requestedServicePerson.RequestedServiceDescription = BaseCDAModel.CreateCodableText("399208008", CodingSystem.SNOMED, "Plain chest X-ray");
             requestedServicePerson.ServiceBookingStatus = EventTypes.AppointmentRequest;
             requestedServicePerson.SubjectOfCareInstructionDescription = "Subject Of Care Instruction Description";
-            requestedServicePerson.RequestedServiceDateTime = new ISO8601DateTime(DateTime.Now.AddDays(4), ISO8601DateTime.Precision.Day);
+            requestedServicePerson.RequestedServiceDateTime = new ISO8601DateTime(DateTime.Now.AddDays(0), ISO8601DateTime.Precision.Day);
             requestedServicePerson.ServiceProvider = CreateServiceProviderPerson(mandatorySectionsOnly);
 
             // Add to list
@@ -431,7 +423,7 @@ namespace Nehta.VendorLibrary.CDA.Sample
             requestedServiceOrganisation.RequestedServiceDescription = BaseCDAModel.CreateCodableText("399208008", CodingSystem.SNOMED, "Plain chest X-ray");
             requestedServiceOrganisation.ServiceBookingStatus = EventTypes.Intent;
             requestedServiceOrganisation.SubjectOfCareInstructionDescription = "Subject Of Care Instruction Description";
-            requestedServiceOrganisation.RequestedServiceDateTime = new ISO8601DateTime(DateTime.Now.AddDays(4));
+            requestedServiceOrganisation.RequestedServiceDateTime = new ISO8601DateTime(DateTime.Now.AddDays(0));
             requestedServiceOrganisation.ServiceProvider = CreateServiceProviderOrganisation(mandatorySectionsOnly);
 
             // Add to list
@@ -465,15 +457,14 @@ namespace Nehta.VendorLibrary.CDA.Sample
             serviceProvider.Participant.ElectronicCommunicationDetails = new List<ElectronicCommunicationDetail> { electronicCommunicationDetail, electronicCommunicationDetail };
 
             var address = BaseCDAModel.CreateAddress();
-            address.AddressPurpose = AddressPurpose.Residential;
+            address.AddressPurpose = AddressPurpose.Business;
             address.AustralianAddress = BaseCDAModel.CreateAustralianAddress();
             address.AustralianAddress.UnstructuredAddressLines = new List<string> { "1 Clinician Street" };
             address.AustralianAddress.SuburbTownLocality = "Nehtaville";
             address.AustralianAddress.State = AustralianState.QLD;
             address.AustralianAddress.PostCode = "5555";
-            address.AustralianAddress.DeliveryPointId = 32568931;
 
-            serviceProvider.Role = !mandatorySectionsOnly ? BaseCDAModel.CreateRole(Occupation.GeneralMedicalPractitioner) : BaseCDAModel.CreateRole(NullFlavour.Other);
+            serviceProvider.Role = !mandatorySectionsOnly ? BaseCDAModel.CreateRole(HealthcareFacilityTypeCodes.HospitalsExceptPsychiatricHospitals) : BaseCDAModel.CreateRole(NullFlavour.Other);
 
             serviceProvider.Participant.Addresses = new List<IAddress> { address, address };
 
@@ -494,13 +485,15 @@ namespace Nehta.VendorLibrary.CDA.Sample
             participant.Person = BaseCDAModel.CreatePersonHealthcareProvider();
 
             var personName = BaseCDAModel.CreatePersonName();
-            personName.FamilyName = "Dr Jane Anderson";
+            personName.FamilyName = "Anderson";
+            personName.GivenNames = new List<string> { "Jane" };
+            personName.Titles = new List<string> { "Dr" };
             personName.NameUsages = new List<NameUsage> { NameUsage.Legal };
             participant.Person.Identifiers = new List<Identifier> { BaseCDAModel.CreateHealthIdentifier(HealthIdentifierType.HPII, "8003610000001145") }; 
             participant.Person.PersonNames = new List<IPersonName> { personName };    
 
             var electronicCommunicationDetail1 =  BaseCDAModel.CreateElectronicCommunicationDetail("0345754566", ElectronicCommunicationMedium.Telephone, ElectronicCommunicationUsage.WorkPlace);
-            var electronicCommunicationDetail2 =  BaseCDAModel.CreateElectronicCommunicationDetail("1234", ElectronicCommunicationMedium.Email, ElectronicCommunicationUsage.WorkPlace);
+            var electronicCommunicationDetail2 =  BaseCDAModel.CreateElectronicCommunicationDetail("test@gmail.com", ElectronicCommunicationMedium.Email, ElectronicCommunicationUsage.WorkPlace);
 
             participant.ElectronicCommunicationDetails = new List<ElectronicCommunicationDetail> 
             { 
@@ -518,7 +511,6 @@ namespace Nehta.VendorLibrary.CDA.Sample
             address.AustralianAddress.SuburbTownLocality = "Nehtaville";
             address.AustralianAddress.State = AustralianState.QLD;
             address.AustralianAddress.PostCode = "5555";
-            address.AustralianAddress.DeliveryPointId = 32568931;
 
             serviceProvider.Role = !mandatorySectionsOnly ? BaseCDAModel.CreateRole(Occupation.GeneralMedicalPractitioner) : BaseCDAModel.CreateRole(NullFlavour.NegativeInfinity);
 
@@ -529,9 +521,9 @@ namespace Nehta.VendorLibrary.CDA.Sample
             };
 
             var entitlement = BaseCDAModel.CreateEntitlement();
-            entitlement.Id = BaseCDAModel.CreateMedicareNumber(MedicareNumberType.MedicareCardNumber, "1234567881");
+            entitlement.Id = BaseCDAModel.CreatePrescriberNumber(IdentifierType.PrescriberNumber, "049960CT");
             entitlement.Type = EntitlementType.MedicarePrescriberNumber;
-            entitlement.ValidityDuration = BaseCDAModel.CreateInterval(new ISO8601DateTime(DateTime.Now), new ISO8601DateTime(DateTime.Now));
+            entitlement.ValidityDuration = BaseCDAModel.CreateHigh(new ISO8601DateTime(DateTime.Now.AddMonths(15), ISO8601DateTime.Precision.Day));
             participant.Person.Entitlements = new List<Entitlement> { entitlement, entitlement };
 
             participant.Person.Qualifications = "M.B.B.S., F.R.A.C.S.";
@@ -541,7 +533,7 @@ namespace Nehta.VendorLibrary.CDA.Sample
             participant.Person.Organisation.NameUsage = OrganisationNameUsage.Other;
             participant.Person.Organisation.Identifiers = new List<Identifier> { BaseCDAModel.CreateHealthIdentifier(HealthIdentifierType.HPIO, "8003620000045562") };
             participant.Person.Organisation.Department = "Some department service provider";
-            participant.Person.Organisation.EmploymentType = BaseCDAModel.CreateCodableText("Service Provider Casual");
+            participant.Person.Organisation.EmploymentType = BaseCDAModel.CreateCodableText(EmploymentType.Casual);
             participant.Person.Organisation.Occupation = BaseCDAModel.CreateRole(Occupation.GeneralMedicalPractitioner);
             participant.Person.Organisation.PositionInOrganisation = BaseCDAModel.CreateCodableText("Service Provider Manager");
             participant.Person.Organisation.Addresses = new List<IAddress> { address };
@@ -607,7 +599,7 @@ namespace Nehta.VendorLibrary.CDA.Sample
                 var medicalHistoryItem2 = EventSummary.CreateMedicalHistoryItem();
                 var ongoingInterval2 = CdaInterval.CreateLowHigh(
                                        new ISO8601DateTime(DateTime.Now.AddDays(-400), ISO8601DateTime.Precision.Day),
-                                       new ISO8601DateTime(DateTime.Now.AddDays(200), ISO8601DateTime.Precision.Day));
+                                       new ISO8601DateTime(DateTime.Now.AddDays(0), ISO8601DateTime.Precision.Day));
                 medicalHistoryItem2.DateTimeInterval = ongoingInterval2;
                 medicalHistoryItem2.ItemDescription = "Medical history item description here";
                 medicalHistoryItem2.ItemComment = "Item Comment";
@@ -615,7 +607,7 @@ namespace Nehta.VendorLibrary.CDA.Sample
 
                 var medicalHistoryItem3 = EventSummary.CreateMedicalHistoryItem();
                 var ongoingInterval3 = CdaInterval.CreateHigh(
-                                       new ISO8601DateTime(DateTime.Now.AddDays(200), ISO8601DateTime.Precision.Day));
+                                       new ISO8601DateTime(DateTime.Now.AddDays(0), ISO8601DateTime.Precision.Day));
                 medicalHistoryItem3.DateTimeInterval = ongoingInterval3;
                 medicalHistoryItem3.ItemDescription = "Medical history item description here";
                 medicalHistoryItem3.ItemComment = "Item Comment";

@@ -236,7 +236,7 @@ namespace CDA.R5Samples
           testResult.ReportingPathologistForTestResult = reportingPathologistName;
 
           // Test Result Name
-          testResult.TestResultName = BaseCDAModel.CreateCodableText("275711006", CodingSystem.SNOMED, "Serum chemistry test");
+          testResult.TestResultName = BaseCDAModel.CreateCodableText("104950002", CodingSystem.SNOMED, "Sulfhaemoglobin measurement");
 
           // Department Code
           testResult.PathologyDiscipline = DiagnosticService.Laboratory;
@@ -356,7 +356,7 @@ namespace CDA.R5Samples
 
           // Document reportingPathologist > Participant > Person or Organisation or Device > Person > Person Name
           var name = BaseCDAModel.CreatePersonName();
-          name.FamilyName = "Doctor";
+          name.FamilyName = "Healthy";
 
           person.PersonNames = new List<IPersonName> { name };
 
@@ -403,7 +403,7 @@ namespace CDA.R5Samples
           person.Organisation.Name = "Hay Bill Hospital";
           person.Organisation.NameUsage = OrganisationNameUsage.Other;
           person.Organisation.Department = "Some department service provider";
-          person.Organisation.EmploymentType = BaseCDAModel.CreateCodableText(null, null, null, "Casual", null);
+          person.Organisation.EmploymentType = BaseCDAModel.CreateCodableText(EmploymentType.Casual);
           person.Organisation.Occupation = PathologyResultReport.CreateRole(Occupation.GeneralMedicalPractitioner);
           person.Organisation.PositionInOrganisation = BaseCDAModel.CreateCodableText(null, null, null, "Manager", null);
 
@@ -419,21 +419,19 @@ namespace CDA.R5Samples
 
           if (!mandatoryOnly)
           {
-              name.GivenNames = new List<string> { "Good" };
-              name.Titles = new List<string> { "Doctor" };
+              name.GivenNames = new List<string> { "Fitun" };
+              name.Titles = new List<string> { "Dr" };
               name.NameUsages = new List<NameUsage> { NameUsage.Legal };
 
               address1.AustralianAddress.UnstructuredAddressLines = new List<string> { "1 Clinician Street" };
               address1.AustralianAddress.SuburbTownLocality = "Nehtaville";
               address1.AustralianAddress.State = AustralianState.QLD;
               address1.AustralianAddress.PostCode = "5555";
-              address1.AustralianAddress.DeliveryPointId = 32568931;
 
               address2.AustralianAddress.UnstructuredAddressLines = new List<string> { "2 Clinician Street" };
               address2.AustralianAddress.SuburbTownLocality = "Nehtaville";
               address2.AustralianAddress.State = AustralianState.QLD;
               address2.AustralianAddress.PostCode = "5555";
-              address2.AustralianAddress.DeliveryPointId = 32568931;
 
               // Qualifications
               reportingPathologist.Participant.Qualifications = "FRACGP";

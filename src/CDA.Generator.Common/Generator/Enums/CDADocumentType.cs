@@ -236,7 +236,7 @@ namespace Nehta.VendorLibrary.CDA.Generator.Enums
         /// <summary>
         /// Pharmacist Shared Medicines List
         /// </summary>
-        [Name(Name = "Pharmacist Shared Medicines List", CodeSystem = "LOINC", Code = "56445-0", TemplateIdentifier = "1.2.36.1.2001.1001.100.1002.218", Version = "1.1", Title = "Pharmacist Shared Medicines List")]
+        [Name(Name = "Pharmacist Shared Medicines List", CodeSystem = "LOINC", Code = "56445-0", TemplateIdentifier = "1.2.36.1.2001.1001.100.1002.237", Version = "1.0", Title = "Pharmacist Shared Medicines List")]
         PharmacistSharedMedicinesList,
        
         /// <summary> 

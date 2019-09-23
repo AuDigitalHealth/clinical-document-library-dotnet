@@ -65,26 +65,17 @@ namespace Nehta.VendorLibrary.CDA.Sample
 
         public static String OutputFileNameAndPath
         {
-            get
-            {
-                return OutputFolderPath + @"\EDischargeSummary.xml";
-            }
+            get { return OutputFolderPath + @"\EDischargeSummary.xml"; }
         }
 
-        public  static String xPreNameAndPath
+        public static String xPreNameAndPath
         {
-            get
-            {
-                return OutputFolderPath + @"\PIT.txt";
-            }
+            get { return OutputFolderPath + @"\PIT.txt"; }
         }
 
         public static String StructuredFileAttachment
         {
-            get
-            {
-                return OutputFolderPath + @"\attachment.pdf";
-            }
+            get { return OutputFolderPath + @"\attachment.pdf"; }
         }
 
         #endregion
@@ -132,7 +123,8 @@ namespace Nehta.VendorLibrary.CDA.Sample
                 //Pass the document model into the Generate method 
                 xmlDoc = CDAGenerator.GenerateEDischargeSummary(document);
 
-                using (var writer = XmlWriter.Create(OutputFolderPath + @"\" + fileName, new XmlWriterSettings { Indent = true }))
+                using (var writer = XmlWriter.Create(OutputFolderPath + @"\" + fileName,
+                    new XmlWriterSettings {Indent = true}))
                 {
                     if (!fileName.IsNullOrEmptyWhitespace()) xmlDoc.Save(writer);
                 }
@@ -175,8 +167,9 @@ namespace Nehta.VendorLibrary.CDA.Sample
             var narrativeOnlyDocumentList = new List<NarrativeOnlyDocument>();
 
             var narrativeOnlyDocument = BaseCDAModel.CreateNarrativeOnlyDocument();
-            narrativeOnlyDocument.Title = "Title";
-            narrativeOnlyDocument.Narrative = new StrucDocText { Text = new[] { "Narrative" } };
+            narrativeOnlyDocument.Title = "Narrative Title";
+            narrativeOnlyDocument.Narrative = new StrucDocText
+                {paragraph = new[] {new StrucDocParagraph {Text = new[] {"The narrative goes here"}}}};
 
             // Add One
             narrativeOnlyDocumentList.Add(narrativeOnlyDocument);
@@ -190,7 +183,8 @@ namespace Nehta.VendorLibrary.CDA.Sample
                 //Pass the document model into the Generate method 
                 xmlDoc = CDAGenerator.GenerateEDischargeSummary(document);
 
-                using (var writer = XmlWriter.Create(OutputFolderPath + @"\" + fileName, new XmlWriterSettings { Indent = true }))
+                using (var writer = XmlWriter.Create(OutputFolderPath + @"\" + fileName,
+                    new XmlWriterSettings {Indent = true}))
                 {
                     if (!fileName.IsNullOrEmptyWhitespace()) xmlDoc.Save(writer);
                 }
@@ -221,7 +215,8 @@ namespace Nehta.VendorLibrary.CDA.Sample
                 //Pass the E-Discharge model into the GenerateEDischarge method 
                 xmlDoc = CDAGenerator.GenerateEDischargeSummary(eDischargeSummary);
 
-                using (var writer = XmlWriter.Create(OutputFolderPath + @"\" + fileName, new XmlWriterSettings() { Indent = true }))
+                using (var writer = XmlWriter.Create(OutputFolderPath + @"\" + fileName,
+                    new XmlWriterSettings() {Indent = true}))
                 {
                     if (!fileName.IsNullOrEmptyWhitespace()) xmlDoc.Save(writer);
                 }
@@ -234,10 +229,11 @@ namespace Nehta.VendorLibrary.CDA.Sample
                 //Handle any validation errors as appropriate.
                 throw;
             }
-            
+
 
             return xmlDoc;
         }
+
         /// <summary>
         /// This sample populates both the mandatory and optional Sections / Entries; as a result this sample
         /// includes all of the sections within the body and each section includes at least one example for 
@@ -254,7 +250,8 @@ namespace Nehta.VendorLibrary.CDA.Sample
                 //Pass the E-Discharge model into the GenerateEDischarge method 
                 xmlDoc = CDAGenerator.GenerateEDischargeSummary(eDischargeSummary);
 
-                using (var writer = XmlWriter.Create(OutputFolderPath + @"\" + fileName, new XmlWriterSettings() { Indent = true }))
+                using (var writer = XmlWriter.Create(OutputFolderPath + @"\" + fileName,
+                    new XmlWriterSettings() {Indent = true}))
                 {
                     if (!fileName.IsNullOrEmptyWhitespace()) xmlDoc.Save(writer);
                 }
@@ -281,8 +278,9 @@ namespace Nehta.VendorLibrary.CDA.Sample
         internal static EDischargeSummary PopulateDischargeSummary(Boolean mandatoryOnly)
         {
             var eDischargeSummary = EDischargeSummary.CreateEDischargeSummary();
-            
+
             #region Setup and populate the CDA context model
+
             // Setup and populate the CDA context model
             ICDAContextEDischargeSummary cdaContext = EDischargeSummary.CreateCDAContext();
             // Document Id
@@ -303,23 +301,25 @@ namespace Nehta.VendorLibrary.CDA.Sample
             cdaContext.Custodian = BaseCDAModel.CreateCustodian();
             GenericObjectReuseSample.HydrateCustodian(cdaContext.Custodian, mandatoryOnly);
 
+            // Legal authenticator
+            cdaContext.LegalAuthenticator = BaseCDAModel.CreateLegalAuthenticator();
+            GenericObjectReuseSample.HydrateAuthenticator(cdaContext.LegalAuthenticator, mandatoryOnly);
+
             if (!mandatoryOnly)
             {
-                // Legal authenticator
-                cdaContext.LegalAuthenticator = BaseCDAModel.CreateLegalAuthenticator();
-                GenericObjectReuseSample.HydrateAuthenticator(cdaContext.LegalAuthenticator, mandatoryOnly);
-
                 // Create information recipient
                 var recipient1 = BaseCDAModel.CreateInformationRecipient();
                 var recipient2 = BaseCDAModel.CreateInformationRecipient();
                 GenericObjectReuseSample.HydrateRecipient(recipient1, RecipientType.Primary, mandatoryOnly);
                 GenericObjectReuseSample.HydrateRecipient(recipient2, RecipientType.Secondary, mandatoryOnly);
-                cdaContext.InformationRecipients = new List<IParticipationInformationRecipient> { recipient1, recipient2 };
+                cdaContext.InformationRecipients = new List<IParticipationInformationRecipient>
+                    {recipient1, recipient2};
             }
 
             #endregion
 
             #region Setup and populate the SCS Content model
+
             // Setup and populate the SCS Content model
 
             // Create CreateSCSContext
@@ -330,7 +330,8 @@ namespace Nehta.VendorLibrary.CDA.Sample
 
             // Create Subject Of Care
             eDischargeSummary.SCSContext.SubjectOfCare = EDischargeSummary.CreateSubjectOfCare();
-            GenericObjectReuseSample.HydrateSubjectofCare(eDischargeSummary.SCSContext.SubjectOfCare, mandatoryOnly, false);
+            GenericObjectReuseSample.HydrateSubjectofCare(eDischargeSummary.SCSContext.SubjectOfCare, mandatoryOnly,
+                false);
 
             // Create Facility
             eDischargeSummary.SCSContext.Facility = CreateFacility(mandatoryOnly);
@@ -338,6 +339,7 @@ namespace Nehta.VendorLibrary.CDA.Sample
             #endregion
 
             #region Setup and Populate the SCS Context model
+
             // Setup and Populate the SCS Context model
 
             eDischargeSummary.SCSContent = EDischargeSummary.CreateSCSContent();
@@ -375,42 +377,36 @@ namespace Nehta.VendorLibrary.CDA.Sample
             facility.Role = BaseCDAModel.CreateRole(HealthcareFacilityTypeCodes.ChiropracticAndOsteopathicServices);
 
             facility.Participant.Organisation = BaseCDAModel.CreateOrganisation();
-            facility.Participant.Organisation.Identifiers = new List<Identifier> { BaseCDAModel.CreateHealthIdentifier(HealthIdentifierType.HPIO, "8003627500000328") };
+            facility.Participant.Organisation.Identifiers = new List<Identifier>
+                {BaseCDAModel.CreateHealthIdentifier(HealthIdentifierType.HPIO, "8003627500000328")};
             facility.Participant.Organisation.Name = "Canberra Hospital";
 
             var address = BaseCDAModel.CreateAddress();
             address.AddressPurpose = AddressPurpose.Business;
             address.AustralianAddress = BaseCDAModel.CreateAustralianAddress();
-            address.AddressAbsentIndicator = AddressAbsentIndicator.NoFixedAddressIndicator;
+            address.AustralianAddress.StreetNumber = 12;
+            address.AustralianAddress.StreetName = "Yamba";
+            address.AustralianAddress.StreetType = StreetType.Avenue;
+            address.AustralianAddress.SuburbTownLocality = "Garran";
+            address.AustralianAddress.State = AustralianState.ACT;
+            address.AustralianAddress.PostCode = "2605";
 
-            facility.Participant.Addresses = new List<IAddress> 
-            { 
+            facility.Participant.Addresses = new List<IAddress>
+            {
                 address
             };
 
             facility.Participant.ElectronicCommunicationDetails = new List<ElectronicCommunicationDetail>
-                {
-                    BaseCDAModel.CreateElectronicCommunicationDetail("0262442229", ElectronicCommunicationMedium.Page, ElectronicCommunicationUsage.WorkPlace)
-                };
+            {
+                BaseCDAModel.CreateElectronicCommunicationDetail("0262442229", ElectronicCommunicationMedium.Page,
+                    ElectronicCommunicationUsage.WorkPlace)
+            };
 
             if (!mandatoryOnly)
             {
-                address.AustralianAddress.StreetNumber = 12;
-                address.AustralianAddress.StreetName = "Yamba";
-                address.AustralianAddress.StreetType = StreetType.Avenue;
-                address.AustralianAddress.SuburbTownLocality = "Garran";
-                address.AustralianAddress.State = AustralianState.ACT;
-                address.AustralianAddress.PostCode = "2605";
-
-                facility.Participant.Addresses = new List<IAddress> 
-                { 
-                    address
-                };
-
                 facility.Participant.Organisation.Department = "Department Name";
-
                 facility.Participant.Organisation.NameUsage = OrganisationNameUsage.Unknown;
-            } 
+            }
 
             return facility;
         }
@@ -455,7 +451,8 @@ namespace Nehta.VendorLibrary.CDA.Sample
             // Create Specialty1
             encounter.Specialty = new List<ICodableText>();
             ICodableText specialty1 = BaseCDAModel.CreateCodableText("394582007", CodingSystem.SNOMED, "Dermatology");
-            ICodableText specialty2 = BaseCDAModel.CreateCodableText("408459003", CodingSystem.SNOMED, "Paediatric cardiology");
+            ICodableText specialty2 =
+                BaseCDAModel.CreateCodableText("408459003", CodingSystem.SNOMED, "Paediatric cardiology");
 
             encounter.Specialty.Add(specialty1);
             encounter.Specialty.Add(specialty2);
@@ -465,8 +462,8 @@ namespace Nehta.VendorLibrary.CDA.Sample
                 encounter.LocationOfDischarge = "Ward B";
                 encounter.OtherParticipants = CreateOtherParticipants(mandatoryOnly);
                 encounter.EncounterPeriod = CdaInterval.CreateHigh(new ISO8601DateTime(DateTime.Now));
-            } 
-              else
+            }
+            else
             {
                 encounter.EncounterPeriodNullFlavor = NullFlavour.NotApplicable;
             }
@@ -480,62 +477,71 @@ namespace Nehta.VendorLibrary.CDA.Sample
         /// Note: the data used within this method is intended as a guide and should be replaced.
         /// </summary>
         /// <returns>A Hydrated ResponsibleHealthProfessional object</returns>
-        private static IParticipationResponsibleHealthProfessional CreateResponsibleHealthProfessional(Boolean mandatoryOnly)
+        private static IParticipationResponsibleHealthProfessional CreateResponsibleHealthProfessional(
+            Boolean mandatoryOnly)
         {
             var responsibleHealthProfessional = EDischargeSummary.CreateResponsibleHealthProfessional();
             responsibleHealthProfessional.Role = BaseCDAModel.CreateRole(Occupation.SurgeonGeneral);
 
-            responsibleHealthProfessional.Participant = EDischargeSummary.CreateParticipantForResponsibleHealthProfessional();
+            responsibleHealthProfessional.Participant =
+                EDischargeSummary.CreateParticipantForResponsibleHealthProfessional();
             responsibleHealthProfessional.Participant.Person = BaseCDAModel.CreatePersonWithOrganisation();
 
             var personName = BaseCDAModel.CreatePersonName();
             personName.FamilyName = "Smith";
 
-            responsibleHealthProfessional.Participant.Person.PersonNames = new List<IPersonName> { personName };
+            responsibleHealthProfessional.Participant.Person.PersonNames = new List<IPersonName> {personName};
 
-            responsibleHealthProfessional.Participant.Person.Identifiers = new List<Identifier> { 
+            responsibleHealthProfessional.Participant.Person.Identifiers = new List<Identifier>
+            {
                 BaseCDAModel.CreateHealthIdentifier(HealthIdentifierType.HPII, "8003610000001145"),
             };
-            
+
             if (!mandatoryOnly)
             {
-                personName.NameUsages = new List<NameUsage> { NameUsage.Legal };
-                personName.GivenNames = new List<string> { "John", "Middle" };
-                personName.Titles = new List<string> { "Miss" };
+                personName.NameUsages = new List<NameUsage> {NameUsage.Legal};
+                personName.GivenNames = new List<string> {"John", "Middle"};
+                personName.Titles = new List<string> {"Miss"};
 
-                responsibleHealthProfessional.ParticipationPeriod = BaseCDAModel.CreateInterval("12", TimeUnitOfMeasure.Year);
+                responsibleHealthProfessional.ParticipationPeriod =
+                    BaseCDAModel.CreateLowHigh(new ISO8601DateTime(DateTime.Now.AddDays(-14)),
+                        new ISO8601DateTime(DateTime.Now));
 
-                var electronicCommunicationDetail = BaseCDAModel.CreateElectronicCommunicationDetail("0345754566", ElectronicCommunicationMedium.Telephone, ElectronicCommunicationUsage.WorkPlace);
+                var electronicCommunicationDetail = BaseCDAModel.CreateElectronicCommunicationDetail("0345754566",
+                    ElectronicCommunicationMedium.Telephone, ElectronicCommunicationUsage.WorkPlace);
 
-                responsibleHealthProfessional.Participant.ElectronicCommunicationDetails = new List<ElectronicCommunicationDetail> { electronicCommunicationDetail };
+                responsibleHealthProfessional.Participant.ElectronicCommunicationDetails =
+                    new List<ElectronicCommunicationDetail> {electronicCommunicationDetail};
 
                 var address = BaseCDAModel.CreateAddress();
                 address.AddressPurpose = AddressPurpose.Business;
                 address.AustralianAddress = BaseCDAModel.CreateAustralianAddress();
-                address.AustralianAddress.UnstructuredAddressLines = new List<string> { "1 Clinician Street" };
+                address.AustralianAddress.UnstructuredAddressLines = new List<string> {"1 Clinician Street"};
                 address.AustralianAddress.SuburbTownLocality = "Nehtaville";
                 address.AustralianAddress.State = AustralianState.QLD;
                 address.AustralianAddress.PostCode = "5555";
-                address.AustralianAddress.DeliveryPointId = 32568931;
 
                 responsibleHealthProfessional.Participant.Addresses =
-                    new List<IAddress> 
+                    new List<IAddress>
                     {
-                        address, 
+                        address,
                     };
 
-                responsibleHealthProfessional.Participant.Person.Organisation = BaseCDAModel.CreateEmploymentOrganisation();
+                responsibleHealthProfessional.Participant.Person.Organisation =
+                    BaseCDAModel.CreateEmploymentOrganisation();
                 responsibleHealthProfessional.Participant.Person.Organisation.Identifiers = new List<Identifier>
                 {
                     BaseCDAModel.CreateHealthIdentifier(HealthIdentifierType.HPIO, "8003620000021100")
                 };
 
                 responsibleHealthProfessional.Participant.Person.Organisation.Name = "Super Healthy Hospital";
-                responsibleHealthProfessional.Participant.Person.Organisation.NameUsage = OrganisationNameUsage.EnterpriseName;
+                responsibleHealthProfessional.Participant.Person.Organisation.NameUsage =
+                    OrganisationNameUsage.EnterpriseName;
                 responsibleHealthProfessional.Participant.Person.Organisation.Department = "Endocrinology";
-                responsibleHealthProfessional.Participant.Person.Organisation.Addresses = new List<IAddress> { address };
-                responsibleHealthProfessional.Participant.Person.Organisation.ElectronicCommunicationDetails = new List<ElectronicCommunicationDetail> { electronicCommunicationDetail };
-            } 
+                responsibleHealthProfessional.Participant.Person.Organisation.Addresses = new List<IAddress> {address};
+                responsibleHealthProfessional.Participant.Person.Organisation.ElectronicCommunicationDetails =
+                    new List<ElectronicCommunicationDetail> {electronicCommunicationDetail};
+            }
 
             return responsibleHealthProfessional;
         }
@@ -553,31 +559,36 @@ namespace Nehta.VendorLibrary.CDA.Sample
             serviceProvider.Participant = BaseCDAModel.CreateParticipantForServiceProvider();
 
             serviceProvider.Participant.Organisation = BaseCDAModel.CreateOrganisation();
-            serviceProvider.Participant.Organisation.Identifiers = new List<Identifier> { BaseCDAModel.CreateHealthIdentifier(HealthIdentifierType.HPIO, "8003620000001136") };
+            serviceProvider.Participant.Organisation.Identifiers = new List<Identifier>
+                {BaseCDAModel.CreateHealthIdentifier(HealthIdentifierType.HPIO, "8003620000001136")};
             serviceProvider.Participant.Organisation.Name = "Bay Hill Hospital";
             serviceProvider.Participant.Organisation.NameUsage = OrganisationNameUsage.EnterpriseName;
             serviceProvider.Participant.Organisation.Department = "Department";
 
-            var electronicCommunicationDetail = BaseCDAModel.CreateElectronicCommunicationDetail("0345754566", ElectronicCommunicationMedium.Telephone, ElectronicCommunicationUsage.WorkPlace);
-            var electronicCommunicationDetailEmail = BaseCDAModel.CreateElectronicCommunicationDetail("BayHill@BayHill.com.au", ElectronicCommunicationMedium.Email, ElectronicCommunicationUsage.WorkPlace);
+            var electronicCommunicationDetail = BaseCDAModel.CreateElectronicCommunicationDetail("0345754566",
+                ElectronicCommunicationMedium.Telephone, ElectronicCommunicationUsage.WorkPlace);
+            var electronicCommunicationDetailEmail = BaseCDAModel.CreateElectronicCommunicationDetail(
+                "BayHill@BayHill.com.au", ElectronicCommunicationMedium.Email, ElectronicCommunicationUsage.WorkPlace);
 
-            serviceProvider.Participant.ElectronicCommunicationDetails = new List<ElectronicCommunicationDetail> { electronicCommunicationDetail, electronicCommunicationDetailEmail };
+            serviceProvider.Participant.ElectronicCommunicationDetails = new List<ElectronicCommunicationDetail>
+                {electronicCommunicationDetail, electronicCommunicationDetailEmail};
 
             var address = BaseCDAModel.CreateAddress();
-            address.AddressPurpose = AddressPurpose.Residential;
+            address.AddressPurpose = AddressPurpose.Business;
             address.AustralianAddress = BaseCDAModel.CreateAustralianAddress();
-            address.AustralianAddress.UnstructuredAddressLines = new List<string> { "1 Clinician Street" };
+            address.AustralianAddress.UnstructuredAddressLines = new List<string> {"1 Clinician Street"};
             address.AustralianAddress.SuburbTownLocality = "Nehtaville";
             address.AustralianAddress.State = AustralianState.QLD;
             address.AustralianAddress.PostCode = "5555";
-            address.AustralianAddress.DeliveryPointId = 32568931;
 
-            serviceProvider.Participant.Addresses = new List<IAddress> 
-            { 
-                address 
+            serviceProvider.Participant.Addresses = new List<IAddress>
+            {
+                address
             };
 
-            serviceProvider.Role = !mandatoryOnly ? BaseCDAModel.CreateRole("Hospital") : BaseCDAModel.CreateRole(NullFlavour.Other);
+            serviceProvider.Role = !mandatoryOnly
+                ? BaseCDAModel.CreateRole("Hospital")
+                : BaseCDAModel.CreateRole(NullFlavour.Other);
 
             return serviceProvider;
         }
@@ -594,15 +605,16 @@ namespace Nehta.VendorLibrary.CDA.Sample
 
             var participant = BaseCDAModel.CreateParticipantForServiceProvider();
             participant.Person = BaseCDAModel.CreatePersonHealthcareProvider();
-            participant.Person.Identifiers = new List<Identifier> { BaseCDAModel.CreateHealthIdentifier(HealthIdentifierType.HPII, "8003610000001145") }; 
+            participant.Person.Identifiers = new List<Identifier>
+                {BaseCDAModel.CreateHealthIdentifier(HealthIdentifierType.HPII, "8003610000001145")};
 
             var personName = BaseCDAModel.CreatePersonName();
             personName.FamilyName = "Anderson";
-            personName.GivenNames = new List<string> { "Jane"};
-            personName.Titles = new List<string> { "Dr"};
-            personName.NameUsages = new List<NameUsage> { NameUsage.Legal };
+            personName.GivenNames = new List<string> {"Jane"};
+            personName.Titles = new List<string> {"Dr"};
+            personName.NameUsages = new List<NameUsage> {NameUsage.Legal};
 
-            participant.Person.PersonNames = new List<IPersonName> { personName };
+            participant.Person.PersonNames = new List<IPersonName> {personName};
 
             var electronicCommunicationDetail = BaseCDAModel.CreateElectronicCommunicationDetail(
                 "0345754566",
@@ -614,27 +626,27 @@ namespace Nehta.VendorLibrary.CDA.Sample
                 ElectronicCommunicationMedium.Mobile,
                 ElectronicCommunicationUsage.WorkPlace);
 
-            var electronicCommunicationDetail3 = BaseCDAModel.CreateElectronicCommunicationDetail("Jane@Hospital.com", ElectronicCommunicationMedium.Email, ElectronicCommunicationUsage.WorkPlace);
+            var electronicCommunicationDetail3 = BaseCDAModel.CreateElectronicCommunicationDetail("Jane@Hospital.com",
+                ElectronicCommunicationMedium.Email, ElectronicCommunicationUsage.WorkPlace);
 
-            participant.ElectronicCommunicationDetails = new List<ElectronicCommunicationDetail> { electronicCommunicationDetail, electronicCommunicationDetail2, electronicCommunicationDetail3 };
+            participant.ElectronicCommunicationDetails = new List<ElectronicCommunicationDetail>
+                {electronicCommunicationDetail, electronicCommunicationDetail2, electronicCommunicationDetail3};
 
             var address = BaseCDAModel.CreateAddress();
             address.AddressPurpose = AddressPurpose.Business;
             address.AustralianAddress = BaseCDAModel.CreateAustralianAddress();
-            address.AustralianAddress.UnstructuredAddressLines = new List<string> { "1 Clinician Street" };
+            address.AustralianAddress.UnstructuredAddressLines = new List<string> {"1 Clinician Street"};
             address.AustralianAddress.SuburbTownLocality = "Nehtaville";
             address.AustralianAddress.State = AustralianState.QLD;
             address.AustralianAddress.PostCode = "5555";
-            address.AustralianAddress.DeliveryPointId = 32568931;
 
             var address2 = BaseCDAModel.CreateAddress();
             address2.AddressPurpose = AddressPurpose.Business;
             address2.AustralianAddress = BaseCDAModel.CreateAustralianAddress();
-            address2.AustralianAddress.UnstructuredAddressLines = new List<string> { "1 Clinician Street" };
+            address2.AustralianAddress.UnstructuredAddressLines = new List<string> {"1 Clinician Street"};
             address2.AustralianAddress.SuburbTownLocality = "Nehtaville";
             address2.AustralianAddress.State = AustralianState.QLD;
             address2.AustralianAddress.PostCode = "5555";
-            address2.AustralianAddress.DeliveryPointId = 32568931;
 
             participant.Addresses = new List<IAddress>
             {
@@ -642,14 +654,18 @@ namespace Nehta.VendorLibrary.CDA.Sample
             };
 
             participant.Person.Organisation = BaseCDAModel.CreateEmploymentOrganisation();
-            participant.Person.Organisation.Identifiers = new List<Identifier> { BaseCDAModel.CreateHealthIdentifier(HealthIdentifierType.HPIO, "8003620000045562") };
+            participant.Person.Organisation.Identifiers = new List<Identifier>
+                {BaseCDAModel.CreateHealthIdentifier(HealthIdentifierType.HPIO, "8003620000045562")};
             participant.Person.Organisation.Name = "Super Healthy Hospital";
             participant.Person.Organisation.NameUsage = OrganisationNameUsage.Other;
             participant.Person.Organisation.Department = "Anaesthesia";
-            participant.Person.Organisation.Addresses = new List<IAddress> { address, address2};
-            participant.Person.Organisation.ElectronicCommunicationDetails = new List<ElectronicCommunicationDetail> { electronicCommunicationDetail, electronicCommunicationDetail2, electronicCommunicationDetail3 };
+            participant.Person.Organisation.Addresses = new List<IAddress> {address, address2};
+            participant.Person.Organisation.ElectronicCommunicationDetails = new List<ElectronicCommunicationDetail>
+                {electronicCommunicationDetail, electronicCommunicationDetail2, electronicCommunicationDetail3};
 
-            serviceProvider.Role = !mandatoryOnly ? BaseCDAModel.CreateRole(Occupation.SurgeonGeneral) : BaseCDAModel.CreateRole(NullFlavour.Other);
+            serviceProvider.Role = !mandatoryOnly
+                ? BaseCDAModel.CreateRole(Occupation.SurgeonGeneral)
+                : BaseCDAModel.CreateRole(NullFlavour.Other);
 
             serviceProvider.Participant = participant;
 
@@ -669,49 +685,58 @@ namespace Nehta.VendorLibrary.CDA.Sample
             recommendationRecipient.Participant = EDischargeSummary.CreateHealthPersonOrOrganisation();
             recommendationRecipient.Participant.Person = BaseCDAModel.CreatePersonWithOrganisation();
 
-            recommendationRecipient.Participant.Person.Identifiers = new List<Identifier> { BaseCDAModel.CreateHealthIdentifier(HealthIdentifierType.HPII, "8003610000001145") };
+            recommendationRecipient.Participant.Person.Identifiers = new List<Identifier>
+                {BaseCDAModel.CreateHealthIdentifier(HealthIdentifierType.HPII, "8003610000001145")};
 
             var personName = BaseCDAModel.CreatePersonName();
-            personName.GivenNames = new List<string> { "Alison" };
+            personName.GivenNames = new List<string> {"Alison"};
             personName.FamilyName = "Hodgers";
-            personName.Titles = new List<string> { "Dr" };
-            personName.NameUsages = new List<NameUsage> { NameUsage.Legal };
+            personName.Titles = new List<string> {"Dr"};
+            personName.NameUsages = new List<NameUsage> {NameUsage.Legal};
 
-            recommendationRecipient.Participant.Person.PersonNames = new List<IPersonName> { personName };
+            recommendationRecipient.Participant.Person.PersonNames = new List<IPersonName> {personName};
 
             var address = BaseCDAModel.CreateAddress();
             address.AddressPurpose = AddressPurpose.Business;
             address.AustralianAddress = BaseCDAModel.CreateAustralianAddress();
-            address.AustralianAddress.UnstructuredAddressLines = new List<string> { "1 Clinician Street" };
+            address.AustralianAddress.UnstructuredAddressLines = new List<string> {"1 Clinician Street"};
             address.AustralianAddress.SuburbTownLocality = "Nehtaville";
             address.AustralianAddress.State = AustralianState.QLD;
             address.AustralianAddress.PostCode = "5555";
-            address.AustralianAddress.DeliveryPointId = 32568931;
 
-            recommendationRecipient.Participant.Addresses = new List<IAddress> { address };
+            recommendationRecipient.Participant.Addresses = new List<IAddress> {address};
 
             if (!mandatoryOnly)
             {
-                var electronicCommunicationDetail1 = BaseCDAModel.CreateElectronicCommunicationDetail("0345754566", ElectronicCommunicationMedium.Telephone, ElectronicCommunicationUsage.WorkPlace);
+                var electronicCommunicationDetail1 = BaseCDAModel.CreateElectronicCommunicationDetail("0345754566",
+                    ElectronicCommunicationMedium.Telephone, ElectronicCommunicationUsage.WorkPlace);
 
-                var electronicCommunicationDetail2 = BaseCDAModel.CreateElectronicCommunicationDetail("Alison@Hodgers.com", ElectronicCommunicationMedium.Email, ElectronicCommunicationUsage.WorkPlace);
+                var electronicCommunicationDetail2 = BaseCDAModel.CreateElectronicCommunicationDetail(
+                    "Alison@Hodgers.com", ElectronicCommunicationMedium.Email, ElectronicCommunicationUsage.WorkPlace);
 
-                recommendationRecipient.Participant.ElectronicCommunicationDetails = new List<ElectronicCommunicationDetail> { electronicCommunicationDetail1, electronicCommunicationDetail2 };
+                recommendationRecipient.Participant.ElectronicCommunicationDetails =
+                    new List<ElectronicCommunicationDetail>
+                        {electronicCommunicationDetail1, electronicCommunicationDetail2};
 
                 recommendationRecipient.Participant.Person.Organisation = BaseCDAModel.CreateEmploymentOrganisation();
 
-                recommendationRecipient.Participant.Person.Organisation.Identifiers = new List<Identifier> { BaseCDAModel.CreateHealthIdentifier(HealthIdentifierType.HPIO, "8003620000045562") };
+                recommendationRecipient.Participant.Person.Organisation.Identifiers = new List<Identifier>
+                    {BaseCDAModel.CreateHealthIdentifier(HealthIdentifierType.HPIO, "8003620000045562")};
 
                 recommendationRecipient.Participant.Person.Organisation.Name = "Super Healthy Hospital";
-                recommendationRecipient.Participant.Person.Organisation.NameUsage = OrganisationNameUsage.EnterpriseName;
+                recommendationRecipient.Participant.Person.Organisation.NameUsage =
+                    OrganisationNameUsage.EnterpriseName;
                 recommendationRecipient.Participant.Person.Organisation.Department = "Urology";
-                recommendationRecipient.Participant.Person.Organisation.Addresses = new List<IAddress> { address };
-                recommendationRecipient.Participant.Person.Organisation.ElectronicCommunicationDetails = new List<ElectronicCommunicationDetail> { electronicCommunicationDetail1, electronicCommunicationDetail2};
+                recommendationRecipient.Participant.Person.Organisation.Addresses = new List<IAddress> {address};
+                recommendationRecipient.Participant.Person.Organisation.ElectronicCommunicationDetails =
+                    new List<ElectronicCommunicationDetail>
+                        {electronicCommunicationDetail1, electronicCommunicationDetail2};
 
                 recommendationRecipient.Role = BaseCDAModel.CreateRole(Occupation.Urologist);
-            } else
+            }
+            else
             {
-                recommendationRecipient.Role = BaseCDAModel.CreateRole(NullFlavour.Other);
+                recommendationRecipient.Role = BaseCDAModel.CreateRole(NullFlavour.NotApplicable);
             }
 
             return recommendationRecipient;
@@ -731,7 +756,8 @@ namespace Nehta.VendorLibrary.CDA.Sample
 
             recommendationRecipient.Participant.Organisation = BaseCDAModel.CreateOrganisation();
 
-            recommendationRecipient.Participant.Organisation.Identifiers = new List<Identifier> { BaseCDAModel.CreateHealthIdentifier(HealthIdentifierType.HPIO, "8003620000045562") };
+            recommendationRecipient.Participant.Organisation.Identifiers = new List<Identifier>
+                {BaseCDAModel.CreateHealthIdentifier(HealthIdentifierType.HPIO, "8003620000045562")};
 
             recommendationRecipient.Participant.Organisation.Name = "Super Healthy Hospital";
             recommendationRecipient.Participant.Organisation.NameUsage = OrganisationNameUsage.Other;
@@ -742,26 +768,29 @@ namespace Nehta.VendorLibrary.CDA.Sample
                 ElectronicCommunicationMedium.Telephone,
                 ElectronicCommunicationUsage.WorkPlace);
 
-            var electronicCommunicationDetail2 = BaseCDAModel.CreateElectronicCommunicationDetail("SuperHealthyHospital@Hospital.com", ElectronicCommunicationMedium.Email, ElectronicCommunicationUsage.WorkPlace);
+            var electronicCommunicationDetail2 = BaseCDAModel.CreateElectronicCommunicationDetail(
+                "SuperHealthyHospital@Hospital.com", ElectronicCommunicationMedium.Email,
+                ElectronicCommunicationUsage.WorkPlace);
 
-            recommendationRecipient.Participant.ElectronicCommunicationDetails = new List<ElectronicCommunicationDetail> { electronicCommunicationDetail1, electronicCommunicationDetail2 };
+            recommendationRecipient.Participant.ElectronicCommunicationDetails = new List<ElectronicCommunicationDetail>
+                {electronicCommunicationDetail1, electronicCommunicationDetail2};
 
             var address = BaseCDAModel.CreateAddress();
-            address.AddressPurpose = AddressPurpose.Residential;
+            address.AddressPurpose = AddressPurpose.Business;
             address.AustralianAddress = BaseCDAModel.CreateAustralianAddress();
-            address.AustralianAddress.UnstructuredAddressLines = new List<string> { "1 Clinician Street" };
+            address.AustralianAddress.UnstructuredAddressLines = new List<string> {"1 Clinician Street"};
             address.AustralianAddress.SuburbTownLocality = "Nehtaville";
             address.AustralianAddress.State = AustralianState.QLD;
             address.AustralianAddress.PostCode = "5555";
-            address.AustralianAddress.DeliveryPointId = 32568931;
 
-            recommendationRecipient.Participant.Addresses = new List<IAddress> { address };
+            recommendationRecipient.Participant.Addresses = new List<IAddress> {address};
 
             if (!mandatoryOnly)
             {
-                recommendationRecipient.Role = BaseCDAModel.CreateCodableText("HOSP", CodingSystem.HL7ServiceDeliveryLocationRoleType, "Hospital");
+                recommendationRecipient.Role = BaseCDAModel.CreateCodableText("HOSP",
+                    CodingSystem.HL7ServiceDeliveryLocationRoleType, "Hospital");
             }
-                else
+            else
             {
                 recommendationRecipient.Role = BaseCDAModel.CreateRole(NullFlavour.NotApplicable);
             }
@@ -787,44 +816,48 @@ namespace Nehta.VendorLibrary.CDA.Sample
             otherParticipant.Participant = EDischargeSummary.CreateParticipantForOtherParticipant();
             otherParticipant.Participant.Person = BaseCDAModel.CreatePersonWithOrganisation();
 
-            otherParticipant.Participant.Person.Identifiers = new List<Identifier> { BaseCDAModel.CreateHealthIdentifier(HealthIdentifierType.HPII, "8003610000001145") }; 
+            otherParticipant.Participant.Person.Identifiers = new List<Identifier>
+                {BaseCDAModel.CreateHealthIdentifier(HealthIdentifierType.HPII, "8003610000001145")};
 
             otherParticipant.ParticipationPeriod = BaseCDAModel.CreateInterval(
-                new ISO8601DateTime(DateTime.Now), 
+                new ISO8601DateTime(DateTime.Now),
                 new ISO8601DateTime(DateTime.Now.AddDays(5)));
 
             var personName = BaseCDAModel.CreatePersonName();
             personName.FamilyName = "OtherParticipant";
-            personName.NameUsages = new List<NameUsage> { NameUsage.Legal };
+            personName.NameUsages = new List<NameUsage> {NameUsage.Legal};
 
-            otherParticipant.Participant.Person.PersonNames = new List<IPersonName> { personName };
+            otherParticipant.Participant.Person.PersonNames = new List<IPersonName> {personName};
 
-            var electronicCommunicationDetail = BaseCDAModel.CreateElectronicCommunicationDetail("0345754566", ElectronicCommunicationMedium.Telephone, ElectronicCommunicationUsage.WorkPlace);
+            var electronicCommunicationDetail = BaseCDAModel.CreateElectronicCommunicationDetail("0345754566",
+                ElectronicCommunicationMedium.Telephone, ElectronicCommunicationUsage.WorkPlace);
 
-            otherParticipant.Participant.ElectronicCommunicationDetails = new List<ElectronicCommunicationDetail> { electronicCommunicationDetail };
+            otherParticipant.Participant.ElectronicCommunicationDetails = new List<ElectronicCommunicationDetail>
+                {electronicCommunicationDetail};
 
             var address = BaseCDAModel.CreateAddress();
             address.AddressPurpose = AddressPurpose.Business;
             address.AustralianAddress = BaseCDAModel.CreateAustralianAddress();
-            address.AustralianAddress.UnstructuredAddressLines = new List<string> { "Other 1 Clinician Street" };
+            address.AustralianAddress.UnstructuredAddressLines = new List<string> {"Other 1 Clinician Street"};
             address.AustralianAddress.SuburbTownLocality = "Nehtaville";
             address.AustralianAddress.State = AustralianState.QLD;
             address.AustralianAddress.PostCode = "5555";
-            address.AustralianAddress.DeliveryPointId = 32568931;
 
-            var addressList = new List<IAddress>{ address };
+            var addressList = new List<IAddress> {address};
 
             otherParticipant.Participant.Person.Organisation = BaseCDAModel.CreateEmploymentOrganisation();
             otherParticipant.Participant.Person.Organisation.Name = "Super Healthy Hospital";
             otherParticipant.Participant.Person.Organisation.NameUsage = OrganisationNameUsage.EnterpriseName;
             otherParticipant.Participant.Person.Organisation.Department = "Endocrinology";
-            otherParticipant.Participant.Person.Organisation.Identifiers = new List<Identifier> { BaseCDAModel.CreateHealthIdentifier(HealthIdentifierType.HPIO, "8003620000045562") }; 
-            otherParticipant.Participant.Person.Organisation.Addresses = new List<IAddress> { address };
-            otherParticipant.Participant.Person.Organisation.ElectronicCommunicationDetails = new List<ElectronicCommunicationDetail> { electronicCommunicationDetail };
+            otherParticipant.Participant.Person.Organisation.Identifiers = new List<Identifier>
+                {BaseCDAModel.CreateHealthIdentifier(HealthIdentifierType.HPIO, "8003620000045562")};
+            otherParticipant.Participant.Person.Organisation.Addresses = new List<IAddress> {address};
+            otherParticipant.Participant.Person.Organisation.ElectronicCommunicationDetails =
+                new List<ElectronicCommunicationDetail> {electronicCommunicationDetail};
 
             otherParticipant.Participant.Addresses = addressList;
 
-            return new List<IParticipationOtherParticipant> { otherParticipant };
+            return new List<IParticipationOtherParticipant> {otherParticipant};
         }
 
         /// <summary>
@@ -833,12 +866,13 @@ namespace Nehta.VendorLibrary.CDA.Sample
         /// Note: the data used within this method is intended as a guide and should be replaced.
         /// </summary>
         /// <returns>A Hydrated list of IParticipationNominatedPrimaryHealthProvider</returns>
-        private static List<IParticipationNominatedPrimaryHealthCareProvider> CreateNominatedPrimaryHealthCareProviders(Boolean mandatoryOnly)
+        private static List<IParticipationNominatedPrimaryHealthCareProvider> CreateNominatedPrimaryHealthCareProviders(
+            Boolean mandatoryOnly)
         {
-            return new List<IParticipationNominatedPrimaryHealthCareProvider> 
-            { 
-                CreateNominatedPrimaryHealthCareProviderPerson(mandatoryOnly), 
-                CreateNominatedPrimaryHealthCareProviderOrganisation(mandatoryOnly) 
+            return new List<IParticipationNominatedPrimaryHealthCareProvider>
+            {
+                CreateNominatedPrimaryHealthCareProviderPerson(mandatoryOnly),
+                CreateNominatedPrimaryHealthCareProviderOrganisation(mandatoryOnly)
             };
         }
 
@@ -848,46 +882,50 @@ namespace Nehta.VendorLibrary.CDA.Sample
         /// Note: the data used within this method is intended as a guide and should be replaced.
         /// </summary>
         /// <returns>A Hydrated IParticipationNominatedPrimaryHealthProvider</returns>
-        private static IParticipationNominatedPrimaryHealthCareProvider CreateNominatedPrimaryHealthCareProviderPerson(Boolean mandatoryOnly)
+        private static IParticipationNominatedPrimaryHealthCareProvider CreateNominatedPrimaryHealthCareProviderPerson(
+            Boolean mandatoryOnly)
         {
             var nominatedPrimaryHealthCareProvider = EDischargeSummary.CreateNominatedPrimaryHealthCareProvider();
             nominatedPrimaryHealthCareProvider.Role = BaseCDAModel.CreateRole(Occupation.AgedOrDisabledCarer);
 
             var participant = EDischargeSummary.CreateParticipantForNominatedPrimaryHealthProvider();
             participant.Person = BaseCDAModel.CreatePersonWithOrganisation();
-            participant.Person.Identifiers = new List<Identifier> { BaseCDAModel.CreateHealthIdentifier(HealthIdentifierType.HPII, "8003610000001145") }; 
+            participant.Person.Identifiers = new List<Identifier>
+                {BaseCDAModel.CreateHealthIdentifier(HealthIdentifierType.HPII, "8003610000001145")};
 
             var personName = BaseCDAModel.CreatePersonName();
             personName.FamilyName = "NominatedPrimaryHealthCareProviderPerson";
-            personName.NameUsages = new List<NameUsage> { NameUsage.Legal };
-            
-            participant.Person.PersonNames = new List<IPersonName> { personName };
+            personName.NameUsages = new List<NameUsage> {NameUsage.Legal};
+
+            participant.Person.PersonNames = new List<IPersonName> {personName};
 
             var electronicCommunicationDetail = BaseCDAModel.CreateElectronicCommunicationDetail(
                 "0345754566",
                 ElectronicCommunicationMedium.Telephone,
                 ElectronicCommunicationUsage.WorkPlace);
 
-            participant.ElectronicCommunicationDetails = new List<ElectronicCommunicationDetail> { electronicCommunicationDetail };
+            participant.ElectronicCommunicationDetails = new List<ElectronicCommunicationDetail>
+                {electronicCommunicationDetail};
 
             var address = BaseCDAModel.CreateAddress();
             address.AddressPurpose = AddressPurpose.Business;
             address.AustralianAddress = BaseCDAModel.CreateAustralianAddress();
-            address.AustralianAddress.UnstructuredAddressLines = new List<string> { "1 Clinician Street" };
+            address.AustralianAddress.UnstructuredAddressLines = new List<string> {"1 Clinician Street"};
             address.AustralianAddress.SuburbTownLocality = "Nehtaville";
             address.AustralianAddress.State = AustralianState.QLD;
             address.AustralianAddress.PostCode = "5555";
-            address.AustralianAddress.DeliveryPointId = 32568931;
 
-            participant.Addresses = new List<IAddress> { address };
+            participant.Addresses = new List<IAddress> {address};
 
             participant.Person.Organisation = BaseCDAModel.CreateEmploymentOrganisation();
-            participant.Person.Organisation.Identifiers = new List<Identifier> { BaseCDAModel.CreateHealthIdentifier(HealthIdentifierType.HPIO, "8003620000045562") };
+            participant.Person.Organisation.Identifiers = new List<Identifier>
+                {BaseCDAModel.CreateHealthIdentifier(HealthIdentifierType.HPIO, "8003620000045562")};
             participant.Person.Organisation.Name = "Super Healthy Hospital";
             participant.Person.Organisation.NameUsage = OrganisationNameUsage.Other;
             participant.Person.Organisation.Department = "Endocrinology";
-            participant.Person.Organisation.Addresses = new List<IAddress> { address };
-            participant.Person.Organisation.ElectronicCommunicationDetails = new List<ElectronicCommunicationDetail> { electronicCommunicationDetail };
+            participant.Person.Organisation.Addresses = new List<IAddress> {address};
+            participant.Person.Organisation.ElectronicCommunicationDetails = new List<ElectronicCommunicationDetail>
+                {electronicCommunicationDetail};
 
             nominatedPrimaryHealthCareProvider.Participant = participant;
 
@@ -900,34 +938,40 @@ namespace Nehta.VendorLibrary.CDA.Sample
         /// Note: the data used within this method is intended as a guide and should be replaced.
         /// </summary>
         /// <returns>A Hydrated IParticipationNominatedPrimaryHealthCareProvider</returns>
-        private static IParticipationNominatedPrimaryHealthCareProvider CreateNominatedPrimaryHealthCareProviderOrganisation(Boolean mandatoryOnly)
+        private static IParticipationNominatedPrimaryHealthCareProvider
+            CreateNominatedPrimaryHealthCareProviderOrganisation(Boolean mandatoryOnly)
         {
             var nominatedPrimaryHealthCareProvider = EDischargeSummary.CreateNominatedPrimaryHealthCareProvider();
-            nominatedPrimaryHealthCareProvider.Role = BaseCDAModel.CreateRole("HOSP", CodingSystem.HL7ServiceDeliveryLocationRoleType, "Hospital", null);
+            nominatedPrimaryHealthCareProvider.Role = BaseCDAModel.CreateRole("HOSP",
+                CodingSystem.HL7ServiceDeliveryLocationRoleType, "Hospital", null);
 
-            nominatedPrimaryHealthCareProvider.Participant = EDischargeSummary.CreateParticipantForNominatedPrimaryHealthProvider();
+            nominatedPrimaryHealthCareProvider.Participant =
+                EDischargeSummary.CreateParticipantForNominatedPrimaryHealthProvider();
 
             nominatedPrimaryHealthCareProvider.Participant.Organisation = BaseCDAModel.CreateOrganisation();
-            nominatedPrimaryHealthCareProvider.Participant.Organisation.Name = "Bay Hill Hospital (NominatedPrimaryHealthCareProviderOrganisation)";
+            nominatedPrimaryHealthCareProvider.Participant.Organisation.Name =
+                "Bay Hill Hospital (NominatedPrimaryHealthCareProviderOrganisation)";
             nominatedPrimaryHealthCareProvider.Participant.Organisation.NameUsage = OrganisationNameUsage.Other;
             nominatedPrimaryHealthCareProvider.Participant.Organisation.Department = "Health Department";
 
-            nominatedPrimaryHealthCareProvider.Participant.Organisation.Identifiers = new List<Identifier> { BaseCDAModel.CreateHealthIdentifier(HealthIdentifierType.HPIO, "8003620000045562") }; 
+            nominatedPrimaryHealthCareProvider.Participant.Organisation.Identifiers = new List<Identifier>
+                {BaseCDAModel.CreateHealthIdentifier(HealthIdentifierType.HPIO, "8003620000045562")};
 
-            var electronicCommunicationDetail = BaseCDAModel.CreateElectronicCommunicationDetail("0345754566",ElectronicCommunicationMedium.Telephone, ElectronicCommunicationUsage.WorkPlace);
+            var electronicCommunicationDetail = BaseCDAModel.CreateElectronicCommunicationDetail("0345754566",
+                ElectronicCommunicationMedium.Telephone, ElectronicCommunicationUsage.WorkPlace);
 
-            nominatedPrimaryHealthCareProvider.Participant.ElectronicCommunicationDetails = new List<ElectronicCommunicationDetail> { electronicCommunicationDetail };
+            nominatedPrimaryHealthCareProvider.Participant.ElectronicCommunicationDetails =
+                new List<ElectronicCommunicationDetail> {electronicCommunicationDetail};
 
             var address = BaseCDAModel.CreateAddress();
             address.AddressPurpose = AddressPurpose.Business;
             address.AustralianAddress = BaseCDAModel.CreateAustralianAddress();
-            address.AustralianAddress.UnstructuredAddressLines = new List<string> { "1 Clinician Street" };
+            address.AustralianAddress.UnstructuredAddressLines = new List<string> {"1 Clinician Street"};
             address.AustralianAddress.SuburbTownLocality = "Nehtaville";
             address.AustralianAddress.State = AustralianState.QLD;
             address.AustralianAddress.PostCode = "5555";
-            address.AustralianAddress.DeliveryPointId = 32568931;
 
-            nominatedPrimaryHealthCareProvider.Participant.Addresses = new List<IAddress> { address };
+            nominatedPrimaryHealthCareProvider.Participant.Addresses = new List<IAddress> {address};
 
             return nominatedPrimaryHealthCareProvider;
         }
@@ -942,14 +986,18 @@ namespace Nehta.VendorLibrary.CDA.Sample
         {
             // Problem Diagnosis
             var problemDiagnosis1 = EDischargeSummary.CreateProblemDiagnosis();
-            problemDiagnosis1.ProblemDiagnosisDescription = BaseCDAModel.CreateCodableText("88706003", CodingSystem.SNOMED, "Infection caused by Spirura");
-            problemDiagnosis1.ProblemDiagnosisType = BaseCDAModel.CreateCodableText("295433003", CodingSystem.SNOMED, "Accidental bisacodyl overdose");
+            problemDiagnosis1.ProblemDiagnosisDescription =
+                BaseCDAModel.CreateCodableText("88706003", CodingSystem.SNOMED, "Infection caused by Spirura");
+            problemDiagnosis1.ProblemDiagnosisType = BaseCDAModel.CreateCodableText("295433003", CodingSystem.SNOMED,
+                "Accidental bisacodyl overdose");
 
             var problemDiagnosis2 = EDischargeSummary.CreateProblemDiagnosis();
-            problemDiagnosis2.ProblemDiagnosisDescription = BaseCDAModel.CreateCodableText("240701006", CodingSystem.SNOMED, "Systemic aspergillosis");
-            problemDiagnosis2.ProblemDiagnosisType = BaseCDAModel.CreateCodableText("8319008", CodingSystem.SNOMED, "Principal diagnosis");
+            problemDiagnosis2.ProblemDiagnosisDescription =
+                BaseCDAModel.CreateCodableText("240701006", CodingSystem.SNOMED, "Systemic aspergillosis");
+            problemDiagnosis2.ProblemDiagnosisType =
+                BaseCDAModel.CreateCodableText("8319008", CodingSystem.SNOMED, "Principal diagnosis");
 
-            return new List<IDischargeSummaryProblemDiagnosis> { problemDiagnosis1, problemDiagnosis2 };
+            return new List<IDischargeSummaryProblemDiagnosis> {problemDiagnosis1, problemDiagnosis2};
         }
 
         /// <summary>
@@ -987,7 +1035,8 @@ namespace Nehta.VendorLibrary.CDA.Sample
         {
             // All Mandatory
             var clinicalSynopsis = EDischargeSummary.CreateClinicalSynopsis();
-            clinicalSynopsis.Description = "Admitted for elective, right Total Knee Replacement (cemented prosthesis). Day 3, developed bilateral basal atelectasis. The FBC showed high WCC (20.0) and high neutrophils (16.0). Commenced on doxycycline and chest physio. Due to mild anaemia prior to surgery and subsequent operative blood loss, required a blood transfusion of three units. Subsequently made steady progress, regaining good mobility in his knee and is able to mobilise with the aid of a stick. Right knee Xray showed no fracture or dislocation, with the total knee prosthesis well positioned post surgery.";
+            clinicalSynopsis.Description =
+                "Admitted for elective, right Total Knee Replacement (cemented prosthesis). Day 3, developed bilateral basal atelectasis. The FBC showed high WCC (20.0) and high neutrophils (16.0). Commenced on doxycycline and chest physio. Due to mild anaemia prior to surgery and subsequent operative blood loss, required a blood transfusion of three units. Subsequently made steady progress, regaining good mobility in his knee and is able to mobilise with the aid of a stick. Right knee Xray showed no fracture or dislocation, with the total knee prosthesis well positioned post surgery.";
             return clinicalSynopsis;
         }
 
@@ -1002,11 +1051,13 @@ namespace Nehta.VendorLibrary.CDA.Sample
             var clinicalIntervention = EDischargeSummary.CreateClinicalIntervention();
 
             clinicalIntervention.Description =
-            new List<ICodableText> 
-                { 
-                    BaseCDAModel.CreateCodableText("179344006", CodingSystem.SNOMED , "Primary cemented total knee replacement"),
-                    BaseCDAModel.CreateCodableText("88705004", CodingSystem.SNOMED , "Insulin C-peptide measurement"),
-                    BaseCDAModel.CreateCodableText("71493000", CodingSystem.SNOMED , "Transfusion of packed red blood cells")
+                new List<ICodableText>
+                {
+                    BaseCDAModel.CreateCodableText("179344006", CodingSystem.SNOMED,
+                        "Primary cemented total knee replacement"),
+                    BaseCDAModel.CreateCodableText("88705004", CodingSystem.SNOMED, "Insulin C-peptide measurement"),
+                    BaseCDAModel.CreateCodableText("71493000", CodingSystem.SNOMED,
+                        "Transfusion of packed red blood cells")
                 };
 
             return clinicalIntervention;
@@ -1031,11 +1082,12 @@ namespace Nehta.VendorLibrary.CDA.Sample
             {
                 medications.CurrentMedications.TherapeuticGoods = CreateTherapeuticGoodsCurrent();
                 medications.CeasedMedications.TherapeuticGoods = CreateTherapeuticGoodCeased();
-            } 
+            }
             else
             {
                 medications.CeasedMedications.ExclusionStatement = CreateExclusionStatement();
-                medications.CurrentMedications.ExclusionStatement = CreateExclusionStatement();;
+                medications.CurrentMedications.ExclusionStatement = CreateExclusionStatement();
+                ;
             }
 
             return medications;
@@ -1048,9 +1100,10 @@ namespace Nehta.VendorLibrary.CDA.Sample
         /// </summary>
         /// <returns>A Hydrated List of ITherapeuticGood object</returns>
         private static List<ITherapeuticGood> CreateTherapeuticGoodsCurrent()
-        { 
+        {
             var therapeuticGood1 = EDischargeSummary.CreateTherapeuticGood();
-            therapeuticGood1.TherapeuticGoodIdentification = BaseCDAModel.CreateCodableText("23641011000036102", CodingSystem.AMTV3, "paracetamol 500 mg + codeine phosphate 30 mg tablet");
+            therapeuticGood1.TherapeuticGoodIdentification = BaseCDAModel.CreateCodableText("79115011000036100",
+                CodingSystem.AMTV3, "paracetamol 500 mg + codeine phosphate hemihydrate 30 mg tablet");
             therapeuticGood1.DoseInstruction = "1 tablet once daily oral";
             therapeuticGood1.UnitOfUseQuantityDispensed = "2 tablets";
             therapeuticGood1.ReasonForTherapeuticGood = "Pneumonia";
@@ -1058,28 +1111,33 @@ namespace Nehta.VendorLibrary.CDA.Sample
 
             // Create MedicationHistory
             therapeuticGood1.MedicationHistory = EDischargeSummary.CreateMedicationHistory();
-            therapeuticGood1.MedicationHistory.ItemStatus = BaseCDAModel.CreateCodableText("New");
-            therapeuticGood1.MedicationHistory.ChangesMade = BaseCDAModel.CreateCodableText("Dose decreased from 2 tablet 4 a day");
+            therapeuticGood1.MedicationHistory.ItemStatus = BaseCDAModel.CreateCodableText(ChangeTypeSnomed.Prescribed);
+            therapeuticGood1.MedicationHistory.ChangesMade =
+                BaseCDAModel.CreateCodableText("Dose decreased from 2 tablet 4 a day");
             therapeuticGood1.MedicationHistory.ReasonForChange = "Due to hypotension";
-            therapeuticGood1.MedicationHistory.MedicationDuration = BaseCDAModel.CreateInterval(new ISO8601DateTime(DateTime.Now), new ISO8601DateTime(DateTime.Now.AddDays(5)));
+            therapeuticGood1.MedicationHistory.MedicationDuration =
+                BaseCDAModel.CreateInterval(new ISO8601DateTime(DateTime.Now),
+                    new ISO8601DateTime(DateTime.Now.AddDays(5)));
 
             var therapeuticGood2 = EDischargeSummary.CreateTherapeuticGood();
-            therapeuticGood2.TherapeuticGoodIdentification = BaseCDAModel.CreateCodableText("23641011000036102", CodingSystem.AMTV3, "paracetamol 500 mg + codeine phosphate 30 mg tablet");
+            therapeuticGood2.TherapeuticGoodIdentification = BaseCDAModel.CreateCodableText("79115011000036100",
+                CodingSystem.AMTV3, "paracetamol 500 mg + codeine phosphate hemihydrate 30 mg tablet");
             therapeuticGood2.DoseInstruction = "2 tablets daily oral";
             therapeuticGood2.UnitOfUseQuantityDispensed = "4 tablets";
             therapeuticGood2.ReasonForTherapeuticGood = "Stress";
 
             // Create MedicationHistory
             therapeuticGood2.MedicationHistory = EDischargeSummary.CreateMedicationHistory();
-            therapeuticGood2.MedicationHistory.ItemStatus = BaseCDAModel.CreateCodableText("New");
-            therapeuticGood2.MedicationHistory.ChangesMade = BaseCDAModel.CreateCodableText("Dose decreased from 1 tablet Twice a day");
+            therapeuticGood2.MedicationHistory.ItemStatus = BaseCDAModel.CreateCodableText(ChangeTypeSnomed.Prescribed);
+            therapeuticGood2.MedicationHistory.ChangesMade =
+                BaseCDAModel.CreateCodableText("Dose decreased from 1 tablet Twice a day");
             therapeuticGood2.MedicationHistory.ReasonForChange = "Stress";
             therapeuticGood2.MedicationHistory.MedicationDuration = BaseCDAModel.CreateInterval(
                 new ISO8601DateTime(DateTime.Now),
                 new ISO8601DateTime(DateTime.Now.AddDays(500)));
 
 
-            return new List<ITherapeuticGood> { therapeuticGood1, therapeuticGood2 };
+            return new List<ITherapeuticGood> {therapeuticGood1, therapeuticGood2};
         }
 
         /// <summary>
@@ -1092,22 +1150,24 @@ namespace Nehta.VendorLibrary.CDA.Sample
         {
 
             var therapeuticGood1 = EDischargeSummary.CreateTherapeuticGoodCeased();
-            therapeuticGood1.TherapeuticGoodIdentification = BaseCDAModel.CreateCodableText("23641011000036102", CodingSystem.AMTV3, "paracetamol 500 mg + codeine phosphate 30 mg tablet");
+            therapeuticGood1.TherapeuticGoodIdentification = BaseCDAModel.CreateCodableText("79115011000036100",
+                CodingSystem.AMTV3, "paracetamol 500 mg + codeine phosphate hemihydrate 30 mg tablet");
             // Create MedicationHistory
             therapeuticGood1.MedicationHistory = EDischargeSummary.CreateMedicationHistoryCeased();
-            therapeuticGood1.MedicationHistory.ItemStatus = BaseCDAModel.CreateCodableText("Ceased");
+            therapeuticGood1.MedicationHistory.ItemStatus = BaseCDAModel.CreateCodableText(ChangeTypeSnomed.Ceased);
             therapeuticGood1.MedicationHistory.ChangesMade = BaseCDAModel.CreateCodableText("Changes Made");
             therapeuticGood1.MedicationHistory.ReasonForChange = "No longer required";
 
             var therapeuticGood2 = EDischargeSummary.CreateTherapeuticGoodCeased();
-            therapeuticGood2.TherapeuticGoodIdentification = BaseCDAModel.CreateCodableText("23641011000036102", CodingSystem.AMTV3, "paracetamol 500 mg + codeine phosphate 30 mg tablet");
+            therapeuticGood2.TherapeuticGoodIdentification = BaseCDAModel.CreateCodableText("79115011000036100",
+                CodingSystem.AMTV3, "paracetamol 500 mg + codeine phosphate hemihydrate 30 mg tablet");
             // Create MedicationHistory
             therapeuticGood2.MedicationHistory = EDischargeSummary.CreateMedicationHistoryCeased();
-            therapeuticGood2.MedicationHistory.ItemStatus = BaseCDAModel.CreateCodableText("Ceased");
+            therapeuticGood2.MedicationHistory.ItemStatus = BaseCDAModel.CreateCodableText(ChangeTypeSnomed.Ceased);
             therapeuticGood2.MedicationHistory.ChangesMade = BaseCDAModel.CreateCodableText("Changes Made");
             therapeuticGood2.MedicationHistory.ReasonForChange = "No longer needed";
 
-            return new List<ITherapeuticGoodCeased> { therapeuticGood1, therapeuticGood2 };
+            return new List<ITherapeuticGoodCeased> {therapeuticGood1, therapeuticGood2};
         }
 
         /// <summary>
@@ -1138,7 +1198,8 @@ namespace Nehta.VendorLibrary.CDA.Sample
 
             if (mandatoryOnly == false)
             {
-                healthProfile.NominatedPrimaryHealthCareProviders = CreateNominatedPrimaryHealthCareProviders(mandatoryOnly);
+                healthProfile.NominatedPrimaryHealthCareProviders =
+                    CreateNominatedPrimaryHealthCareProviders(mandatoryOnly);
                 healthProfile.AdverseReactions.Reactions = CreateReactions();
                 healthProfile.Alerts = CreateAlerts();
             }
@@ -1160,10 +1221,10 @@ namespace Nehta.VendorLibrary.CDA.Sample
         {
             // Create AdverseReaction
             var adverseReaction1 = EDischargeSummary.CreateReactions();
-            adverseReaction1.AgentDescription = BaseCDAModel.CreateCodableText("373270004", CodingSystem.SNOMED, "Penicillin -class of antibiotic-");
-            adverseReaction1.AdverseReactionType = BaseCDAModel.CreateCodableText("64305001", CodingSystem.SNOMED, "Urticaria");
-            adverseReaction1.ReactionDescriptions = new List<ICodableText>() 
-            { 
+            adverseReaction1.AgentDescription = BaseCDAModel.CreateCodableText("373270004", CodingSystem.SNOMED, "Penicillin antibacterial");
+            adverseReaction1.AdverseReactionType = BaseCDAModel.CreateCodableText("281647001", CodingSystem.SNOMED, "Adverse reaction");
+            adverseReaction1.ReactionDescriptions = new List<ICodableText>()
+            {
                 BaseCDAModel.CreateCodableText("64305001", CodingSystem.SNOMED, "Urticaria"),
                 BaseCDAModel.CreateCodableText("22943007", CodingSystem.SNOMED, "Trunk structure"),
                 BaseCDAModel.CreateCodableText("182281004", CodingSystem.SNOMED, "Entire lower limb"),
@@ -1173,13 +1234,13 @@ namespace Nehta.VendorLibrary.CDA.Sample
             // Create AdverseReaction
             var adverseReaction2 = EDischargeSummary.CreateReactions();
             adverseReaction2.AgentDescription = BaseCDAModel.CreateCodableText("372826007", CodingSystem.SNOMED, "Metoprolol");
-            adverseReaction2.AdverseReactionType = BaseCDAModel.CreateCodableText("64305001", CodingSystem.SNOMED, "Urticaria");
-            adverseReaction2.ReactionDescriptions = new List<ICodableText> 
-            { 
-               BaseCDAModel.CreateCodableText("155585005", CodingSystem.SNOMED, "Chronic obstructive airways disease NOS")
+            adverseReaction2.AdverseReactionType = BaseCDAModel.CreateCodableText("281647001", CodingSystem.SNOMED, "Adverse reaction");
+            adverseReaction2.ReactionDescriptions = new List<ICodableText>
+            {
+                BaseCDAModel.CreateCodableText("13645005", CodingSystem.SNOMED, "COPD")
             };
 
-            return new List<IAdverseReactionDischargeSummary> { adverseReaction1, adverseReaction2 };
+            return new List<IAdverseReactionDischargeSummary> {adverseReaction1, adverseReaction2};
         }
 
         /// <summary>
@@ -1190,19 +1251,21 @@ namespace Nehta.VendorLibrary.CDA.Sample
         /// <returns>A Hydrated List of Alerts</returns>
         private static Alerts CreateAlerts()
         {
-            var alerts  = EDischargeSummary.CreateAlerts();
+            var alerts = EDischargeSummary.CreateAlerts();
 
             // Create Alert
             var alert1 = EDischargeSummary.CreateAlert();
-            alert1.AlertDescription = BaseCDAModel.CreateCodableText("78648007", CodingSystem.SNOMED, "At risk for infection");
+            alert1.AlertDescription =
+                BaseCDAModel.CreateCodableText("78648007", CodingSystem.SNOMED, "At risk for infection");
             alert1.AlertType = BaseCDAModel.CreateCodableText("74188005", CodingSystem.SNOMED, "Medical");
 
             // Create Alert
             var alert2 = EDischargeSummary.CreateAlert();
-            alert2.AlertDescription = BaseCDAModel.CreateCodableText("78648007", CodingSystem.SNOMED, "At risk for infection");
+            alert2.AlertDescription =
+                BaseCDAModel.CreateCodableText("78648007", CodingSystem.SNOMED, "At risk for infection");
             alert2.AlertType = BaseCDAModel.CreateCodableText("74188005", CodingSystem.SNOMED, "Medical");
 
-            alerts.AlertList = new List<Alert> { alert1, alert2 };
+            alerts.AlertList = new List<Alert> {alert1, alert2};
 
             return alerts;
         }
@@ -1237,8 +1300,10 @@ namespace Nehta.VendorLibrary.CDA.Sample
         {
             // Create Arranged Services Organisation
             var arrangedServices = EDischargeSummary.CreateArrangedServices();
-            arrangedServices.ArrangedServiceDescription = BaseCDAModel.CreateCodableText("Orthopaedic outpatient clinic appointment for 4 weeks post-discharge progress review");
-            arrangedServices.ServiceCommencementWindow = BaseCDAModel.CreateInterval(new ISO8601DateTime(DateTime.Now), new ISO8601DateTime(DateTime.Now.AddDays(20)));
+            arrangedServices.ArrangedServiceDescription = BaseCDAModel.CreateCodableText(
+                "Orthopaedic outpatient clinic appointment for 4 weeks post-discharge progress review");
+            arrangedServices.ServiceCommencementWindow = BaseCDAModel.CreateInterval(new ISO8601DateTime(DateTime.Now),
+                new ISO8601DateTime(DateTime.Now.AddDays(20)));
 
             arrangedServices.Status = EventTypes.Appointment;
 
@@ -1247,7 +1312,9 @@ namespace Nehta.VendorLibrary.CDA.Sample
 
             // Create Arranged Services Person
             var arrangedServices1 = EDischargeSummary.CreateArrangedServices();
-            arrangedServices1.ArrangedServiceDescription = BaseCDAModel.CreateCodableText("Orthopaedic outpatient clinic appointment for 4 weeks post-discharge progress review");
+            arrangedServices1.ArrangedServiceDescription =
+                BaseCDAModel.CreateCodableText(
+                    "Orthopaedic outpatient clinic appointment for 4 weeks post-discharge progress review");
             arrangedServices1.ServiceCommencementWindow = BaseCDAModel.CreateInterval(
                 new ISO8601DateTime(DateTime.Now),
                 new ISO8601DateTime(DateTime.Now.AddDays(60)));
@@ -1257,7 +1324,7 @@ namespace Nehta.VendorLibrary.CDA.Sample
             // Create Service Provider
             arrangedServices1.ServiceProvider = CreateServiceProviderOrganisation(mandatoryOnly);
 
-            return new List<ArrangedServices> { arrangedServices, arrangedServices1 };
+            return new List<ArrangedServices> {arrangedServices, arrangedServices1};
         }
 
         /// <summary>
@@ -1266,7 +1333,8 @@ namespace Nehta.VendorLibrary.CDA.Sample
         /// Note: the data used within this method is intended as a guide and should be replaced.
         /// </summary>
         /// <returns>A Hydrated RecommendationsInformationProvided object</returns>
-        private static RecommendationsInformationProvided CreateRecommendationsInformationProvided(Boolean mandatoryOnly)
+        private static RecommendationsInformationProvided CreateRecommendationsInformationProvided(
+            Boolean mandatoryOnly)
         {
             // Create Recommendations Information Provided
             var recommendationsInformationProvided = EDischargeSummary.CreateRecommendationsInformationProvided();
@@ -1292,13 +1360,15 @@ namespace Nehta.VendorLibrary.CDA.Sample
 
             // Create Recommendations Provided Person
             var recommendationsProvidedPerson = EDischargeSummary.CreateRecommendationsProvided();
-            recommendationsProvidedPerson.RecommendationNote = "Please remove the staples on Aug 24 2010. Please ensure aspirin is recommenced 3 days post discharge. Please follow-up anaemia.";
+            recommendationsProvidedPerson.RecommendationNote =
+                "Please remove the staples on Aug 24 2010. Please ensure aspirin is recommenced 3 days post discharge. Please follow-up anaemia.";
             recommendationsProvidedPerson.RecommendationRecipient = CreateRecommendationRecipientPerson(mandatoryOnly);
 
             // Create Recommendations Provided Organisation
             var recommendationsProvidedOrganisation = EDischargeSummary.CreateRecommendationsProvided();
             recommendationsProvidedOrganisation.RecommendationNote = "Please remove from waiting list";
-            recommendationsProvidedOrganisation.RecommendationRecipient = CreateRecommendationRecipientOrganisation(mandatoryOnly);
+            recommendationsProvidedOrganisation.RecommendationRecipient =
+                CreateRecommendationRecipientOrganisation(mandatoryOnly);
 
             return new List<RecommendationsProvided>
             {
@@ -1316,7 +1386,8 @@ namespace Nehta.VendorLibrary.CDA.Sample
         {
             // Create Information Provided
             var informationProvided = EDischargeSummary.CreateInformationProvided();
-            informationProvided.InformationProvidedToRelevantParties = "Patient was given a brochure explaining the expected post-op recovery following a total knee replacement. The physiotherapist provided a list of home exercises. The good prognosis for return to activity was discussed with the patient - likely to be able to walk with a stick at six weeks.";
+            informationProvided.InformationProvidedToRelevantParties =
+                "Patient was given a brochure explaining the expected post-op recovery following a total knee replacement. The physiotherapist provided a list of home exercises. The good prognosis for return to activity was discussed with the patient - likely to be able to walk with a stick at six weeks.";
             return informationProvided;
         }
 
@@ -1336,7 +1407,7 @@ namespace Nehta.VendorLibrary.CDA.Sample
                 //GenericObjectReuseSample.CreateImagingResults("Image chest x-ray 2"),
             };
 
-            diagnosticInvestigations.PathologyTestResult = new List<PathologyTestResult> 
+            diagnosticInvestigations.PathologyTestResult = new List<PathologyTestResult>
             {
                 GenericObjectReuseSample.CreatePathologyResults(xPreNameAndPath),
                 GenericObjectReuseSample.CreatePathologyResults(false)
@@ -1345,8 +1416,8 @@ namespace Nehta.VendorLibrary.CDA.Sample
             // Other Test Result 
             diagnosticInvestigations.OtherTestResult = new List<OtherTestResult>
             {
-                    GenericObjectReuseSample.CreateOtherTestResultAttachment(),
-                    GenericObjectReuseSample.CreateOtherTestResultText()
+                GenericObjectReuseSample.CreateOtherTestResultAttachment(),
+                GenericObjectReuseSample.CreateOtherTestResultText()
             };
 
             return diagnosticInvestigations;
@@ -1359,102 +1430,102 @@ namespace Nehta.VendorLibrary.CDA.Sample
         /// <returns>A Hydrated author</returns>
         public static IParticipationDocumentAuthor CreateAuthor(bool mandatoryOnly)
         {
-          var author = BaseCDAModel.CreateAuthor();
+            var author = BaseCDAModel.CreateAuthor();
 
-          var person = BaseCDAModel.CreatePersonWithOrganisation();
+            var person = BaseCDAModel.CreatePersonWithOrganisation();
 
-          // Document Author > Role
-          author.Role = BaseCDAModel.CreateRole(Occupation.SurgeonGeneral);
+            // Document Author > Role
+            author.Role = BaseCDAModel.CreateRole(Occupation.SurgeonGeneral);
 
-          // Document Author > Participant
-          author.Participant = BaseCDAModel.CreateParticipantForAuthor();
+            // Document Author > Participant
+            author.Participant = BaseCDAModel.CreateParticipantForAuthor();
 
-          // Document Author > Participant > Entity Identifier
-          person.Identifiers = new List<Identifier> { 
+            // Document Author > Participant > Entity Identifier
+            person.Identifiers = new List<Identifier>
+            {
                 BaseCDAModel.CreateHealthIdentifier(HealthIdentifierType.HPII, "8003615833334118")
             };
 
-          // Document Author > Participant > Address
-          var address1 = BaseCDAModel.CreateAddress();
-          address1.AddressAbsentIndicator = AddressAbsentIndicator.NoFixedAddressIndicator;
-          address1.AddressPurpose = AddressPurpose.Business;
-          address1.AustralianAddress = BaseCDAModel.CreateAustralianAddress();
-
-          var address2 = BaseCDAModel.CreateAddress();
-          address2.AddressAbsentIndicator = AddressAbsentIndicator.NoFixedAddressIndicator;
-          address2.AddressPurpose = AddressPurpose.Business;
-          address2.AustralianAddress = BaseCDAModel.CreateAustralianAddress();
-
-          var addressList = new List<IAddress> { address1, address2 };
-
-          author.Participant.Addresses = addressList;
-
-          // Document Author > Participant > Electronic Communication Detail
-          var coms1 = BaseCDAModel.CreateElectronicCommunicationDetail(
-              "0345754566",
-              ElectronicCommunicationMedium.Telephone,
-              ElectronicCommunicationUsage.WorkPlace);
-          var coms2 = BaseCDAModel.CreateElectronicCommunicationDetail(
-              "authen@globalauthens.com",
-              ElectronicCommunicationMedium.Email,
-              ElectronicCommunicationUsage.WorkPlace);
-
-          author.Participant.ElectronicCommunicationDetails = new List<ElectronicCommunicationDetail> { coms1, coms2 };
-
-          // Document Author > Participant > Per-son or Organisation or Device > Person > Person Name
-          var name1 = BaseCDAModel.CreatePersonName();
-          name1.FamilyName = "Smith";
-
-          var name2 = BaseCDAModel.CreatePersonName();
-          name2.Titles = new List<string> { "Sir" };
-          name2.FamilyName = "Wong";
-          name2.NameSuffix = new List<string> { "III" };
-
-          person.PersonNames = new List<IPersonName> { name1, name2 };
-
-          // Document Author > Participant > Person or Organisation or Device > Person > Employment Detail
-          person.Organisation = BaseCDAModel.CreateEmploymentOrganisation();
-          person.Organisation.Identifiers = new List<Identifier> { 
-                BaseCDAModel.CreateHealthIdentifier(HealthIdentifierType.HPIO, "8003620833333789")
-            };
-          person.Organisation.Name = "Good Hospital";
-
-          person.Organisation.Addresses = addressList;
-          person.Organisation.ElectronicCommunicationDetails = new List<ElectronicCommunicationDetail> { coms1, coms2 };
-
-          // Document Author > Participation Period
-          author.AuthorParticipationPeriodOrDateTimeAuthored = BaseCDAModel.CreateParticipationPeriod(new ISO8601DateTime(DateTime.Now, ISO8601DateTime.Precision.Second));
-
-          if (!mandatoryOnly)
-          {
-            person.Organisation.Department = "Surgical Ward";
-            person.Organisation.NameUsage = OrganisationNameUsage.LocallyUsedName;
-
-            name1.GivenNames = new List<string> { "Good" };
-            name1.Titles = new List<string> { "Dr" };
-            name1.NameUsages = new List<NameUsage> { NameUsage.Legal };
-
-            name2.GivenNames = new List<string> { "Davey" };
-            name2.Titles = new List<string> { "Br" };
-            name2.NameUsages = new List<NameUsage> { NameUsage.NewbornName };
-
-            address1.AustralianAddress.UnstructuredAddressLines = new List<string> { "1 Clinician Street" };
+            // Document Author > Participant > Address
+            var address1 = BaseCDAModel.CreateAddress();
+            //address1.AddressAbsentIndicator = AddressAbsentIndicator.NoFixedAddressIndicator;
+            address1.AddressPurpose = AddressPurpose.Business;
+            address1.AustralianAddress = BaseCDAModel.CreateAustralianAddress();
+            address1.AustralianAddress.UnstructuredAddressLines = new List<string> {"1 Clinician Street"};
             address1.AustralianAddress.SuburbTownLocality = "Nehtaville";
             address1.AustralianAddress.State = AustralianState.QLD;
             address1.AustralianAddress.PostCode = "5555";
-            address1.AustralianAddress.DeliveryPointId = 32568931;
 
-            address2.AustralianAddress.UnstructuredAddressLines = new List<string> { "2 Clinician Street" };
+
+            var address2 = BaseCDAModel.CreateAddress();
+            //address2.AddressAbsentIndicator = AddressAbsentIndicator.NoFixedAddressIndicator;
+            address2.AddressPurpose = AddressPurpose.Business;
+            address2.AustralianAddress = BaseCDAModel.CreateAustralianAddress();
+            address2.AustralianAddress.UnstructuredAddressLines = new List<string> {"2 Clinician Street"};
             address2.AustralianAddress.SuburbTownLocality = "Nehtaville";
             address2.AustralianAddress.State = AustralianState.QLD;
             address2.AustralianAddress.PostCode = "5555";
-            address2.AustralianAddress.DeliveryPointId = 32568931;
 
-          }
+            var addressList = new List<IAddress> {address1, address2};
 
-          author.Participant.Person = person;
+            author.Participant.Addresses = addressList;
 
-          return author;
+            // Document Author > Participant > Electronic Communication Detail
+            var coms1 = BaseCDAModel.CreateElectronicCommunicationDetail(
+                "0345754566",
+                ElectronicCommunicationMedium.Telephone,
+                ElectronicCommunicationUsage.WorkPlace);
+            var coms2 = BaseCDAModel.CreateElectronicCommunicationDetail(
+                "authen@globalauthens.com",
+                ElectronicCommunicationMedium.Email,
+                ElectronicCommunicationUsage.WorkPlace);
+
+            author.Participant.ElectronicCommunicationDetails = new List<ElectronicCommunicationDetail> {coms1, coms2};
+
+            // Document Author > Participant > Per-son or Organisation or Device > Person > Person Name
+            var name1 = BaseCDAModel.CreatePersonName();
+            name1.FamilyName = "Smith";
+
+            var name2 = BaseCDAModel.CreatePersonName();
+            name2.Titles = new List<string> {"Sir"};
+            name2.FamilyName = "Wong";
+            name2.NameSuffix = new List<string> {"III"};
+
+            person.PersonNames = new List<IPersonName> {name1, name2};
+
+            // Document Author > Participant > Person or Organisation or Device > Person > Employment Detail
+            person.Organisation = BaseCDAModel.CreateEmploymentOrganisation();
+            person.Organisation.Identifiers = new List<Identifier>
+            {
+                BaseCDAModel.CreateHealthIdentifier(HealthIdentifierType.HPIO, "8003620833333789")
+            };
+            person.Organisation.Name = "Good Hospital";
+
+            person.Organisation.Addresses = addressList;
+            person.Organisation.ElectronicCommunicationDetails = new List<ElectronicCommunicationDetail> {coms1, coms2};
+
+            // Document Author > Participation Period
+            author.AuthorParticipationPeriodOrDateTimeAuthored =
+                BaseCDAModel.CreateParticipationPeriod(new ISO8601DateTime(DateTime.Now,
+                    ISO8601DateTime.Precision.Second));
+
+            if (!mandatoryOnly)
+            {
+                person.Organisation.Department = "Surgical Ward";
+                person.Organisation.NameUsage = OrganisationNameUsage.LocallyUsedName;
+
+                name1.GivenNames = new List<string> {"Fitun"};
+                name1.Titles = new List<string> {"Dr"};
+                name1.NameUsages = new List<NameUsage> {NameUsage.Legal};
+
+                name2.GivenNames = new List<string> {"Davey"};
+                name2.Titles = new List<string> {"Br"};
+                name2.NameUsages = new List<NameUsage> {NameUsage.NewbornName};
+            }
+
+            author.Participant.Person = person;
+
+            return author;
         }
 
         #endregion

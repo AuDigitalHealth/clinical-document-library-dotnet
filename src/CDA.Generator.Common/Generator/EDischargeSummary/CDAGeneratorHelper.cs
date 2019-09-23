@@ -338,7 +338,7 @@ namespace Nehta.VendorLibrary.CDA.Generator
           //NARRATIVE
           if (narrativeGenerator != null)
           {
-            component.section.text = customNarrative ?? narrativeGenerator.CreateNarrative(subjectOfCareParticipation, patientId, true, null, null);
+            component.section.text = customNarrative ?? narrativeGenerator.CreateNarrative(subjectOfCareParticipation, patientId, true, null, null, specialty);
           }
 
           return component;
@@ -2000,7 +2000,7 @@ namespace Nehta.VendorLibrary.CDA.Generator
                   studyIdentifierEntryRelationships.Add(
                       CreateEntryRelationshipObservation(x_ActRelationshipEntryRelationship.COMP,
                                                          ActClassObservation.OBS,
-                                                         x_ActMoodDocumentObservation.EVN, true,
+                                                         x_ActMoodDocumentObservation.EVN, false,
                                                          imageDetail.DateTime,
                                                          CreateConceptDescriptor("102.16515", CodingSystem.NCTIS, "Image Details", null), null,
                                                          CreateIdentifierArray(imageDetail.ImageIdentifier),
@@ -2038,7 +2038,7 @@ namespace Nehta.VendorLibrary.CDA.Generator
               {
                 relationshipList.Add(CreateEntryRelationshipACT(x_ActRelationshipEntryRelationship.SUBJ,
                                                                 x_ActClassDocumentEntryAct.ACT,
-                                                                x_DocumentActMood.EVN, true,
+                                                                x_DocumentActMood.EVN, false,
                                                                 CreateConceptDescriptor("103.16513",
                                                                                         CodingSystem.NCTIS,
                                                                                         "DICOM Study Identifier",

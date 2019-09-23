@@ -548,6 +548,33 @@ namespace Nehta.VendorLibrary.CDA.Common
         }
 
         /// <summary>
+        /// Create a CreatePrescriberNumber object
+        /// </summary>
+        /// <param name="prescriberType">prescriberType</param>
+        /// <param name="prescriberNumber">prescriberNumber</param>
+        /// <returns>MRN</returns>
+        public static Identifier CreatePrescriberNumber(IdentifierType prescriberType, string prescriberNumber)
+        {
+
+            return
+                CreateIdentifier
+                (
+                    prescriberType.GetAttributeValue<NameAttribute, string>(x => x.Name),
+                    null,
+                    prescriberNumber,
+                    prescriberType.GetAttributeValue<NameAttribute, string>(x => x.Code),
+                    CreateCodableText
+                    (
+                        "MC",
+                        CodingSystem.HL7IdentifierType,
+                        null,
+                        null,
+                        null
+                    )
+                );
+        }
+
+        /// <summary>
         /// Create a CreateMedicareNumber object
         /// </summary>
         /// <param name="medicareNumber">medicalRecordNumber</param>

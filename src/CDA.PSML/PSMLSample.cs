@@ -32,10 +32,10 @@ using Nehta.VendorLibrary.CDA.SCSModel.PCML.Entities;
 using Nehta.VendorLibrary.CDA.SCSModel.ServiceReferral.Interfaces;
 using Entitlement = Nehta.VendorLibrary.CDA.SCSModel.Common.Entitlement;
 
-namespace CDA.PCML
+namespace CDA.PSML
 {
     /// <summary>
-    /// This project is intended to demonstrate how a PCML (Pharmacy Shared Medicines) Sample CDA document can be created.
+    /// This project is intended to demonstrate how a PSML (Pharmacy Shared Medicines) Sample CDA document can be created.
     /// 
     /// The project contains two samples, the first is designed to create a fully populated CDA document, including
     /// all of the optional sections and entries. The second sample only populates the mandatory sections and entries.
@@ -59,7 +59,7 @@ namespace CDA.PCML
     /// The SCS Content typically contains information that is to be represented with the body of the document.
     /// </summary>
   
-    public class PCMLSample
+    public class PSMLSample
     {
         #region Properties
 
@@ -69,7 +69,7 @@ namespace CDA.PCML
         {
             get
             {
-                return OutputFolderPath + @"\PCML.xml";
+                return OutputFolderPath + @"\PSML.xml";
             }
         }
 
@@ -91,17 +91,17 @@ namespace CDA.PCML
         /// of the content within the body of the CDA document; as each of the sections within the body
         /// are optional.
         /// </summary>
-        public XmlDocument PopulatedPCMLSample()
+        public XmlDocument PopulatedPSMLSample()
         {
             XmlDocument xmlDoc = null;
 
-            var PCML = PopulatePCML_1A(true);
+            var PSML = PopulatePSML_1A(true);
 
             try
             {
                 CDAGenerator.NarrativeGenerator = new CDANarrativeGenerator();
 
-                xmlDoc = CDAGenerator.GeneratePCML(PCML);
+                xmlDoc = CDAGenerator.GeneratePCML(PSML);
 
                 xmlDoc.Save(OutputFileNameAndPath);
             }
@@ -123,18 +123,18 @@ namespace CDA.PCML
         /// includes all of the sections within the body and each section includes at least one example for 
         /// each of its optional entries.
         /// </summary>
-        public XmlDocument MinPopulatedPCMLAuthorHealthcareProviderSample_1A(string fileName)
+        public XmlDocument MinPopulatedPSMLAuthorHealthcareProviderSample_1A(string fileName)
         {
             XmlDocument xmlDoc = null;
 
-            var PCML = PopulatePCML_1A(true);
+            var PSML = PopulatePSML_1A(true);
 
             try
             {
                 CDAGenerator.NarrativeGenerator = new CDANarrativeGenerator();
 
                 //Pass the Child Parent Questionnaire model into the GeneratePCML method 
-                xmlDoc = CDAGenerator.GeneratePCML(PCML);
+                xmlDoc = CDAGenerator.GeneratePCML(PSML);
 
                 using (var writer = XmlWriter.Create(OutputFolderPath + @"\" + fileName, new XmlWriterSettings { Indent = true }))
                 {
@@ -158,18 +158,18 @@ namespace CDA.PCML
         /// includes all of the sections within the body and each section includes at least one example for 
         /// each of its optional entries.
         /// </summary>
-        public XmlDocument MaxPopulatedPCMLAuthorHealthcareProviderSample_1A(string fileName)
+        public XmlDocument MaxPopulatedPSMLAuthorHealthcareProviderSample_1A(string fileName)
         {
             XmlDocument xmlDoc = null;
 
-            var PCML = PopulatePCML_1A(false);
+            var PSML = PopulatePSML_1A(false);
             
             try
             {
                 CDAGenerator.NarrativeGenerator = new CDANarrativeGenerator();
 
                 //Pass the Child Parent Questionnaire model into the GeneratePCML method 
-                xmlDoc = CDAGenerator.GeneratePCML(PCML);
+                xmlDoc = CDAGenerator.GeneratePCML(PSML);
 
                 using (var writer = XmlWriter.Create(OutputFolderPath + @"\" + fileName, new XmlWriterSettings { Indent = true }))
                 {
@@ -196,18 +196,18 @@ namespace CDA.PCML
         /// includes all of the sections within the body and each section includes at least one example for 
         /// each of its optional entries.
         /// </summary>
-        public XmlDocument MinPopulatedPCMLAuthorHealthcareProviderSample_1B(string fileName)
+        public XmlDocument MinPopulatedPSMLAuthorHealthcareProviderSample_1B(string fileName)
         {
             XmlDocument xmlDoc = null;
 
-            var PCML = PopulatePCML_1B(true);
+            var PSML = PopulatePSML_1B(true);
 
             try
             {
                 CDAGenerator.NarrativeGenerator = new CDANarrativeGenerator();
 
                 //Pass the Child Parent Questionnaire model into the GeneratePCML method 
-                xmlDoc = CDAGenerator.GeneratePCML(PCML);
+                xmlDoc = CDAGenerator.GeneratePCML(PSML);
 
                 using (var writer = XmlWriter.Create(OutputFolderPath + @"\" + fileName, new XmlWriterSettings { Indent = true }))
                 {
@@ -226,18 +226,18 @@ namespace CDA.PCML
             return xmlDoc;
         }
 
-        public XmlDocument MaxPopulatedPCMLAuthorHealthcareProviderSample_1B(string fileName)
+        public XmlDocument MaxPopulatedPSMLAuthorHealthcareProviderSample_1B(string fileName)
         {
             XmlDocument xmlDoc = null;
 
-            var PCML = PopulatePCML_1B(false);
+            var PSML = PopulatePSML_1B(false);
 
             try
             {
                 CDAGenerator.NarrativeGenerator = new CDANarrativeGenerator();
 
                 //Pass the PCML model into the GeneratePCML method 
-                xmlDoc = CDAGenerator.GeneratePCML(PCML);
+                xmlDoc = CDAGenerator.GeneratePCML(PSML);
 
                 using (var writer = XmlWriter.Create(OutputFolderPath + @"\" + fileName, new XmlWriterSettings { Indent = true }))
                 {
@@ -264,15 +264,15 @@ namespace CDA.PCML
         /// </summary>
         /// <param name="mandatorySectionsOnly">mandatorySectionsOnly</param>
         /// <returns>PCML</returns>
-        public static Nehta.VendorLibrary.CDA.Common.PCML PopulatePCML_1A(Boolean mandatorySectionsOnly)
+        public static Nehta.VendorLibrary.CDA.Common.PCML PopulatePSML_1A(Boolean mandatorySectionsOnly)
         {
-            var pharmacyCuratedMedsList = Nehta.VendorLibrary.CDA.Common.PCML.CreatePCML();
+            var pharmacySharedMedsList = Nehta.VendorLibrary.CDA.Common.PCML.CreatePCML();
 
               // Include Logo
-            pharmacyCuratedMedsList.IncludeLogo = false;
+            pharmacySharedMedsList.IncludeLogo = false;
 
               // Set Creation Time
-            pharmacyCuratedMedsList.DocumentCreationTime = new ISO8601DateTime(DateTime.Now);
+            pharmacySharedMedsList.DocumentCreationTime = new ISO8601DateTime(DateTime.Now);
 
             #region Setup and populate the CDA context model
 
@@ -311,18 +311,18 @@ namespace CDA.PCML
             }
 
 
-            pharmacyCuratedMedsList.CDAContext = cdaContext;
+            pharmacySharedMedsList.CDAContext = cdaContext;
             #endregion
 
             
             #region Setup and Populate the SCS Context model
             // Setup and Populate the SCS Context model
 
-            pharmacyCuratedMedsList.SCSContext = Nehta.VendorLibrary.CDA.Common.PCML.CreateSCSContext();
+            pharmacySharedMedsList.SCSContext = Nehta.VendorLibrary.CDA.Common.PCML.CreateSCSContext();
 
             var authorHealthcareProvider = BaseCDAModel.CreateAuthorHealthcareProvider();
             GenericObjectReuseSample.HydrateAuthorHealthcareProvider(authorHealthcareProvider, mandatorySectionsOnly);
-            pharmacyCuratedMedsList.SCSContext.Author = authorHealthcareProvider;
+            pharmacySharedMedsList.SCSContext.Author = authorHealthcareProvider;
 
             //Cannot use as a device : prohibited by CORE Level One
             //pharmacyCuratedMedsList.SCSContext.Author = GenericObjectReuseSample.CreateAuthorDevice();
@@ -330,14 +330,14 @@ namespace CDA.PCML
             if (!mandatorySectionsOnly)
             {
                 // Context>Encounter>HEALTHCARE FACILITY 
-                pharmacyCuratedMedsList.SCSContext.Encounter = new Encounter
+                pharmacySharedMedsList.SCSContext.Encounter = new Encounter
                 {
                     HealthcareFacility = PopulateHealthcareFacility(mandatorySectionsOnly)
                 };
             }
 
-            pharmacyCuratedMedsList.SCSContext.SubjectOfCare = BaseCDAModel.CreateSubjectOfCare();
-            GenericObjectReuseSample.HydrateSubjectofCare(pharmacyCuratedMedsList.SCSContext.SubjectOfCare, mandatorySectionsOnly);
+            pharmacySharedMedsList.SCSContext.SubjectOfCare = BaseCDAModel.CreateSubjectOfCare();
+            GenericObjectReuseSample.HydrateSubjectofCare(pharmacySharedMedsList.SCSContext.SubjectOfCare, mandatorySectionsOnly);
 
 
             IParticipationPersonOrOrganisation person = Nehta.VendorLibrary.CDA.Common.PCML.CreateParticipationPersonOrOrganisation();
@@ -430,17 +430,17 @@ namespace CDA.PCML
                 person.Participant.Entitlements = new List<Entitlement> { entitlement1, entitlement2 };
 
                 // Optional Participants
-                pharmacyCuratedMedsList.SCSContext.Participant = new List<IParticipationPersonOrOrganisation>();
-                pharmacyCuratedMedsList.SCSContext.Participant.Add(person);
+                pharmacySharedMedsList.SCSContext.Participant = new List<IParticipationPersonOrOrganisation>();
+                pharmacySharedMedsList.SCSContext.Participant.Add(person);
             }
 
             #endregion
 
             #region Setup and populate the SCS Content model
             // Setup and populate the SCS Content model
-            pharmacyCuratedMedsList.SCSContent = Nehta.VendorLibrary.CDA.Common.PCML.CreateSCSContent();
+            pharmacySharedMedsList.SCSContent = Nehta.VendorLibrary.CDA.Common.PCML.CreateSCSContent();
 
-            pharmacyCuratedMedsList.SCSContent.EncapsulatedData = BaseCDAModel.CreateEncapsulatedData();
+            pharmacySharedMedsList.SCSContent.EncapsulatedData = BaseCDAModel.CreateEncapsulatedData();
 
             ExternalData report1 = BaseCDAModel.CreateExternalData();
             report1.ExternalDataMediaType = MediaType.PDF;
@@ -448,10 +448,10 @@ namespace CDA.PCML
             report1.Caption = "Attachment One";
 
 
-            pharmacyCuratedMedsList.SCSContent.EncapsulatedData.ExternalData = report1;
+            pharmacySharedMedsList.SCSContent.EncapsulatedData.ExternalData = report1;
             #endregion
 
-            return pharmacyCuratedMedsList;
+            return pharmacySharedMedsList;
         }
 
 
@@ -461,16 +461,16 @@ namespace CDA.PCML
         /// </summary>
         /// <param name="mandatorySectionsOnly">mandatorySectionsOnly</param>
         /// <returns>PCML</returns>
-        public static Nehta.VendorLibrary.CDA.Common.PCML PopulatePCML_1B(Boolean mandatorySectionsOnly)
+        public static Nehta.VendorLibrary.CDA.Common.PCML PopulatePSML_1B(Boolean mandatorySectionsOnly)
         {
-            var pharmacyCuratedMedsList = Nehta.VendorLibrary.CDA.Common.PCML.CreatePCML();
+            var pharmacySharedMedsList = Nehta.VendorLibrary.CDA.Common.PCML.CreatePCML();
 
             // Include Logo
-            pharmacyCuratedMedsList.IncludeLogo = true;
-			pharmacyCuratedMedsList.LogoPath = OutputFolderPath;
+            pharmacySharedMedsList.IncludeLogo = true;
+			pharmacySharedMedsList.LogoPath = OutputFolderPath;
 
             // Set Creation Time
-            pharmacyCuratedMedsList.DocumentCreationTime = new ISO8601DateTime(DateTime.Now);
+            pharmacySharedMedsList.DocumentCreationTime = new ISO8601DateTime(DateTime.Now);
 
             #region Setup and populate the CDA context model
 
@@ -508,17 +508,17 @@ namespace CDA.PCML
                 cdaContext.InformationRecipients.AddRange(new[] { recipient1, recipient2 });
             }
 
-            pharmacyCuratedMedsList.CDAContext = cdaContext;
+            pharmacySharedMedsList.CDAContext = cdaContext;
             #endregion
 
             #region Setup and Populate the SCS Context model
             // Setup and Populate the SCS Context model
 
-            pharmacyCuratedMedsList.SCSContext = Nehta.VendorLibrary.CDA.Common.PCML.CreateSCSContext();
+            pharmacySharedMedsList.SCSContext = Nehta.VendorLibrary.CDA.Common.PCML.CreateSCSContext();
 
             var authorHealthcareProvider = BaseCDAModel.CreateAuthorHealthcareProvider();
             GenericObjectReuseSample.HydrateAuthorHealthcareProvider(authorHealthcareProvider, mandatorySectionsOnly);
-            pharmacyCuratedMedsList.SCSContext.Author = authorHealthcareProvider;
+            pharmacySharedMedsList.SCSContext.Author = authorHealthcareProvider;
 
             //Cannot use as a device : prohibited by CORE Level One
             //pharmacyCuratedMedsList.SCSContext.Author = GenericObjectReuseSample.CreateAuthorDevice();
@@ -526,14 +526,14 @@ namespace CDA.PCML
             if (!mandatorySectionsOnly)
             {
                 // Context>Encounter>HEALTHCARE FACILITY 
-                pharmacyCuratedMedsList.SCSContext.Encounter = new Encounter
+                pharmacySharedMedsList.SCSContext.Encounter = new Encounter
                 {
                     HealthcareFacility = PopulateHealthcareFacility(mandatorySectionsOnly)
                 };
             }
 
-            pharmacyCuratedMedsList.SCSContext.SubjectOfCare = BaseCDAModel.CreateSubjectOfCare();
-            GenericObjectReuseSample.HydrateSubjectofCare(pharmacyCuratedMedsList.SCSContext.SubjectOfCare, mandatorySectionsOnly);
+            pharmacySharedMedsList.SCSContext.SubjectOfCare = BaseCDAModel.CreateSubjectOfCare();
+            GenericObjectReuseSample.HydrateSubjectofCare(pharmacySharedMedsList.SCSContext.SubjectOfCare, mandatorySectionsOnly);
 
 
             IParticipationPersonOrOrganisation person = Nehta.VendorLibrary.CDA.Common.PCML.CreateParticipationPersonOrOrganisation();
@@ -622,8 +622,8 @@ namespace CDA.PCML
                 person.Participant.Entitlements = new List<Entitlement> { entitlement1, entitlement2 };
 
                 // Optional Participants
-                pharmacyCuratedMedsList.SCSContext.Participant = new List<IParticipationPersonOrOrganisation>();
-                pharmacyCuratedMedsList.SCSContext.Participant.Add(person);
+                pharmacySharedMedsList.SCSContext.Participant = new List<IParticipationPersonOrOrganisation>();
+                pharmacySharedMedsList.SCSContext.Participant.Add(person);
             }
 
             #endregion
@@ -631,12 +631,12 @@ namespace CDA.PCML
             #region Setup and populate the SCS Content model
 
             // Setup and populate the SCS Content model
-            pharmacyCuratedMedsList.SCSContent = Nehta.VendorLibrary.CDA.Common.PCML.CreateSCSContent();
+            pharmacySharedMedsList.SCSContent = Nehta.VendorLibrary.CDA.Common.PCML.CreateSCSContent();
 
             //Use Custom Narrative instead of Attachment - 1B
             //pharmacyCuratedMedsList.SCSContent.EncapsulatedData = BaseCDAModel.CreateEncapsulatedData();
-            pharmacyCuratedMedsList.ShowAdministrativeObservationsSection = false;
-            pharmacyCuratedMedsList.ShowAdministrativeObservationsNarrativeAndTitle = false;
+            pharmacySharedMedsList.ShowAdministrativeObservationsSection = false;
+            pharmacySharedMedsList.ShowAdministrativeObservationsNarrativeAndTitle = false;
 
             // Build Narrative
             var sdt = new StrucDocText();
@@ -678,13 +678,13 @@ namespace CDA.PCML
             narrativeOnlyDocument.Title = "Patient Medication Record";
             narrativeOnlyDocument.Narrative = sdt;
 
-            pharmacyCuratedMedsList.SCSContent.CustomNarrativePcmlRecord = new List<NarrativeOnlyDocument>();
-            pharmacyCuratedMedsList.SCSContent.CustomNarrativePcmlRecord.Add(narrativeOnlyDocument);
+            pharmacySharedMedsList.SCSContent.CustomNarrativePcmlRecord = new List<NarrativeOnlyDocument>();
+            pharmacySharedMedsList.SCSContent.CustomNarrativePcmlRecord.Add(narrativeOnlyDocument);
 
             #endregion
 
 
-            return pharmacyCuratedMedsList;
+            return pharmacySharedMedsList;
         }
 
         private static StrucDocTd AddTd(string text, string style = "")

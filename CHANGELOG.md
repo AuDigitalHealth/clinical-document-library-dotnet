@@ -1,9 +1,12 @@
 ## Change Log/Revision History
 
-4.X.0 - Reference Platform Clinical Document Library (XXXX 2019) - In progress
+4.6.1 - Reference Platform Clinical Document Library (Sep 2019)
 ----------------------------------------------------
 - Removed <paragraph> tag for 1A specialist letter narrative (as TP has not been fixed)
-
+- Removed incorrect template Id - accidently introduced in Jan 2018
+- Cleaned up example documents to remove warnings when IQ rules run
+- Corrected inversionInd flags when not required
+- Renamed project to PSML
 
 4.6.0 - Reference Platform Clinical Document Library (July 2019)
 ----------------------------------------------------

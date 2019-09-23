@@ -6,11 +6,11 @@
       Values for Diagnosis of Diabetes Mellitus and other Hyperglycaemia
 
        DIABETES MELLITUS (DM)
-         Fasting                &gt; 6.9  mmol/L
-         or 2 hrs post load     &gt; 11.0 mmol/L
+         Fasting                > 6.9  mmol/L
+         or 2 hrs post load     > 11.0 mmol/L
 
        IMPAIRED FASTING GLYCAEMIA (IFG)
-         Fasting                 &gt; 6.0 mmol/L and &lt; 7.0 mmol/L
+         Fasting                 > 6.0 mmol/L and < 7.0 mmol/L
 
 
 

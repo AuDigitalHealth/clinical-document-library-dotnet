@@ -148,26 +148,24 @@ namespace CDA.R5Samples
               // Document Author > Participant > Addresses
               author.Participant.Addresses = new List<IAddress> { address1, address2 };
 
-              name.GivenNames = new List<string> { "Good" };
-              name.Titles = new List<string> { "Doctor" };
+              name.GivenNames = new List<string> { "Fitun" };
+              name.Titles = new List<string> { "Dr" };
               name.NameUsages = new List<NameUsage> { NameUsage.Legal };
 
               address1.AustralianAddress.UnstructuredAddressLines = new List<string> { "1 Clinician Street" };
               address1.AustralianAddress.SuburbTownLocality = "Nehtaville";
               address1.AustralianAddress.State = AustralianState.QLD;
               address1.AustralianAddress.PostCode = "5555";
-              address1.AustralianAddress.DeliveryPointId = 32568931;
 
               address2.AustralianAddress.UnstructuredAddressLines = new List<string> { "2 Clinician Street" };
               address2.AustralianAddress.SuburbTownLocality = "Nehtaville";
               address2.AustralianAddress.State = AustralianState.QLD;
               address2.AustralianAddress.PostCode = "5555";
-              address2.AustralianAddress.DeliveryPointId = 32568931;
 
               person.Organisation.NameUsage = OrganisationNameUsage.Other;
 
               person.Organisation.Department = "Some department service provider";
-              person.Organisation.EmploymentType = BaseCDAModel.CreateCodableText(null, null, null, "Casual", null);
+              person.Organisation.EmploymentType = BaseCDAModel.CreateCodableText(EmploymentType.Casual);
               person.Organisation.Occupation = BaseCDAModel.CreateRole(Occupation.GeneralMedicalPractitioner, CodingSystem.ANZSCORevision1);
               person.Organisation.PositionInOrganisation = BaseCDAModel.CreateCodableText(null, null, null, "Manager", null);
 
@@ -191,7 +189,7 @@ namespace CDA.R5Samples
                                                                null);
 
               entitlement.Type = EntitlementType.MedicarePrescriberNumber;
-              entitlement.ValidityDuration = BaseCDAModel.CreateInterval(new ISO8601DateTime(DateTime.Now), new ISO8601DateTime(DateTime.Now));
+              entitlement.ValidityDuration = BaseCDAModel.CreateInterval(new ISO8601DateTime(DateTime.Now), new ISO8601DateTime(DateTime.Now.AddYears(1)));
 
               person.Entitlements = new List<Entitlement> { entitlement, entitlement };
 
@@ -281,7 +279,7 @@ namespace CDA.R5Samples
 
                 person.Organisation.NameUsage = OrganisationNameUsage.Other;
                 person.Organisation.Department = "Some department requester";
-                person.Organisation.EmploymentType = BaseCDAModel.CreateCodableText("Casual");
+                person.Organisation.EmploymentType = BaseCDAModel.CreateCodableText(EmploymentType.Casual);
                 person.Organisation.Occupation = BaseCDAModel.CreateRole(Occupation.GeneralMedicalPractitioner, CodingSystem.ANZSCORevision1);
                 person.Organisation.PositionInOrganisation = BaseCDAModel.CreateCodableText("Manager");
 
@@ -293,24 +291,22 @@ namespace CDA.R5Samples
                 person.Organisation.Identifiers = new List<Identifier>
                 {
                     BaseCDAModel.CreateHealthIdentifier(HealthIdentifierType.HPIO, "8003620833333789"),
-                    BaseCDAModel.CreateIdentifier("Sample Requester", null, null, "1.2.3.4.5.666667", null)
+                    BaseCDAModel.CreateIdentifier("Test Authority", null, null, "2.999.12345678907", null)
                 };
 
-                name1.GivenNames = new List<string> {"Good"};
-                name1.Titles = new List<string> {"Doctor"};
+                name1.GivenNames = new List<string> {"Fitun"};
+                name1.Titles = new List<string> {"Healthy"};
                 name1.NameUsages = new List<NameUsage> {NameUsage.Legal};
 
                 address1.AustralianAddress.UnstructuredAddressLines = new List<string> {"1 Clinician Street"};
                 address1.AustralianAddress.SuburbTownLocality = "Nehtaville";
                 address1.AustralianAddress.State = AustralianState.QLD;
                 address1.AustralianAddress.PostCode = "5555";
-                address1.AustralianAddress.DeliveryPointId = 32568931;
 
                 address2.AustralianAddress.UnstructuredAddressLines = new List<string> {"2 Clinician Street"};
                 address2.AustralianAddress.SuburbTownLocality = "Nehtaville";
                 address2.AustralianAddress.State = AustralianState.QLD;
                 address2.AustralianAddress.PostCode = "5555";
-                address2.AustralianAddress.DeliveryPointId = 32568931;
 
                 // Qualifications
                 requester.Participant.Qualifications = "FRACGP";
@@ -342,7 +338,7 @@ namespace CDA.R5Samples
           author.Identifiers = new List<Identifier>
                                    {
                                        BaseCDAModel.CreateHealthIdentifier(HealthIdentifierType.PAID, "8003640001000036"),
-                                       BaseCDAModel.CreateIdentifier("AuthorDevice", null, null, "1.2.3.4.5.66666", null)
+                                       BaseCDAModel.CreateIdentifier("Test Authority", null, null, "2.999.1234567890", null)
                                    };
         }
 
@@ -367,7 +363,7 @@ namespace CDA.R5Samples
 
             // Document Author > Participant > Person or Organisation or Device > Person > Person Name
             var name1 = BaseCDAModel.CreatePersonName();
-            name1.FamilyName = "Doctor";
+            name1.FamilyName = "Healthy";
 
             var name2 = BaseCDAModel.CreatePersonName();
             name2.FamilyName = "Wong";
@@ -397,8 +393,8 @@ namespace CDA.R5Samples
 
             if (!mandatoryOnly)
             {
-                name1.GivenNames = new List<string> { "Good" };
-                name1.Titles = new List<string> { "Doctor" };
+                name1.GivenNames = new List<string> { "Fitun" };
+                name1.Titles = new List<string> { "Dr" };
                 name1.NameUsages = new List<NameUsage> { NameUsage.Legal };
 
                 name2.GivenNames = new List<string> { "Davey" };
@@ -422,13 +418,11 @@ namespace CDA.R5Samples
                 address1.AustralianAddress.SuburbTownLocality = "Nehtaville";
                 address1.AustralianAddress.State = AustralianState.QLD;
                 address1.AustralianAddress.PostCode = "5555";
-                address1.AustralianAddress.DeliveryPointId = 32568931;
 
                 address2.AustralianAddress.UnstructuredAddressLines = new List<string> { "2 Clinician Street" };
                 address2.AustralianAddress.SuburbTownLocality = "Nehtaville";
                 address2.AustralianAddress.State = AustralianState.QLD;
                 address2.AustralianAddress.PostCode = "5555";
-                address2.AustralianAddress.DeliveryPointId = 32568931;
 
                 // Document Author > Participant > Electronic Communication Detail
                 var coms1 = BaseCDAModel.CreateElectronicCommunicationDetail(
@@ -507,7 +501,7 @@ namespace CDA.R5Samples
             person.Organisation = BaseCDAModel.CreateEmploymentOrganisation();
             person.Organisation.Identifiers = new List<Identifier> { 
                 BaseCDAModel.CreateHealthIdentifier(HealthIdentifierType.HPIO, "8003620833333789"),
-                BaseCDAModel.CreateIdentifier("SampleAuthority", null, null, "1.2.3.4.5.66666", null)
+                BaseCDAModel.CreateIdentifier("Test Authority", null, null, "2.999.1234567890", null)
             };
 
             // Organisation Name
@@ -521,22 +515,20 @@ namespace CDA.R5Samples
                 person.Organisation.Department = "Surgical Ward";
                 person.Organisation.NameUsage = OrganisationNameUsage.LocallyUsedName;
 
-                name1.GivenNames = new List<string> { "Good" };
-                name1.Titles = new List<string> { "Doctor" };
+                name1.GivenNames = new List<string> { "Fitun" };
+                name1.Titles = new List<string> { "Dr" };
                 name1.NameUsages = new List<NameUsage> { NameUsage.Legal };
 
                 address1.AustralianAddress.UnstructuredAddressLines = new List<string> { "1 Clinician Street" };
                 address1.AustralianAddress.SuburbTownLocality = "Nehtaville";
                 address1.AustralianAddress.State = AustralianState.QLD;
                 address1.AustralianAddress.PostCode = "5555";
-                address1.AustralianAddress.DeliveryPointId = 32568931;
                 address1.AddressAbsentIndicator = null;
 
                 address2.AustralianAddress.UnstructuredAddressLines = new List<string> { "2 Clinician Street" };
                 address2.AustralianAddress.SuburbTownLocality = "Nehtaville";
                 address2.AustralianAddress.State = AustralianState.QLD;
                 address2.AustralianAddress.PostCode = "5555";
-                address2.AustralianAddress.DeliveryPointId = 32568931;
                 address2.AddressAbsentIndicator = null;
             }
 
@@ -692,7 +684,6 @@ namespace CDA.R5Samples
                 address.AustralianAddress.SuburbTownLocality = "Nehtaville";
                 address.AustralianAddress.State = AustralianState.NSW;
                 address.AustralianAddress.PostCode = "5555";
-                address.AustralianAddress.DeliveryPointId = 32568931;
 
                 person.DateOfBirthCalculatedFromAge = true;
                 person.DateOfBirthAccuracyIndicator = new DateAccuracyIndicator(true, true, true);
@@ -721,12 +712,12 @@ namespace CDA.R5Samples
                 var entitlement1 = BaseCDAModel.CreateEntitlement();
                 entitlement1.Id = BaseCDAModel.CreateMedicareNumber(MedicareNumberType.MedicareCardNumber, "1234567881");
                 entitlement1.Type = EntitlementType.MedicareBenefits;
-                entitlement1.ValidityDuration = BaseCDAModel.CreateInterval(new ISO8601DateTime(DateTime.Now), new ISO8601DateTime(DateTime.Now));
+                entitlement1.ValidityDuration = BaseCDAModel.CreateHigh(new ISO8601DateTime(DateTime.Now.AddMonths(15), ISO8601DateTime.Precision.Day));
 
                 var entitlement2 = BaseCDAModel.CreateEntitlement();
                 entitlement2.Id = BaseCDAModel.CreateMedicareNumber(MedicareNumberType.MedicareCardNumber, "1234567881");
                 entitlement2.Type = EntitlementType.MedicareBenefits;
-                entitlement2.ValidityDuration = BaseCDAModel.CreateInterval(new ISO8601DateTime(DateTime.Now), new ISO8601DateTime(DateTime.Now));
+                entitlement2.ValidityDuration = BaseCDAModel.CreateHigh(new ISO8601DateTime(DateTime.Now.AddMonths(15), ISO8601DateTime.Precision.Day));
 
                 participant.Entitlements = new List<Entitlement> { entitlement1, entitlement2 };
 
@@ -773,7 +764,6 @@ namespace CDA.R5Samples
                 address1.AustralianAddress.SuburbTownLocality = "Nehtaville";
                 address1.AustralianAddress.State = AustralianState.QLD;
                 address1.AustralianAddress.PostCode = "5555";
-                address1.AustralianAddress.DeliveryPointId = 32568931;
 
                 custodian.Address = address1;
 
@@ -805,7 +795,7 @@ namespace CDA.R5Samples
             {
                 // informationRecipient/intendedRecipient/informationRecipient/<Entity Identifier>
                 recipient.Participant.Person.Identifiers = new List<Identifier> { 
-                    BaseCDAModel.CreateIdentifier("SampleAuthority", null, null, "1.2.3.4.5.6677", null),
+                    BaseCDAModel.CreateIdentifier("Test Authority", null, null, "2.999.1234567890", null),
                     BaseCDAModel.CreateHealthIdentifier(HealthIdentifierType.HPII, "8003614444567893") 
                 };
 
@@ -817,7 +807,6 @@ namespace CDA.R5Samples
                 address1.AustralianAddress.SuburbTownLocality = "Nehtaville";
                 address1.AustralianAddress.State = AustralianState.QLD;
                 address1.AustralianAddress.PostCode = "5555";
-                address1.AustralianAddress.DeliveryPointId = 32568931;
 
                 var address2 = BaseCDAModel.CreateAddress();
                 address2.AddressPurpose = AddressPurpose.Business;
@@ -849,7 +838,7 @@ namespace CDA.R5Samples
                 var name1 = BaseCDAModel.CreatePersonName();
                 name1.GivenNames = new List<string> { "Information" };
                 name1.FamilyName = "Recipient";
-                name1.Titles = new List<string> { "Doctor" };
+                name1.Titles = new List<string> { "Dr" };
                 name1.NameUsages = new List<NameUsage> { NameUsage.Legal };
 
                 var name2 = BaseCDAModel.CreatePersonName();
@@ -867,7 +856,7 @@ namespace CDA.R5Samples
                 recipient.Participant.Organisation.Name = "Specialist Clinics";
 
                 recipient.Participant.Organisation.Identifiers = new List<Identifier> { 
-                    BaseCDAModel.CreateIdentifier("SampleAuthority", null, null, "1.2.3.4.5.6677", null),
+                    BaseCDAModel.CreateIdentifier("Test Authority", null, null, "2.999.1234567890", null),
                     BaseCDAModel.CreateHealthIdentifier(HealthIdentifierType.HPIO, "8003621231167886") 
                 };
             }
@@ -891,9 +880,9 @@ namespace CDA.R5Samples
 
             //LegalAuthenticator/assignedEntity/assignedPerson/<Person Name>
             var name1 = BaseCDAModel.CreatePersonName();
-            name1.GivenNames = new List<string> { "Good" };
-            name1.FamilyName = "Doctor";
-            name1.Titles = new List<string> { "Doctor" };
+            name1.GivenNames = new List<string> { "Fitun" };
+            name1.FamilyName = "Healthy";
+            name1.Titles = new List<string> { "Dr" };
             name1.NameUsages = new List<NameUsage> { NameUsage.Legal };
 
             authenticator.Participant.Person.PersonNames = new List<IPersonName> { name1 };
@@ -917,7 +906,6 @@ namespace CDA.R5Samples
                 address1.AustralianAddress.SuburbTownLocality = "Nehtaville";
                 address1.AustralianAddress.State = AustralianState.QLD;
                 address1.AustralianAddress.PostCode = "5555";
-                address1.AustralianAddress.DeliveryPointId = 32568931;
 
                 var address2 = BaseCDAModel.CreateAddress();
                 address2.AddressPurpose = AddressPurpose.Business;
@@ -951,7 +939,7 @@ namespace CDA.R5Samples
                 // LegalAuthenticator/assignedEntity/representedOrganization/<Entity Identifier>
                 authenticator.Participant.Organisation.Identifiers = new List<Identifier> 
                 { 
-                    BaseCDAModel.CreateIdentifier("SampleAuthority", null, null, "1.2.3.4.55555", null),
+                    BaseCDAModel.CreateIdentifier("Test Authority", null, null, "2.999.1234567890", null),
                     BaseCDAModel.CreateHealthIdentifier(HealthIdentifierType.HPIO, "8003620000001144") 
                 };
             }

@@ -24,7 +24,6 @@
         <city>Nehtaville</city>
         <postalCode>5555</postalCode>
         <streetAddressLine>1 Clinician Street</streetAddressLine>
-        <additionalLocator>32568931</additionalLocator>
       </addr>
       <addr use="TMP">
         <country>New Caledonia</country>
@@ -89,7 +88,6 @@
         <city>Nehtaville</city>
         <postalCode>5555</postalCode>
         <streetAddressLine>1 Clinician Street</streetAddressLine>
-        <additionalLocator>32568931</additionalLocator>
       </addr>
       <addr use="TMP">
         <country>Australia</country>
@@ -97,7 +95,6 @@
         <city>Nehtaville</city>
         <postalCode>5555</postalCode>
         <streetAddressLine>2 Clinician Street</streetAddressLine>
-        <additionalLocator>32568931</additionalLocator>
       </addr>
       <telecom value="tel:0345754566" use="WP" />
       <telecom value="mailto:authen@globalauthens.com" use="WP" />
@@ -133,7 +130,7 @@
                   </ext:assigningGeographicArea>
                 </ext:asEntityIdentifier>
                 <ext:asEntityIdentifier classCode="IDENT">
-                  <ext:id root="1.2.3.4.5.66666" assigningAuthorityName="SampleAuthority" />
+                  <ext:id root="2.999.1234567890" assigningAuthorityName="Test Authority" />
                 </ext:asEntityIdentifier>
               </wholeOrganization>
             </asOrganizationPartOf>
@@ -154,7 +151,6 @@
           <city>Nehtaville</city>
           <postalCode>5555</postalCode>
           <streetAddressLine>1 Custodian Street</streetAddressLine>
-          <additionalLocator>32568931</additionalLocator>
         </addr>
         <ext:asEntityIdentifier classCode="IDENT">
           <ext:id root="1.2.36.1.2001.1003.0.8003621231166540" assigningAuthorityName="HPI-O" />
@@ -174,7 +170,6 @@
         <city>Nehtaville</city>
         <postalCode>5555</postalCode>
         <streetAddressLine>1 Clinician Street</streetAddressLine>
-        <additionalLocator>32568931</additionalLocator>
       </addr>
       <addr use="TMP">
         <country>Albania</country>
@@ -196,7 +191,7 @@
           <prefix>Mr</prefix>
         </name>
         <ext:asEntityIdentifier classCode="IDENT">
-          <ext:id root="1.2.3.4.5.6677" assigningAuthorityName="SampleAuthority" />
+          <ext:id root="2.999.1234567890" assigningAuthorityName="Test Authority" />
         </ext:asEntityIdentifier>
         <ext:asEntityIdentifier classCode="IDENT">
           <ext:id root="1.2.36.1.2001.1003.0.8003614444567893" assigningAuthorityName="HPI-I" />
@@ -208,7 +203,7 @@
       <receivedOrganization>
         <name>Specialist Clinics</name>
         <ext:asEntityIdentifier classCode="IDENT">
-          <ext:id root="1.2.3.4.5.6677" assigningAuthorityName="SampleAuthority" />
+          <ext:id root="2.999.1234567890" assigningAuthorityName="Test Authority" />
         </ext:asEntityIdentifier>
         <ext:asEntityIdentifier classCode="IDENT">
           <ext:id root="1.2.36.1.2001.1003.0.8003621231167886" assigningAuthorityName="HPI-O" />
@@ -228,7 +223,6 @@
         <city>Nehtaville</city>
         <postalCode>5555</postalCode>
         <streetAddressLine>1 Clinician Street</streetAddressLine>
-        <additionalLocator>32568931</additionalLocator>
       </addr>
       <addr use="TMP">
         <country>Albania</country>
@@ -250,7 +244,7 @@
           <prefix>Mr</prefix>
         </name>
         <ext:asEntityIdentifier classCode="IDENT">
-          <ext:id root="1.2.3.4.5.6677" assigningAuthorityName="SampleAuthority" />
+          <ext:id root="2.999.1234567890" assigningAuthorityName="Test Authority" />
         </ext:asEntityIdentifier>
         <ext:asEntityIdentifier classCode="IDENT">
           <ext:id root="1.2.36.1.2001.1003.0.8003614444567893" assigningAuthorityName="HPI-I" />
@@ -262,7 +256,7 @@
       <receivedOrganization>
         <name>Specialist Clinics</name>
         <ext:asEntityIdentifier classCode="IDENT">
-          <ext:id root="1.2.3.4.5.6677" assigningAuthorityName="SampleAuthority" />
+          <ext:id root="2.999.1234567890" assigningAuthorityName="Test Authority" />
         </ext:asEntityIdentifier>
         <ext:asEntityIdentifier classCode="IDENT">
           <ext:id root="1.2.36.1.2001.1003.0.8003621231167886" assigningAuthorityName="HPI-O" />
@@ -285,7 +279,6 @@
         <city>Nehtaville</city>
         <postalCode>5555</postalCode>
         <streetAddressLine>1 Clinician Street</streetAddressLine>
-        <additionalLocator>32568931</additionalLocator>
       </addr>
       <addr use="TMP">
         <country>Albania</country>
@@ -302,7 +295,7 @@
           <prefix>Doctor</prefix>
         </name>
         <ext:asEntityIdentifier classCode="IDENT">
-          <ext:id root="1.2.3.4.5.66666" assigningAuthorityName="LocalAuthority" />
+          <ext:id root="2.999.1234567890" assigningAuthorityName="Test Authority" />
           <ext:code code="EI" codeSystem="2.16.840.1.113883.12.203" codeSystemName="Identifier Type (HL7)" />
         </ext:asEntityIdentifier>
         <ext:asEntityIdentifier classCode="IDENT">
@@ -315,7 +308,7 @@
       <representedOrganization>
         <name>Oz Health Clinic</name>
         <ext:asEntityIdentifier classCode="IDENT">
-          <ext:id root="1.2.3.4.55555" assigningAuthorityName="SampleAuthority" />
+          <ext:id root="2.999.1234567890" assigningAuthorityName="Test Authority" />
         </ext:asEntityIdentifier>
         <ext:asEntityIdentifier classCode="IDENT">
           <ext:id root="1.2.36.1.2001.1003.0.8003620000001144" assigningAuthorityName="HPI-O" />
@@ -336,7 +329,6 @@
         <city>Nehtaville</city>
         <postalCode>5555</postalCode>
         <streetAddressLine>1 Clinician Street</streetAddressLine>
-        <additionalLocator>32568931</additionalLocator>
       </addr>
       <telecom value="tel:0345754566" use="WP" />
       <associatedPerson>
@@ -364,7 +356,6 @@
         <city>Nehtaville</city>
         <postalCode>5555</postalCode>
         <streetAddressLine>2 Clinician Street</streetAddressLine>
-        <additionalLocator>32568931</additionalLocator>
       </addr>
       <telecom value="tel:0345754888" use="WP" />
       <associatedPerson>
@@ -392,7 +383,6 @@
         <city>Nehtaville</city>
         <postalCode>5555</postalCode>
         <streetAddressLine>1 Test Street</streetAddressLine>
-        <additionalLocator>32568931</additionalLocator>
       </addr>
       <telecom value="tel:0345754811" use="WP H" />
       <scopingOrganization>
@@ -422,7 +412,6 @@
         <city>Nehtaville</city>
         <postalCode>5555</postalCode>
         <streetAddressLine>1 Clinician Street</streetAddressLine>
-        <additionalLocator>32568931</additionalLocator>
       </addr>
       <telecom value="tel:0345754566" use="WP" />
       <associatedPerson>
@@ -465,7 +454,6 @@
         <city>Nehtaville</city>
         <postalCode>5555</postalCode>
         <streetAddressLine>1 Clinician Street</streetAddressLine>
-        <additionalLocator>32568931</additionalLocator>
       </addr>
       <telecom value="tel:0345754566" use="WP" />
       <scopingOrganization>
@@ -1008,7 +996,6 @@
                         <city>Nehtaville</city>
                         <postalCode>5555</postalCode>
                         <streetAddressLine>1 Clinician Street test</streetAddressLine>
-                        <additionalLocator>32568931</additionalLocator>
                       </addr>
                       <addr use="WP">
                         <country>Australia</country>
@@ -1016,7 +1003,6 @@
                         <city>Nehtaville</city>
                         <postalCode>5555</postalCode>
                         <streetAddressLine>1 Clinician Street test</streetAddressLine>
-                        <additionalLocator>32568931</additionalLocator>
                       </addr>
                       <telecom value="tel:0345754566" use="WP" />
                       <telecom value="tel:04355754566" use="HP" />
@@ -1138,7 +1124,6 @@
                         <city>Nehtaville</city>
                         <postalCode>5555</postalCode>
                         <streetAddressLine>1 Clinician Street</streetAddressLine>
-                        <additionalLocator>32568931</additionalLocator>
                       </addr>
                       <telecom value="tel:0345754566" use="WP" />
                       <representedOrganization>
@@ -1215,11 +1200,11 @@
                           Values for Diagnosis of Diabetes Mellitus and other Hyperglycaemia
 
                           DIABETES MELLITUS (DM)
-                          Fasting                &amp;gt; 6.9  mmol/L
-                          or 2 hrs post load     &amp;gt; 11.0 mmol/L
+                          Fasting                &gt; 6.9  mmol/L
+                          or 2 hrs post load     &gt; 11.0 mmol/L
 
                           IMPAIRED FASTING GLYCAEMIA (IFG)
-                          Fasting                 &amp;gt; 6.0 mmol/L and &amp;lt; 7.0 mmol/L
+                          Fasting                 &gt; 6.0 mmol/L and &lt; 7.0 mmol/L
 
 
 
@@ -1627,13 +1612,13 @@
                       </targetSiteCode>
                       <specimen>
                         <specimenRole>
-                          <id root="1.2.36.45364" extension="9770451d-a040-4bf0-984a-07274d25b092" />
+                          <id root="1.2.36.84425496912" extension="9770451d-a040-4bf0-984a-07274d25b092" />
                           <specimenPlayingEntity>
                             <quantity value="20" unit="kg" />
                             <desc xsi:type="ST">Urine sample</desc>
                             <ext:asSpecimenInContainer classCode="CONT">
                               <ext:container>
-                                <ext:id root="1.2.36.45364" extension="AZH45218964" />
+                                <ext:id root="1.2.36.84425496912" extension="AZH45218964" />
                               </ext:container>
                             </ext:asSpecimenInContainer>
                           </specimenPlayingEntity>
@@ -1670,7 +1655,7 @@
                           <code code="103.16187" codeSystem="1.2.36.1.2001.1001.101" codeSystemName="NCTIS Data Components" displayName="Parent Specimen Identifier" />
                           <specimen>
                             <specimenRole>
-                              <id root="1.2.36.45364" extension="7d7ea110-9226-4152-ad3b-bb1a1ec0d977" />
+                              <id root="1.2.36.84425496912" extension="7d7ea110-9226-4152-ad3b-bb1a1ec0d977" />
                             </specimenRole>
                           </specimen>
                         </observation>
@@ -1697,14 +1682,14 @@
                           </targetSiteCode>
                           <specimen>
                             <specimenRole>
-                              <id root="1.2.36.45364" extension="9ed1082b-4177-4901-b71a-86bb1a5d8fca" />
+                              <id root="1.2.36.84425496912" extension="9ed1082b-4177-4901-b71a-86bb1a5d8fca" />
                               <specimenPlayingEntity>
                                 <code code="85756007" codeSystem="2.16.840.1.113883.6.96" codeSystemName="SNOMED CT-AU" displayName="Tissue" />
                                 <quantity value="6" unit="ml" />
                                 <desc xsi:type="ST">physicalDetails-Description</desc>
                                 <ext:asSpecimenInContainer classCode="CONT">
                                   <ext:container>
-                                    <ext:id root="1.2.36.45364" extension="CNH45218964" />
+                                    <ext:id root="1.2.36.84425496912" extension="CNH45218964" />
                                   </ext:container>
                                 </ext:asSpecimenInContainer>
                               </specimenPlayingEntity>
@@ -1749,7 +1734,7 @@
                               <code code="103.16187" codeSystem="1.2.36.1.2001.1001.101" codeSystemName="NCTIS Data Components" displayName="Parent Specimen Identifier" />
                               <specimen>
                                 <specimenRole>
-                                  <id root="1.2.36.45364" extension="7ec65d6a-e838-4885-b31f-24e6b6967653" />
+                                  <id root="1.2.36.84425496912" extension="7ec65d6a-e838-4885-b31f-24e6b6967653" />
                                 </specimenRole>
                               </specimen>
                             </observation>
@@ -1890,13 +1875,13 @@
                           </targetSiteCode>
                           <specimen>
                             <specimenRole>
-                              <id root="1.2.36.45364" extension="b89df217-73ec-4657-8add-5d5a23a43e44" />
+                              <id root="1.2.36.84425496912" extension="b89df217-73ec-4657-8add-5d5a23a43e44" />
                               <specimenPlayingEntity>
                                 <quantity value="20" unit="kg" />
                                 <desc xsi:type="ST">Urine sample</desc>
                                 <ext:asSpecimenInContainer classCode="CONT">
                                   <ext:container>
-                                    <ext:id root="1.2.36.45364" extension="AZH45218964" />
+                                    <ext:id root="1.2.36.84425496912" extension="AZH45218964" />
                                   </ext:container>
                                 </ext:asSpecimenInContainer>
                               </specimenPlayingEntity>
@@ -1933,7 +1918,7 @@
                               <code code="103.16187" codeSystem="1.2.36.1.2001.1001.101" codeSystemName="NCTIS Data Components" displayName="Parent Specimen Identifier" />
                               <specimen>
                                 <specimenRole>
-                                  <id root="1.2.36.45364" extension="f5bf5be7-8fbb-437a-9e54-26ac992369a6" />
+                                  <id root="1.2.36.84425496912" extension="f5bf5be7-8fbb-437a-9e54-26ac992369a6" />
                                 </specimenRole>
                               </specimen>
                             </observation>
@@ -2022,7 +2007,7 @@
                       <id root="7dfa73b2-b622-4a03-8b88-0f3ee3eedd37" />
                       <code code="88101002" codeSystem="2.16.840.1.113883.6.96" codeSystemName="SNOMED CT-AU" codeSystemVersion="20110531" displayName="pathology diagnosis" />
                       <value xsi:type="CD" code="17621005" codeSystem="2.16.840.1.113883.6.96" codeSystemName="SNOMED CT-AU" displayName="Normal" />
-                      <value xsi:type="CD" code="85531003" codeSystem="2.16.840.1.113883.6.96" codeSystemName="SNOMED CT-AU" displayName="Abnormal" />
+                      <value xsi:type="CD" code="263654008" codeSystem="2.16.840.1.113883.6.96" codeSystemName="SNOMED CT-AU" displayName="Abnormal" />
                     </observation>
                   </entryRelationship>
                   <entryRelationship typeCode="REFR">
@@ -2334,7 +2319,7 @@
                     <originalText>Leg Image</originalText>
                   </code>
                   <text>ResultRepresentation</text>
-                  <methodCode code="371573008" codeSystem="2.16.840.1.113883.6.96" codeSystemName="SNOMED CT-AU" displayName="Ultrasound" />
+                  <methodCode code="16310003" codeSystem="2.16.840.1.113883.6.96" codeSystemName="SNOMED CT-AU" displayName="Ultrasound" />
                   <entryRelationship typeCode="COMP">
                     <observation classCode="OBS" moodCode="EVN">
                       <code code="308552006" codeSystem="2.16.840.1.113883.6.96" codeSystemName="SNOMED CT-AU" codeSystemVersion="20110531" displayName="report status" />
@@ -2363,7 +2348,7 @@
                         <observation classCode="OBS" moodCode="EVN">
                           <id root="ca1629ce-6dbd-47a8-967b-34671206b376" />
                           <code code="16310003" codeSystem="2.16.840.1.113883.6.96" codeSystemName="SNOMED CT-AU" displayName="ultrasound scan" />
-                          <value xsi:type="CD" code="371573008" codeSystem="2.16.840.1.113883.6.96" codeSystemName="SNOMED CT-AU" displayName="Ultrasound" />
+                          <value xsi:type="CD" code="16310003" codeSystem="2.16.840.1.113883.6.96" codeSystemName="SNOMED CT-AU" displayName="Ultrasound" />
                           <interpretationCode code="N" codeSystem="2.16.840.1.113883.5.83" codeSystemName="HL7 ObservationInterpretationNormality" displayName="Normal" />
                           <targetSiteCode code="88738008" codeSystem="2.16.840.1.113883.6.96" codeSystemName="SNOMED CT-AU" displayName="Subcutaneous tissue structure of lateral surface of index finger">
                             <originalText>Femur Length</originalText>
@@ -2425,13 +2410,13 @@
                   <entryRelationship typeCode="COMP">
                     <organizer classCode="BATTERY" moodCode="EVN">
                       <id root="aa52e70b-ec5a-4127-906c-f394132ecd25" />
-                      <code code="371573008" codeSystem="2.16.840.1.113883.6.96" codeSystemName="SNOMED CT-AU" displayName="Ultrasound" />
+                      <code code="16310003" codeSystem="2.16.840.1.113883.6.96" codeSystemName="SNOMED CT-AU" displayName="Ultrasound" />
                       <statusCode code="completed" />
                       <component>
                         <observation classCode="OBS" moodCode="EVN">
                           <id root="49f59b70-28a8-43fc-a090-96a226de57b0" />
-                          <code code="371573008" codeSystem="2.16.840.1.113883.6.96" codeSystemName="SNOMED CT-AU" displayName="Ultrasound" />
-                          <value xsi:type="CD" code="371573008" codeSystem="2.16.840.1.113883.6.96" codeSystemName="SNOMED CT-AU" displayName="Ultrasound" />
+                          <code code="16310003" codeSystem="2.16.840.1.113883.6.96" codeSystemName="SNOMED CT-AU" displayName="Ultrasound" />
+                          <value xsi:type="CD" code="16310003" codeSystem="2.16.840.1.113883.6.96" codeSystemName="SNOMED CT-AU" displayName="Ultrasound" />
                           <interpretationCode code="N" codeSystem="2.16.840.1.113883.5.83" codeSystemName="HL7 ObservationInterpretationNormality" displayName="Normal" />
                           <targetSiteCode code="88738008" codeSystem="2.16.840.1.113883.6.96" codeSystemName="SNOMED CT-AU" displayName="Subcutaneous tissue structure of lateral surface of index finger">
                             <originalText>Arm</originalText>
@@ -2526,7 +2511,7 @@
                               </value>
                               <entryRelationship typeCode="REFR" inversionInd="true">
                                 <act classCode="ACT" moodCode="EVN">
-                                  <id root="1.2.3.1.2.2654654654654564" extension="Series Identifier" />
+                                  <id root="2.999.1234567890" extension="Series Identifier" />
                                   <code code="103.16517" codeSystem="1.2.36.1.2001.1001.101" codeSystemName="NCTIS Data Components" displayName="DICOM Series Identifier" />
                                 </act>
                               </entryRelationship>
@@ -2588,7 +2573,7 @@
                               </value>
                               <entryRelationship typeCode="REFR" inversionInd="true">
                                 <act classCode="ACT" moodCode="EVN">
-                                  <id root="1.2.3.1.2.2654654654654564" extension="Series Identifier" />
+                                  <id root="2.999.1234567890" extension="Series Identifier" />
                                   <code code="103.16517" codeSystem="1.2.36.1.2001.1001.101" codeSystemName="NCTIS Data Components" displayName="DICOM Series Identifier" />
                                 </act>
                               </entryRelationship>
@@ -2619,7 +2604,7 @@
                               </value>
                               <entryRelationship typeCode="REFR" inversionInd="true">
                                 <act classCode="ACT" moodCode="EVN">
-                                  <id root="1.2.3.1.2.2654654654654564" extension="Series Identifier" />
+                                  <id root="2.999.1234567890" extension="Series Identifier" />
                                   <code code="103.16517" codeSystem="1.2.36.1.2001.1001.101" codeSystemName="NCTIS Data Components" displayName="DICOM Series Identifier" />
                                 </act>
                               </entryRelationship>
@@ -2893,7 +2878,7 @@
                     <originalText>Head Image</originalText>
                   </code>
                   <text>ResultRepresentation</text>
-                  <methodCode code="371573008" codeSystem="2.16.840.1.113883.6.96" codeSystemName="SNOMED CT-AU" displayName="Ultrasound" />
+                  <methodCode code="16310003" codeSystem="2.16.840.1.113883.6.96" codeSystemName="SNOMED CT-AU" displayName="Ultrasound" />
                   <entryRelationship typeCode="COMP">
                     <observation classCode="OBS" moodCode="EVN">
                       <code code="308552006" codeSystem="2.16.840.1.113883.6.96" codeSystemName="SNOMED CT-AU" codeSystemVersion="20110531" displayName="report status" />
@@ -2922,7 +2907,7 @@
                         <observation classCode="OBS" moodCode="EVN">
                           <id root="2ad2bb3b-f66d-4d59-ad3f-6d2cddc3c9a1" />
                           <code code="16310003" codeSystem="2.16.840.1.113883.6.96" codeSystemName="SNOMED CT-AU" displayName="ultrasound scan" />
-                          <value xsi:type="CD" code="371573008" codeSystem="2.16.840.1.113883.6.96" codeSystemName="SNOMED CT-AU" displayName="Ultrasound" />
+                          <value xsi:type="CD" code="16310003" codeSystem="2.16.840.1.113883.6.96" codeSystemName="SNOMED CT-AU" displayName="Ultrasound" />
                           <interpretationCode code="N" codeSystem="2.16.840.1.113883.5.83" codeSystemName="HL7 ObservationInterpretationNormality" displayName="Normal" />
                           <targetSiteCode code="88738008" codeSystem="2.16.840.1.113883.6.96" codeSystemName="SNOMED CT-AU" displayName="Subcutaneous tissue structure of lateral surface of index finger">
                             <originalText>Femur Length</originalText>
@@ -2984,13 +2969,13 @@
                   <entryRelationship typeCode="COMP">
                     <organizer classCode="BATTERY" moodCode="EVN">
                       <id root="d45cad02-0eb1-416d-a0fc-105645743564" />
-                      <code code="371573008" codeSystem="2.16.840.1.113883.6.96" codeSystemName="SNOMED CT-AU" displayName="Ultrasound" />
+                      <code code="16310003" codeSystem="2.16.840.1.113883.6.96" codeSystemName="SNOMED CT-AU" displayName="Ultrasound" />
                       <statusCode code="completed" />
                       <component>
                         <observation classCode="OBS" moodCode="EVN">
                           <id root="90c4634b-8539-4f10-aec6-80410373da38" />
-                          <code code="371573008" codeSystem="2.16.840.1.113883.6.96" codeSystemName="SNOMED CT-AU" displayName="Ultrasound" />
-                          <value xsi:type="CD" code="371573008" codeSystem="2.16.840.1.113883.6.96" codeSystemName="SNOMED CT-AU" displayName="Ultrasound" />
+                          <code code="16310003" codeSystem="2.16.840.1.113883.6.96" codeSystemName="SNOMED CT-AU" displayName="Ultrasound" />
+                          <value xsi:type="CD" code="16310003" codeSystem="2.16.840.1.113883.6.96" codeSystemName="SNOMED CT-AU" displayName="Ultrasound" />
                           <interpretationCode code="N" codeSystem="2.16.840.1.113883.5.83" codeSystemName="HL7 ObservationInterpretationNormality" displayName="Normal" />
                           <targetSiteCode code="88738008" codeSystem="2.16.840.1.113883.6.96" codeSystemName="SNOMED CT-AU" displayName="Subcutaneous tissue structure of lateral surface of index finger">
                             <originalText>Arm</originalText>
@@ -3085,7 +3070,7 @@
                               </value>
                               <entryRelationship typeCode="REFR" inversionInd="true">
                                 <act classCode="ACT" moodCode="EVN">
-                                  <id root="1.2.3.1.2.2654654654654564" extension="Series Identifier" />
+                                  <id root="2.999.1234567890" extension="Series Identifier" />
                                   <code code="103.16517" codeSystem="1.2.36.1.2001.1001.101" codeSystemName="NCTIS Data Components" displayName="DICOM Series Identifier" />
                                 </act>
                               </entryRelationship>
@@ -3147,7 +3132,7 @@
                               </value>
                               <entryRelationship typeCode="REFR" inversionInd="true">
                                 <act classCode="ACT" moodCode="EVN">
-                                  <id root="1.2.3.1.2.2654654654654564" extension="Series Identifier" />
+                                  <id root="2.999.1234567890" extension="Series Identifier" />
                                   <code code="103.16517" codeSystem="1.2.36.1.2001.1001.101" codeSystemName="NCTIS Data Components" displayName="DICOM Series Identifier" />
                                 </act>
                               </entryRelationship>
@@ -3178,7 +3163,7 @@
                               </value>
                               <entryRelationship typeCode="REFR" inversionInd="true">
                                 <act classCode="ACT" moodCode="EVN">
-                                  <id root="1.2.3.1.2.2654654654654564" extension="Series Identifier" />
+                                  <id root="2.999.1234567890" extension="Series Identifier" />
                                   <code code="103.16517" codeSystem="1.2.36.1.2001.1001.101" codeSystemName="NCTIS Data Components" displayName="DICOM Series Identifier" />
                                 </act>
                               </entryRelationship>

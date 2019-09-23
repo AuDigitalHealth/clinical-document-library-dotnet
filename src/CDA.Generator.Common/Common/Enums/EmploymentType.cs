@@ -37,22 +37,29 @@ namespace Nehta.VendorLibrary.CDA.Common.Enums
         /// Full Time
         /// </summary>
         [EnumMember]
-		[Name(Code = "1", Name = "Full Time")]
+        [Name(Code = "1", Name = "Full Time", CodeSystem = "METEOREmploymentType")]
         FullTime,
 
         /// <summary>
         /// Part Time
         /// </summary>
         [EnumMember]
-		[Name(Code = "2", Name = "Part Time")]
+		[Name(Code = "2", Name = "Part Time", CodeSystem = "METEOREmploymentType")]
         PartTime,
 
         /// <summary>
         /// Casual
         /// </summary>
         [EnumMember]
-		[Name(Code = "3", Name = "Casual")]
-        Casual
+		[Name(Code = "3", Name = "Casual", CodeSystem = "METEOREmploymentType")]
+        Casual,
+
+        /// <summary>
+        /// NotstatedInadequatelyDescribeds
+        /// </summary>
+        [EnumMember]
+        [Name(Code = "9", Name = "Not stated/inadequately described", CodeSystem = "METEOREmploymentType")]
+        NotstatedInadequatelyDescribed
 
     }
 }

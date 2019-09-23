@@ -47,8 +47,9 @@ namespace Nehta.VendorLibrary.CDA.Generator
         /// <param name="showEntitlements">showEntitlements</param>
         /// <param name="earliestDateForFiltering">Earliest Date For Filtering</param>
         /// <param name="latestDateForFiltering">Latest Date For Filtering</param>
+        /// <param name="specialty">List of specialties</param>
         /// <returns>StrucDocText</returns>
-        StrucDocText CreateNarrative(IParticipationSubjectOfCare subjectOfCareParticipation, String patientId, Boolean showEntitlements, ISO8601DateTime earliestDateForFiltering, ISO8601DateTime latestDateForFiltering);
+        StrucDocText CreateNarrative(IParticipationSubjectOfCare subjectOfCareParticipation, String patientId, Boolean showEntitlements, ISO8601DateTime earliestDateForFiltering, ISO8601DateTime latestDateForFiltering, List<ICodableText> specialty = null);
 
         /// <summary>
         /// This method creates the narrative for the adverse subject reactions section

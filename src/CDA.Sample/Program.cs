@@ -51,8 +51,9 @@ namespace Nehta.VendorLibrary.CDA.Sample
             var sharedHealthSummarySampleCode = new SharedHealthSummarySample();
             var minSharedHealthSummaryCda = sharedHealthSummarySampleCode.MinPopulatedSharedHealthSummarySample("SharedHealthSummary_3A_Min.xml");
             var maxSharedHealthSummaryCda = sharedHealthSummarySampleCode.MaxPopulatedSharedHealthSummarySample("SharedHealthSummary_3A_Max.xml");
-            var sharedHealthSummaryCda_1A = sharedHealthSummarySampleCode.PopulateSharedHealthSummarySample_1A("SharedHealthSummary_1A.xml");
-            LevelsGeneratorPathCorrections("SharedHealthSummary_3A_Max.xml", "SharedHealthSummary_2.xml", SharedHealthSummarySample.OutputFolderPath);
+            // These should never be created
+            // var sharedHealthSummaryCda_1A = sharedHealthSummarySampleCode.PopulateSharedHealthSummarySample_1A("SharedHealthSummary_1A.xml");
+            // LevelsGeneratorPathCorrections("SharedHealthSummary_3A_Max.xml", "SharedHealthSummary_2.xml", SharedHealthSummarySample.OutputFolderPath);
 
             var specialistLetterSampleCode = new SpecialistLetterSample();
             var minSpecialistLetterCda = specialistLetterSampleCode.MinPopulatedSpecialistLetterSample("SpecialistLetter_3A_Min.xml");
@@ -71,8 +72,9 @@ namespace Nehta.VendorLibrary.CDA.Sample
             var eEventSummarySampleCode = new EventSummarySample();
             var minEventSummaryCda = eEventSummarySampleCode.MinPopulatedEventSummary("EventSummary_3A_Min.xml");
             var maxEventSummaryCda = eEventSummarySampleCode.MaxPopulatedEventSummary("EventSummary_3A_Max.xml");
-            var eventSummaryCda1A = eEventSummarySampleCode.PopulateEventSummarySample_1A("EventSummary_1A.xml");
-            LevelsGeneratorPathCorrections("EventSummary_3A_Max.xml", "EventSummary_2.xml", EventSummarySample.OutputFolderPath);
+            // These should never be created
+            // var eventSummaryCda1A = eEventSummarySampleCode.PopulateEventSummarySample_1A("EventSummary_1A.xml");
+            // LevelsGeneratorPathCorrections("EventSummary_3A_Max.xml", "EventSummary_2.xml", EventSummarySample.OutputFolderPath);
 
             var serviceReferralSampleCode = new ServiceReferralSample();
             var minServiceReferralCda = serviceReferralSampleCode.MinPopulatedServiceReferralSample("ServiceReferral_3A_Min.xml");

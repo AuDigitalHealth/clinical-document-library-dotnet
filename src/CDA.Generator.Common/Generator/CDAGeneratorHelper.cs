@@ -73,7 +73,10 @@ namespace Nehta.VendorLibrary.CDA.Generator
         private const String HEALTH_IDENTIFIER_QUALIFIER = "1.2.36.1.2001.1003.0.";
 
         private const String NO_ENTRIES_MESSAGE = "No data recorded for this section.";
-                                                  
+        
+        
+        private const string CDA_RENDERING_IG_1_0 = "1.2.36.1.2001.1001.100.149";
+        private const string CORE_LEVEL_ONE_CDA_IG_1_1 = "1.2.36.1.2001.1001.100.1002.218";
 
         private const String DATE_TIME_FORMAT = "yyyyMMddHHmmsszz";
         private const String DATE_TIME_SHORT_FORMAT = "yyyyMMdd";
@@ -107,10 +110,15 @@ namespace Nehta.VendorLibrary.CDA.Generator
                     cdaDocumentType.GetAttributeValue<NameAttribute, string>(x => x.TemplateIdentifier),
                     cdaDocumentType.GetAttributeValue<NameAttribute, string>(x => x.Version),
                     null),
-                CreateIdentifierElement("1.2.36.1.2001.1001.100.149", "1.0", null),
-                CreateIdentifierElement("1.2.36.1.2001.1001.100.1002.237", "1.0", null)
+                CreateIdentifierElement(CDA_RENDERING_IG_1_0, "1.0", null),
             };
-            
+
+            // Only add this for CDA documents that use DH_CoreLevelOne_CDA_Implementation_Guide_v1.1 dv011 as a base
+            if (cdaDocumentType == CDADocumentType.PharmacistSharedMedicinesList)
+            {
+                templateIds.Add(CreateIdentifierElement(CORE_LEVEL_ONE_CDA_IG_1_1, "1.1", null));
+            }
+
             var clinicalDocument = new POCD_MT000040ClinicalDocument
                                        {
                                            typeId = typeID,
@@ -9451,7 +9459,7 @@ namespace Nehta.VendorLibrary.CDA.Generator
                                                                                                  null),
                                                                             CreateIdentifierArray(CreateGuid())),
                                            CreateEntryRelationshipObservation(x_ActRelationshipEntryRelationship.SPRT,
-                                                                            null,
+                                                                            false,
                                                                             CreateConceptDescriptor("103.16593",
                                                                                                     CodingSystem.NCTIS,
                                                                                                     "Change Type",

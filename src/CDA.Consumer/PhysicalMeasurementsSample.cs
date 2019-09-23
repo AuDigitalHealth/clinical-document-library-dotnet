@@ -415,7 +415,7 @@ namespace Nehta.VendorLibrary.CDA.Consumer
         {
           // custodian/assignedCustodian/representedCustodianOrganization/<Entity Identifier>
           custodian.Organisation.Identifiers = new List<Identifier> { 
-                    BaseCDAModel.CreateIdentifier("SampleAuthority", null, null, "1.2.3.4.77777", null),
+                    BaseCDAModel.CreateIdentifier("Test Authority", null, null, "2.999.1234567890", null),
                      BaseCDAModel.CreateHealthIdentifier(HealthIdentifierType.PAIO, "8003640001000036") 
                 };
 
@@ -430,7 +430,6 @@ namespace Nehta.VendorLibrary.CDA.Consumer
           address1.AustralianAddress.SuburbTownLocality = "Nehtaville";
           address1.AustralianAddress.State = AustralianState.QLD;
           address1.AustralianAddress.PostCode = "5555";
-          address1.AustralianAddress.DeliveryPointId = 32568931;
 
           custodian.Address = address1;
 
@@ -954,12 +953,12 @@ namespace Nehta.VendorLibrary.CDA.Consumer
 
             // Information Provider > Participant > Entity Identifier
             person.Identifiers = new List<Identifier> { 
-                BaseCDAModel.CreateIdentifier("InformationProviderNonHealthcareProvider", null, null, "1.2.3.4.5.66666", null),
+                BaseCDAModel.CreateIdentifier("Test Authority", null, null, "2.999.1234567890", null),
                 BaseCDAModel.CreateHealthIdentifier(HealthIdentifierType.IHI, "8003605833334119") 
             };
 
-            name1.GivenNames = new List<string> { "Good" };
-            name1.Titles = new List<string> { "Doctor" };
+            name1.GivenNames = new List<string> { "Fitun" };
+            name1.Titles = new List<string> { "Dr" };
             name1.NameUsages = new List<NameUsage> { NameUsage.Legal };
 
             name2.GivenNames = new List<string> { "Davey" };
@@ -983,13 +982,11 @@ namespace Nehta.VendorLibrary.CDA.Consumer
             address1.AustralianAddress.SuburbTownLocality = "Nehtaville";
             address1.AustralianAddress.State = AustralianState.QLD;
             address1.AustralianAddress.PostCode = "5555";
-            address1.AustralianAddress.DeliveryPointId = 32568931;
 
             address2.AustralianAddress.UnstructuredAddressLines = new List<string> { "2 Clinician Street" };
             address2.AustralianAddress.SuburbTownLocality = "Nehtaville";
             address2.AustralianAddress.State = AustralianState.QLD;
             address2.AustralianAddress.PostCode = "5555";
-            address2.AustralianAddress.DeliveryPointId = 32568931;
 
           }
 
@@ -1026,7 +1023,7 @@ namespace Nehta.VendorLibrary.CDA.Consumer
 
           // Information Provider > Participant > Entity Identifier
           person.Identifiers = new List<Identifier> { 
-                BaseCDAModel.CreateIdentifier("InformationProviderHealthcareProvider", null, null, "1.2.3.4.5.66666", null),
+                BaseCDAModel.CreateIdentifier("Test Authority", null, null, "2.999.1234567890", null),
                 BaseCDAModel.CreateHealthIdentifier(HealthIdentifierType.IHI, "8003605833334119") 
             };
 
@@ -1035,8 +1032,8 @@ namespace Nehta.VendorLibrary.CDA.Consumer
             // Information Provider > Participation Period
             informationProvider.ParticipationPeriod = CdaInterval.CreateLow(new ISO8601DateTime(DateTime.Parse("10/10/1992"), ISO8601DateTime.Precision.Day));
 
-            name1.GivenNames = new List<string> { "Good" };
-            name1.Titles = new List<string> { "Doctor" };
+            name1.GivenNames = new List<string> { "Fitun" };
+            name1.Titles = new List<string> { "Dr" };
             name1.NameUsages = new List<NameUsage> { NameUsage.Legal };
 
             name2.GivenNames = new List<string> { "Davey" };
@@ -1060,13 +1057,11 @@ namespace Nehta.VendorLibrary.CDA.Consumer
             address1.AustralianAddress.SuburbTownLocality = "Nehtaville";
             address1.AustralianAddress.State = AustralianState.QLD;
             address1.AustralianAddress.PostCode = "5555";
-            address1.AustralianAddress.DeliveryPointId = 32568931;
 
             address2.AustralianAddress.UnstructuredAddressLines = new List<string> { "2 Clinician Street" };
             address2.AustralianAddress.SuburbTownLocality = "Nehtaville";
             address2.AustralianAddress.State = AustralianState.QLD;
             address2.AustralianAddress.PostCode = "5555";
-            address2.AustralianAddress.DeliveryPointId = 32568931;
 
             // Information Provider > Participant > Electronic Communication Detail
             var coms1 = BaseCDAModel.CreateElectronicCommunicationDetail(
@@ -1087,11 +1082,11 @@ namespace Nehta.VendorLibrary.CDA.Consumer
 
             person.Organisation.Identifiers = new List<Identifier> { 
               BaseCDAModel.CreateHealthIdentifier(HealthIdentifierType.HPIO, "8003620833333789"),
-              BaseCDAModel.CreateIdentifier("SampleAuthority", null, null, "1.2.3.4.5.66666", null)
+              BaseCDAModel.CreateIdentifier("Test Authority", null, null, "2.999.1234567890", null)
               };
 
             person.Organisation.Department = "Some department service provider";
-            person.Organisation.EmploymentType = BaseCDAModel.CreateCodableText(null, null, null, "Casual", null);
+            person.Organisation.EmploymentType = BaseCDAModel.CreateCodableText(EmploymentType.Casual);
             person.Organisation.Occupation = BaseCDAModel.CreateRole(Occupation.GeneralMedicalPractitioner);
             person.Organisation.PositionInOrganisation = BaseCDAModel.CreateCodableText(null, null, null, "Manager", null);
           }
@@ -1125,7 +1120,7 @@ namespace Nehta.VendorLibrary.CDA.Consumer
                  BaseCDAModel.CreateMedicareNumber(MedicareNumberType.IndividualMedicareCardNumber,"59501704511"),
                  BaseCDAModel.CreateIdentifier
                  (
-                     "SampleAuthority", 
+                     "Test Authority", 
                      HealthcareIdentifierGeographicArea.StateOrTerritoryIdentifier, 
                      "457456", 
                      "1.22.333.444.55555", 
@@ -1185,7 +1180,6 @@ namespace Nehta.VendorLibrary.CDA.Consumer
             address1.AustralianAddress.SuburbTownLocality = "Nehtaville";
             address1.AustralianAddress.State = AustralianState.NSW;
             address1.AustralianAddress.PostCode = "5555";
-            address1.AustralianAddress.DeliveryPointId = 32568931;
 
             address2.InternationalAddress.AddressLine = new List<string> { "1 Overseas Street" };
             address2.InternationalAddress.Country = Country.NewCaledonia;
