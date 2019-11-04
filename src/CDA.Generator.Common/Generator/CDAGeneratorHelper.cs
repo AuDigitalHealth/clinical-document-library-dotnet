@@ -77,7 +77,8 @@ namespace Nehta.VendorLibrary.CDA.Generator
         
         private const string CDA_RENDERING_IG_1_0 = "1.2.36.1.2001.1001.100.149";
         private const string CORE_LEVEL_ONE_CDA_IG_1_1 = "1.2.36.1.2001.1001.100.1002.218";
-
+        private const string ADVANCE_CARE_INFORMATION_GOC_1_0 = "1.2.36.1.2001.1001.100.1003.100001";
+        // 
         private const String DATE_TIME_FORMAT = "yyyyMMddHHmmsszz";
         private const String DATE_TIME_SHORT_FORMAT = "yyyyMMdd";
 
@@ -102,14 +103,13 @@ namespace Nehta.VendorLibrary.CDA.Generator
                                                                      CDADocumentType cdaDocumentType, Identifier documentId, Identifier setId,
                                                                      String version, DocumentStatus? documentStatus, string title)
         {
-           var typeID = new POCD_MT000040InfrastructureRoottypeId{ extension = "POCD_HD000040", root = "2.16.840.1.113883.1.3"};
+           var typeID = new POCD_MT000040InfrastructureRoottypeId{ extension = "POCD_HD000040", root = "2.16.840.1.113883.1.3" };
 
             var templateIds = new List<II>
             {
                 CreateIdentifierElement(
                     cdaDocumentType.GetAttributeValue<NameAttribute, string>(x => x.TemplateIdentifier),
-                    cdaDocumentType.GetAttributeValue<NameAttribute, string>(x => x.Version),
-                    null),
+                    cdaDocumentType.GetAttributeValue<NameAttribute, string>(x => x.Version), null),
                 CreateIdentifierElement(CDA_RENDERING_IG_1_0, "1.0", null),
             };
 
@@ -117,6 +117,13 @@ namespace Nehta.VendorLibrary.CDA.Generator
             if (cdaDocumentType == CDADocumentType.PharmacistSharedMedicinesList)
             {
                 templateIds.Add(CreateIdentifierElement(CORE_LEVEL_ONE_CDA_IG_1_1, "1.1", null));
+            }
+
+            // Add another entry here for AdvanceCareInformation = GofC
+            if (cdaDocumentType == CDADocumentType.AdvanceCareInformation && title == "Goals of Care Document")
+            {
+                // Add another entry here for GofC
+                templateIds.Add(CreateIdentifierElement(ADVANCE_CARE_INFORMATION_GOC_1_0, "1.0", null));
             }
 
             var clinicalDocument = new POCD_MT000040ClinicalDocument
@@ -679,7 +686,7 @@ namespace Nehta.VendorLibrary.CDA.Generator
         /// Creates Advance Care Information
         /// </summary>
         /// <returns>POCD_MT000040Component3</returns>
-        internal static POCD_MT000040Component3 CreateComponent(IDocumentDetails documentDetails, StrucDocText customNarrative, INarrativeGenerator narrativeGenerator)
+        internal static POCD_MT000040Component3 CreateComponent(IDocumentDetails documentDetails, StrucDocText customNarrative, INarrativeGenerator narrativeGenerator, DocumentType docType, string title)
         {
             POCD_MT000040Component3 advanceCareInformationComponent = null;
             var componentList = new List<POCD_MT000040Component5>();
@@ -687,11 +694,23 @@ namespace Nehta.VendorLibrary.CDA.Generator
 
             if (documentDetails != null)
             {
-                // Section Pathology
-                advanceCareInformationComponent = new POCD_MT000040Component3
+                // Section ACP
+                if (title == "Advance Care Planning Document")
                 {
-                    section = CreateSectionCodeTitle(AdvanceCareInformationSections.AdvanceCareInformationSection),
-                };
+                    advanceCareInformationComponent = new POCD_MT000040Component3
+                    {
+                        section = CreateSectionCodeTitle(AdvanceCareInformationSections.AdvanceCareInformationSection),
+                    };
+                }
+
+                // Section GOC
+                if (title == "Goals of Care Document")
+                {
+                    advanceCareInformationComponent = new POCD_MT000040Component3
+                    {
+                        section = CreateSectionCodeTitle(AdvanceCareInformationSections.GoalsOfCareSection),
+                    };
+                }
 
                 // Related Document
                 var entryRelatedDocument = CreateEntryActEvent(CreateConceptDescriptor(CreateCodableText(AdvanceCareInformationSections.RelatedDocument)), null);
@@ -733,7 +752,7 @@ namespace Nehta.VendorLibrary.CDA.Generator
                 }
 
                 // The default narrative is set in CreateSectionCodeTitle at the top of this section
-                advanceCareInformationComponent.section.text = customNarrative ?? narrativeGenerator.CreateNarrative(documentDetails); 
+                advanceCareInformationComponent.section.text = customNarrative ?? narrativeGenerator.CreateNarrative(documentDetails, docType); 
             }
 
             return advanceCareInformationComponent;

@@ -80,18 +80,18 @@ namespace CDA.R5Samples
         /// <summary>
         /// This sample populates only the mandatory sections / entries
         /// </summary>
-        public XmlDocument MinPopulatedAdvanceCareInformation(string fileName, AuthorType authorType)
+        public XmlDocument MinPopulatedAdvanceCareInformation(string fileName, AuthorType authorType, DocumentType docType)
         {
             XmlDocument xmlDoc = null;
 
-            var advanceCareInformation = PopulatedAdvanceCareInformation(true, authorType);
+            var advanceCareInformation = PopulatedAdvanceCareInformation(true, authorType, docType);
 
             try
             {
                 CDAGenerator.NarrativeGenerator = new CDANarrativeGenerator();
 
-                //Pass the Event Summary model into the GenerateAdvanceCareInformation method 
-                xmlDoc = CDAGenerator.GenerateAdvanceCareInformation(advanceCareInformation);
+                //Pass the AdvanceCareInformation model into the GenerateAdvanceCareInformation method 
+                xmlDoc = CDAGenerator.GenerateAdvanceCareInformation(advanceCareInformation, docType);
 
                 using (var writer = XmlWriter.Create(OutputFolderPath + @"\" + fileName, new XmlWriterSettings { Indent = true }))
                 {
@@ -115,18 +115,18 @@ namespace CDA.R5Samples
         /// includes all of the sections within the body and each section includes at least one example for 
         /// each of its optional entries
         /// </summary>
-        public XmlDocument MaxPopulatedAdvanceCareInformation(string fileName, AuthorType authorType)
+        public XmlDocument MaxPopulatedAdvanceCareInformation(string fileName, AuthorType authorType, DocumentType docType)
         {
             XmlDocument xmlDoc = null;
 
-            var advanceCareInformation = PopulatedAdvanceCareInformation(false, authorType);
+            var advanceCareInformation = PopulatedAdvanceCareInformation(false, authorType, docType);
 
             try
             {
                 CDAGenerator.NarrativeGenerator = new CDANarrativeGenerator();
 
-                //Pass the Event Summary model into the GenerateAdvanceCareInformation method 
-                xmlDoc = CDAGenerator.GenerateAdvanceCareInformation(advanceCareInformation);
+                //Pass the AdvanceCareInformation model into the GenerateAdvanceCareInformation method 
+                xmlDoc = CDAGenerator.GenerateAdvanceCareInformation(advanceCareInformation, docType);
 
                 using (var writer = XmlWriter.Create(OutputFolderPath + @"\" + fileName, new XmlWriterSettings { Indent = true }))
                 {
@@ -151,14 +151,14 @@ namespace CDA.R5Samples
         /// This sample populates both the mandatory and optional Sections / Entries depending on the  
         /// mandatorySectionsOnly Boolean
         /// </summary>
-        internal static AdvanceCareInformation PopulatedAdvanceCareInformation(Boolean mandatorySectionsOnly, AuthorType authorType)
+        internal static AdvanceCareInformation PopulatedAdvanceCareInformation(Boolean mandatorySectionsOnly, AuthorType authorType, DocumentType docType)
         {
             var advanceCareInformation = AdvanceCareInformation.CreateAdvanceCareInformation();
 
             // Include Logo
             advanceCareInformation.IncludeLogo = true;
             advanceCareInformation.LogoPath = OutputFolderPath;
-
+            
             // Set Creation Time
             advanceCareInformation.DocumentCreationTime = new ISO8601DateTime(DateTime.Now);
 
@@ -176,9 +176,12 @@ namespace CDA.R5Samples
             // CDA Context Version
             cdaContext.Version = "1";
 
+            // CDA Document Title
+            advanceCareInformation.Title = docType.GetAttributeValue<NameAttribute, string>(x => x.Name);
+
             // Custodian
             cdaContext.Custodian = BaseCDAModel.CreateCustodian();
-            GenericObjectReuseSample.HydrateCustodian(cdaContext.Custodian, "Organisation Name", mandatorySectionsOnly);
+            GenericObjectReuseSample.HydrateCustodian(cdaContext.Custodian, "Organisation Name", "8003620833333789", mandatorySectionsOnly);
 
             // Legal Authenticator
             cdaContext.LegalAuthenticator = BaseCDAModel.CreateLegalAuthenticator();
@@ -226,7 +229,7 @@ namespace CDA.R5Samples
             advanceCareInformation.SCSContent = AdvanceCareInformation.CreateSCSContent();
 
             // Related Information
-            advanceCareInformation.SCSContent.DocumentDetails = CreateRelatedDocument(mandatorySectionsOnly);
+            advanceCareInformation.SCSContent.DocumentDetails = CreateRelatedDocument(mandatorySectionsOnly, docType);
 
             #endregion
 
@@ -238,7 +241,7 @@ namespace CDA.R5Samples
         /// </summary>
         /// <param name="mandatorySectionsOnly">Includes on the mandatory items</param>
         /// <returns>A hydrated 'RelatedInformation' object.</returns>
-        public static IDocumentDetails CreateRelatedDocument(Boolean mandatorySectionsOnly)
+        public static IDocumentDetails CreateRelatedDocument(Boolean mandatorySectionsOnly, DocumentType docType)
         {
             var relatedDocument = AdvanceCareInformation.CreateRelatedDocument();
 
@@ -249,7 +252,7 @@ namespace CDA.R5Samples
             relatedDocument.ExternalData.Caption = "Attachment";
 
             // Document Provenance
-            relatedDocument.DocumentProvenance = CreateDocumentProvenance(mandatorySectionsOnly);
+            relatedDocument.DocumentProvenance = CreateDocumentProvenance(mandatorySectionsOnly, docType);
 
             return relatedDocument;
         }
@@ -259,12 +262,12 @@ namespace CDA.R5Samples
         /// </summary>
         /// <param name="mandatorySectionsOnly">Includes on the mandatory sections</param>
         /// <returns>A hydrated 'DocumentProvenance' object.</returns>
-        public static DocumentProvenance CreateDocumentProvenance(bool mandatorySectionsOnly)
+        public static DocumentProvenance CreateDocumentProvenance(bool mandatorySectionsOnly, DocumentType docType)
         {
             var documentProvenance = AdvanceCareInformation.CreateDocumentProvenance();
 
             // Document Type
-            documentProvenance.DocumentType = DocumentType.AdvanceCarePlanDirectiveAndSubstituteDecisionMaker;
+            documentProvenance.DocumentType = docType;
 
             // Author of the CDA document
             documentProvenance.Author = CreateDocumentAuthor(mandatorySectionsOnly);

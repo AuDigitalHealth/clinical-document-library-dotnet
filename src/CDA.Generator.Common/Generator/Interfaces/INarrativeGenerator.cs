@@ -28,6 +28,7 @@ using System.Collections.Generic;
 using CDA.Generator.Common.SCSModel.MedicareOverview.Entities;
 using CDA.Generator.Common.SCSModel.ServiceReferral.Entities;
 using Nehta.VendorLibrary.CDA.CDAModel.ServiceReferral.Interfaces;
+using Nehta.VendorLibrary.CDA.Common.Enums;
 
 namespace Nehta.VendorLibrary.CDA.Generator
 {
@@ -576,7 +577,7 @@ namespace Nehta.VendorLibrary.CDA.Generator
         /// Create a Narrative for a RelatedDocument
         /// </summary>
         /// <returns>StrucDocText</returns>
-        StrucDocText CreateNarrative(IDocumentDetails documentDetails);
+        StrucDocText CreateNarrative(IDocumentDetails documentDetails, DocumentType docType);
 
         #endregion
 

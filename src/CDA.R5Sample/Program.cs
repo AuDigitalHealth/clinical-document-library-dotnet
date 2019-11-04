@@ -39,13 +39,19 @@ namespace CDA.R5Samples
             
             PrepareOutputFolder(folderPath);
 
+            // Advance Care Information Documents
             var advanceCareInformationSample = new AdvanceCareInformationSample();
-            var minAdvanceCareInformationAuthorHealthcareProviderSampleCda = advanceCareInformationSample.MinPopulatedAdvanceCareInformation("AdvanceCareInformationSampleAuthorHealthcareProvider_3A_Min.xml", AuthorType.AuthorHealthcareProvider);
-            var maxAdvanceCareInformationAuthorHealthcareProviderSampleCda = advanceCareInformationSample.MaxPopulatedAdvanceCareInformation("AdvanceCareInformationSampleAuthorHealthcareProvider_3A_Max.xml", AuthorType.AuthorHealthcareProvider);
+            var minAdvanceCarePlanningAuthorHealthcareProviderSampleCda = advanceCareInformationSample.MinPopulatedAdvanceCareInformation("AdvanceCarePlanningSampleAuthorHealthcareProvider_3A_Min.xml", AuthorType.AuthorHealthcareProvider, DocumentType.AdvanceCareInformationAdvanceCarePlanning);
+            var maxAdvanceCarePlanningAuthorHealthcareProviderSampleCda = advanceCareInformationSample.MaxPopulatedAdvanceCareInformation("AdvanceCarePlanningSampleAuthorHealthcareProvider_3A_Max.xml", AuthorType.AuthorHealthcareProvider, DocumentType.AdvanceCareInformationAdvanceCarePlanning);
 
-            var minAdvanceCareInformationAuthorNonHealthcareProviderSampleCda = advanceCareInformationSample.MinPopulatedAdvanceCareInformation("AdvanceCareInformationSampleAuthorNonHealthcareProvider_3A_Min.xml", AuthorType.AuthorNonHealthcareProvider);
-            var maxAdvanceCareInformationAuthorNonHealthcareProviderSampleCda = advanceCareInformationSample.MaxPopulatedAdvanceCareInformation("AdvanceCareInformationSampleAuthorNonHealthcareProvider_3A_Max.xml", AuthorType.AuthorNonHealthcareProvider);
+            var minAdvanceCarePlanningAuthorNonHealthcareProviderSampleCda = advanceCareInformationSample.MinPopulatedAdvanceCareInformation("AdvanceCarePlanningSampleAuthorNonHealthcareProvider_3A_Min.xml", AuthorType.AuthorNonHealthcareProvider, DocumentType.AdvanceCareInformationAdvanceCarePlanning);
+            var maxAdvanceCarePlanningAuthorNonHealthcareProviderSampleCda = advanceCareInformationSample.MaxPopulatedAdvanceCareInformation("AdvanceCarePlanningSampleAuthorNonHealthcareProvider_3A_Max.xml", AuthorType.AuthorNonHealthcareProvider, DocumentType.AdvanceCareInformationAdvanceCarePlanning);
 
+            // Only AuthorHealthcareProvider required for GoC
+            var minGoalsOfCareAuthorHealthcareProviderSampleCda = advanceCareInformationSample.MinPopulatedAdvanceCareInformation("GoalsOfCareSampleAuthorHealthcareProvider_3A_Min.xml", AuthorType.AuthorHealthcareProvider, DocumentType.AdvanceCareInformationGoalsOfCare);
+            var maxGoalsOfCareAuthorHealthcareProviderSampleCda = advanceCareInformationSample.MaxPopulatedAdvanceCareInformation("GoalsOfCareSampleAuthorHealthcareProvider_3A_Max.xml", AuthorType.AuthorHealthcareProvider, DocumentType.AdvanceCareInformationGoalsOfCare);
+
+            // Pathology
             var ePathologyResultReportSampleCode = new PathologyResultReportSample();
             var minPathologyReportContent = ePathologyResultReportSampleCode.MinPopulatedPathologyResultReport("PathologyResultReport_3A_Min.xml");
             var maxPathologyReportContent = ePathologyResultReportSampleCode.MaxPopulatedPathologyResultReport("PathologyResultReport_3A_Max.xml");
@@ -54,6 +60,7 @@ namespace CDA.R5Samples
             var minPathologyReportWithStructuredContent = ePathologyReportWithStructuredContent.MinPopulatedPathologyReportWithStructuredContent("PopulatedPathologyReportWithStructuredContent_3A_Min.xml");
             var maxPathologyReportWithStructuredContent = ePathologyReportWithStructuredContent.MaxPopulatedPathologyReportWithStructuredContent("PopulatedPathologyReportWithStructuredContent_3A_Max.xml");
 
+            // Diagnostics
             var eDiagnosticImagingReportSampleCode = new DiagnosticImagingReportSample();
             var minDiagnosticImagingReportHealthcareProviderAuthorCda = eDiagnosticImagingReportSampleCode.MinPopulatedDiagnosticImagingReport("DiagnosticImagingReport_3A_Min.xml");
             var maxDiagnosticImagingReportHealthcareProviderAuthorCda = eDiagnosticImagingReportSampleCode.MaxPopulatedDiagnosticImagingReport("DiagnosticImagingReport_3A_Max.xml");

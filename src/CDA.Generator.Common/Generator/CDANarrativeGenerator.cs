@@ -7860,13 +7860,37 @@ namespace Nehta.VendorLibrary.CDA.Generator
         /// Create Related Document narrative
         /// </summary>
         /// <returns>StrucDocText</returns>
-        public StrucDocText CreateNarrative(IDocumentDetails documentDetails)
+        public StrucDocText CreateNarrative(IDocumentDetails documentDetails, DocumentType docType)
         {
             var strucDocText = new StrucDocText();
             var strucDocTableList = new List<StrucDocTable>();
             var narrativeImage = new List<List<Object>>();
             var narrativedDocumentProvenance = new List<List<Object>>();
             var renderMultiMediaList = new List<StrucDocRenderMultiMedia>();
+
+            // Add Information For Reader
+            if (docType == DocumentType.AdvanceCareInformationGoalsOfCare)
+            {
+                var textToUse = "Healthcare providers may have professional state and territory-specific legal obligations when reading Goals of Care documents stored on an individual's My Health Record.";
+                StrucDocContent sdtText = new StrucDocContent()
+                {
+                    Text = new string[] { textToUse },
+                    styleCode = "Italics"
+                };
+
+                // Create Table
+                StrucDocTable InfoTable = PopulateTable
+                ( "Information for reader",
+                    null, null, null,
+                    new List<List<Object>> { new List<Object> { null } }
+                );
+
+                // Now Add the text into a content tag
+                InfoTable.tbody[0].tr[0].td[0].content = new StrucDocContent[] { sdtText };
+
+                // Struc Doc Table List
+                strucDocTableList.Add(InfoTable);
+            }
 
             var header = new[] {"Document details", "Value"};
 

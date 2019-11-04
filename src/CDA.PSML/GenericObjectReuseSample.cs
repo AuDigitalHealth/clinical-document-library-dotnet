@@ -458,8 +458,8 @@ namespace CDA.PSML
 
             // Document Author > Participant > Entity Identifier
             person.Identifiers = new List<Identifier> { 
-              //BaseCDAModel.CreateIdentifier("AuthorHealthcareProvider", null, null, "1.2.3.4.5.66666", null),
-              BaseCDAModel.CreateHealthIdentifier(HealthIdentifierType.HPII, "8003615833334118"),
+              BaseCDAModel.CreateIdentifier("AuthorHealthcareProvider", null, null, "1.2.3.4.5.66666", null),
+              //BaseCDAModel.CreateHealthIdentifier(HealthIdentifierType.HPII, "8003615833334118"),
           };
 
 

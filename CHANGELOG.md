@@ -1,5 +1,9 @@
 ## Change Log/Revision History
 
+4.6.2 - Reference Platform Clinical Document Library (Nov 2019)
+----------------------------------------------------
+- Added Goals of Care document type
+
 4.6.1 - Reference Platform Clinical Document Library (Sep 2019)
 ----------------------------------------------------
 - Removed <paragraph> tag for 1A specialist letter narrative (as TP has not been fixed)

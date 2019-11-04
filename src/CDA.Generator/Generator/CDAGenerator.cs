@@ -199,7 +199,7 @@ namespace Nehta.VendorLibrary.CDA.Generator
                             )
                     );
 
-            // Generate and return the Specialist SpecialistLetter
+            // Generate and return the Document
             return CDAGeneratorHelper.CreateXml(clinicalDocument, authors, legalAuthenticator, authenticators, recipients, participants, components, nonXmlBody, eventSummary.IncludeLogo, eventSummary.LogoByte, typeof(EventSummary));
         }
 
@@ -1010,15 +1010,15 @@ namespace Nehta.VendorLibrary.CDA.Generator
                             )
                     );
 
-            //Generate and return the Specialist SpecialistLetter
+            //Generate and return the Document
             return CDAGeneratorHelper.CreateXml(clinicalDocument, authors, legalAuthenticator, authenticators, recipients, participants, components, nonXmlBody, specialistLetter.IncludeLogo, specialistLetter.LogoByte, typeof(SpecialistLetter));
         }
 
         /// <summary>
-        /// Generates a Specialist SpecialistLetter CDA (XML) document from the eDischargeSummary model
+        /// Generates a DS CDA (XML) document from the eDischargeSummary model
         /// </summary>
         /// <param name="eDischargeSummary">EDischargeSummary</param>
-        /// <returns>XmlDocument (CDA - Specialist SpecialistLetter)</returns>
+        /// <returns>XmlDocument (CDA - DS)</returns>
         public static XmlDocument GenerateEDischargeSummary(EDischargeSummary eDischargeSummary)
         {
             var vb = new ValidationBuilder();
@@ -1151,7 +1151,7 @@ namespace Nehta.VendorLibrary.CDA.Generator
                             )
                     );
 
-            //Generate and return the Specialist SpecialistLetter
+            //Generate and return the Document
             return CDAGeneratorHelper.CreateXml(clinicalDocument, authors, legalAuthenticator, authenticators, recipients, participants, components, nonXmlBody, eDischargeSummary.IncludeLogo, eDischargeSummary.LogoByte, typeof(EDischargeSummary));
         }
 
@@ -2189,7 +2189,7 @@ namespace Nehta.VendorLibrary.CDA.Generator
         /// </summary>
         /// <param name="advanceCareInformation">The AdvanceCareInformation</param>
         /// <returns>XmlDocument (CDA - AdvanceCareInformation)</returns>
-        public static XmlDocument GenerateAdvanceCareInformation(AdvanceCareInformation advanceCareInformation)
+        public static XmlDocument GenerateAdvanceCareInformation(AdvanceCareInformation advanceCareInformation, DocumentType docType)
         {
             var vb = new ValidationBuilder();
 
@@ -2241,18 +2241,18 @@ namespace Nehta.VendorLibrary.CDA.Generator
             clinicalDocument.recordTarget = patients.ToArray();
 
             // NOTE: NEED TO MAP Requester Order Identifier once it has been modelled in the IG
-            //SETUP the author
+            // SETUP the author
             if (advanceCareInformation.SCSContext.Author != null)
                 authors.Add(CDAGeneratorHelper.CreateAuthor(advanceCareInformation.SCSContext.Author));
 
             clinicalDocument.author = authors.ToArray();
-
+            
             // Setup the Advance Care Information Component 
             if (advanceCareInformation.SCSContent.DocumentDetails != null)
                 components.Add(
                     CDAGeneratorHelper.CreateComponent(advanceCareInformation.SCSContent.DocumentDetails, 
                                                        advanceCareInformation.SCSContent.CustomNarrativeAdvanceCareInformationSection, 
-                                                       NarrativeGenerator));
+                                                       NarrativeGenerator, docType, advanceCareInformation.Title));
 
             //STRUCTURED BODY
             //SETUP administrative observations component
@@ -2269,7 +2269,7 @@ namespace Nehta.VendorLibrary.CDA.Generator
                         )
                 );
 
-            // Generate and return the Specialist SpecialistLetter
+            // Generate and return the Document
             return CDAGeneratorHelper.CreateXml(clinicalDocument, authors, legalAuthenticator, authenticators, recipients, participants, components, nonXmlBody, advanceCareInformation.IncludeLogo, advanceCareInformation.LogoByte, typeof(AdvanceCareInformation));
         }
 
@@ -2388,7 +2388,7 @@ namespace Nehta.VendorLibrary.CDA.Generator
                                 )
                         );
 
-            // Generate and return the Specialist SpecialistLetter
+            // Generate and return the Document
             return CDAGeneratorHelper.CreateXml(clinicalDocument, authors, legalAuthenticator, authenticators, recipients, participants, components, nonXmlBody, diagnosticImagingReport.IncludeLogo, diagnosticImagingReport.LogoByte, typeof(DiagnosticImagingReport));
         }
 

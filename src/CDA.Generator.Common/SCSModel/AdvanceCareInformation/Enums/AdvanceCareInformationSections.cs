@@ -9,17 +9,24 @@ using System.Runtime.Serialization;
    [DataContract]
    public enum AdvanceCareInformationSections
     {
-      /// <summary>
-      /// Pathology
-      /// </summary>
-      [EnumMember]
+        /// <summary>
+        /// AdvanceCareInformationSection
+        /// </summary>
+        [EnumMember]
       [Name(Code = "101.16973", Name = "Advance Care Information Section", Title = "Advance Care Information Section", Narrative = "This component contains the subsections Related Document and Document Provenance", CodeSystem = "NCTIS")]
        AdvanceCareInformationSection,
 
-      /// <summary>
-      /// Related Document
-      /// </summary>
-      [EnumMember]
+        /// <summary>
+        /// GoalsOfCareSection
+        /// </summary>
+        [EnumMember]
+        [Name(Code = "101.16973", Name = "Advance Care Information Section", Title = "Goals of Care Section", Narrative = "This component contains the subsections Related Document and Document Provenance", CodeSystem = "NCTIS")]
+       GoalsOfCareSection,
+
+        /// <summary>
+        /// Related Document
+        /// </summary>
+        [EnumMember]
       [Name(Code = "102.16971", Name = "Related Document",  CodeSystem = "NCTIS")]
       RelatedDocument,
 

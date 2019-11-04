@@ -204,7 +204,7 @@ namespace Nehta.VendorLibrary.CDA.Generator.Enums
         /// <summary>
         /// Advance Care Information
         /// </summary>
-        [Name(Name = "Advance Care Information", CodeSystem = "NCTIS", Code = "100.16975", TemplateIdentifier = "1.2.36.1.2001.1001.100.1002.226", Version = "1.0", Title = "Advance Care Planning Document")]
+        [Name(Name = "Advance Care Information", CodeSystem = "NCTIS", Code = "100.16975", TemplateIdentifier = "1.2.36.1.2001.1001.100.1002.226", Version = "1.0", Title = "Advance Care Information")]
         AdvanceCareInformation,
 
         /// <summary>

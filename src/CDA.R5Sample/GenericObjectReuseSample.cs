@@ -423,20 +423,20 @@ namespace CDA.R5Samples
                 address2.AustralianAddress.SuburbTownLocality = "Nehtaville";
                 address2.AustralianAddress.State = AustralianState.QLD;
                 address2.AustralianAddress.PostCode = "5555";
-
-                // Document Author > Participant > Electronic Communication Detail
-                var coms1 = BaseCDAModel.CreateElectronicCommunicationDetail(
-                    "0345754566",
-                    ElectronicCommunicationMedium.Telephone,
-                    ElectronicCommunicationUsage.WorkPlace);
-
-                var coms2 = BaseCDAModel.CreateElectronicCommunicationDetail(
-                    "authen@globalauthens.com",
-                    ElectronicCommunicationMedium.Email,
-                    ElectronicCommunicationUsage.WorkPlace);
-
-                author.Participant.ElectronicCommunicationDetails = new List<ElectronicCommunicationDetail> { coms1, coms2 };
             }
+
+            // Document Author > Participant > Electronic Communication Detail
+            var coms1 = BaseCDAModel.CreateElectronicCommunicationDetail(
+                "0345754566",
+                ElectronicCommunicationMedium.Telephone,
+                ElectronicCommunicationUsage.WorkPlace);
+
+            var coms2 = BaseCDAModel.CreateElectronicCommunicationDetail(
+                "authen@globalauthens.com",
+                ElectronicCommunicationMedium.Email,
+                ElectronicCommunicationUsage.WorkPlace);
+
+            author.Participant.ElectronicCommunicationDetails = new List<ElectronicCommunicationDetail> { coms1, coms2 };
 
             author.Participant.Person = person;
 
@@ -749,6 +749,52 @@ namespace CDA.R5Samples
             // custodian/assignedCustodian/representedCustodianOrganization/<Entity Identifier>
             custodian.Organisation.Identifiers = new List<Identifier> { 
                     BaseCDAModel.CreateHealthIdentifier(HealthIdentifierType.PAIO, "8003640001000036") 
+                };
+
+            // custodian/assignedCustodian/representedCustodianOrganization/name
+            custodian.Organisation.Name = organisationName;
+
+            if (!mandatoryOnly)
+            {
+                // custodian/assignedCustodian/representedCustodianOrganization/<Address>
+                var address1 = BaseCDAModel.CreateAddress();
+                address1.AddressPurpose = AddressPurpose.Business;
+                address1.AustralianAddress = BaseCDAModel.CreateAustralianAddress();
+                address1.AustralianAddress.UnstructuredAddressLines = new List<string> { "1 Custodian Street" };
+                address1.AustralianAddress.SuburbTownLocality = "Nehtaville";
+                address1.AustralianAddress.State = AustralianState.QLD;
+                address1.AustralianAddress.PostCode = "5555";
+
+                custodian.Address = address1;
+
+                // custodian/assignedCustodian/representedCustodianOrganization/<Electronic Communication Detail>
+                var coms1 = BaseCDAModel.CreateElectronicCommunicationDetail(
+                    "0345754566",
+                    ElectronicCommunicationMedium.Telephone,
+                    ElectronicCommunicationUsage.WorkPlace);
+                custodian.ElectronicCommunicationDetail = coms1;
+            }
+        }
+
+        /// <summary>
+        /// Creates and Hydrates a custodian
+        /// 
+        /// Note: the data used within this method is intended as a guide and should be replaced.
+        /// </summary>
+        /// <returns>A Custodian</returns>
+        public static void HydrateCustodian(IParticipationCustodian participationCustodian, string organisationName,string hpio, bool mandatoryOnly)
+        {
+            var custodian = BaseCDAModel.CreateParticipantCustodian();
+
+            // custodian/assignedCustodian
+            participationCustodian.Participant = custodian;
+
+            // custodian/assignedCustodian/representedCustodianOrganization
+            custodian.Organisation = BaseCDAModel.CreateOrganisationName();
+
+            // custodian/assignedCustodian/representedCustodianOrganization/<Entity Identifier>
+            custodian.Organisation.Identifiers = new List<Identifier> {
+                    BaseCDAModel.CreateHealthIdentifier(HealthIdentifierType.HPIO, hpio)
                 };
 
             // custodian/assignedCustodian/representedCustodianOrganization/name
