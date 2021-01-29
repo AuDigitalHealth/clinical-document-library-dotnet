@@ -1,0 +1,24 @@
+        
+    GLUCOSE - FASTING
+
+         BLOOD GLUCOSE                 10.8 * mmol/L         (3.9-6.0)
+
+      Values for Diagnosis of Diabetes Mellitus and other Hyperglycaemia
+
+       DIABETES MELLITUS (DM)
+         Fasting                &gt; 6.9  mmol/L
+         or 2 hrs post load     &gt; 11.0 mmol/L
+
+       IMPAIRED FASTING GLYCAEMIA (IFG)
+         Fasting                 &gt; 6.0 mmol/L and &lt; 7.0 mmol/L
+
+
+
+    Date Collected  : 07/07/2005
+    Time Collected  : 12:15                 Reference
+    Episode         : 1    Units      Range
+    ==============    ==========
+
+
+    GLUCOSE - FASTING
+    BLOOD GLUCOSE   : 10.8 *     mmol/L     (3.9-6.0)

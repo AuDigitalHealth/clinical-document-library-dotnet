@@ -1,0 +1,18 @@
+﻿      <component>
+        <section>
+          <title>Structured Body File</title>
+          <text mediaType="text/x-hl7-text+xml">
+            <renderMultiMedia referencedObject="cabddfebddebfdecabeffefdcbefdfae">
+              <caption>Structured Body File</caption>
+            </renderMultiMedia>
+          </text>
+          <entry>
+            <observationMedia ID="cabddfebddebfdecabeffefdcbefdfae" classCode="OBS" moodCode="EVN">
+              <id root="a829f083-440a-4499-a679-cdd71b5fde6e" />
+              <value mediaType="application/pdf" integrityCheck="IiZNlyLY4gyewfICeWhFe2NcDDw=">
+                <reference value="attachment.pdf" />
+              </value>
+            </observationMedia>
+          </entry>
+        </section>
+      </component>

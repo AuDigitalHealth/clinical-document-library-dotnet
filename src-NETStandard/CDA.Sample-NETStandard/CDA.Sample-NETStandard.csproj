@@ -1,0 +1,81 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>netcoreapp2.2</TargetFramework>
+    <RootNamespace>Nehta.VendorLibrary.CDA.Sample-NETStandard</RootNamespace>
+    <AssemblyName>Nehta.VendorLibrary.CDA.Sample-NETStandard</AssemblyName>
+    <StartupObject>Nehta.VendorLibrary.CDA.SampleNETStandard.Program</StartupObject>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <OutputPath>bin\Debug\netcoreapp2.2\</OutputPath>
+    <DocumentationFile>bin\Debug\netcoreapp2.2\Nehta.VendorLibrary.CDA.Sample-NETStandard.xml</DocumentationFile>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove="Attachments\1ASnippet.txt" />
+    <None Remove="Attachments\attachment.pdf" />
+    <None Remove="Attachments\CDA.xsd" />
+    <None Remove="Attachments\logo.png" />
+    <None Remove="Attachments\other1234.pdf" />
+    <None Remove="Attachments\path1234.pdf" />
+    <None Remove="Attachments\PIT.txt" />
+    <None Remove="Attachments\x-ray.jpg" />
+    <None Remove="CdaExtensionsSample\CdaExtensions.xml" />
+    <None Remove="CdaExtensionsSample\CdaExtensionsOutput.xml" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="Attachments\1ASnippet.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Attachments\attachment.pdf">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Attachments\CDA.xsd">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="Attachments\logo.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Attachments\other1234.pdf">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Attachments\path1234.pdf">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Attachments\PIT.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Attachments\x-ray.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CdaExtensionsSample\CdaExtensions.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="CdaExtensionsSample\CdaExtensionsOutput.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <SubType>Designer</SubType>
+    </Content>
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\CDA.GeneratedCode\CDA.GeneratedCode.csproj" />
+    <ProjectReference Include="..\CDA.Generator.Common\CDA.Generator.Common.csproj" />
+    <ProjectReference Include="..\CDA.Generator\CDA.Generator.csproj" />
+    <ProjectReference Include="..\nehta-common-dotnet-master\src\Common\Common.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="App.config">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="CdaExtensionsSample\attachmentFileName.pdf">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
+</Project>
