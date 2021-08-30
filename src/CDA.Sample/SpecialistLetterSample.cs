@@ -56,6 +56,14 @@ namespace Nehta.VendorLibrary.CDA.Sample
     {
         #region Properties
 
+        public static String LogoPath
+        {
+            get
+            {
+                return OutputFolderPath + @"\logo.png";
+            }
+        }
+        
         public static string OutputFolderPath { get; set; }
 
         public static String OutputFileNameAndPath
@@ -102,6 +110,9 @@ namespace Nehta.VendorLibrary.CDA.Sample
 
             document.IncludeLogo = false;
 
+            // If Document is a sub type, define Title here which will also become the document Title
+            //document.SubTypeTitle = "Specialist Letter - Procedure";
+
             var structuredBodyFileList = new List<ExternalData>();
 
             var structuredBodyFile = BaseCDAModel.CreateStructuredBodyFile();
@@ -109,6 +120,15 @@ namespace Nehta.VendorLibrary.CDA.Sample
             structuredBodyFile.ExternalDataMediaType = MediaType.PDF;
             structuredBodyFile.Path = StructuredFileAttachment;
             structuredBodyFileList.Add(structuredBodyFile);
+
+            // If you wanted to add a logo for a 1A document (has to be in same Component or fails schematron)
+            /*
+            var logoFile = BaseCDAModel.CreateStructuredBodyFile();
+            logoFile.ExternalDataMediaType = MediaType.PNG;
+            logoFile.Path = LogoPath;
+            logoFile.ID = "LOGO";
+            structuredBodyFileList.Add(logoFile);
+            */
 
             document.SCSContent.StructuredBodyFiles = structuredBodyFileList;
 
@@ -149,6 +169,9 @@ namespace Nehta.VendorLibrary.CDA.Sample
             document.IncludeLogo = false;
             // Hide Administrative Observations Section 
             document.ShowAdministrativeObservationsSection = false;
+
+            // If Document is a sub type, define Title here which will also become the document Title
+            //document.SubTypeTitle = "Specialist Letter - Procedure";
 
             var narrativeOnlyDocumentList = new List<NarrativeOnlyDocument>();
 
@@ -283,6 +306,9 @@ namespace Nehta.VendorLibrary.CDA.Sample
             cdaContext.SetId = BaseCDAModel.CreateIdentifier(BaseCDAModel.CreateGuid(), null);
             // CDA Context Version
             cdaContext.Version = "1";
+
+            // If Document is a sub type, define Title here which will also become the document Title
+            //specialistLetter.SubTypeTitle = "Specialist Letter - Procedure";
 
             // Custodian
             cdaContext.Custodian = BaseCDAModel.CreateCustodian();
@@ -663,7 +689,7 @@ namespace Nehta.VendorLibrary.CDA.Sample
             addressee.Participant.Person.Organisation.NameUsage = OrganisationNameUsage.Other;
             addressee.Participant.Person.Organisation.Identifiers = new List<Identifier> { BaseCDAModel.CreateHealthIdentifier(HealthIdentifierType.HPIO, "8003620000045562") };
             addressee.Participant.Person.Organisation.Department = "Some department person";
-            addressee.Participant.Person.Organisation.EmploymentType = BaseCDAModel.CreateCodableText(EmploymentType.Casual);
+            addressee.Participant.Person.Organisation.EmploymentType = BaseCDAModel.CreateCodableText(Hl7V3EmployeeJobClass.PartTime);
             addressee.Participant.Person.Organisation.Occupation = BaseCDAModel.CreateRole(Occupation.GeneralMedicalPractitioner);
             addressee.Participant.Person.Organisation.PositionInOrganisation = BaseCDAModel.CreateCodableText("Person Manager");
 
@@ -884,7 +910,7 @@ namespace Nehta.VendorLibrary.CDA.Sample
             participant.Person.Organisation.Name = "Bay Hill Hospital";
             participant.Person.Organisation.NameUsage = OrganisationNameUsage.Other;
             participant.Person.Organisation.Identifiers = new List<Identifier> { BaseCDAModel.CreateHealthIdentifier(HealthIdentifierType.HPIO, "8003620000045562") };
-            participant.Person.Organisation.EmploymentType = BaseCDAModel.CreateCodableText(EmploymentType.Casual);
+            participant.Person.Organisation.EmploymentType = BaseCDAModel.CreateCodableText(Hl7V3EmployeeJobClass.PartTime);
             participant.Person.Organisation.Occupation = BaseCDAModel.CreateRole(Occupation.GeneralMedicalPractitioner);
             participant.Person.Organisation.PositionInOrganisation = BaseCDAModel.CreateCodableText("Manager");
             participant.Person.Organisation.Addresses = new List<IAddress> { address, address };

@@ -16,6 +16,8 @@ using System.Collections.Generic;
 using JetBrains.Annotations;
 using Nehta.VendorLibrary.Common;
 using System.Runtime.Serialization;
+using Nehta.VendorLibrary.CDA.Common;
+using Nehta.VendorLibrary.CDA.Common.Enums;
 
 namespace Nehta.VendorLibrary.CDA.SCSModel
 {
@@ -30,7 +32,7 @@ namespace Nehta.VendorLibrary.CDA.SCSModel
         [CanBeNull]
         [DataMember]
         IEmploymentOrganisation Organisation { get; set; }
-
+        
         /// <summary>
         /// Validates this Person With Organisation  
         /// </summary>

@@ -54,6 +54,13 @@ namespace Nehta.VendorLibrary.CDA.SCSModel.Common
         public Statement ExclusionStatement { get; set; }
 
         /// <summary>
+        /// EmptyReason statement (for SML)
+        /// </summary>
+        [CanBeNull]
+        [DataMember]
+        public EmptyReason EmptyReasonStatement { get; set; }
+
+        /// <summary>
         /// Provide a custom Narrative 
         /// </summary>
         [CanBeNull]

@@ -35,7 +35,6 @@ using Nehta.VendorLibrary.CDA.Common.Enums;
 using Nehta.VendorLibrary.CDA.SCSModel.Pathology;
 using Nehta.VendorLibrary.Common;
 using Nehta.VendorLibrary.CDA.SCSModel.Common.Entities;
-using Nehta.VendorLibrary.CDA.SCSModel.DischargeSummary;
 
 namespace Nehta.VendorLibrary.CDA.SCSModel.Common
 {
@@ -61,7 +60,7 @@ namespace Nehta.VendorLibrary.CDA.SCSModel.Common
         IEPrescriptionContent, IPhysicalMeasurementsContent, IDispenseRecordContent, INSWHealthCheckAssessmentContent, IPersonalHealthObservationContent,
         IConsumerQuestionnaireContent, IBirthDetailsRecordContent, IChildHealthCheckScheduleViewContent, IObservationViewDocumentContent, IPathologyResultViewContent,
         IPathologyResultReportContent, IDiagnosticImagingReportContent, IAdvanceCareInformationContent, IPathologyReportWithStructuredContentContent,
-        IServiceReferralContent, IPCMLContent
+        IServiceReferralContent , IPCMLContent, ISMLContent
     {
 
         #region Properties
@@ -176,6 +175,8 @@ namespace Nehta.VendorLibrary.CDA.SCSModel.Common
         [CanBeNull]
         [DataMember]
         public IMedications Medications { get; set; }
+
+
 
         [CanBeNull]
         [DataMember]
@@ -673,13 +674,20 @@ namespace Nehta.VendorLibrary.CDA.SCSModel.Common
 
         #endregion
 
-        #region PCML
+        #region PSML/SML
 
         [DataMember]
         public EncapsulatedData EncapsulatedData { get; set; }
 
         [DataMember]
         public List<NarrativeOnlyDocument> CustomNarrativePcmlRecord { get; set; }
+
+        [DataMember]
+        public List<NarrativeOnlyDocument> CustomNarrativeSmlRecord { get; set; }
+
+        [DataMember]
+        public IMedicationsSML MedicationsSml { get; set; }
+
 
         #endregion
 
@@ -714,7 +722,6 @@ namespace Nehta.VendorLibrary.CDA.SCSModel.Common
                 EncapsulatedData.Validate(path,messages);
             }
         }
-
 
 
         void IAdvanceCareInformationContent.Validate(string path, List<ValidationMessage> messages)
@@ -789,7 +796,6 @@ namespace Nehta.VendorLibrary.CDA.SCSModel.Common
                 vb.ArgumentRequiredCheck("ReportIdentifier", castedContent.RelatedDocument);
             }
         }
-
 
         void IPathologyResultReportContent.Validate(string path, List<ValidationMessage> messages)
         {
@@ -1802,6 +1808,8 @@ namespace Nehta.VendorLibrary.CDA.SCSModel.Common
 
         #endregion
 
+        #region SML/PSML
+
         void IPCMLContent.Validate(string path, List<ValidationMessage> messages)
         {
             var vb = new ValidationBuilder(path, messages);
@@ -1824,7 +1832,32 @@ namespace Nehta.VendorLibrary.CDA.SCSModel.Common
 
         }
 
+        void ISMLContent.Validate(string path, List<ValidationMessage> messages)
+        {
+            var vb = new ValidationBuilder(path, messages);
 
+            if (
+                StructuredBodyFiles != null &&
+                StructuredBodyFiles.Any() &&
+                (!Title.IsNullOrEmptyWhitespace() || !Description.IsNullOrEmptyWhitespace())
+            )
+            {
+                vb.AddValidationMessage(vb.Path + "NonXmlBody", null, "Both structured XML body and a structured XML body attachment have been specified; only one instance of these is allowed.");
+            }
+
+//            EncapsulatedData?.Validate(path, messages);
+
+            //if (EncapsulatedData != null && CustomNarrativePcmlRecord != null)
+            //{
+            //    vb.AddValidationMessage(vb.Path + "XmlBody", null, "Both custom narrative and attached PDF have been specified; only one instance of these is allowed.");
+            //}
+
+            // NEED TO ADD MORE VALIDATION
+
+
+        }
+        
+        #endregion
 
         #endregion
     }

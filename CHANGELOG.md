@@ -1,5 +1,13 @@
 ## Change Log/Revision History
 
+4.7.0 - Reference Platform Clinical Document Library (Sept 2021)
+----------------------------------------------------
+- Added Enum and Coding System for Hl7V3EmployeeJobClass = employment.jobClassCode
+  and updated examples. Supported by MyHR. Change to CodingSystem.cs and new file HL7V3EmployeeJobClass.cs
+- Added example for SL to put in a logo
+- Added new CDA Schema with one additional field interpreterRequiredInd
+- Added support for Sub type title for DS,SL,ES and ACI(GOC,ACP)
+
 4.6.2 - Reference Platform Clinical Document Library (Nov 2019)
 ----------------------------------------------------
 - Added Goals of Care document type

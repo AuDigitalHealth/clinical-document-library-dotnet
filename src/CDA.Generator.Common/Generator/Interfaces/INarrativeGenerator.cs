@@ -67,6 +67,13 @@ namespace Nehta.VendorLibrary.CDA.Generator
         StrucDocText CreateNarrative(IAdverseReactions adverseSubstanceReactions);
 
         /// <summary>
+        /// This method creates the narrative for the current medications section
+        /// </summary>
+        /// <param name="medicationsSML"></param>
+        /// <returns></returns>
+        StrucDocText CreateNarrative(MedicationListSML medicationsSML, bool isCurrentMedications);
+
+        /// <summary>
         /// This method creates the narrative for the reviewed medications section
         /// </summary>
         /// <param name="reviewedMedications"></param>

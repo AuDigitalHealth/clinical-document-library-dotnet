@@ -21,7 +21,7 @@ using Nehta.VendorLibrary.Common;
 namespace Nehta.VendorLibrary.CDA.SCSModel
 {
     /// <summary>
-    /// This interface encapsulates all the SCS specific context for an BirthDetailsRecordContent
+    /// This interface encapsulates all the SCS specific context for an PSML
     /// </summary>
     public interface IPCMLContent
     {
@@ -36,7 +36,7 @@ namespace Nehta.VendorLibrary.CDA.SCSModel
         List<NarrativeOnlyDocument> CustomNarrativePcmlRecord { get; set; }
 
         /// <summary>
-        /// Validate the SCS Content for this BirthDetailsRecordContent
+        /// Validate the SCS Content for this PSML
         /// </summary>
         /// <param name="path">The path to this object as a string</param>
         /// <param name="messages">the validation messages, these may be added to within this method</param>

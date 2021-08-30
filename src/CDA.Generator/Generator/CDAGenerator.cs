@@ -29,7 +29,7 @@ using Nehta.VendorLibrary.CDA.Common;
 using Nehta.HL7.CDA;
 using Nehta.VendorLibrary.CDA.SCSModel.DischargeSummary;
 using Nehta.VendorLibrary.CDA.SCSModel.PCML.Entities;
-using Nehta.VendorLibrary.CDA.SCSModel.ServiceReferral.Interfaces;
+using AdverseReactions = Nehta.VendorLibrary.CDA.SCSModel.Common.AdverseReactions;
 using Entitlement = Nehta.VendorLibrary.CDA.SCSModel.Common.Entitlement;
 
 namespace Nehta.VendorLibrary.CDA.Generator
@@ -135,7 +135,9 @@ namespace Nehta.VendorLibrary.CDA.Generator
                     eventSummary.CDAContext.SetId,
                     eventSummary.CDAContext.Version,
                     DocumentStatus.Final,
-                    eventSummary.Title
+                    eventSummary.Title, 
+                    null,
+                    eventSummary.SubTypeTitle
                 );
 
             //SETUP the Legal Authenticator
@@ -289,19 +291,19 @@ namespace Nehta.VendorLibrary.CDA.Generator
         }
 
         /// <summary>
-        /// Generates PCML
+        /// Generates PSML
         /// </summary>
-        /// <param name="pcml">The GenerateBirthDetailsRecord object</param>
-        /// <returns>XmlDocument (CDA - GenerateBirthDetailsRecord)</returns>
-        public static XmlDocument GeneratePCML(PCML pcml)
+        /// <param name="psml">The PSML object</param>
+        /// <returns>XmlDocument (CDA - PSML)</returns>
+        public static XmlDocument GeneratePCML(PCML psml)
         {
             var vb = new ValidationBuilder();
 
-            if (vb.ArgumentRequiredCheck("pcml", pcml))
+            if (vb.ArgumentRequiredCheck("psml", psml))
             {
-                pcml.Validate("pcml", vb.Messages);
+                psml.Validate("psml", vb.Messages);
 
-                LogoSetupAndValidation(pcml.LogoPath, pcml.LogoByte, pcml.IncludeLogo, vb);
+                LogoSetupAndValidation(psml.LogoPath, psml.LogoByte, psml.IncludeLogo, vb);
             }
 
             //if (vb.Messages.Any())
@@ -319,75 +321,181 @@ namespace Nehta.VendorLibrary.CDA.Generator
             //SETUP the clinical document object
             var clinicalDocument = CDAGeneratorHelper.CreateDocument
                 (
-                    pcml.DocumentCreationTime,
+                    psml.DocumentCreationTime,
                     CDADocumentType.PharmacistSharedMedicinesList,
-                    pcml.CDAContext.DocumentId,
-                    pcml.CDAContext.SetId,
-                    pcml.CDAContext.Version,
-                    pcml.DocumentStatus,
-                    pcml.Title
+                    psml.CDAContext.DocumentId,
+                    psml.CDAContext.SetId,
+                    psml.CDAContext.Version,
+                    psml.DocumentStatus,
+                    psml.Title
                 ); 
             
 
-            if (pcml.SCSContext.Participant != null)
+            if (psml.SCSContext.Participant != null)
             { 
-                foreach (var patientNominatedContact in pcml.SCSContext.Participant)
+                foreach (var patientNominatedContact in psml.SCSContext.Participant)
                 {
                     participants.Add(CDAGeneratorHelper.CreateParticipant(patientNominatedContact,
                         ParticipationType.PART, RoleClassAssociative.PROV, new CE { code = "PCP" }, 
-                        pcml.SCSContext?.SubjectOfCare?.Participant?.UniqueIdentifier.ToString()));
+                        psml.SCSContext?.SubjectOfCare?.Participant?.UniqueIdentifier.ToString()));
                 }
             }
 
-            if (pcml.CDAContext.InformationRecipients != null)
+            if (psml.CDAContext.InformationRecipients != null)
             {
-                recipients.AddRange(pcml.CDAContext.InformationRecipients.Select(interestedParty =>
+                recipients.AddRange(psml.CDAContext.InformationRecipients.Select(interestedParty =>
                     CDAGeneratorHelper.CreateInformationRecipient(interestedParty)));
             }
 
             //SETUP the Legal Authenticator
-            var legalAuthenticator = CDAGeneratorHelper.CreateLegalAuthenticator(pcml.CDAContext.LegalAuthenticator);
+            var legalAuthenticator = CDAGeneratorHelper.CreateLegalAuthenticator(psml.CDAContext.LegalAuthenticator);
 
             //SETUP the patient
-            patients.Add(CDAGeneratorHelper.CreateSubjectOfCare(pcml.SCSContext.SubjectOfCare));
+            patients.Add(CDAGeneratorHelper.CreateSubjectOfCare(psml.SCSContext.SubjectOfCare));
             clinicalDocument.recordTarget = patients.ToArray();
 
             //SETUP the author
-            authors.Add(CDAGeneratorHelper.CreateAuthor(pcml.SCSContext.Author));
+            authors.Add(CDAGeneratorHelper.CreateAuthor(psml.SCSContext.Author));
             clinicalDocument.author = authors.ToArray();
             
             //SETUP the Custodian
-            clinicalDocument.custodian = CDAGeneratorHelper.CreateCustodian(pcml.CDAContext.Custodian);
+            clinicalDocument.custodian = CDAGeneratorHelper.CreateCustodian(psml.CDAContext.Custodian);
 
             //SETUP the Information Recipients
             clinicalDocument.informationRecipient = recipients.ToArray();
 
             //SETUP the HealthcareFacility
-            if (pcml.SCSContext.Encounter != null &&  pcml.SCSContext.Encounter.HealthcareFacility != null && pcml.SCSContext.Encounter.HealthcareFacility.Participant != null)
-                clinicalDocument.componentOf = CDAGeneratorHelper.CreateComponentOf(pcml.SCSContext.Encounter.HealthcareFacility);
+            if (psml.SCSContext.Encounter != null &&  psml.SCSContext.Encounter.HealthcareFacility != null && psml.SCSContext.Encounter.HealthcareFacility.Participant != null)
+                clinicalDocument.componentOf = CDAGeneratorHelper.CreateComponentOf(psml.SCSContext.Encounter.HealthcareFacility);
 
             //
-            if (pcml.SCSContent.EncapsulatedData != null)
+            if (psml.SCSContent.EncapsulatedData != null)
             { 
-                components.Add(CDAGeneratorHelper.CreateComponent(pcml.SCSContent.EncapsulatedData, NarrativeGenerator));
+                components.Add(CDAGeneratorHelper.CreateComponent(psml.SCSContent.EncapsulatedData, NarrativeGenerator));
             }
 
-            if (pcml.SCSContent.CustomNarrativePcmlRecord != null)
+            if (psml.SCSContent.CustomNarrativePcmlRecord != null)
             {
 
-                if (pcml.SCSContent.CustomNarrativePcmlRecord != null &&
-                    pcml.SCSContent.CustomNarrativePcmlRecord.Any())
+                if (psml.SCSContent.CustomNarrativePcmlRecord != null &&
+                    psml.SCSContent.CustomNarrativePcmlRecord.Any())
                     components.AddRange
                     (
-                        CDAGeneratorHelper.CreateNarrativeOnlyDocument(pcml.SCSContent.CustomNarrativePcmlRecord)
+                        CDAGeneratorHelper.CreateNarrativeOnlyDocument(psml.SCSContent.CustomNarrativePcmlRecord)
                     );
             }
 
 
-
-            //Generate and return the GeneratePersonalHealthObservation
-            return CDAGeneratorHelper.CreateXml(clinicalDocument, authors, legalAuthenticator, authenticators, recipients, participants, components, nonXmlBody, pcml.IncludeLogo, pcml.LogoByte, typeof(BirthDetailsRecord));
+            //Generate and return the PSML
+            return CDAGeneratorHelper.CreateXml(clinicalDocument, authors, legalAuthenticator, authenticators, recipients, participants, components, nonXmlBody, psml.IncludeLogo, psml.LogoByte, typeof(PCML));
         }
+
+        /// <summary>
+        /// Generates SML
+        /// </summary>
+        /// <param name="sml">The GenerateBirthDetailsRecord object</param>
+        /// <returns>XmlDocument (CDA - SML)</returns>
+        public static XmlDocument GenerateSML(SML sml, bool hpii)
+        {
+            var vb = new ValidationBuilder();
+
+            if (vb.ArgumentRequiredCheck("sml", sml))
+            {
+                sml.Validate("sml", vb.Messages);
+
+                LogoSetupAndValidation(sml.LogoPath, sml.LogoByte, sml.IncludeLogo, vb);
+            }
+
+            // To Identify which TP id to include
+            CDADocumentType docType = hpii
+                ? CDADocumentType.PharmacistSharedMedicinesListV2HPII
+                : CDADocumentType.PharmacistSharedMedicinesListV2NoHPII;
+
+            var authors = new List<POCD_MT000040Author>();
+            var recipients = new List<POCD_MT000040InformationRecipient>();
+            var participants = new List<POCD_MT000040Participant1>();
+            var components = new List<POCD_MT000040Component3>();
+            var patients = new List<POCD_MT000040RecordTarget>();
+            var authenticators = new List<POCD_MT000040Authenticator>();
+            POCD_MT000040NonXMLBody nonXmlBody = null;
+
+            //SETUP the clinical document object
+            var clinicalDocument = CDAGeneratorHelper.CreateDocument
+                (
+                    sml.DocumentCreationTime,
+                    docType,
+                    sml.CDAContext.DocumentId,
+                    sml.CDAContext.SetId,
+                    sml.CDAContext.Version,
+                    sml.DocumentStatus,
+                    sml.Title,
+                    sml.CDAContext.TemplatePackageId
+                );
+
+
+            if (sml.SCSContext.Participant != null)
+            {
+                foreach (var patientNominatedContact in sml.SCSContext.Participant)
+                {
+                    participants.Add(CDAGeneratorHelper.CreateParticipant(patientNominatedContact,
+                        ParticipationType.PART, RoleClassAssociative.PROV, new CE { code = "PCP" },
+                        sml.SCSContext?.SubjectOfCare?.Participant?.UniqueIdentifier.ToString()));
+                }
+            }
+
+            if (sml.CDAContext.InformationRecipients != null)
+            {
+                recipients.AddRange(sml.CDAContext.InformationRecipients.Select(interestedParty =>
+                    CDAGeneratorHelper.CreateInformationRecipient(interestedParty)));
+            }
+
+            //SETUP the Legal Authenticator
+            var legalAuthenticator = CDAGeneratorHelper.CreateLegalAuthenticator(sml.CDAContext.LegalAuthenticator);
+
+            //SETUP the patient
+            patients.Add(CDAGeneratorHelper.CreateSubjectOfCare(sml.SCSContext.SubjectOfCare));
+            clinicalDocument.recordTarget = patients.ToArray();
+
+            //SETUP the author
+            authors.Add(CDAGeneratorHelper.CreateAuthor(sml.SCSContext.Author));
+            clinicalDocument.author = authors.ToArray();
+            
+            //SETUP the Custodian
+            clinicalDocument.custodian = CDAGeneratorHelper.CreateCustodian(sml.CDAContext.Custodian);
+
+            //SETUP the Information Recipients
+            clinicalDocument.informationRecipient = recipients.ToArray();
+
+            //SETUP the HealthcareFacility
+            if (sml.SCSContext.Encounter != null && sml.SCSContext.Encounter.EncounterId != null &&
+                sml.SCSContext.Encounter.EncounterPeriod != null)
+            {
+                clinicalDocument.componentOf = CDAGeneratorHelper.CreateComponentOfForSml(sml.SCSContext.Encounter); 
+            }
+
+            // Create Allergies or Empty Sections
+            if (sml.SCSContent?.AdverseReactions != null)
+            {
+                components.Add(CDAGeneratorHelper.CreateComponent((AdverseReactions)sml.SCSContent.AdverseReactions, NarrativeGenerator));
+            }
+            
+            // Create current medications component
+            if (sml.SCSContent?.MedicationsSml?.CurrentMedications != null)
+            {
+                components.Add(CDAGeneratorHelper.CreateComponent(sml.SCSContent.MedicationsSml.CurrentMedications, true, clinicalDocument.author[0], NarrativeGenerator));
+            }
+
+            // Create ceased medications component
+            if (sml.SCSContent?.MedicationsSml?.CeasedMedications != null)
+            {
+                components.Add(CDAGeneratorHelper.CreateComponent(sml.SCSContent.MedicationsSml.CeasedMedications, false, clinicalDocument.author[0], NarrativeGenerator));
+            }
+            
+            //Generate and return the GeneratePersonalHealthObservation
+            return CDAGeneratorHelper.CreateXml(clinicalDocument, authors, legalAuthenticator, authenticators, recipients, participants, components, nonXmlBody, sml.IncludeLogo, sml.LogoByte, typeof(SML));
+        }
+
+
 
         /// <summary>
         /// Generates a Consumer Entered Health Summary CDA (XML) document
@@ -461,7 +569,7 @@ namespace Nehta.VendorLibrary.CDA.Generator
 
             //SETUP administrative observations component
             if (!(consumerEnteredHealthSummary.ShowAdministrativeObservationsSection.HasValue && consumerEnteredHealthSummary.ShowAdministrativeObservationsSection.Value == false))
-            components.Add
+                components.Add
                     (
                         CDAGeneratorHelper.CreateAdministrativeObservations
                             (
@@ -921,7 +1029,9 @@ namespace Nehta.VendorLibrary.CDA.Generator
                     specialistLetter.CDAContext.SetId,
                     specialistLetter.CDAContext.Version,
                     specialistLetter.DocumentStatus,
-                    specialistLetter.Title
+                    specialistLetter.Title,
+                    null,
+                    specialistLetter.SubTypeTitle
                 );
 
             //SETUP the Legal Authenticator
@@ -998,7 +1108,7 @@ namespace Nehta.VendorLibrary.CDA.Generator
 
             //SETUP administrative observations component
             if (!(specialistLetter.ShowAdministrativeObservationsSection.HasValue && specialistLetter.ShowAdministrativeObservationsSection.Value == false))
-            components.Add
+                components.Add
                     (
                         CDAGeneratorHelper.CreateAdministrativeObservations
                             (
@@ -1055,7 +1165,9 @@ namespace Nehta.VendorLibrary.CDA.Generator
                     eDischargeSummary.CDAContext.SetId,
                     eDischargeSummary.CDAContext.Version,
                     eDischargeSummary.DocumentStatus,
-                    eDischargeSummary.Title
+                    eDischargeSummary.Title,
+                    null,
+                    eDischargeSummary.SubTypeTitle
                 );
 
             //SETUP the Legal Authenticator
@@ -2225,7 +2337,9 @@ namespace Nehta.VendorLibrary.CDA.Generator
                     advanceCareInformation.CDAContext.SetId,
                     advanceCareInformation.CDAContext.Version,
                     DocumentStatus.Final,
-                    advanceCareInformation.Title
+                    advanceCareInformation.Title,
+            null,
+                    advanceCareInformation.SubTypeTitle
                 );
 
             //SETUP the Legal Authenticator

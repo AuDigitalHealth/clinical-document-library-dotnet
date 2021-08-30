@@ -424,7 +424,7 @@ namespace CDA.R5Samples
             person.Organisation.Name = "Hay Bill Hospital";
             person.Organisation.NameUsage = OrganisationNameUsage.Other;
             person.Organisation.Department = "Some department service provider";
-            person.Organisation.EmploymentType = BaseCDAModel.CreateCodableText(EmploymentType.Casual);
+            person.Organisation.EmploymentType = BaseCDAModel.CreateCodableText(Hl7V3EmployeeJobClass.FullTime);
             person.Organisation.Occupation = DiagnosticImagingReport.CreateRole(Occupation.DiagnosticandInterventionalRadiologist);
             person.Organisation.PositionInOrganisation = BaseCDAModel.CreateCodableText("Radiologist");
 

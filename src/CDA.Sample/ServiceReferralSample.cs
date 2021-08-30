@@ -976,7 +976,7 @@ namespace Nehta.VendorLibrary.CDA.Sample
             organisation.NameUsage = OrganisationNameUsage.Other;
             organisation.Department = "Endocrinology";
             organisation.Addresses = new List<IAddress> { address, address };
-            organisation.EmploymentType = BaseCDAModel.CreateCodableText(EmploymentType.Casual);
+            organisation.EmploymentType = BaseCDAModel.CreateCodableText(Hl7V3EmployeeJobClass.PartTime);
             organisation.Occupation = BaseCDAModel.CreateRole(Occupation.GeneralMedicalPractitioner);
             organisation.PositionInOrganisation = BaseCDAModel.CreateCodableText("Manager");
             organisation.ElectronicCommunicationDetails = new List<ElectronicCommunicationDetail> { electronicCommunicationDetail, electronicCommunicationDetail };
@@ -1075,7 +1075,7 @@ namespace Nehta.VendorLibrary.CDA.Sample
                 organisation.NameUsage = OrganisationNameUsage.Other;
                 organisation.Department = "Endocrinology";
                 organisation.Addresses = new List<IAddress> { address };
-                organisation.EmploymentType = BaseCDAModel.CreateCodableText(EmploymentType.Casual);
+                organisation.EmploymentType = BaseCDAModel.CreateCodableText(Hl7V3EmployeeJobClass.FullTime);
                 organisation.Occupation = BaseCDAModel.CreateRole(Occupation.GeneralMedicalPractitioner);
                 organisation.PositionInOrganisation = BaseCDAModel.CreateCodableText("Manager");
                 organisation.ElectronicCommunicationDetails = new List<ElectronicCommunicationDetail> { electronicCommunicationDetail };

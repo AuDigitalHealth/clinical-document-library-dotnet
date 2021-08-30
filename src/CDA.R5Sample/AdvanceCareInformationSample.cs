@@ -158,7 +158,7 @@ namespace CDA.R5Samples
             // Include Logo
             advanceCareInformation.IncludeLogo = true;
             advanceCareInformation.LogoPath = OutputFolderPath;
-            
+
             // Set Creation Time
             advanceCareInformation.DocumentCreationTime = new ISO8601DateTime(DateTime.Now);
 
@@ -178,6 +178,8 @@ namespace CDA.R5Samples
 
             // CDA Document Title
             advanceCareInformation.Title = docType.GetAttributeValue<NameAttribute, string>(x => x.Name);
+            // Define sub type of document
+            advanceCareInformation.SubTypeTitle = advanceCareInformation.Title;
 
             // Custodian
             cdaContext.Custodian = BaseCDAModel.CreateCustodian();

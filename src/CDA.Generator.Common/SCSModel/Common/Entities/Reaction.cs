@@ -16,6 +16,7 @@ using System;
 using System.Collections.Generic;
 using System.Runtime.Serialization;
 using JetBrains.Annotations;
+using Nehta.VendorLibrary.CDA.Common;
 using Nehta.VendorLibrary.Common;
 
 namespace Nehta.VendorLibrary.CDA.SCSModel.Common
@@ -46,6 +47,13 @@ namespace Nehta.VendorLibrary.CDA.SCSModel.Common
         [CanBeNull]
         [DataMember]
         public ICodableText SubstanceOrAgent { get; set; }
+
+        /// <summary>
+        /// For Used in SML
+        /// </summary>
+        [CanBeNull]
+        [DataMember]
+        public List<NoteSML> AdditionalComments { get; set; }
 
         /// <summary>
         /// Reaction event

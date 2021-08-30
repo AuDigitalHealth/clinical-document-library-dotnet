@@ -9,133 +9,127 @@
   -->
 <xs:schema targetNamespace="http://ns.electronichealth.net.au/Ci/Cda/Extensions/3.0" xmlns:xs="http://www.w3.org/2001/XMLSchema"
    xmlns:ext="http://ns.electronichealth.net.au/Ci/Cda/Extensions/3.0" elementFormDefault="qualified" xmlns:hl7="urn:hl7-org:v3">
-	<!-- Extension for MethodCode -->
+	<!-- Extension: methodCode -->
 	<xs:element name="methodCode" type="hl7:CD"/>
 
-	<!-- Extension for Ingredient -->
+	<!-- Extension: asIngredient -->
 	<xs:element name="asIngredient" type="ext:Ingredient"/>
 
-	<!-- Extension for employment Type -->
+	<!-- Extension: controlAct -->
 	<xs:element name="controlAct" type="ext:ControlAct"/>
 
-	<!-- Extension for employment Type -->
+	<!-- Extension: asEmployment -->
 	<xs:element name="asEmployment" type="ext:Employment"/>
 
-	<!-- Extension for asQualifications  -->
+	<!-- Extension: asQualifications  -->
 	<xs:element name="asQualifications" type="ext:Qualifications"/>
 
-	<!-- Extension for asQualifiedEntity  -->
+	<!-- Extension: asQualifiedEntity  -->
 	<xs:element name="asQualifiedEntity" type="ext:Qualifications"/>
 
-	<!-- Begin: Policy (Pursuant to Regulation 24) & State Authority Number-->
+	<!-- Extension: subjectOf1 for Policy (Pursuant to Regulation 24) & State Authority Number-->
 	<xs:element name="subjectOf1" type="ext:Subject1"/>
-	<!-- End: Policy (Pursuant to Regulation 24) & State Authority Number -->
 
-	<!-- Begin: SubstitutionPermission (Brand Substitute Allowed) -->
+	<!-- Extension: subjectOf2 for SubstitutionPermission (Brand Substitute Allowed) -->
 	<xs:element name="subjectOf2" type="ext:Subject2"/>
-	<!-- End: SubstitutionPermission (Brand Substitute Allowed) -->
 
-	<!-- Begin: Coverage (Authority Approval Number & Medical Benefit Category Type) -->
+	<!-- Extension: coverage for Authority Approval Number & Medical Benefit Category Type -->
 	<xs:element name="coverage" type="ext:Coverage"/>
-	<!-- End: Coverage (Authority Approval Number & Medical Benefit Category Type) -->
 
-	<!-- Extension for coverage2 -->
-	<xs:element name="coverage2" type="ext:Coverage2" />
+	<!-- Extension: coverage2 for Entitlement or Professional Qualification -->
+	<xs:element name="coverage2" type="ext:Coverage2"/>
 
-	<!-- patient.deceasedInd -->
-	<xs:element name="deceasedInd" type="hl7:BL" />
-	<!-- patient.deceasedTime -->
-	<xs:element name="deceasedTime" type="hl7:TS" />
+	<!-- Extension: deceasedInd for patient.deceasedInd -->
+	<xs:element name="deceasedInd" type="hl7:BL"/>
+	
+	<!-- Extension: deceasedTime for patient.deceasedTime -->
+	<xs:element name="deceasedTime" type="hl7:TS"/>
 
-	<!-- intendedRecipient.code -->
-	<xs:element name="code" type="hl7:CE" />
+	<!-- Extension: code for intendedRecipient.code -->
+	<xs:element name="code" type="hl7:CE"/>
 
-	<!-- ClinicalDocument.completionCode -->
-	<xs:element name="completionCode" type="hl7:CE" />
+	<!-- Extension: completionCode for ClinicalDocument.completionCode -->
+	<xs:element name="completionCode" type="hl7:CE"/>
 
-	<!-- Extension for Entity Identifier -->
+	<!-- Extension: asEntityIdentifier for Entity Identifier and Identifier -->
 	<xs:element name="asEntityIdentifier" type="ext:EntityIdentifier"/>
 
-	<!-- Extension for administrative Gender Code -->
+	<!-- Extension: administrativeGenderCode for gender-->
 	<xs:element name="administrativeGenderCode" type="hl7:CE"/>
 
-	<!-- NEW EXTENSION FOR PERSONALRELATIONSHIP -->
-	<!-- Extension for personalRelationShip -->
+	<!-- Extension: personalRelationShip for relationship to patient -->
 	<xs:element name="personalRelationship" type="ext:PersonalRelationship"/>
 
-	<!-- Extension for BirthTime. 
-		This extension may be removed in a future release. -->
+	<!-- Extension: birthTime. This extension may be removed in a future release. -->
 	<xs:element name="birthTime" type="hl7:TS"/>
 
-	<!-- Extension for specimen container -->
+	<!-- Extension: asSpecimenInContainer for specimen container -->
 	<xs:element name="asSpecimenInContainer" type="ext:SpecimenInContainer"/>
 
-	<!-- Multiple Birth indicator type -->
+	<!-- Extension: multipleBirthInd for multiple birth indicator type -->
 	<xs:element name="multipleBirthInd" type="hl7:BL"/>
 
-	<!-- Multiple birth order number -->
+	<!-- Extension: multipleBirthOrderNumber for multiple birth order number -->
 	<xs:element name="multipleBirthOrderNumber" type="hl7:INT"/>
 
-	<!-- Name -->
+	<!-- Extension: name for organisation name -->
 	<xs:element name="name" type="hl7:ON"/>
 
-	<!-- Telecom -->
+	<!-- Extension: telecom -->
 	<xs:element name="telecom" type="hl7:TEL"/>
 
-	<!-- Addr -->
+	<!-- Extension: addr for Address -->
 	<xs:element name="addr" type="hl7:AD"/>
 
-	<!--asOrganizationPartOf -->
+	<!--Extension: asOrganizationPartOf -->
 	<xs:element name="asOrganizationPartOf" type="ext:OrganizationPartOf"/>
-	<!-- asOrganizationPartOf -->
 
-	<!-- Begin formCode -->
+	<!-- Extension: formCode -->
 	<xs:element name="formCode" type="hl7:CD"/>
-	<!-- End formCode -->
 
-	<!-- subjectPerson.ethnicGroupCode -->  
+	<!-- Extension: ethnicGroupCode for subjectPerson.ethnicGroupCode -->  
 	<xs:element name="ethnicGroupCode" type="hl7:CE" />
 
-	<!-- subjectPerson.id -->
+	<!-- Extension: id for subjectPerson.id -->
 	<xs:element name="id" type="hl7:II" />
 
-	<!-- Begin desc -->
+	<!-- Extension: desc -->
 	<xs:element name="desc" type="hl7:ST"/>
-	<!-- End desc -->
-
-	<!-- Extension for languageCommunication -->
+	
+	<!-- Extension: languageCommunication -->
 	<xs:element name="languageCommunication" type="hl7:POCD_MT000040.LanguageCommunication"/>
-
-	<!-- Extension for admissionReferralSourceCode -->
+	
+	<!-- Extension: interpreterRequiredInd-->
+	<xs:element name="interpreterRequiredInd" type="hl7:BL" />
+	
+	<!-- Extension: admissionReferralSourceCode -->
 	<xs:element name="admissionReferralSourceCode" type="hl7:CE"/>
 
-	<!-- Extension for expirationTime -->
+	<!-- Extension: expirationTime -->
 	<xs:element name="expirationTime" type="hl7:TS"/>
 
-	<!-- Extension for dischargeDispositionCode -->
+	<!-- Extension: dischargeDispositionCode -->
 	<xs:element name="dischargeDispositionCode" type="hl7:CE" />
 
-	<!-- Extension for inFulfillmentOf1 -->
-	<xs:element name="inFulfillmentOf1" type="ext:InFulfillmentOf1"/>	
+	<!-- Extension: inFulfillmentOf1 -->
+	<xs:element name="inFulfillmentOf1" type="ext:InFulfillmentOf1"/>
 
-	<!-- Begin Ingredient -->
+	<!-- Begin Ingredient Extension -->
 	<xs:complexType name="Ingredient">
 		<xs:sequence>
 			<xs:element name="realmCode" type="hl7:CS" minOccurs="0" maxOccurs="unbounded"/>
 			<xs:element name="typeId" type="hl7:POCD_MT000040.InfrastructureRoot.typeId" minOccurs="0"/>
 			<xs:element name="templateId" type="hl7:II" minOccurs="0" maxOccurs="unbounded"/>
 			<xs:element name="id" type="hl7:II" minOccurs="0" maxOccurs="unbounded"/>
-			<!-- Removed code and effectiveTime. -->
-			<!-- Added ingredientManufacturedMaterial EntityClass as the Australian Digital Health Agency extensions -->
 			<xs:element name="ingredientManufacturedMaterial" type="ext:ManufacturedMaterial" minOccurs="0" maxOccurs="1"/>
 			<xs:element name="quantity" type="hl7:RTO_PQ_PQ" minOccurs="0" maxOccurs="1"/>
 		</xs:sequence>
 		<xs:attribute name="nullFlavor" type="hl7:NullFlavor" use="optional"/>
 		<xs:attribute name="classCode" type="hl7:RoleClassRoot" use="required" fixed="INGR"/>
 	</xs:complexType>
-	<!-- End Ingredient -->
-
-	<!-- Begin ManufacturedMaterial -->
+	<!-- End Ingredient Extension -->
+	
+	<!-- Begin ManufacturedMaterial Extension -->
 	<xs:complexType name="ManufacturedMaterial">
 		<xs:sequence>
 			<xs:element name="realmCode" type="hl7:CS" minOccurs="0" maxOccurs="unbounded"/>
@@ -143,7 +137,7 @@
 			<xs:element name="templateId" type="hl7:II" minOccurs="0" maxOccurs="unbounded"/>
 			<xs:element name="id" type="hl7:II" minOccurs="0" maxOccurs="unbounded"/>
 			<xs:element name="code" type="hl7:CV" minOccurs="0"/>
-			<xs:element name="desc" type="hl7:ED" minOccurs="0"/>	
+			<xs:element name="desc" type="hl7:ED" minOccurs="0"/>
 			<xs:element name="expirationTime" type="hl7:IVL_TS" minOccurs="0"/>
 			<xs:element name="quantity" type="hl7:RTO_PQ_PQ" minOccurs="0" maxOccurs="1"/>
 		</xs:sequence>
@@ -151,9 +145,9 @@
 		<xs:attribute name="classCode" type="hl7:EntityClass" use="required" fixed="MMAT"/>
 		<xs:attribute name="determinerCode" type="hl7:EntityDeterminer" use="required" fixed="KIND"/>
 	</xs:complexType>
-	<!-- End ManufacturedMaterial -->
+	<!-- End ManufacturedMaterial Extension -->
 
-	<!-- Begin ControlAct -->
+	<!-- Begin ControlAct Extension -->
 	<xs:complexType name="ControlAct">
 		<xs:sequence>
 			<xs:element name="realmCode" type="hl7:CS" minOccurs="0" maxOccurs="unbounded"/>
@@ -180,7 +174,9 @@
 		<xs:attribute name="moodCode" type="hl7:x_DocumentActMood" use="required"/>
 		<xs:attribute name="negationInd" type="hl7:bl" use="optional"/>
 	</xs:complexType>
-	<!-- Begin Employment -->
+	<!-- End ControlAct Extension -->
+
+	<!-- Begin Employment Extension -->
 	<xs:complexType name="Employment">
 		<xs:sequence>
 			<xs:element name="templateId" type="hl7:II" minOccurs="0" maxOccurs="unbounded"/>
@@ -193,9 +189,9 @@
 		<xs:attribute name="nullFlavor" type="hl7:NullFlavor" use="optional"/>
 		<xs:attribute name="classCode" type="hl7:EntityClass" use="required" fixed="EMP"/>
 	</xs:complexType>
-	<!-- End Employment -->
+	<!-- End Employment Extension -->
 
-	<!-- Begin Qualifications -->
+	<!-- Begin Qualifications Extension -->
 	<xs:complexType name="Qualifications">
 		<xs:sequence>
 			<xs:element name="templateId" type="hl7:II" minOccurs="0" maxOccurs="unbounded"/>
@@ -204,50 +200,59 @@
 		<xs:attribute name="nullFlavor" type="hl7:NullFlavor" use="optional"/>
 		<xs:attribute name="classCode" type="hl7:EntityClass" use="required" fixed="QUAL"/>
 	</xs:complexType>
-	<!-- End Qualifications -->
+	<!-- End Qualifications Extension -->
 
-	<!-- Begin Entitlement -->
+	<!-- Begin Coverage2 Extension -->
 	<xs:complexType name="Coverage2">
 		<xs:sequence>
 			<xs:element name="templateId" type="hl7:II" minOccurs="0" maxOccurs="unbounded"/>
-			<xs:element name="entitlement" type="ext:Entitlement" />
+			<!-- Extension: entitlement -->
+			<xs:element name="entitlement" type="ext:Entitlement"/>
 		</xs:sequence>
 		<xs:attribute name="nullFlavor" type="hl7:NullFlavor" use="optional"/>
-		<xs:attribute name="typeCode" fixed="COVBY" />
+		<xs:attribute name="typeCode" fixed="COVBY"/>
 	</xs:complexType>
-
+	<!-- End Coverage2 Extension -->
+	
+	<!-- Begin Entitlement Extension -->
 	<xs:complexType name="Entitlement">
 		<xs:sequence>
 			<xs:element name="templateId" type="hl7:II" minOccurs="0" maxOccurs="unbounded"/>
-			<xs:element name="id" type="hl7:II" maxOccurs="1" />
+			<xs:element name="id" type="hl7:II" maxOccurs="1"/>
 			<xs:element name="code" type="hl7:CD" minOccurs="1" maxOccurs="1"/>
 			<xs:element name="effectiveTime" type="hl7:IVL_TS" minOccurs="0"/>
+			<!-- Extension: participant -->
 			<xs:element name="participant" type="ext:Participant" minOccurs="0" maxOccurs="unbounded"/>
 		</xs:sequence>
 		<xs:attribute name="nullFlavor" type="hl7:NullFlavor" use="optional"/>
-		<xs:attribute name="classCode" type="hl7:EntityClass" use="required" fixed="COV" />
+		<xs:attribute name="classCode" type="hl7:EntityClass" use="required" fixed="COV"/>
 		<xs:attribute name="moodCode" type="hl7:ActMood" use="required" fixed="EVN"/>
 	</xs:complexType>
-
+	<!-- End Entitlement Extension -->
+	
+	<!-- Begin Participant Extension -->
 	<xs:complexType name="Participant">
 		<xs:sequence>
 			<xs:element name="templateId" type="hl7:II" minOccurs="0" maxOccurs="unbounded"/>
-			<xs:element name="participantRole" type="ext:ParticipantRole" maxOccurs="1" />			
+			<!-- Extension: participantRole -->
+			<xs:element name="participantRole" type="ext:ParticipantRole" maxOccurs="1"/>
 		</xs:sequence>
-		<xs:attribute name="typeCode" type="hl7:ParticipationType" />
+		<xs:attribute name="typeCode" type="hl7:ParticipationType"/>
 	</xs:complexType>
-
+	<!-- End Participant Extension -->
+	
+	<!-- Begin ParticipantRole Extension -->
 	<xs:complexType name="ParticipantRole">
 		<xs:sequence>
 			<xs:element name="templateId" type="hl7:II" minOccurs="0" maxOccurs="unbounded"/>
-			<xs:element name="id" type="hl7:II" minOccurs="1" maxOccurs="1" />
+			<xs:element name="id" type="hl7:II" minOccurs="1" maxOccurs="1"/>
 		</xs:sequence>
 		<xs:attribute name="nullFlavor" type="hl7:NullFlavor" use="optional"/>
-		<xs:attribute name="classCode" type="hl7:RoleClass" />
+		<xs:attribute name="classCode" type="hl7:RoleClass"/>
 	</xs:complexType>
-	<!-- End Entitlement -->
+	<!-- End ParticipantRole Extension-->
 
-	<!-- Entity Identifier -->	
+	<!-- Begin EntityIdentifier Extension -->
 	<xs:complexType name="EntityIdentifier">
 		<xs:sequence>
 			<xs:element name="templateId" type="hl7:II" minOccurs="0" maxOccurs="unbounded"/>
@@ -258,26 +263,9 @@
 		<xs:attribute name="nullFlavor" type="hl7:NullFlavor" use="optional"/>
 		<xs:attribute name="classCode" type="hl7:EntityClass" use="required" fixed="IDENT"/>
 	</xs:complexType>
-
-	<!-- NEW EXTENSION FOR PERSONALRELATIONSHIP -->
-	<!-- Begin PersonalRelationship -->
-	<xs:complexType name="PersonalRelationship">
-		<xs:sequence>		
-			<xs:element name="templateId" type="hl7:II" minOccurs="0" maxOccurs="unbounded"/>		
-			<xs:element  name="id"  type="hl7:II"  minOccurs="0"  maxOccurs="1"/>
-			<xs:element  name="code"  type="hl7:CD"  minOccurs="1"  maxOccurs="1"/>
-			<xs:element  name="addr"  type="hl7:AD"  minOccurs="0"  maxOccurs="1"/>
-			<xs:element  name="telecom"  type="hl7:TEL"  minOccurs="0"  maxOccurs="1"/>
-			<xs:element  name="statusCode"  type="hl7:CS"  minOccurs="0"  maxOccurs="1"/>
-			<xs:element  name="effectiveTime"  type="hl7:IVL_TS"  minOccurs="0"  maxOccurs="1"/>
-			<xs:element  name="asPersonalRelationship"  type="hl7:POCD_MT000040.Patient"  nillable="true"  minOccurs="0"  maxOccurs="1"/>
-		</xs:sequence>		
-		<xs:attribute  name="nullFlavor"  type="hl7:NullFlavor"  use="optional"/>
-		<xs:attribute  name="classCode"  type="hl7:RoleClass"  use="optional"  fixed="PRS"/>
-		<xs:attribute  name="negationInd"  type="xs:boolean"  use="optional"/>
-	</xs:complexType> 
-	<!-- End PersonalRelationship -->
-
+	<!-- End EntityIdentifier Extension -->
+	
+	<!-- Begin GeographicArea Extension -->
 	<xs:complexType name="GeographicArea">
 		<xs:sequence>
 			<xs:element name="templateId" type="hl7:II" minOccurs="0" maxOccurs="unbounded"/>
@@ -286,27 +274,47 @@
 		<xs:attribute name="nullFlavor" type="hl7:NullFlavor" use="optional"/>
 		<xs:attribute name="classCode" type="hl7:EntityClass" use="required" fixed="PLC"/>
 		<xs:attribute name="determinerCode" type="hl7:EntityDeterminer" use="optional" fixed="INSTANCE"/>
-	</xs:complexType>  
-	<!-- End Entity Identifier -->
+	</xs:complexType>
+	<!-- End GeographicArea Extension -->
 
-	<!-- Begin Specimen Container -->
+	<!-- Begin PersonalRelationship Extension -->
+	<xs:complexType name="PersonalRelationship">
+		<xs:sequence>
+			<xs:element name="templateId" type="hl7:II" minOccurs="0" maxOccurs="unbounded"/>
+			<xs:element name="id" type="hl7:II" minOccurs="0" maxOccurs="1"/>
+			<xs:element name="code" type="hl7:CD" minOccurs="1" maxOccurs="1"/>
+			<xs:element name="addr" type="hl7:AD" minOccurs="0" maxOccurs="1"/>
+			<xs:element name="telecom" type="hl7:TEL" minOccurs="0" maxOccurs="1"/>
+			<xs:element name="statusCode" type="hl7:CS" minOccurs="0" maxOccurs="1"/>
+			<xs:element name="effectiveTime" type="hl7:IVL_TS" minOccurs="0" maxOccurs="1"/>
+			<xs:element name="asPersonalRelationship" type="hl7:POCD_MT000040.Patient" nillable="true" minOccurs="0" maxOccurs="1"/>
+		</xs:sequence>
+		<xs:attribute name="nullFlavor" type="hl7:NullFlavor" use="optional"/>
+		<xs:attribute name="classCode" type="hl7:RoleClass" use="optional" fixed="PRS"/>
+		<xs:attribute name="negationInd" type="xs:boolean" use="optional"/>
+	</xs:complexType>
+	<!-- End PersonalRelationship Extension -->
+
+	<!-- Begin SpecimenInContainer Extension -->
 	<xs:complexType name="SpecimenInContainer">
 		<xs:sequence>
 			<xs:element name="templateId" type="hl7:II" minOccurs="0" maxOccurs="unbounded"/>
-			<xs:element name="container" type="ext:Container" maxOccurs="1" />
+			<xs:element name="container" type="ext:Container" maxOccurs="1"/>
 		</xs:sequence>
 		<xs:attribute name="classCode" type="hl7:EntityClass" use="required" fixed="CONT"/>
 	</xs:complexType>
-
+	<!-- End SpecimenInContainer Extension -->
+	
+	<!-- Begin Container Extension -->
 	<xs:complexType name="Container">
 		<xs:sequence>
 			<xs:element name="templateId" type="hl7:II" minOccurs="0" maxOccurs="unbounded"/>
-			<xs:element name="id" type="hl7:II" maxOccurs="1" />
+			<xs:element name="id" type="hl7:II" maxOccurs="1"/>
 		</xs:sequence>
 	</xs:complexType>
-	<!-- End Specimen Container -->
+	<!-- End Container Extension -->
 
-	<!-- Start OrganizationPartOf -->
+	<!-- Begin OrganizationPartOf Extension -->
 	<xs:complexType name="OrganizationPartOf">
 		<xs:sequence>
 			<xs:element name="realmCode" type="hl7:CS" minOccurs="0" maxOccurs="unbounded"/>
@@ -321,9 +329,9 @@
 		<xs:attribute name="nullFlavor" type="hl7:NullFlavor" use="optional"/>
 		<xs:attribute name="classCode" type="hl7:RoleClass" use="optional" fixed="PART"/>
 	</xs:complexType>
-	<!-- End OrganizationPartOf -->
-
-	<!-- Start Entity -->
+	<!-- End OrganizationPartOf Extension -->
+	
+	<!-- Begin Entity Extension -->
 	<xs:complexType name="Entity">
 		<xs:sequence>
 			<xs:element name="realmCode" type="hl7:CS" minOccurs="0" maxOccurs="unbounded"/>
@@ -331,37 +339,24 @@
 			<xs:element name="templateId" type="hl7:II" minOccurs="0" maxOccurs="unbounded"/>
 			<xs:element name="id" type="hl7:II" minOccurs="0" maxOccurs="unbounded"/>
 			<xs:element name="code" type="hl7:CE" minOccurs="0"/>
-
-			<!-- Extension: start name -->
+			<!-- Extension: name -->
 			<xs:element ref="ext:name" minOccurs="0" maxOccurs="unbounded"/>
-			<!-- Extension: end name -->
-
 			<xs:element name="desc" type="hl7:ED" minOccurs="0"/>
-
-			<!-- Extension: start telecom -->
+			<!-- Extension: telecom -->
 			<xs:element ref="ext:telecom" minOccurs="0" maxOccurs="unbounded"/>
-			<!-- Extension: end telecom -->
-
-			<!-- Extension: start addr -->
+			<!-- Extension: addr -->
 			<xs:element ref="ext:addr" minOccurs="0" maxOccurs="unbounded"/>
-			<!-- Extension: end addr -->
-
-			<!-- Extension: start asOrganizationPartOf -->
 			<xs:element name="asOrganizationPartOf" type="ext:OrganizationPartOf" minOccurs="0"/>
-			<!-- Extension: end asOrganizationPartOf -->
-
-			<!-- Extension: start asEntityIdentifier -->
-			<xs:element ref="ext:asEntityIdentifier" minOccurs="0" maxOccurs="unbounded" />
-			<!-- Extension: end asEntityIdentifier -->
-
+			<!-- Extension: asEntityIdentifier -->
+			<xs:element ref="ext:asEntityIdentifier" minOccurs="0" maxOccurs="unbounded"/>
 		</xs:sequence>
 		<xs:attribute name="nullFlavor" type="hl7:NullFlavor" use="optional"/>
 		<xs:attribute name="classCode" type="hl7:EntityClassRoot" use="optional" default="ENT"/>
 		<xs:attribute name="determinerCode" type="hl7:EntityDeterminer" use="optional" fixed="INSTANCE"/>
 	</xs:complexType>
-	<!-- End Entity -->
-
-	<!-- Start TypeId -->
+	<!-- End Entity Extension -->
+	
+	<!-- Begin typeId Extension -->
 	<xs:complexType name="typeId">
 		<xs:complexContent>
 			<xs:restriction base="hl7:II">
@@ -370,8 +365,9 @@
 			</xs:restriction>
 		</xs:complexContent>
 	</xs:complexType>
+	<!-- End typeId Extension -->
 
-	<!-- Start Field of Practice -->
+	<!-- Start FieldOfPractice Extension -->
 	<xs:complexType name="FieldOfPractice">
 		<xs:sequence>
 			<xs:element name="templateId" type="hl7:II" minOccurs="0" maxOccurs="unbounded"/>
@@ -381,9 +377,9 @@
 		<xs:attribute name="nullFlavor" type="hl7:NullFlavor" use="optional"/>
 		<xs:attribute name="classCode" type="hl7:EntityClass" use="required" fixed="QUAL"/>
 	</xs:complexType>
-	<!-- End Field of Practice -->
+	<!-- End FieldOfPractice Extension -->
 
-	<!-- Begin: Policy (Pursuant to Regulation 24 & State Authority Number) (policy)-->
+	<!-- Begin Subject1 Extension -->
 	<xs:complexType name="Subject1">
 		<xs:sequence>
 			<xs:element name="templateId" type="hl7:II" minOccurs="0" maxOccurs="unbounded"/>
@@ -392,7 +388,9 @@
 		<xs:attribute name="nullFlavor" type="hl7:NullFlavor" use="optional"/>
 		<xs:attribute name="typeCode" type="hl7:ParticipationTargetSubject" use="optional" fixed="SBJ"/>
 	</xs:complexType>
-
+	<!-- End Subject1 Extension -->
+	
+	<!-- Begin Policy Extension -->
 	<xs:complexType name="Policy">
 		<xs:sequence>
 			<xs:element name="templateId" type="hl7:II" minOccurs="0" maxOccurs="unbounded"/>
@@ -403,9 +401,9 @@
 		<xs:attribute name="classCode" type="hl7:ActClass" use="required" fixed="JURISPOL"/>
 		<xs:attribute name="moodCode" type="hl7:ActMood" use="required" fixed="PERM"/>
 	</xs:complexType>
-	<!-- End: Policy (Pursuant to Regulation 24)-->
+	<!-- End Policy Extension -->
 
-	<!-- Begin: SubstitutionPermission (Brand Substitute Allowed) -->
+	<!-- Begin Subject2 Extension -->
 	<xs:complexType name="Subject2">
 		<xs:sequence>
 			<xs:element name="templateId" type="hl7:II" minOccurs="0" maxOccurs="unbounded"/>
@@ -414,7 +412,9 @@
 		<xs:attribute name="nullFlavor" type="hl7:NullFlavor" use="optional"/>
 		<xs:attribute name="typeCode" type="hl7:ActRelationshipType" use="optional" fixed="SUBJ"/>
 	</xs:complexType>
-
+	<!-- End Subject2 Extension -->
+	
+	<!-- Begin SubstitutionPermission Extension -->
 	<xs:complexType name="SubstitutionPermission">
 		<xs:sequence>
 			<xs:element name="templateId" type="hl7:II" minOccurs="0" maxOccurs="unbounded"/>
@@ -424,9 +424,9 @@
 		<xs:attribute name="classCode" type="hl7:ActClass" use="required" fixed="SUBST"/>
 		<xs:attribute name="moodCode" type="hl7:ActMood" use="required" fixed="PERM"/>
 	</xs:complexType>
-	<!-- End: SubstitutionPermission (Brand Substitute Allowed) -->
+	<!-- End SubstitutionPermission Extension -->
 
-	<!-- Begin: Coverage (Authority Approval Number & Medical Benefit Category Type) (coverage) -->
+	<!-- Begin Coverage Extension -->
 	<xs:complexType name="Coverage">
 		<xs:sequence>
 			<xs:element name="templateId" type="hl7:II" minOccurs="0" maxOccurs="unbounded"/>
@@ -435,7 +435,9 @@
 		<xs:attribute name="nullFlavor" type="hl7:NullFlavor" use="optional"/>
 		<xs:attribute name="typeCode" use="optional" fixed="COVBY"/>
 	</xs:complexType>
-
+	<!-- End Coverage Extension -->
+	
+	<!-- Begin PolicyOrAccount Extension -->
 	<xs:complexType name="PolicyOrAccount">
 		<xs:sequence>
 			<xs:element name="templateId" type="hl7:II" minOccurs="0" maxOccurs="unbounded"/>
@@ -446,23 +448,9 @@
 		<xs:attribute name="classCode" type="hl7:ActClass" use="required" fixed="COV"/>
 		<xs:attribute name="moodCode" type="hl7:ActMood" use="required" fixed="PERM"/>
 	</xs:complexType>
-	<!-- End: Coverage (Authority Approval Number & Medical Benefit Category Type) (coverage)-->
+	<!-- End PolicyOrAccount Extension -->
 
-	<!-- Begin: ActReference -->
-	<xs:complexType name="ActReference">
-		<xs:sequence>
-			<xs:element name="realmCode" type="hl7:CS" minOccurs="0" maxOccurs="unbounded"/>
-			<xs:element name="typeId" type="hl7:POCD_MT000040.InfrastructureRoot.typeId" minOccurs="0"/>
-			<xs:element name="templateId" type="hl7:II" minOccurs="0" maxOccurs="unbounded"/>
-			<xs:element name="id" type="hl7:II" minOccurs="1" maxOccurs="unbounded"/>
-		</xs:sequence>
-		<xs:attribute name="classCode" type="hl7:ActClass" use="required"/>
-		<xs:attribute name="moodCode" type="hl7:x_DocumentActMood" use="required"/>
-		<xs:attribute name="determinerCode" type="hl7:EntityDeterminer" use="optional" fixed="INSTANCE"/>
-	</xs:complexType>
-	<!-- End: ActReference -->
-
-	<!-- Begin: InFulfillmentOf1 -->
+	<!-- Begin InFulfillmentOf1 Extension -->
 	<xs:complexType name="InFulfillmentOf1">
 		<xs:sequence>
 			<xs:element name="realmCode" type="hl7:CS" minOccurs="0" maxOccurs="unbounded"/>
@@ -474,6 +462,20 @@
 		<xs:attribute name="inversionInd" type="hl7:bl" use="optional"/>
 		<xs:attribute name="negationInd" type="hl7:bl" use="optional"/>
 	</xs:complexType>
-	<!-- End: InFulfillmentOf1 -->
+	<!-- End InFulfillmentOf1 Extension -->
+	
+	<!-- Begin ActReference Extension -->
+	<xs:complexType name="ActReference">
+		<xs:sequence>
+			<xs:element name="realmCode" type="hl7:CS" minOccurs="0" maxOccurs="unbounded"/>
+			<xs:element name="typeId" type="hl7:POCD_MT000040.InfrastructureRoot.typeId" minOccurs="0"/>
+			<xs:element name="templateId" type="hl7:II" minOccurs="0" maxOccurs="unbounded"/>
+			<xs:element name="id" type="hl7:II" minOccurs="1" maxOccurs="unbounded"/>
+		</xs:sequence>
+		<xs:attribute name="classCode" type="hl7:ActClass" use="required"/>
+		<xs:attribute name="moodCode" type="hl7:x_DocumentActMood" use="required"/>
+		<xs:attribute name="determinerCode" type="hl7:EntityDeterminer" use="optional" fixed="INSTANCE"/>
+	</xs:complexType>
+	<!-- End ActReference Extension-->
 
 </xs:schema>

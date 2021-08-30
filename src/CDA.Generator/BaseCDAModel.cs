@@ -62,6 +62,7 @@ namespace Nehta.VendorLibrary.CDA.Common
     public class BaseCDAModel
     {
         #region Constants
+
         private const String HEALTH_IDENTIFIER_QUALIFIER = "1.2.36.1.2001.1003.0.";
         private const String EXTERNAL_HEALTH_IDENTIFIER_QUALIFIER = "1.2.36.1.2001.1005.41.";
 
@@ -88,6 +89,13 @@ namespace Nehta.VendorLibrary.CDA.Common
         [CanBeNull]
         [DataMember]
         public string Title { get; set; }
+
+        /// <summary>
+        /// The subtype title of this CDA document
+        /// </summary>
+        [CanBeNull]
+        [DataMember]
+        public string SubTypeTitle { get; set; }
 
         /// <summary>
         /// Indicates if the CDA document should include a logo
@@ -193,7 +201,7 @@ namespace Nehta.VendorLibrary.CDA.Common
         {
             return new Person();
         }
-        
+
         /// <summary>
         /// Creates a address that is constrained down to an IAddress
         /// </summary>
@@ -228,13 +236,14 @@ namespace Nehta.VendorLibrary.CDA.Common
         /// <param name="medium">Medium; E.g. Email</param>
         /// <param name="usage">Usage; E.g. Home</param>
         /// <returns>An ElectronicCommunicationDetail Object</returns>
-        public static ElectronicCommunicationDetail CreateElectronicCommunicationDetail(string address, ElectronicCommunicationMedium medium, ElectronicCommunicationUsage usage)
+        public static ElectronicCommunicationDetail CreateElectronicCommunicationDetail(string address,
+            ElectronicCommunicationMedium medium, ElectronicCommunicationUsage usage)
         {
             return new ElectronicCommunicationDetail
             {
                 Address = address,
                 Medium = medium,
-                Usage = new List<ElectronicCommunicationUsage> { usage }
+                Usage = new List<ElectronicCommunicationUsage> {usage}
             };
         }
 
@@ -245,7 +254,8 @@ namespace Nehta.VendorLibrary.CDA.Common
         /// <param name="medium">Medium; E.g. Email</param>
         /// <param name="usage">Usage; E.g. Home</param>
         /// <returns>An ElectronicCommunicationDetail Object</returns>
-        public static ElectronicCommunicationDetail CreateElectronicCommunicationDetail(string address, ElectronicCommunicationMedium medium, List<ElectronicCommunicationUsage> usage)
+        public static ElectronicCommunicationDetail CreateElectronicCommunicationDetail(string address,
+            ElectronicCommunicationMedium medium, List<ElectronicCommunicationUsage> usage)
         {
             return new ElectronicCommunicationDetail
             {
@@ -358,7 +368,7 @@ namespace Nehta.VendorLibrary.CDA.Common
         /// Creates a person constrained down to an IInformationRecipient
         /// </summary>
         /// <returns>(IInformationRecipient) Participant</returns>
-        public static  IInformationRecipient CreateParticipantForInformationRecipient()
+        public static IInformationRecipient CreateParticipantForInformationRecipient()
         {
             return new Participant();
         }
@@ -369,7 +379,7 @@ namespace Nehta.VendorLibrary.CDA.Common
         /// <returns>(IServiceRequester) Participant</returns>
         public static IServiceRequester CreateParticipantForServiceRequester()
         {
-          return new Participant();
+            return new Participant();
         }
 
         /// <summary>
@@ -378,7 +388,7 @@ namespace Nehta.VendorLibrary.CDA.Common
         /// <returns>(IParticipationServiceRequester) Participation</returns>
         public static IParticipationServiceRequester CreateServiceRequester()
         {
-          return new Participation();
+            return new Participation();
         }
 
         /// <summary>
@@ -387,7 +397,7 @@ namespace Nehta.VendorLibrary.CDA.Common
         /// <returns>(IServiceProvider) Participant</returns>
         public static IServiceProvider CreateParticipantForServiceProvider()
         {
-          return new Participant();
+            return new Participant();
         }
 
         /// <summary>
@@ -396,7 +406,7 @@ namespace Nehta.VendorLibrary.CDA.Common
         /// <returns>(IParticipationServiceProvider) Participation</returns>
         public static IParticipationServiceProvider CreateServiceProvider()
         {
-          return new Participation();
+            return new Participation();
         }
 
         /// <summary>
@@ -450,7 +460,7 @@ namespace Nehta.VendorLibrary.CDA.Common
         /// <returns>(Participation) IParticipationAuthorNonHealthcareProvider</returns>
         public static IParticipationAuthorPerson CreateAuthorPerson()
         {
-          return new Participation();
+            return new Participation();
         }
 
         /// <summary>
@@ -461,6 +471,7 @@ namespace Nehta.VendorLibrary.CDA.Common
         {
             return new Person();
         }
+
         /// <summary>
         /// Creates a Person constrained down to an IPerson
         /// </summary>
@@ -495,11 +506,12 @@ namespace Nehta.VendorLibrary.CDA.Common
         /// <param name="root">The organisations HPIO</param>
         /// <param name="organisationName">The Organisation Name</param>
         /// <returns>MRN</returns>
-        public static Identifier CreateMedicalRecordNumber(String medicalRecordNumber, String root, String organisationName)
+        public static Identifier CreateMedicalRecordNumber(String medicalRecordNumber, String root,
+            String organisationName)
         {
-            return  
-            CreateIdentifier
-            (
+            return
+                CreateIdentifier
+                (
                     organisationName,
                     null,
                     medicalRecordNumber,
@@ -512,7 +524,7 @@ namespace Nehta.VendorLibrary.CDA.Common
                         null,
                         null
                     )
-             );
+                );
         }
 
         /// <summary>
@@ -529,9 +541,9 @@ namespace Nehta.VendorLibrary.CDA.Common
             if (!(medicareNumber.Length == 11 || medicareNumber.Length == 10))
                 throw new ArgumentException("An Medicare Card Number must have 10 or 11 digits");
 
-            return 
-            CreateIdentifier
-            (
+            return
+                CreateIdentifier
+                (
                     medicalRecordNumber.GetAttributeValue<NameAttribute, string>(x => x.Name),
                     null,
                     medicareNumber,
@@ -543,8 +555,8 @@ namespace Nehta.VendorLibrary.CDA.Common
                         null,
                         null,
                         null
-                     )
-            );
+                    )
+                );
         }
 
         /// <summary>
@@ -585,12 +597,14 @@ namespace Nehta.VendorLibrary.CDA.Common
                 throw new ArgumentException("An Individual Medicare Card Number must have 11 digits");
 
             return
-            CreateIdentifier
-            (
-                    MedicareNumberType.IndividualMedicareCardNumber.GetAttributeValue<NameAttribute, string>(x => x.Name),
+                CreateIdentifier
+                (
+                    MedicareNumberType.IndividualMedicareCardNumber.GetAttributeValue<NameAttribute, string>(
+                        x => x.Name),
                     null,
                     medicareNumber,
-                    MedicareNumberType.IndividualMedicareCardNumber.GetAttributeValue<NameAttribute, string>(x => x.Code),
+                    MedicareNumberType.IndividualMedicareCardNumber.GetAttributeValue<NameAttribute, string>(
+                        x => x.Code),
                     CreateCodableText
                     (
                         "MC",
@@ -598,8 +612,8 @@ namespace Nehta.VendorLibrary.CDA.Common
                         null,
                         null,
                         null
-                     )
-            );
+                    )
+                );
         }
 
         /// <summary>
@@ -609,7 +623,8 @@ namespace Nehta.VendorLibrary.CDA.Common
         /// <param name="entitlementType">Entitlement type.</param>
         /// <param name="validityDuration">Entitlement validity duration.</param>
         /// <returns>Entitlement.</returns>
-        public static Entitlement CreateDvaEntitlement(string dvaNumber, EntitlementType entitlementType, CdaInterval validityDuration)
+        public static Entitlement CreateDvaEntitlement(string dvaNumber, EntitlementType entitlementType,
+            CdaInterval validityDuration)
         {
             var entitlement = new Entitlement
             {
@@ -646,16 +661,16 @@ namespace Nehta.VendorLibrary.CDA.Common
             }
 
             if (!(entitlementType == EntitlementType.RepatriationHealthOrangeBenefits ||
-                  entitlementType == EntitlementType.RepatriationHealthGoldBenefits || 
+                  entitlementType == EntitlementType.RepatriationHealthGoldBenefits ||
                   entitlementType == EntitlementType.RepatriationHealthWhiteBenefits))
             {
                 throw new ArgumentException("Entitlement type must be either: RepatriationHealthOrangeBenefits, " +
-                    "RepatriationHealthGoldBenefits or RepatriationHealthWhiteBenefits");                                
-            }            
+                                            "RepatriationHealthGoldBenefits or RepatriationHealthWhiteBenefits");
+            }
 
             return
-            CreateIdentifier
-            (
+                CreateIdentifier
+                (
                     "Department of Veterans' Affairs",
                     null,
                     dvaNumber,
@@ -667,8 +682,8 @@ namespace Nehta.VendorLibrary.CDA.Common
                         entitlementType.GetAttributeValue<NameAttribute, string>(x => x.Name),
                         null,
                         null
-                     )
-            );
+                    )
+                );
         }
 
         /// <summary>
@@ -712,9 +727,9 @@ namespace Nehta.VendorLibrary.CDA.Common
         /// <returns>An Identifier Object</returns>
         public static Identifier CreateIdentifier(
             string assigningAuthorityName,
-            HealthcareIdentifierGeographicArea? assigningGeographicArea, 
-            string extension, 
-            string root, 
+            HealthcareIdentifierGeographicArea? assigningGeographicArea,
+            string extension,
+            string root,
             ICodableText code)
         {
             Identifier identifier = null;
@@ -722,13 +737,15 @@ namespace Nehta.VendorLibrary.CDA.Common
             identifier = new Identifier
             {
                 AssigningAuthorityName = assigningAuthorityName,
-                AssigningGeographicArea = assigningGeographicArea.HasValue ? assigningGeographicArea.GetAttributeValue<NameAttribute, String>(x => x.Name) : null,
+                AssigningGeographicArea = assigningGeographicArea.HasValue
+                    ? assigningGeographicArea.GetAttributeValue<NameAttribute, String>(x => x.Name)
+                    : null,
                 Extension = extension,
                 Root = root,
                 Code = code
             };
 
-          return identifier;
+            return identifier;
         }
 
         /// <summary>
@@ -749,86 +766,86 @@ namespace Nehta.VendorLibrary.CDA.Common
         /// <returns>Close The Gap Benefit Number</returns>
         public static string CreateCloseTheGapBenefitNumber(int incrementalNumber, ISO8601DateTime dateOfPrescribing)
         {
-             string numberString = incrementalNumber.ToString(CultureInfo.InvariantCulture);
+            string numberString = incrementalNumber.ToString(CultureInfo.InvariantCulture);
 
-             if (incrementalNumber < 10) numberString = "0" + numberString;
+            if (incrementalNumber < 10) numberString = "0" + numberString;
 
-             if (incrementalNumber > 99 || incrementalNumber < 1)
-             {
-               throw new ArgumentException("IncrementalNumber can not be greater than 99 or less then 0");
-             }
+            if (incrementalNumber > 99 || incrementalNumber < 1)
+            {
+                throw new ArgumentException("IncrementalNumber can not be greater than 99 or less then 0");
+            }
 
-             string sequenceNumber = numberString + dateOfPrescribing.DateTime.ToString("ddMMyy");
+            string sequenceNumber = numberString + dateOfPrescribing.DateTime.ToString("ddMMyy");
 
-             var remainder = Convert.ToInt32(sequenceNumber) % 19;
+            var remainder = Convert.ToInt32(sequenceNumber) % 19;
 
-             var checkCharacter = String.Empty;
-             switch (remainder.ToString(CultureInfo.InvariantCulture))
-             {
-                 case "0":
+            var checkCharacter = String.Empty;
+            switch (remainder.ToString(CultureInfo.InvariantCulture))
+            {
+                case "0":
                     checkCharacter = "B";
                     break;
-                 case "1":
+                case "1":
                     checkCharacter = "C";
                     break;
-                 case "2":
+                case "2":
                     checkCharacter = "D";
                     break;
-                 case "3":
+                case "3":
                     checkCharacter = "E";
                     break;
-                 case "4":
+                case "4":
                     checkCharacter = "F";
                     break;
-                 case "5":
+                case "5":
                     checkCharacter = "G";
                     break;
-                 case "6":
+                case "6":
                     checkCharacter = "H";
                     break;
-                 case "7":
+                case "7":
                     checkCharacter = "J";
                     break;
-                 case "8":
+                case "8":
                     checkCharacter = "K";
                     break;
-                 case "9":
+                case "9":
                     checkCharacter = "L";
                     break;
-                 case "10":
+                case "10":
                     checkCharacter = "M";
                     break;
-                 case "11":
+                case "11":
                     checkCharacter = "N";
                     break;
-                 case "12":
+                case "12":
                     checkCharacter = "P";
                     break;
-                 case "13":
+                case "13":
                     checkCharacter = "Q";
                     break;
-                 case "14":
+                case "14":
                     checkCharacter = "R";
                     break;
-                 case "15":
+                case "15":
                     checkCharacter = "T";
                     break;
-                 case "16":
+                case "16":
                     checkCharacter = "W";
                     break;
-                 case "17":
+                case "17":
                     checkCharacter = "X";
                     break;
-                 case "18":
+                case "18":
                     checkCharacter = "Y";
                     break;
-             }
+            }
 
-              // Note: Determine the check digit using the table below, based on the remainder.
-              // This table does not exists in the current ATS document 
-              // Until this table is release the first reminder digit will be used in this instance.
+            // Note: Determine the check digit using the table below, based on the remainder.
+            // This table does not exists in the current ATS document 
+            // Until this table is release the first reminder digit will be used in this instance.
 
-              return String.Format("CTG{0}{1}", numberString, checkCharacter);
+            return String.Format("CTG{0}{1}", numberString, checkCharacter);
         }
 
         /// <summary>
@@ -843,17 +860,17 @@ namespace Nehta.VendorLibrary.CDA.Common
             string extension,
             string hpio)
         {
-          Identifier identifier = null;
+            Identifier identifier = null;
 
-          identifier = new Identifier
-          {
-            AssigningAuthorityName = organisationName,
-            Extension = extension,
-            Root = EXTERNAL_HEALTH_IDENTIFIER_QUALIFIER + hpio,
-            Code = CreateCodableText("EI", CodingSystem.HL7IdentifierType, null, null, null)
-          };
+            identifier = new Identifier
+            {
+                AssigningAuthorityName = organisationName,
+                Extension = extension,
+                Root = EXTERNAL_HEALTH_IDENTIFIER_QUALIFIER + hpio,
+                Code = CreateCodableText("EI", CodingSystem.HL7IdentifierType, null, null, null)
+            };
 
-          return identifier;
+            return identifier;
         }
 
         /// <summary>
@@ -903,10 +920,10 @@ namespace Nehta.VendorLibrary.CDA.Common
             string extension)
         {
             return new InstanceIdentifier()
-                       {
-                           Root = root,
-                           Extension = extension
-                       };
+            {
+                Root = root,
+                Extension = extension
+            };
         }
 
         /// <summary>
@@ -951,7 +968,7 @@ namespace Nehta.VendorLibrary.CDA.Common
         /// <returns>An EncapsulatedData</returns>
         public static EncapsulatedData CreateEncapsulatedData()
         {
-          return new EncapsulatedData();
+            return new EncapsulatedData();
         }
 
         /// <summary>
@@ -985,7 +1002,7 @@ namespace Nehta.VendorLibrary.CDA.Common
         {
             return new ExternalLink();
         }
-        
+
         /// <summary>
         /// Creates a quantity
         /// </summary>
@@ -1001,11 +1018,36 @@ namespace Nehta.VendorLibrary.CDA.Common
         /// <returns>A Quantity Object</returns>
         public static Quantity CreateQuantity(string value, string units)
         {
-          return new Quantity
-          {
-            Units = units,
-            Value = value
-          };
+            return new Quantity
+            {
+                Units = units,
+                Value = value
+            };
+        }
+
+        /// <summary>
+        /// Creates a ratio.
+        /// </summary>
+        /// <param name="numerVal"></param>
+        /// <param name="numerUnits"></param>
+        /// <param name="denomVal"></param>
+        /// <param name="denomUnits"></param>
+        /// <returns></returns>
+        public static Ratio CreateRatio(string numerVal, string numerUnits, string denomVal, string denomUnits)
+        {
+            return new Ratio
+            {
+                Numerator = new Quantity
+                {
+                    Units = numerUnits,
+                    Value = numerVal
+                },
+                Denominator = new Quantity
+                {
+                    Units = denomUnits,
+                    Value = denomVal
+                }
+            };
         }
 
         /// <summary>
@@ -1014,11 +1056,11 @@ namespace Nehta.VendorLibrary.CDA.Common
         /// <returns>A Quantity Object</returns>
         public static Quantity CreateQuantity(string value, UnitOfMeasure units)
         {
-          return new Quantity
-          {
-            Units = units.GetAttributeValue<NameAttribute, String>(x => x.Code),
-            Value = value
-          };
+            return new Quantity
+            {
+                Units = units.GetAttributeValue<NameAttribute, String>(x => x.Code),
+                Value = value
+            };
         }
 
         /// <summary>
@@ -1027,7 +1069,7 @@ namespace Nehta.VendorLibrary.CDA.Common
         /// <returns>FrequencyQuantity</returns>
         public static FrequencyQuantity CreateFrequencyQuantity()
         {
-          return new FrequencyQuantity();
+            return new FrequencyQuantity();
         }
 
         /// <summary>
@@ -1045,12 +1087,12 @@ namespace Nehta.VendorLibrary.CDA.Common
         /// <returns>QuantityRange</returns>
         public static QuantityRange CreateQuantityRange(Double? high, Double? low, string units)
         {
-          return new QuantityRange
-          {
-            High = high,
-            Low = low,
-            Units = units
-          };
+            return new QuantityRange
+            {
+                High = high,
+                Low = low,
+                Units = units
+            };
         }
 
         /// <summary>
@@ -1060,7 +1102,8 @@ namespace Nehta.VendorLibrary.CDA.Common
         /// <param name="medium">Medium, E.g. Telephone</param>
         /// <param name="usage">Usage, E.g. Business</param>
         /// <returns>ElectronicCommunicationDetail</returns>
-        public static ElectronicCommunicationDetail CreateElectronicCommunicationDetail(string address, ElectronicCommunicationMedium? medium, ElectronicCommunicationUsage? usage)
+        public static ElectronicCommunicationDetail CreateElectronicCommunicationDetail(string address,
+            ElectronicCommunicationMedium? medium, ElectronicCommunicationUsage? usage)
         {
             var electronicCommunicationDetail = new ElectronicCommunicationDetail
             {
@@ -1087,7 +1130,8 @@ namespace Nehta.VendorLibrary.CDA.Common
         /// <param name="medium">Medium, E.g. Telephone</param>
         /// <param name="usage">Usage, E.g. Business</param>
         /// <returns>ElectronicCommunicationDetail</returns>
-        public static ElectronicCommunicationDetail CreateElectronicCommunicationDetail(string address, ElectronicCommunicationMedium? medium, List<ElectronicCommunicationUsage> usage)
+        public static ElectronicCommunicationDetail CreateElectronicCommunicationDetail(string address,
+            ElectronicCommunicationMedium? medium, List<ElectronicCommunicationUsage> usage)
         {
             var electronicCommunicationDetail = new ElectronicCommunicationDetail
             {
@@ -1114,9 +1158,9 @@ namespace Nehta.VendorLibrary.CDA.Common
         public static string CreateGuid()
         {
             return
-                (
-                    Guid.NewGuid().ToString()
-                );
+            (
+                Guid.NewGuid().ToString()
+            );
         }
 
         /// <summary>
@@ -1127,7 +1171,7 @@ namespace Nehta.VendorLibrary.CDA.Common
         /// <returns>Interval.</returns>
         public static CdaInterval CreateInterval(ISO8601DateTime start, ISO8601DateTime end)
         {
-          return CdaInterval.CreateLowHigh(start, end);
+            return CdaInterval.CreateLowHigh(start, end);
         }
 
         /// <summary>
@@ -1138,7 +1182,7 @@ namespace Nehta.VendorLibrary.CDA.Common
         /// <returns>Interval.</returns>
         public static CdaInterval CreateInterval(string widthValue, TimeUnitOfMeasure unit)
         {
-          return CdaInterval.CreateWidth(widthValue, unit);
+            return CdaInterval.CreateWidth(widthValue, unit);
         }
 
         /// <summary>
@@ -1148,17 +1192,17 @@ namespace Nehta.VendorLibrary.CDA.Common
         /// <returns>Interval.</returns>
         public static CdaInterval CreateIntervalHigh(ISO8601DateTime high)
         {
-          return CdaInterval.CreateHigh(high);
+            return CdaInterval.CreateHigh(high);
         }
 
-                /// <summary>
+        /// <summary>
         /// Creates an interval for a high value.
         /// </summary>
         /// <param name="low">Interval low.</param>
         /// <returns>Interval.</returns>
         public static CdaInterval CreateIntervalLow(ISO8601DateTime low)
         {
-          return CdaInterval.CreateLow(low);
+            return CdaInterval.CreateLow(low);
         }
 
         /// <summary>
@@ -1230,7 +1274,7 @@ namespace Nehta.VendorLibrary.CDA.Common
         /// <returns>Link</returns>
         public static Link CreateLink()
         {
-          return new Link();
+            return new Link();
         }
 
         /// <summary>
@@ -1282,194 +1326,203 @@ namespace Nehta.VendorLibrary.CDA.Common
         }
 
         /// <summary>
-      /// Creates a OtherTestResult
-      /// </summary>
-      /// <returns>OtherTestResult</returns>
+        /// Creates a OtherTestResult
+        /// </summary>
+        /// <returns>OtherTestResult</returns>
         public static OtherTestResult CreateOtherTestResult()
-      {
-        return new OtherTestResult();
-      }
+        {
+            return new OtherTestResult();
+        }
 
         /// <summary>
-      /// Creates a External Concept Identifier
-      /// </summary>
-      /// <returns>Identifier</returns>
+        /// Creates a External Concept Identifier
+        /// </summary>
+        /// <returns>Identifier</returns>
         public static Identifier CreateExternalConceptIdentifier(ExternalConcepts externalConcepts, string extention)
-      {
-        return CreateIdentifier(
-          CodingSystem.AustralianPBSManufacturerCode.GetAttributeValue<NameAttribute, String>(x => x.Name),
-          null,
-          extention,
-          String.Format("{0}", externalConcepts.GetAttributeValue<NameAttribute, String>(x => x.Code)),
-          null
-          );
-      }
+        {
+            return CreateIdentifier(
+                CodingSystem.AustralianPBSManufacturerCode.GetAttributeValue<NameAttribute, String>(x => x.Name),
+                null,
+                extention,
+                String.Format("{0}", externalConcepts.GetAttributeValue<NameAttribute, String>(x => x.Code)),
+                null
+            );
+        }
 
         #region Authority to Post (DOCUMENT USE AUTHORISATION) - Create Participation and Participant functions
 
-      /// <summary>
-      /// Creates an Participation Authoriser
-      /// </summary>
-      /// <returns>IParticipationAuthoriser</returns>
-      public static IParticipationAuthoriser CreateAuthoriser()
-      {
-          return new Participation();
-      }
+        /// <summary>
+        /// Creates an Participation Authoriser
+        /// </summary>
+        /// <returns>IParticipationAuthoriser</returns>
+        public static IParticipationAuthoriser CreateAuthoriser()
+        {
+            return new Participation();
+        }
 
-      /// <summary>
-      /// Creates an Participant For a Reporting Radiologist
-      /// </summary>
-      /// <returns>IAuthoriser</returns>
-      public static IReportingRadiologist CreateParticipantForReportingRadiologist()
-      {
-          return new Participant();
-      }
+        /// <summary>
+        /// Creates an Participant For a Reporting Radiologist
+        /// </summary>
+        /// <returns>IAuthoriser</returns>
+        public static IReportingRadiologist CreateParticipantForReportingRadiologist()
+        {
+            return new Participant();
+        }
 
-      /// <summary>
-      /// Creates an Participant For Requester
-      /// </summary>
-      /// <returns>IAuthoriser</returns>
-      public static IRequester CreateParticipantForRequester()
-      {
-          return new Participant();
-      }
+        /// <summary>
+        /// Creates an Participant For Requester
+        /// </summary>
+        /// <returns>IAuthoriser</returns>
+        public static IRequester CreateParticipantForRequester()
+        {
+            return new Participant();
+        }
 
-      /// <summary>
-      /// Creates an Participant For Authoriser
-      /// </summary>
-      /// <returns>IAuthoriser</returns>
-      public static IAuthoriser CreateParticipantForAuthoriser()
-      {
-          return new Participant();
-      }
+        /// <summary>
+        /// Creates an Participant For Authoriser
+        /// </summary>
+        /// <returns>IAuthoriser</returns>
+        public static IAuthoriser CreateParticipantForAuthoriser()
+        {
+            return new Participant();
+        }
 
-      /// <summary>
-      /// Creates an Participation Authorisee
-      /// </summary>
-      /// <returns>IParticipationAuthorisee</returns>
-      public static IParticipationAuthorisee CreateAuthorisee()
-      {
-          return new Participation();
-      }
+        /// <summary>
+        /// Creates an Participation Authorisee
+        /// </summary>
+        /// <returns>IParticipationAuthorisee</returns>
+        public static IParticipationAuthorisee CreateAuthorisee()
+        {
+            return new Participation();
+        }
 
-      /// <summary>
-      /// Creates an Participation Reporting Radiologist
-      /// </summary>
-      /// <returns>IParticipationReportingRadiologist</returns>
-      public static IParticipationReportingRadiologist CreateReportingRadiologist()
-      {
-          return new Participation();
-      }
+        /// <summary>
+        /// Creates an Participation Reporting Radiologist
+        /// </summary>
+        /// <returns>IParticipationReportingRadiologist</returns>
+        public static IParticipationReportingRadiologist CreateReportingRadiologist()
+        {
+            return new Participation();
+        }
 
-      /// <summary>
-      /// Creates an Participation Requester
-      /// </summary>
-      /// <returns>IParticipationRequester</returns>
-      public static IParticipationRequester CreateRequester()
-      {
-          return new Participation();
-      }
+        /// <summary>
+        /// Creates an Participation Requester
+        /// </summary>
+        /// <returns>IParticipationRequester</returns>
+        public static IParticipationRequester CreateRequester()
+        {
+            return new Participation();
+        }
 
-      /// <summary>
-      /// Creates an Participant For Authorisee
-      /// </summary>
-      /// <returns>IAuthorisee</returns>
-      public static IAuthorisee CreateParticipantForAuthorisee()
-      {
-          return new Participant();
-      }
+        /// <summary>
+        /// Creates an Participant For Authorisee
+        /// </summary>
+        /// <returns>IAuthorisee</returns>
+        public static IAuthorisee CreateParticipantForAuthorisee()
+        {
+            return new Participant();
+        }
 
-      /// <summary>
-      /// Creates an Repository
-      /// </summary>
-      /// <returns>Repository</returns>
-      public static Repository CreateRepository()
-      {
-          return new Repository();
-      }
+        /// <summary>
+        /// Creates an Repository
+        /// </summary>
+        /// <returns>Repository</returns>
+        public static Repository CreateRepository()
+        {
+            return new Repository();
+        }
 
 
-      /// <summary>
-      /// Creates an Participation Subject
-      /// </summary>
-      /// <returns>IParticipationSubject</returns>
-      public static IParticipationSubject CreateSubject()
-      {
-          return new Participation();
-      }
+        /// <summary>
+        /// Creates an Participation Subject
+        /// </summary>
+        /// <returns>IParticipationSubject</returns>
+        public static IParticipationSubject CreateSubject()
+        {
+            return new Participation();
+        }
 
-      /// <summary>
-      /// Creates an Participant For Subject
-      /// </summary>
-      /// <returns>ISubject</returns>
-      public static ISubject CreateParticipantForSubject()
-      {
-          return new Participant();
-      }
+        /// <summary>
+        /// Creates an Participant For Subject
+        /// </summary>
+        /// <returns>ISubject</returns>
+        public static ISubject CreateParticipantForSubject()
+        {
+            return new Participant();
+        }
 
-      /// <summary>
-      /// Create Participant a AuthorityToPost
-      /// </summary>
-      /// <returns>AuthorityToPost</returns>
-      public static AuthorityToPost CreateAuthorityToPost()
-      {
-         return new AuthorityToPost();
-      }
+        /// <summary>
+        /// Create Participant a AuthorityToPost
+        /// </summary>
+        /// <returns>AuthorityToPost</returns>
+        public static AuthorityToPost CreateAuthorityToPost()
+        {
+            return new AuthorityToPost();
+        }
 
-      /// <summary>
-      /// Creates a result value reference range detail
-      /// </summary>
-      /// <returns>ResultValueReferenceRangeDetail</returns>
-      public static ResultValueReferenceRangeDetail CreateResultValueReferenceRangeDetail()
-      {
-          return new ResultValueReferenceRangeDetail();
-      }
+        /// <summary>
+        /// Creates a result value reference range detail
+        /// </summary>
+        /// <returns>ResultValueReferenceRangeDetail</returns>
+        public static ResultValueReferenceRangeDetail CreateResultValueReferenceRangeDetail()
+        {
+            return new ResultValueReferenceRangeDetail();
+        }
 
-      /// <summary>
-      /// Creates a reaction event
-      /// </summary>
-      /// <returns>ReactionEvent</returns>
-      public static ReactionEvent CreateReactionEvent()
-      {
-          return new ReactionEvent();
-      }
+        /// <summary>
+        /// Creates a reaction event
+        /// </summary>
+        /// <returns>ReactionEvent</returns>
+        public static ReactionEvent CreateReactionEvent()
+        {
+            return new ReactionEvent();
+        }
 
-      /// <summary>
-      /// Creates a reaction event
-      /// </summary>
-      /// <returns>ReactionEvent</returns>
-      public static Reaction CreateReaction()
-      {
-          return new Reaction();
-      }
+        /// <summary>
+        /// Creates a reaction event
+        /// </summary>
+        /// <returns>ReactionEvent</returns>
+        public static Reaction CreateReaction()
+        {
+            return new Reaction();
+        }
 
-      /// <summary>
-      /// Creates a test request
-      /// </summary>
-      /// <returns>(ITestRequest) Request</returns>
-      public static ITestRequest CreateTestRequest()
-      {
-          return new Request();
-      }
+        /// <summary>
+        /// Creates a test request
+        /// </summary>
+        /// <returns>(ITestRequest) Request</returns>
+        public static ITestRequest CreateTestRequest()
+        {
+            return new Request();
+        }
 
-      /// <summary>
-      /// Creates an Image Details
-      /// </summary>
-      /// <returns>(IImageDetails) ImageDetails</returns>
-      public static IImageDetails CreateImageDetails()
-      {
-          return new ImageDetails();
-      }
+        /// <summary>
+        /// Creates an Image Details
+        /// </summary>
+        /// <returns>(IImageDetails) ImageDetails</returns>
+        public static IImageDetails CreateImageDetails()
+        {
+            return new ImageDetails();
+        }
 
-      /// <summary>
-      /// Creates an Image Result Group
-      /// </summary>
-      /// <returns>(IImagingResultGroup) ResultGroup</returns>
-      public static IImagingResultGroup CreateImagingResultGroup()
-      {
-          return new ResultGroup();
-      }
+        /// <summary>
+        /// Creates an Image Result Group
+        /// </summary>
+        /// <returns>(IImagingResultGroup) ResultGroup</returns>
+        public static IImagingResultGroup CreateImagingResultGroup()
+        {
+            return new ResultGroup();
+        }
 
+
+        /// <summary>
+        /// Creates an Medications object, constrained down to an IMedicationsSML
+        /// </summary>
+        /// <returns>(For SML) Medications </returns>
+        public static IMedicationsSML CreateMedicationsSml()
+        {
+            return new MedicationsSML();
+        }
 
         /// <summary>
         /// Creates an adverseSubstance reactions object, constrained down to an IAdverseSubstanceReactions
@@ -1550,22 +1603,22 @@ namespace Nehta.VendorLibrary.CDA.Common
         }
 
         /// <summary>
-       /// Creates a result value
-       /// </summary>
-       /// <returns>A ResultValue Object</returns>
+        /// Creates a result value
+        /// </summary>
+        /// <returns>A ResultValue Object</returns>
         public static ResultValue CreateResultValue()
         {
             return new ResultValue();
         }
 
         /// <summary>
-      /// Creates a test result
-      /// </summary>
-      /// <returns>(ITestResult) Result</returns>
+        /// Creates a test result
+        /// </summary>
+        /// <returns>(ITestResult) Result</returns>
         public static ITestResult CreateTestResult()
-      {
-          return new Result();
-      }
+        {
+            return new Result();
+        }
 
         #endregion
 
@@ -1575,8 +1628,8 @@ namespace Nehta.VendorLibrary.CDA.Common
         /// <returns>ParentDocument</returns>
         public static ParentDocument CreateParentDocument()
         {
-        return new ParentDocument();
-       }
+            return new ParentDocument();
+        }
 
         /// <summary>
         /// Creates a Medicare View Exclusion Statement
@@ -1584,7 +1637,7 @@ namespace Nehta.VendorLibrary.CDA.Common
         /// <returns>(IMedicareOverviewContext) Context</returns>
         public static ExclusionStatement CreateExclusionStatement()
         {
-          return new ExclusionStatement();
+            return new ExclusionStatement();
         }
 
         /// <summary>
@@ -1593,219 +1646,222 @@ namespace Nehta.VendorLibrary.CDA.Common
         /// <returns>(IMedicareOverviewContext) Context</returns>
         public static ExclusionStatement CreateExclusionStatement(string sectionTitle, string generalStatement)
         {
-          return CreateExclusionStatement(sectionTitle, generalStatement, null);
+            return CreateExclusionStatement(sectionTitle, generalStatement, null);
         }
 
         /// <summary>
         /// Creates a Medicare View Exclusion Statement
         /// </summary>
         /// <returns>(IMedicareOverviewContext) Context</returns>
-        public static ExclusionStatement CreateExclusionStatement(string sectionTitle, string generalStatement, StrucDocText customNarrative)
+        public static ExclusionStatement CreateExclusionStatement(string sectionTitle, string generalStatement,
+            StrucDocText customNarrative)
         {
             return new ExclusionStatement
             {
-              CustomNarrative = customNarrative,
-              GeneralStatement = generalStatement,
-              SectionTitle = sectionTitle
+                CustomNarrative = customNarrative,
+                GeneralStatement = generalStatement,
+                SectionTitle = sectionTitle
             };
         }
 
-       /// <summary>
-       /// Creates a PBSExtemporaneousIngredient
-       /// </summary>
-       /// <returns>PBSExtemporaneousIngredient</returns>
-       public static PBSExtemporaneousIngredient CreatePBSExtemporaneousIngredient(ICodableText ingredientName, Quantity ingredientQuantity)
-       {
-        return new PBSExtemporaneousIngredient
+        /// <summary>
+        /// Creates a PBSExtemporaneousIngredient
+        /// </summary>
+        /// <returns>PBSExtemporaneousIngredient</returns>
+        public static PBSExtemporaneousIngredient CreatePBSExtemporaneousIngredient(ICodableText ingredientName,
+            Quantity ingredientQuantity)
         {
-          IngredientName = ingredientName,
-          IngredientQuantity = ingredientQuantity
-        };
-       }
+            return new PBSExtemporaneousIngredient
+            {
+                IngredientName = ingredientName,
+                IngredientQuantity = ingredientQuantity
+            };
+        }
 
-      /// <summary>
-      /// Creates am Observation
-      /// </summary>
-      /// <returns>(IObservationWeightHeight) Observation</returns>
-      public static IObservationWeightHeight CreateObservation()
-      {
-        return new Observation();
-      }
-
-      /// <summary>
-      /// Creates a body weight
-      /// </summary>
-      /// <returns>BodyWeight</returns>
-      public static BodyWeight CreateBodyWeight()
-      {
-        return new BodyWeight();
-      }
-
-      /// <summary>
-      /// Creates a body height
-      /// </summary>
-      /// <returns>BodyHeight</returns>
-      public static BodyHeight CreateBodyHeight()
-      {
-        return new BodyHeight();
-      }
-
-      /// <summary>
-      /// Creates a QuantityUnit
-      /// </summary>
-      /// <returns>QuantityUnit</returns>
-      public static QuantityUnit CreateQuantityToDispense()
-      {
-        return new QuantityUnit();
-      }
-
-      /// <summary>
-      /// Creates a QuantityUnit
-      /// </summary>
-      /// <returns>QuantityUnit</returns>
-      public static QuantityUnit CreateQuantityToDispense(Quantity dose, string quantityDescription)
-      {
-        return CreateQuantityUnit(dose, quantityDescription);
-      }
-
-      /// <summary>
-      /// Creates a QuantityUnit
-      /// </summary>
-      /// <returns>QuantityUnit</returns>
-      public static QuantityUnit CreateQuantityToDispense(string value, ICodableText doseUnit, string quantityDescription)
-      {
-        return CreateQuantityUnit(value, doseUnit, quantityDescription);
-      }
-
-      /// <summary>
-      /// Creates a QuantityUnit
-      /// </summary>
-      /// <returns>QuantityUnit</returns>
-      public static QuantityUnit CreateStructuredDose()
-      {
-        return new QuantityUnit();
-      }
-
-      /// <summary>
-      /// Creates a QuantityUnit
-      /// </summary>
-      /// <returns>QuantityUnit</returns>
-      public static QuantityUnit CreateStructuredDose(Quantity dose, string quantityDescription)
-      {
-        return CreateQuantityUnit(dose, quantityDescription);
-      }
-
-      /// <summary>
-      /// Creates a QuantityUnit
-      /// </summary>
-      /// <returns>QuantityUnit</returns>
-      public static QuantityUnit CreateQuantityUnit()
-      {
-        return new QuantityUnit();
-      }
-
-      /// <summary>
-      /// Creates a QuantityUnit
-      /// </summary>
-      /// <returns>QuantityUnit</returns>
-      public static QuantityUnit CreateQuantityUnit(Quantity dose, string quantityDescription)
-      {
-        return new QuantityUnit
+        /// <summary>
+        /// Creates am Observation
+        /// </summary>
+        /// <returns>(IObservationWeightHeight) Observation</returns>
+        public static IObservationWeightHeight CreateObservation()
         {
-          Quantity = dose,
-          QuantityDescription = quantityDescription
-        };
-      }
+            return new Observation();
+        }
 
-      /// <summary>
-      /// Creates a QuantityUnit
-      /// </summary>
-      /// <returns>QuantityUnit</returns>
-      public static QuantityUnit CreateQuantityUnit(string value, ICodableText doseUnit, string quantityDescription)
-      {
-        return new QuantityUnit
+        /// <summary>
+        /// Creates a body weight
+        /// </summary>
+        /// <returns>BodyWeight</returns>
+        public static BodyWeight CreateBodyWeight()
         {
-          Quantity = !value.IsNullOrEmptyWhitespace() ? new Quantity { Value = value } : null,
-          Unit = doseUnit,
-          QuantityDescription = quantityDescription
-        };
-      }
+            return new BodyWeight();
+        }
 
-      /// <summary>
-      /// Creates a Timing object
-      /// </summary>
-      /// <returns>Timing</returns>
-      public static Timing CreateTiming()
-      {
-        return new Timing();
-      }
+        /// <summary>
+        /// Creates a body height
+        /// </summary>
+        /// <returns>BodyHeight</returns>
+        public static BodyHeight CreateBodyHeight()
+        {
+            return new BodyHeight();
+        }
 
-      /// <summary>
-      /// Creates a Related Image
-      /// </summary>
-      /// <returns>RelatedImage</returns>
-      public static RelatedImage CreateRelatedImage()
-      {
-          return new RelatedImage();
-      }
+        /// <summary>
+        /// Creates a QuantityUnit
+        /// </summary>
+        /// <returns>QuantityUnit</returns>
+        public static QuantityUnit CreateQuantityToDispense()
+        {
+            return new QuantityUnit();
+        }
 
-      /// <summary>
-      /// Creates a Related Image
-      /// </summary>
-      /// <returns>RelatedImage</returns>
-      public static RelatedImage CreateRelatedImage(string imageLocation)
-      {
-          return new RelatedImage
-          {
-              ImageUrl = imageLocation
-          };
-      }
+        /// <summary>
+        /// Creates a QuantityUnit
+        /// </summary>
+        /// <returns>QuantityUnit</returns>
+        public static QuantityUnit CreateQuantityToDispense(Quantity dose, string quantityDescription)
+        {
+            return CreateQuantityUnit(dose, quantityDescription);
+        }
 
-      /// <summary>
-      /// Creates a Related Image
-      /// </summary>
-      /// <returns>RelatedImage</returns>
-      public static RelatedImage CreateRelatedImage(string imageLocation, MediaType mediaType)
-      {
-          return new RelatedImage
-          {
-              ImageUrl = imageLocation,
-              MediaType = mediaType
-          };
-      }
+        /// <summary>
+        /// Creates a QuantityUnit
+        /// </summary>
+        /// <returns>QuantityUnit</returns>
+        public static QuantityUnit CreateQuantityToDispense(string value, ICodableText doseUnit,
+            string quantityDescription)
+        {
+            return CreateQuantityUnit(value, doseUnit, quantityDescription);
+        }
 
-      /// <summary>
-      /// Create a Document Provenance  
-      /// </summary>
-      /// <returns>DocumentProvenance</returns>
-      public static DocumentDetails CreateDocumentDetails()
-      {
-          return new DocumentDetails();
-      }
+        /// <summary>
+        /// Creates a QuantityUnit
+        /// </summary>
+        /// <returns>QuantityUnit</returns>
+        public static QuantityUnit CreateStructuredDose()
+        {
+            return new QuantityUnit();
+        }
 
-      /// <summary>
-      /// Creates an ElectronicCommunicationDetail Object
-      /// </summary>
-      /// <returns>An ElectronicCommunicationDetail Object</returns>
-      public static ParticipationPeriod CreateParticipationPeriod(CdaInterval interval)
-      {
-          return new ParticipationPeriod
-          {
-              Interval = interval
-          };
-      }
+        /// <summary>
+        /// Creates a QuantityUnit
+        /// </summary>
+        /// <returns>QuantityUnit</returns>
+        public static QuantityUnit CreateStructuredDose(Quantity dose, string quantityDescription)
+        {
+            return CreateQuantityUnit(dose, quantityDescription);
+        }
 
-      /// <summary>
-      /// Creates an ElectronicCommunicationDetail Object
-      /// </summary>
-      /// <returns>An ElectronicCommunicationDetail Object</returns>
-      public static ParticipationPeriod CreateParticipationPeriod(ISO8601DateTime value)
-      {
-          return new ParticipationPeriod
-          {
-              Value = value
-          };
-      }
+        /// <summary>
+        /// Creates a QuantityUnit
+        /// </summary>
+        /// <returns>QuantityUnit</returns>
+        public static QuantityUnit CreateQuantityUnit()
+        {
+            return new QuantityUnit();
+        }
+
+        /// <summary>
+        /// Creates a QuantityUnit
+        /// </summary>
+        /// <returns>QuantityUnit</returns>
+        public static QuantityUnit CreateQuantityUnit(Quantity dose, string quantityDescription)
+        {
+            return new QuantityUnit
+            {
+                Quantity = dose,
+                QuantityDescription = quantityDescription
+            };
+        }
+
+        /// <summary>
+        /// Creates a QuantityUnit
+        /// </summary>
+        /// <returns>QuantityUnit</returns>
+        public static QuantityUnit CreateQuantityUnit(string value, ICodableText doseUnit, string quantityDescription)
+        {
+            return new QuantityUnit
+            {
+                Quantity = !value.IsNullOrEmptyWhitespace() ? new Quantity {Value = value} : null,
+                Unit = doseUnit,
+                QuantityDescription = quantityDescription
+            };
+        }
+
+        /// <summary>
+        /// Creates a Timing object
+        /// </summary>
+        /// <returns>Timing</returns>
+        public static Timing CreateTiming()
+        {
+            return new Timing();
+        }
+
+        /// <summary>
+        /// Creates a Related Image
+        /// </summary>
+        /// <returns>RelatedImage</returns>
+        public static RelatedImage CreateRelatedImage()
+        {
+            return new RelatedImage();
+        }
+
+        /// <summary>
+        /// Creates a Related Image
+        /// </summary>
+        /// <returns>RelatedImage</returns>
+        public static RelatedImage CreateRelatedImage(string imageLocation)
+        {
+            return new RelatedImage
+            {
+                ImageUrl = imageLocation
+            };
+        }
+
+        /// <summary>
+        /// Creates a Related Image
+        /// </summary>
+        /// <returns>RelatedImage</returns>
+        public static RelatedImage CreateRelatedImage(string imageLocation, MediaType mediaType)
+        {
+            return new RelatedImage
+            {
+                ImageUrl = imageLocation,
+                MediaType = mediaType
+            };
+        }
+
+        /// <summary>
+        /// Create a Document Provenance  
+        /// </summary>
+        /// <returns>DocumentProvenance</returns>
+        public static DocumentDetails CreateDocumentDetails()
+        {
+            return new DocumentDetails();
+        }
+
+        /// <summary>
+        /// Creates an ElectronicCommunicationDetail Object
+        /// </summary>
+        /// <returns>An ElectronicCommunicationDetail Object</returns>
+        public static ParticipationPeriod CreateParticipationPeriod(CdaInterval interval)
+        {
+            return new ParticipationPeriod
+            {
+                Interval = interval
+            };
+        }
+
+        /// <summary>
+        /// Creates an ElectronicCommunicationDetail Object
+        /// </summary>
+        /// <returns>An ElectronicCommunicationDetail Object</returns>
+        public static ParticipationPeriod CreateParticipationPeriod(ISO8601DateTime value)
+        {
+            return new ParticipationPeriod
+            {
+                Value = value
+            };
+        }
 
         #region Codable Text - Overloads
 
@@ -1815,104 +1871,111 @@ namespace Nehta.VendorLibrary.CDA.Common
         /// <param name="code">Code</param>
         /// <returns>CodableText</returns>
         public static ICodableText CreateCode(string code)
-      {
-          return CreateCodableText(code, null, null, null, null, null, null);
-      }
+        {
+            return CreateCodableText(code, null, null, null, null, null, null);
+        }
 
-      /// <summary>
-      /// Creates a codable text nullable object
-      /// </summary>
-      /// <param name="nullFlavor">The nullFlavor</param>
-      /// <returns>CodableText</returns>
-      public static ICodableText CreateCodableText(NullFlavour nullFlavor)
-      {
-          var codableText = new CodableText
-          {
-              NullFlavour = nullFlavor
-          };
-          return codableText;
-      }
+        /// <summary>
+        /// Creates a codable text nullable object
+        /// </summary>
+        /// <param name="nullFlavor">The nullFlavor</param>
+        /// <returns>CodableText</returns>
+        public static ICodableText CreateCodableText(NullFlavour nullFlavor)
+        {
+            var codableText = new CodableText
+            {
+                NullFlavour = nullFlavor
+            };
+            return codableText;
+        }
 
-      /// <summary>
-      /// Creates a codable text with nullable object, Original Text and CodingSystem
-      /// </summary>
-      /// <param name="nullFlavor">The nullFlavor</param>
-      /// <param name="orginalText">The orginalText</param>
-      /// <param name="codingSystemCode">The codingSystemCode</param>
-      /// <returns>CodableText</returns>
-      public static ICodableText CreateCodableText(NullFlavour nullFlavor, CodingSystem codingSystemCode, string orginalText)
-      {
-          var codableText = new CodableText
-          {
-              NullFlavour = nullFlavor,
-              OriginalText = orginalText,
-              CodeSystemCode = codingSystemCode.GetAttributeValue<NameAttribute, string>(a => a.Code)
-          };
-          return codableText;
-      }
+        /// <summary>
+        /// Creates a codable text with nullable object, Original Text and CodingSystem
+        /// </summary>
+        /// <param name="nullFlavor">The nullFlavor</param>
+        /// <param name="orginalText">The orginalText</param>
+        /// <param name="codingSystemCode">The codingSystemCode</param>
+        /// <returns>CodableText</returns>
+        public static ICodableText CreateCodableText(NullFlavour nullFlavor, CodingSystem codingSystemCode,
+            string orginalText)
+        {
+            var codableText = new CodableText
+            {
+                NullFlavour = nullFlavor,
+                OriginalText = orginalText,
+                CodeSystemCode = codingSystemCode.GetAttributeValue<NameAttribute, string>(a => a.Code)
+            };
+            return codableText;
+        }
 
-       /// <summary>
-      /// Creates a codable text with nullable object, Original Text and CodingSystem
-       /// </summary>
-       /// <param name="nullFlavor">The nullFlavor</param>
-       /// <param name="orginalText">The orginalText</param>
-       /// <param name="codingSystemCode">The codingSystemCode</param>
-       /// <returns>CodableText</returns>
-       public static ICodableText CreateCodableText(NullFlavour nullFlavor, string codingSystemCode, string orginalText)
-       {
-          var codableText = new CodableText
-          {
-              NullFlavour = nullFlavor,
-              OriginalText = orginalText,
-              CodeSystemCode = codingSystemCode
-          };
-          return codableText;
-      }
+        /// <summary>
+        /// Creates a codable text with nullable object, Original Text and CodingSystem
+        /// </summary>
+        /// <param name="nullFlavor">The nullFlavor</param>
+        /// <param name="orginalText">The orginalText</param>
+        /// <param name="codingSystemCode">The codingSystemCode</param>
+        /// <returns>CodableText</returns>
+        public static ICodableText CreateCodableText(NullFlavour nullFlavor, string codingSystemCode,
+            string orginalText)
+        {
+            var codableText = new CodableText
+            {
+                NullFlavour = nullFlavor,
+                OriginalText = orginalText,
+                CodeSystemCode = codingSystemCode
+            };
+            return codableText;
+        }
 
-      /// <summary>
-      /// Creates a empty codableText object
-      /// </summary>
-      /// <returns>CodableText</returns>
-      public static ICodableText CreateCodableText()
-      {
-          return new CodableText();
-      }
+        /// <summary>
+        /// Creates a empty codableText object
+        /// </summary>
+        /// <returns>CodableText</returns>
+        public static ICodableText CreateCodableText()
+        {
+            return new CodableText();
+        }
 
-      /// <summary>
-      /// Creates a codableText object
-      /// </summary>
-      /// <param name="originalText">Original text, usually applicable in the absence of a code and display name</param>
-      /// <returns>CodableText</returns>
-      public static ICodableText CreateCodableText(string originalText)
-      {
-          return CreateCodableText(null, null, null, originalText, null, null);
-      }
+        /// <summary>
+        /// Creates a codableText object
+        /// </summary>
+        /// <param name="originalText">Original text, usually applicable in the absence of a code and display name</param>
+        /// <returns>CodableText</returns>
+        public static ICodableText CreateCodableText(string originalText)
+        {
+            return CreateCodableText(null, null, null, originalText, null, null);
+        }
 
-      /// <summary>
-      /// Creates a codableText object
-      /// </summary>
-      /// <param name="code">A code</param>
-      /// <param name="codeSystem">The code system associated with the code</param>
-      /// <param name="displayName">The display name associated with the code</param>
-      /// <returns>CodableText</returns>
-      public static ICodableText CreateCodableText(string code, CodingSystem? codeSystem, string displayName)
-      {
-          return CreateCodableText(code, codeSystem, codeSystem.HasValue ? codeSystem.Value.GetAttributeValue<NameAttribute, string>(a => a.Version) : null, displayName, null, null, null);
-      }
+        /// <summary>
+        /// Creates a codableText object
+        /// </summary>
+        /// <param name="code">A code</param>
+        /// <param name="codeSystem">The code system associated with the code</param>
+        /// <param name="displayName">The display name associated with the code</param>
+        /// <returns>CodableText</returns>
+        public static ICodableText CreateCodableText(string code, CodingSystem? codeSystem, string displayName)
+        {
+            return CreateCodableText(code, codeSystem,
+                codeSystem.HasValue ? codeSystem.Value.GetAttributeValue<NameAttribute, string>(a => a.Version) : null,
+                displayName, null, null, null);
+        }
 
-      /// <summary>
-      /// Creates a codableText object
-      /// </summary>
-      /// <param name="code">A code</param>
-      /// <param name="codeSystem">The code system associated with the code</param>
-      /// <param name="displayName">The display name associated with the code</param>
-      /// <param name="originalText">The originalText</param>
-      /// <param name="qualifierCodes">A list of qualifier codes</param>
-      /// <returns>CodableText</returns>
-      public static ICodableText CreateCodableText(string code, CodingSystem? codeSystem, string displayName, string originalText, List<QualifierCode> qualifierCodes = null)
-      {
-          return CreateCodableText(code, codeSystem, codeSystem.HasValue ? codeSystem.Value.GetAttributeValue<NameAttribute, string>(a => a.Version) : null, displayName, originalText, null, qualifierCodes);
-      }
+        /// <summary>
+        /// Creates a codableText object
+        /// </summary>
+        /// <param name="code">A code</param>
+        /// <param name="codeSystem">The code system associated with the code</param>
+        /// <param name="displayName">The display name associated with the code</param>
+        /// <param name="originalText">The originalText</param>
+        /// <param name="qualifierCodes">A list of qualifier codes</param>
+        /// <returns>CodableText</returns>
+        public static ICodableText CreateCodableText(string code, CodingSystem? codeSystem, string displayName,
+            string originalText, List<QualifierCode> qualifierCodes = null)
+        {
+            return CreateCodableText(code, codeSystem,
+                codeSystem.HasValue ? codeSystem.Value.GetAttributeValue<NameAttribute, string>(a => a.Version) : null,
+                displayName, originalText, null, qualifierCodes);
+        }
 
         /// <summary>
         /// Creates a codableText object
@@ -1924,663 +1987,721 @@ namespace Nehta.VendorLibrary.CDA.Common
         /// <param name="translations">Any translations that are associated with this coadable text</param>
         /// <param name="qualifierCodes">A list of qualifier codes</param>
         /// <returns>CodableText</returns>
-        public static ICodableText CreateCodableText(string code, CodingSystem? codeSystem, string displayName, string originalText, List<ICodableTranslation> translations, List<QualifierCode> qualifierCodes = null)
+        public static ICodableText CreateCodableText(string code, CodingSystem? codeSystem, string displayName,
+            string originalText, List<ICodableTranslation> translations, List<QualifierCode> qualifierCodes = null)
         {
-          return CreateCodableText(code, codeSystem, codeSystem.HasValue ? codeSystem.Value.GetAttributeValue<NameAttribute, string>(a => a.Version) : null, displayName, originalText, translations, qualifierCodes);
-      }
+            return CreateCodableText(code, codeSystem,
+                codeSystem.HasValue ? codeSystem.Value.GetAttributeValue<NameAttribute, string>(a => a.Version) : null,
+                displayName, originalText, translations, qualifierCodes);
+        }
 
-      /// <summary>
-      /// Creates a codableText object
-      /// </summary>
-      /// <param name="code">A code</param>
-      /// <param name="codeSystem">The code system associated with the code</param>
-      /// <param name="codeSystemVersion">The Code System version</param>
-      /// <param name="displayName">The display name associated with the code</param>
-      /// <param name="originalText">Original text, usually applicable in the absence of a code and display name</param>
-      /// <param name="translations">Any translations that are associated with this coadable text</param>
-      /// <param name="qualifierCodes">A list of Qualifier Codes</param>
-      /// <returns>CodableText</returns>
-      public static ICodableText CreateCodableText(string code, CodingSystem? codeSystem, string codeSystemVersion, string displayName, string originalText, List<ICodableTranslation> translations, List<QualifierCode> qualifierCodes = null)
-      {
-          var codableText = new CodableText();
+        /// <summary>
+        /// Creates a codableText object
+        /// </summary>
+        /// <param name="code">A code</param>
+        /// <param name="codeSystem">The code system associated with the code</param>
+        /// <param name="codeSystemVersion">The Code System version</param>
+        /// <param name="displayName">The display name associated with the code</param>
+        /// <param name="originalText">Original text, usually applicable in the absence of a code and display name</param>
+        /// <param name="translations">Any translations that are associated with this coadable text</param>
+        /// <param name="qualifierCodes">A list of Qualifier Codes</param>
+        /// <returns>CodableText</returns>
+        public static ICodableText CreateCodableText(string code, CodingSystem? codeSystem, string codeSystemVersion,
+            string displayName, string originalText, List<ICodableTranslation> translations,
+            List<QualifierCode> qualifierCodes = null)
+        {
+            var codableText = new CodableText();
 
-          if (codeSystem.HasValue)
-          {
-              codableText.DisplayName = displayName;
-              codableText.Code = code;
-              codableText.CodeSystemCode = codeSystem.Value.GetAttributeValue<NameAttribute, string>(a => a.Code);
-              codableText.CodeSystemName = codeSystem.Value.GetAttributeValue<NameAttribute, string>(a => a.Name);
-              codableText.CodeSystemVersion = codeSystemVersion;
-          }
+            if (codeSystem.HasValue)
+            {
+                codableText.DisplayName = displayName;
+                codableText.Code = code;
+                codableText.CodeSystemCode = codeSystem.Value.GetAttributeValue<NameAttribute, string>(a => a.Code);
+                codableText.CodeSystemName = codeSystem.Value.GetAttributeValue<NameAttribute, string>(a => a.Name);
+                codableText.CodeSystemVersion = codeSystemVersion;
+            }
 
-          if (!originalText.IsNullOrEmptyWhitespace())
-              codableText.OriginalText = originalText;
+            if (!originalText.IsNullOrEmptyWhitespace())
+                codableText.OriginalText = originalText;
 
-          if (translations != null && translations.Any())
-              codableText.Translations = translations;
+            if (translations != null && translations.Any())
+                codableText.Translations = translations;
 
             codableText.QualifierCodes = qualifierCodes;
 
             return codableText;
-      }
+        }
 
-      /// <summary>
-      /// Creates a codableText object
-      /// </summary>
-      /// <param name="code">A code</param>
-      /// <param name="codeSystemCode">The Code for the CodableText</param>
-      /// <param name="codeSystemName">The CodeSystemName for the CodableText</param>
-      /// <param name="codeSystemVersion">The CodeSystemVersion \ for the CodableText</param>
-      /// <param name="displayName">The display name associated with the code</param>
-      /// <param name="originalText">Original text, usually applicable in the absence of a code and display name</param>
-      /// <param name="translations">Any translations that are associated with this coadable text</param>
-      /// <param name="qualifierCodes">A list of qualifier codes</param>
-      /// <returns>CodableText</returns>
-      public static ICodableText CreateCodableText(string code, string codeSystemCode, string codeSystemName, string codeSystemVersion, string displayName, string originalText, List<ICodableTranslation> translations, List<QualifierCode> qualifierCodes = null)
-      {
-          var codableText = new CodableText();
+        /// <summary>
+        /// Creates a codableText object
+        /// </summary>
+        /// <param name="code">A code</param>
+        /// <param name="codeSystemCode">The Code for the CodableText</param>
+        /// <param name="codeSystemName">The CodeSystemName for the CodableText</param>
+        /// <param name="codeSystemVersion">The CodeSystemVersion \ for the CodableText</param>
+        /// <param name="displayName">The display name associated with the code</param>
+        /// <param name="originalText">Original text, usually applicable in the absence of a code and display name</param>
+        /// <param name="translations">Any translations that are associated with this coadable text</param>
+        /// <param name="qualifierCodes">A list of qualifier codes</param>
+        /// <returns>CodableText</returns>
+        public static ICodableText CreateCodableText(string code, string codeSystemCode, string codeSystemName,
+            string codeSystemVersion, string displayName, string originalText, List<ICodableTranslation> translations,
+            List<QualifierCode> qualifierCodes = null)
+        {
+            var codableText = new CodableText();
 
-          codableText.DisplayName = displayName;
-          codableText.Code = code;
-          codableText.CodeSystemCode = codeSystemCode;
-          codableText.CodeSystemName = codeSystemName;
-          codableText.CodeSystemVersion = codeSystemVersion;
+            codableText.DisplayName = displayName;
+            codableText.Code = code;
+            codableText.CodeSystemCode = codeSystemCode;
+            codableText.CodeSystemName = codeSystemName;
+            codableText.CodeSystemVersion = codeSystemVersion;
 
-          if (!originalText.IsNullOrEmptyWhitespace())
-              codableText.OriginalText = originalText;
+            if (!originalText.IsNullOrEmptyWhitespace())
+                codableText.OriginalText = originalText;
 
-          if (translations != null && translations.Any())
-              codableText.Translations = translations;
+            if (translations != null && translations.Any())
+                codableText.Translations = translations;
 
-          codableText.QualifierCodes = qualifierCodes;
+            codableText.QualifierCodes = qualifierCodes;
 
-          return codableText;
-      }
+            return codableText;
+        }
 
-      /// <summary>
-      /// Create a Codable Text form enum
-      /// </summary>
-      /// <typeparam name="T">An Enum</typeparam>
-      /// <param name="defaultValue">Enum</param>
-      /// <returns>A CodableText casted from an Enum</returns>
-      public static ICodableText CreateCodableText<T>(T defaultValue) where T : struct, IConvertible
-      {
-          if (!typeof(T).IsEnum)
-          {
-              throw new ArgumentException("T must be an enumerated type which can be mapped to CodingSystem");
-          }
+        /// <summary>
+        /// Create a Codable Text form enum
+        /// </summary>
+        /// <typeparam name="T">An Enum</typeparam>
+        /// <param name="defaultValue">Enum</param>
+        /// <returns>A CodableText casted from an Enum</returns>
+        public static ICodableText CreateCodableText<T>(T defaultValue) where T : struct, IConvertible
+        {
+            if (!typeof(T).IsEnum)
+            {
+                throw new ArgumentException("T must be an enumerated type which can be mapped to CodingSystem");
+            }
 
-          var enumeration = defaultValue as Enum;
+            var enumeration = defaultValue as Enum;
 
-          return new CodableText
-          {
-              DisplayName = enumeration.GetAttributeValue<NameAttribute, string>(x => x.Name),
-              Code = enumeration.GetAttributeValue<NameAttribute, string>(x => x.Code),
-              CodeSystemCode = ((CodingSystem)Enum.Parse(typeof(CodingSystem), enumeration.GetAttributeValue<NameAttribute, string>(x => x.CodeSystem))).GetAttributeValue<NameAttribute, string>(x => x.Code),
-              CodeSystemName = ((CodingSystem)Enum.Parse(typeof(CodingSystem), enumeration.GetAttributeValue<NameAttribute, string>(x => x.CodeSystem))).GetAttributeValue<NameAttribute, string>(x => x.Name),
-              CodeSystemVersion = ((CodingSystem)Enum.Parse(typeof(CodingSystem), enumeration.GetAttributeValue<NameAttribute, string>(x => x.CodeSystem))).GetAttributeValue<NameAttribute, string>(x => x.Version),
-              OriginalText = enumeration.GetAttributeValue<NameAttribute, string>(x => x.Title)
-          };
-      }
+            return new CodableText
+            {
+                DisplayName = enumeration.GetAttributeValue<NameAttribute, string>(x => x.Name),
+                Code = enumeration.GetAttributeValue<NameAttribute, string>(x => x.Code),
+                CodeSystemCode =
+                    ((CodingSystem) Enum.Parse(typeof(CodingSystem),
+                        enumeration.GetAttributeValue<NameAttribute, string>(x => x.CodeSystem)))
+                    .GetAttributeValue<NameAttribute, string>(x => x.Code),
+                CodeSystemName =
+                    ((CodingSystem) Enum.Parse(typeof(CodingSystem),
+                        enumeration.GetAttributeValue<NameAttribute, string>(x => x.CodeSystem)))
+                    .GetAttributeValue<NameAttribute, string>(x => x.Name),
+                CodeSystemVersion =
+                    ((CodingSystem) Enum.Parse(typeof(CodingSystem),
+                        enumeration.GetAttributeValue<NameAttribute, string>(x => x.CodeSystem)))
+                    .GetAttributeValue<NameAttribute, string>(x => x.Version),
+                OriginalText = enumeration.GetAttributeValue<NameAttribute, string>(x => x.Title)
+            };
+        }
 
-      /// <summary>
-      /// Creates a codable text object
-      /// </summary>
-      /// <param name="code">code</param>
-      /// <param name="codeSystem">The code system associated with the code</param>
-      /// <param name="displayName">The display name associated with the code</param>
-      /// <returns>CodableText</returns>
-      public static ICodableTranslation CreateCodableTranslation(String code, CodingSystem? codeSystem, String displayName)
-      {
-          ICodableTranslation codableText = new CodableText();
+        /// <summary>
+        /// Creates a codable text object
+        /// </summary>
+        /// <param name="code">code</param>
+        /// <param name="codeSystem">The code system associated with the code</param>
+        /// <param name="displayName">The display name associated with the code</param>
+        /// <returns>CodableText</returns>
+        public static ICodableTranslation CreateCodableTranslation(String code, CodingSystem? codeSystem,
+            String displayName)
+        {
+            ICodableTranslation codableText = new CodableText();
 
-          if (codeSystem.HasValue)
-          {
-              codableText.DisplayName = displayName;
-              codableText.Code = code;
-              codableText.CodeSystemCode = codeSystem.Value.GetAttributeValue<NameAttribute, string>(a => a.Code);
-              codableText.CodeSystemName = codeSystem.Value.GetAttributeValue<NameAttribute, string>(a => a.Name);
-              codableText.CodeSystemVersion = codeSystem.Value.GetAttributeValue<NameAttribute, string>(a => a.Version);
-          }
+            if (codeSystem.HasValue)
+            {
+                codableText.DisplayName = displayName;
+                codableText.Code = code;
+                codableText.CodeSystemCode = codeSystem.Value.GetAttributeValue<NameAttribute, string>(a => a.Code);
+                codableText.CodeSystemName = codeSystem.Value.GetAttributeValue<NameAttribute, string>(a => a.Name);
+                codableText.CodeSystemVersion =
+                    codeSystem.Value.GetAttributeValue<NameAttribute, string>(a => a.Version);
+            }
 
-          return codableText;
-      }
+            return codableText;
+        }
 
-      /// <summary>
-      /// Creates a codableText object
-      /// </summary>
-      /// <param name="code">A code</param>
-      /// <param name="codeSystemCode">The Code for the CodableText</param>
-      /// <param name="codeSystemName">The CodeSystemName for the CodableText</param>
-      /// <param name="codeSystemVersion">The CodeSystemVersion \ for the CodableText</param>
-      /// <param name="displayName">The display name associated with the code</param>
-      /// <returns>CodableText</returns>
-      public static ICodableTranslation CreateCodableTranslation(string code, string codeSystemCode, string codeSystemName, string codeSystemVersion, string displayName)
-      {
-          ICodableTranslation codableText = new CodableText();
+        /// <summary>
+        /// Creates a codableText object
+        /// </summary>
+        /// <param name="code">A code</param>
+        /// <param name="codeSystemCode">The Code for the CodableText</param>
+        /// <param name="codeSystemName">The CodeSystemName for the CodableText</param>
+        /// <param name="codeSystemVersion">The CodeSystemVersion \ for the CodableText</param>
+        /// <param name="displayName">The display name associated with the code</param>
+        /// <returns>CodableText</returns>
+        public static ICodableTranslation CreateCodableTranslation(string code, string codeSystemCode,
+            string codeSystemName, string codeSystemVersion, string displayName)
+        {
+            ICodableTranslation codableText = new CodableText();
 
-          codableText.DisplayName = displayName;
-          codableText.Code = code;
-          codableText.CodeSystemCode = codeSystemCode;
-          codableText.CodeSystemName = codeSystemName;
-          codableText.CodeSystemVersion = codeSystemVersion;
+            codableText.DisplayName = displayName;
+            codableText.Code = code;
+            codableText.CodeSystemCode = codeSystemCode;
+            codableText.CodeSystemName = codeSystemName;
+            codableText.CodeSystemVersion = codeSystemVersion;
 
-          return codableText;
-      }
+            return codableText;
+        }
 
-      /// <summary>
-      /// Creates a Qualifier Code
-      /// </summary>
-      /// <param name="name">The name</param>
-      /// <param name="value">The value</param>
-      /// <returns>(QualifierCode) QualifierCode</returns>
-      public static QualifierCode CreateQualifierCode(ICodableText name, ICodableText value)
-      {
-          return new QualifierCode
-          {
-              Value = value,
-              Name = name
-          };
-      }
+        /// <summary>
+        /// Creates a Qualifier Code
+        /// </summary>
+        /// <param name="name">The name</param>
+        /// <param name="value">The value</param>
+        /// <returns>(QualifierCode) QualifierCode</returns>
+        public static QualifierCode CreateQualifierCode(ICodableText name, ICodableText value)
+        {
+            return new QualifierCode
+            {
+                Value = value,
+                Name = name
+            };
+        }
 
-      /// <summary>
-      /// Creates a Therapeutic Good ID
-      /// </summary>
-      /// <returns>(ICodableText) CodableText</returns>
-      public static ICodableText CreateTherapeuticGoodIdentification()
-      {
-          return new CodableText();
-      }
+        /// <summary>
+        /// Creates a Therapeutic Good ID
+        /// </summary>
+        /// <returns>(ICodableText) CodableText</returns>
+        public static ICodableText CreateTherapeuticGoodIdentification()
+        {
+            return new CodableText();
+        }
 
-      /// <summary>
-      /// Creates a medicine
-      /// </summary>
-      /// <param name="code">role medicine</param>
-      /// <param name="codeSystem">The code system associated with the code</param>
-      /// <param name="codeSystemVersion">The current CodeSystemVersion for the AMT SnomedCode</param>
-      /// <param name="displayName">The display name associated with the code</param>
-      /// <param name="originalText">Original text, usually applicable in the absence of a code and display name</param>
-      /// <param name="translations">Any translations that are associated with this medicine</param>
-      /// <returns>CodableText defining a medicine</returns>
-      public static ICodableText CreateMedicine(string code, CodingSystem codeSystem, string codeSystemVersion, string displayName, string originalText, List<ICodableTranslation> translations)
-      {
-          return CreateCodableText(code,
-                                   codeSystem.GetAttributeValue<NameAttribute, string>(a => a.Code),
-                                   codeSystem.GetAttributeValue<NameAttribute, string>(a => a.Name),
-                                   codeSystemVersion,
-                                   displayName,
-                                   originalText,
-                                   translations);
-      }
+        /// <summary>
+        /// Creates a medicine
+        /// </summary>
+        /// <param name="code">role medicine</param>
+        /// <param name="codeSystem">The code system associated with the code</param>
+        /// <param name="codeSystemVersion">The current CodeSystemVersion for the AMT SnomedCode</param>
+        /// <param name="displayName">The display name associated with the code</param>
+        /// <param name="originalText">Original text, usually applicable in the absence of a code and display name</param>
+        /// <param name="translations">Any translations that are associated with this medicine</param>
+        /// <returns>CodableText defining a medicine</returns>
+        public static ICodableText CreateMedicine(string code, CodingSystem codeSystem, string codeSystemVersion,
+            string displayName, string originalText, List<ICodableTranslation> translations)
+        {
+            return CreateCodableText(code,
+                codeSystem.GetAttributeValue<NameAttribute, string>(a => a.Code),
+                codeSystem.GetAttributeValue<NameAttribute, string>(a => a.Name),
+                codeSystemVersion,
+                displayName,
+                originalText,
+                translations);
+        }
 
-      /// <summary>
-      /// Create a CreateTherapeuticGoodIdentification CodableText
-      /// </summary>
-      /// <param name="code">CreateTherapeuticGoodIdentification code</param>
-      /// <param name="codeSystem">The code system associated with the code</param>
-      /// <param name="displayName">The display name associated with the code</param>
-      /// <param name="originalText">Original text, usually applicable in the absence of a code and display name</param>
-      /// <param name="translations">Any translations that are associated with this procedure</param>
-      /// <returns>CreateTherapeuticGoodIdentification </returns>
-      public static ICodableText CreateTherapeuticGoodIdentification(string code, CodingSystem? codeSystem, string displayName, string originalText, List<ICodableTranslation> translations)
-      {
-          return CreateCodableText(code, codeSystem, displayName, originalText, translations);
-      }
+        /// <summary>
+        /// Create a CreateTherapeuticGoodIdentification CodableText
+        /// </summary>
+        /// <param name="code">CreateTherapeuticGoodIdentification code</param>
+        /// <param name="codeSystem">The code system associated with the code</param>
+        /// <param name="displayName">The display name associated with the code</param>
+        /// <param name="originalText">Original text, usually applicable in the absence of a code and display name</param>
+        /// <param name="translations">Any translations that are associated with this procedure</param>
+        /// <returns>CreateTherapeuticGoodIdentification </returns>
+        public static ICodableText CreateTherapeuticGoodIdentification(string code, CodingSystem? codeSystem,
+            string displayName, string originalText, List<ICodableTranslation> translations)
+        {
+            return CreateCodableText(code, codeSystem, displayName, originalText, translations);
+        }
 
-      /// <summary>
-      /// Create a ChangesMade CodableText
-      /// </summary>
-      /// <param name="code">ChangesMade code</param>
-      /// <param name="codeSystem">The code system associated with the code</param>
-      /// <param name="displayName">The display name associated with the code</param>
-      /// <param name="originalText">Original text, usually applicable in the absence of a code and display name</param>
-      /// <param name="translations">Any translations that are associated with this procedure</param>
-      /// <returns>CreateChangesMade </returns>
-      public static ICodableText CreateChangesMade(String code, CodingSystem? codeSystem, String displayName, String originalText, List<ICodableTranslation> translations)
-      {
-          return CreateCodableText(code, codeSystem, displayName, originalText, translations);
-      }
+        /// <summary>
+        /// Create a ChangesMade CodableText
+        /// </summary>
+        /// <param name="code">ChangesMade code</param>
+        /// <param name="codeSystem">The code system associated with the code</param>
+        /// <param name="displayName">The display name associated with the code</param>
+        /// <param name="originalText">Original text, usually applicable in the absence of a code and display name</param>
+        /// <param name="translations">Any translations that are associated with this procedure</param>
+        /// <returns>CreateChangesMade </returns>
+        public static ICodableText CreateChangesMade(String code, CodingSystem? codeSystem, String displayName,
+            String originalText, List<ICodableTranslation> translations)
+        {
+            return CreateCodableText(code, codeSystem, displayName, originalText, translations);
+        }
 
-      /// <summary>
-      /// Creates a result name CodableText
-      /// </summary>
-      /// <param name="code">result name code</param>
-      /// <param name="codeSystem">The code system associated with the code</param>
-      /// <param name="displayName">The display name associated with the code</param>
-      /// <param name="originalText">Original text, usually applicable in the absence of a code and display name</param>
-      /// <param name="translations">Any translations that are associated with this procedure</param>
-      /// <returns>CodableText defining a result name</returns>
-      public static ICodableText CreateResultName(String code, CodingSystem? codeSystem, String displayName, String originalText, List<ICodableTranslation> translations)
-      {
-          return CreateCodableText(code, codeSystem, displayName, originalText, translations);
-      }
+        /// <summary>
+        /// Creates a result name CodableText
+        /// </summary>
+        /// <param name="code">result name code</param>
+        /// <param name="codeSystem">The code system associated with the code</param>
+        /// <param name="displayName">The display name associated with the code</param>
+        /// <param name="originalText">Original text, usually applicable in the absence of a code and display name</param>
+        /// <param name="translations">Any translations that are associated with this procedure</param>
+        /// <returns>CodableText defining a result name</returns>
+        public static ICodableText CreateResultName(String code, CodingSystem? codeSystem, String displayName,
+            String originalText, List<ICodableTranslation> translations)
+        {
+            return CreateCodableText(code, codeSystem, displayName, originalText, translations);
+        }
 
-      /// <summary>
-      /// Creates an anatomic location name
-      /// </summary>
-      /// <param name="code">anatomic location name code</param>
-      /// <param name="codeSystem">The code system associated with the code</param>
-      /// <param name="displayName">The display name associated with the code</param>
-      /// <param name="translations">Any translations that are associated with this anatomic location name</param>
-      /// <returns>CodableText defining an anatomic location name</returns>
-      public static ICodableText CreateAnatomicLocationName(String code, CodingSystem? codeSystem, String displayName, List<ICodableTranslation> translations)
-      {
-          return CreateCodableText(code, codeSystem, displayName, null, translations);
-      }
+        /// <summary>
+        /// Creates an anatomic location name
+        /// </summary>
+        /// <param name="code">anatomic location name code</param>
+        /// <param name="codeSystem">The code system associated with the code</param>
+        /// <param name="displayName">The display name associated with the code</param>
+        /// <param name="translations">Any translations that are associated with this anatomic location name</param>
+        /// <returns>CodableText defining an anatomic location name</returns>
+        public static ICodableText CreateAnatomicLocationName(String code, CodingSystem? codeSystem, String displayName,
+            List<ICodableTranslation> translations)
+        {
+            return CreateCodableText(code, codeSystem, displayName, null, translations);
+        }
 
-      /// <summary>
-      /// Creates a Requested Service Description
-      /// </summary>
-      /// <param name="code">type of Requested Service Description</param>
-      /// <param name="codeSystem">The code system associated with the code</param>
-      /// <param name="displayName">The display name associated with the code</param>
-      /// <param name="originalText">Original text, usually applicable in the absence of a code and display name</param>
-      /// <param name="translations">Any translations that are associated with this participation type</param>
-      /// <returns>CodableText defining a Requested Service  Description</returns>
-      public static ICodableText CreateRequestedServiceDescription(String code, CodingSystem? codeSystem, String displayName, String originalText, List<ICodableTranslation> translations)
-      {
-          return CreateCodableText(code, codeSystem, displayName, originalText, translations);
-      }
+        /// <summary>
+        /// Creates a Requested Service Description
+        /// </summary>
+        /// <param name="code">type of Requested Service Description</param>
+        /// <param name="codeSystem">The code system associated with the code</param>
+        /// <param name="displayName">The display name associated with the code</param>
+        /// <param name="originalText">Original text, usually applicable in the absence of a code and display name</param>
+        /// <param name="translations">Any translations that are associated with this participation type</param>
+        /// <returns>CodableText defining a Requested Service  Description</returns>
+        public static ICodableText CreateRequestedServiceDescription(String code, CodingSystem? codeSystem,
+            String displayName, String originalText, List<ICodableTranslation> translations)
+        {
+            return CreateCodableText(code, codeSystem, displayName, originalText, translations);
+        }
 
-      /// <summary>
-      /// Create a CareSetting CodableText
-      /// </summary>
-      /// <param name="code">Care Setting mode code</param>
-      /// <param name="codeSystem">The code system associated with the code</param>
-      /// <param name="displayName">The display name associated with the code</param>
-      /// <param name="originalText">Original text, usually applicable in the absence of a code and display name</param>
-      /// <param name="translations">Any translations that are associated with this procedure</param>
-      /// <returns>CodableText </returns>
-      public static ICodableText CreateCareSetting(String code, CodingSystem? codeSystem, String displayName, String originalText, List<ICodableTranslation> translations)
-      {
-          return CreateCodableText(code, codeSystem, displayName, originalText, translations);
-      }
+        /// <summary>
+        /// Create a CareSetting CodableText
+        /// </summary>
+        /// <param name="code">Care Setting mode code</param>
+        /// <param name="codeSystem">The code system associated with the code</param>
+        /// <param name="displayName">The display name associated with the code</param>
+        /// <param name="originalText">Original text, usually applicable in the absence of a code and display name</param>
+        /// <param name="translations">Any translations that are associated with this procedure</param>
+        /// <returns>CodableText </returns>
+        public static ICodableText CreateCareSetting(String code, CodingSystem? codeSystem, String displayName,
+            String originalText, List<ICodableTranslation> translations)
+        {
+            return CreateCodableText(code, codeSystem, displayName, originalText, translations);
+        }
 
-      /// <summary>
-      /// Create a ProblemDiagnosisDescription CodableText
-      /// </summary>
-      /// <param name="code">Problem Diagnosis Description code</param>
-      /// <param name="codeSystem">The code system associated with the code</param>
-      /// <param name="displayName">The display name associated with the code</param>
-      /// <param name="originalText">Original text, usually applicable in the absence of a code and display name</param>
-      /// <param name="translations">Any translations that are associated with this procedure</param>
-      /// <returns>CodableText </returns>
-      public static ICodableText CreateProblemDiagnosisDescription(String code, CodingSystem? codeSystem, String displayName, String originalText, List<ICodableTranslation> translations)
-      {
-          return CreateCodableText(code, codeSystem, displayName, originalText, translations);
-      }
+        /// <summary>
+        /// Create a ProblemDiagnosisDescription CodableText
+        /// </summary>
+        /// <param name="code">Problem Diagnosis Description code</param>
+        /// <param name="codeSystem">The code system associated with the code</param>
+        /// <param name="displayName">The display name associated with the code</param>
+        /// <param name="originalText">Original text, usually applicable in the absence of a code and display name</param>
+        /// <param name="translations">Any translations that are associated with this procedure</param>
+        /// <returns>CodableText </returns>
+        public static ICodableText CreateProblemDiagnosisDescription(String code, CodingSystem? codeSystem,
+            String displayName, String originalText, List<ICodableTranslation> translations)
+        {
+            return CreateCodableText(code, codeSystem, displayName, originalText, translations);
+        }
 
-      /// <summary>
-      /// Create a ProblemDiagnosisType CodableText
-      /// </summary>
-      /// <param name="code">Problem Diagnosis Type code</param>
-      /// <param name="codeSystem">The code system associated with the code</param>
-      /// <param name="displayName">The display name associated with the code</param>
-      /// <param name="originalText">Original text, usually applicable in the absence of a code and display name</param>
-      /// <param name="translations">Any translations that are associated with this procedure</param> 
-      /// <returns>CodableText </returns>
-      public static ICodableText CreateProblemDiagnosisType(String code, CodingSystem? codeSystem, String displayName, String originalText, List<ICodableTranslation> translations)
-      {
-          return CreateCodableText(code, codeSystem, displayName, originalText, translations);
-      }
+        /// <summary>
+        /// Create a ProblemDiagnosisType CodableText
+        /// </summary>
+        /// <param name="code">Problem Diagnosis Type code</param>
+        /// <param name="codeSystem">The code system associated with the code</param>
+        /// <param name="displayName">The display name associated with the code</param>
+        /// <param name="originalText">Original text, usually applicable in the absence of a code and display name</param>
+        /// <param name="translations">Any translations that are associated with this procedure</param> 
+        /// <returns>CodableText </returns>
+        public static ICodableText CreateProblemDiagnosisType(String code, CodingSystem? codeSystem, String displayName,
+            String originalText, List<ICodableTranslation> translations)
+        {
+            return CreateCodableText(code, codeSystem, displayName, originalText, translations);
+        }
 
-      /// <summary>
-      /// Create a Clinical Intervention Description CodableText
-      /// </summary>
-      /// <param name="code">Clinical Intervention Type code</param>
-      /// <param name="codeSystem">The code system associated with the code</param>
-      /// <param name="displayName">The display name associated with the code</param>
-      /// <param name="originalText">Original text, usually applicable in the absence of a code and display name</param>
-      /// <param name="translations">Any translations that are associated with this procedure</param>
-      /// <returns>CodableText </returns>
-      public static ICodableText CreateClinicalInterventionDescription(String code, CodingSystem? codeSystem, String displayName, String originalText, List<ICodableTranslation> translations)
-      {
-          return CreateCodableText(code, codeSystem, displayName, originalText, translations);
-      }
+        /// <summary>
+        /// Create a Clinical Intervention Description CodableText
+        /// </summary>
+        /// <param name="code">Clinical Intervention Type code</param>
+        /// <param name="codeSystem">The code system associated with the code</param>
+        /// <param name="displayName">The display name associated with the code</param>
+        /// <param name="originalText">Original text, usually applicable in the absence of a code and display name</param>
+        /// <param name="translations">Any translations that are associated with this procedure</param>
+        /// <returns>CodableText </returns>
+        public static ICodableText CreateClinicalInterventionDescription(String code, CodingSystem? codeSystem,
+            String displayName, String originalText, List<ICodableTranslation> translations)
+        {
+            return CreateCodableText(code, codeSystem, displayName, originalText, translations);
+        }
 
-      /// <summary>
-      /// Create a Alert Type CodableText
-      /// </summary>
-      /// <param name="code">Alert Type code</param>
-      /// <param name="codeSystem">The code system associated with the code</param>
-      /// <param name="displayName">The display name associated with the code</param>
-      /// <param name="originalText">Original text, usually applicable in the absence of a code and display name</param>
-      /// <param name="translations">Any translations that are associated with this procedure</param>
-      /// <returns>CodableText </returns>
-      public static ICodableText CreateAlertType(String code, CodingSystem? codeSystem, String displayName, String originalText, List<ICodableTranslation> translations)
-      {
-          return CreateCodableText(code, codeSystem, displayName, originalText, translations);
-      }
+        /// <summary>
+        /// Create a Alert Type CodableText
+        /// </summary>
+        /// <param name="code">Alert Type code</param>
+        /// <param name="codeSystem">The code system associated with the code</param>
+        /// <param name="displayName">The display name associated with the code</param>
+        /// <param name="originalText">Original text, usually applicable in the absence of a code and display name</param>
+        /// <param name="translations">Any translations that are associated with this procedure</param>
+        /// <returns>CodableText </returns>
+        public static ICodableText CreateAlertType(String code, CodingSystem? codeSystem, String displayName,
+            String originalText, List<ICodableTranslation> translations)
+        {
+            return CreateCodableText(code, codeSystem, displayName, originalText, translations);
+        }
 
-      /// <summary>
-      /// Create an Alert Description CodableText
-      /// </summary>
-      /// <param name="code">Alert Description code</param>
-      /// <param name="codeSystem">The code system associated with the code</param>
-      /// <param name="displayName">The display name associated with the code</param>
-      /// <param name="originalText">Original text, usually applicable in the absence of a code and display name</param>
-      /// <param name="translations">Any translations that are associated with this procedure</param>
-      /// <returns>CodableText </returns>
-      public static ICodableText CreateAlertDescription(String code, CodingSystem? codeSystem, String displayName, String originalText, List<ICodableTranslation> translations)
-      {
-          return CreateCodableText(code, codeSystem, displayName, originalText, translations);
-      }
+        /// <summary>
+        /// Create an Alert Description CodableText
+        /// </summary>
+        /// <param name="code">Alert Description code</param>
+        /// <param name="codeSystem">The code system associated with the code</param>
+        /// <param name="displayName">The display name associated with the code</param>
+        /// <param name="originalText">Original text, usually applicable in the absence of a code and display name</param>
+        /// <param name="translations">Any translations that are associated with this procedure</param>
+        /// <returns>CodableText </returns>
+        public static ICodableText CreateAlertDescription(String code, CodingSystem? codeSystem, String displayName,
+            String originalText, List<ICodableTranslation> translations)
+        {
+            return CreateCodableText(code, codeSystem, displayName, originalText, translations);
+        }
 
-      /// <summary>
-      /// Create a Clinical Category CodableText
-      /// </summary>
-      /// <param name="code">Category code</param>
-      /// <param name="codeSystem">The code system associated with the code</param>
-      /// <param name="displayName">The display name associated with the code</param>
-      /// <param name="originalText">Original text, usually applicable in the absence of a code and display name</param>
-      /// <param name="translations">Any translations that are associated with this procedure</param>
-      /// <returns>CodableText </returns>
-      public static ICodableText CreateCategory(String code, CodingSystem? codeSystem, String displayName, String originalText, List<ICodableTranslation> translations)
-      {
-          return CreateCodableText(code, codeSystem, displayName, originalText, translations);
-      }
+        /// <summary>
+        /// Create a Clinical Category CodableText
+        /// </summary>
+        /// <param name="code">Category code</param>
+        /// <param name="codeSystem">The code system associated with the code</param>
+        /// <param name="displayName">The display name associated with the code</param>
+        /// <param name="originalText">Original text, usually applicable in the absence of a code and display name</param>
+        /// <param name="translations">Any translations that are associated with this procedure</param>
+        /// <returns>CodableText </returns>
+        public static ICodableText CreateCategory(String code, CodingSystem? codeSystem, String displayName,
+            String originalText, List<ICodableTranslation> translations)
+        {
+            return CreateCodableText(code, codeSystem, displayName, originalText, translations);
+        }
 
-      /// <summary>
-      /// Create a CreateTestName CodableText
-      /// </summary>
-      /// <param name="code">CreateTestName code</param>
-      /// <param name="codeSystem">The code system associated with the code</param>
-      /// <param name="displayName">The display name associated with the code</param>
-      /// <param name="originalText">Original text, usually applicable in the absence of a code and display name</param>
-      /// <param name="translations">Any translations that are associated with this procedure</param>
-      /// <returns>CodableText </returns>
-      public static ICodableText CreateTestName(String code, CodingSystem? codeSystem, String displayName, String originalText, List<ICodableTranslation> translations)
-      {
-          return CreateCodableText(code, codeSystem, displayName, originalText, translations);
-      }
+        /// <summary>
+        /// Create a CreateTestName CodableText
+        /// </summary>
+        /// <param name="code">CreateTestName code</param>
+        /// <param name="codeSystem">The code system associated with the code</param>
+        /// <param name="displayName">The display name associated with the code</param>
+        /// <param name="originalText">Original text, usually applicable in the absence of a code and display name</param>
+        /// <param name="translations">Any translations that are associated with this procedure</param>
+        /// <returns>CodableText </returns>
+        public static ICodableText CreateTestName(String code, CodingSystem? codeSystem, String displayName,
+            String originalText, List<ICodableTranslation> translations)
+        {
+            return CreateCodableText(code, codeSystem, displayName, originalText, translations);
+        }
 
-      /// <summary>
-      /// Create a CreatePerViewFindings CodableText
-      /// </summary>
-      /// <param name="code">CreatePerViewFindings code</param>
-      /// <param name="codeSystem">The code system associated with the code</param>
-      /// <param name="displayName">The display name associated with the code</param>
-      /// <param name="originalText">Original text, usually applicable in the absence of a code and display name</param>
-      /// <param name="translations">Any translations that are associated with this procedure</param>
-      /// <returns>CodableText </returns>
-      public static ICodableText CreatePerViewFindings(String code, CodingSystem? codeSystem, String displayName, String originalText, List<ICodableTranslation> translations)
-      {
-          return CreateCodableText(code, codeSystem, displayName, originalText, translations);
-      }
+        /// <summary>
+        /// Create a CreatePerViewFindings CodableText
+        /// </summary>
+        /// <param name="code">CreatePerViewFindings code</param>
+        /// <param name="codeSystem">The code system associated with the code</param>
+        /// <param name="displayName">The display name associated with the code</param>
+        /// <param name="originalText">Original text, usually applicable in the absence of a code and display name</param>
+        /// <param name="translations">Any translations that are associated with this procedure</param>
+        /// <returns>CodableText </returns>
+        public static ICodableText CreatePerViewFindings(String code, CodingSystem? codeSystem, String displayName,
+            String originalText, List<ICodableTranslation> translations)
+        {
+            return CreateCodableText(code, codeSystem, displayName, originalText, translations);
+        }
 
-      /// <summary>
-      /// Create a ViewName CodableText
-      /// </summary>
-      /// <param name="code">ViewName code</param>
-      /// <param name="codeSystem">The code system associated with the code</param>
-      /// <param name="displayName">The display name associated with the code</param>
-      /// <param name="originalText">Original text, usually applicable in the absence of a code and display name</param>
-      /// <param name="translations">Any translations that are associated with this procedure</param>
-      /// <returns>CodableText </returns>
-      public static ICodableText CreateViewName(String code, CodingSystem? codeSystem, String displayName, String originalText, List<ICodableTranslation> translations)
-      {
-          return CreateCodableText(code, codeSystem, displayName, originalText, translations);
-      }
+        /// <summary>
+        /// Create a ViewName CodableText
+        /// </summary>
+        /// <param name="code">ViewName code</param>
+        /// <param name="codeSystem">The code system associated with the code</param>
+        /// <param name="displayName">The display name associated with the code</param>
+        /// <param name="originalText">Original text, usually applicable in the absence of a code and display name</param>
+        /// <param name="translations">Any translations that are associated with this procedure</param>
+        /// <returns>CodableText </returns>
+        public static ICodableText CreateViewName(String code, CodingSystem? codeSystem, String displayName,
+            String originalText, List<ICodableTranslation> translations)
+        {
+            return CreateCodableText(code, codeSystem, displayName, originalText, translations);
+        }
 
-      /// <summary>
-      /// Create a ImagingQuality CodableText
-      /// </summary>
-      /// <param name="code">ImagingQuality code</param>
-      /// <param name="codeSystem">The code system associated with the code</param>
-      /// <param name="displayName">The display name associated with the code</param>
-      /// <param name="originalText">Original text, usually applicable in the absence of a code and display name</param>
-      /// <param name="translations">Any translations that are associated with this procedure</param>
-      /// <returns>CodableText </returns>
-      public static ICodableText CreateImagingQuality(String code, CodingSystem? codeSystem, String displayName, String originalText, List<ICodableTranslation> translations)
-      {
-          return CreateCodableText(code, codeSystem, displayName, originalText, translations);
-      }
+        /// <summary>
+        /// Create a ImagingQuality CodableText
+        /// </summary>
+        /// <param name="code">ImagingQuality code</param>
+        /// <param name="codeSystem">The code system associated with the code</param>
+        /// <param name="displayName">The display name associated with the code</param>
+        /// <param name="originalText">Original text, usually applicable in the absence of a code and display name</param>
+        /// <param name="translations">Any translations that are associated with this procedure</param>
+        /// <returns>CodableText </returns>
+        public static ICodableText CreateImagingQuality(String code, CodingSystem? codeSystem, String displayName,
+            String originalText, List<ICodableTranslation> translations)
+        {
+            return CreateCodableText(code, codeSystem, displayName, originalText, translations);
+        }
 
-      /// <summary>
-      /// Create a OverallFinding CodableText
-      /// </summary>
-      /// <param name="code">OverallFinding code</param>
-      /// <param name="codeSystem">The code system associated with the code</param>
-      /// <param name="displayName">The display name associated with the code</param>
-      /// <param name="originalText">Original text, usually applicable in the absence of a code and display name</param>
-      /// <param name="translations">Any translations that are associated with this procedure</param>
-      /// <returns>CodableText </returns>
-      public static ICodableText CreateOverallFinding(String code, CodingSystem? codeSystem, String displayName, String originalText, List<ICodableTranslation> translations)
-      {
-          return CreateCodableText(code, codeSystem, displayName, originalText, translations);
-      }
+        /// <summary>
+        /// Create a OverallFinding CodableText
+        /// </summary>
+        /// <param name="code">OverallFinding code</param>
+        /// <param name="codeSystem">The code system associated with the code</param>
+        /// <param name="displayName">The display name associated with the code</param>
+        /// <param name="originalText">Original text, usually applicable in the absence of a code and display name</param>
+        /// <param name="translations">Any translations that are associated with this procedure</param>
+        /// <returns>CodableText </returns>
+        public static ICodableText CreateOverallFinding(String code, CodingSystem? codeSystem, String displayName,
+            String originalText, List<ICodableTranslation> translations)
+        {
+            return CreateCodableText(code, codeSystem, displayName, originalText, translations);
+        }
 
-      /// <summary>
-      /// Create a ItemStatus CodableText
-      /// </summary>
-      /// <param name="code">ItemStatus code</param>
-      /// <param name="codeSystem">The code system associated with the code</param>
-      /// <param name="displayName">The display name associated with the code</param>
-      /// <param name="originalText">Original text, usually applicable in the absence of a code and display name</param>
-      /// <param name="translations">Any translations that are associated with this procedure</param>
-      /// <returns>CreateItemStatus </returns>
-      public static ICodableText CreateItemStatus(String code, CodingSystem? codeSystem, String displayName, String originalText, List<ICodableTranslation> translations)
-      {
-          return CreateCodableText(code, codeSystem, displayName, originalText, translations);
-      }
+        /// <summary>
+        /// Create a ItemStatus CodableText
+        /// </summary>
+        /// <param name="code">ItemStatus code</param>
+        /// <param name="codeSystem">The code system associated with the code</param>
+        /// <param name="displayName">The display name associated with the code</param>
+        /// <param name="originalText">Original text, usually applicable in the absence of a code and display name</param>
+        /// <param name="translations">Any translations that are associated with this procedure</param>
+        /// <returns>CreateItemStatus </returns>
+        public static ICodableText CreateItemStatus(String code, CodingSystem? codeSystem, String displayName,
+            String originalText, List<ICodableTranslation> translations)
+        {
+            return CreateCodableText(code, codeSystem, displayName, originalText, translations);
+        }
 
-      /// <summary>
-      /// Creates a modality
-      /// </summary>
-      /// <param name="code">modality code</param>
-      /// <param name="codeSystem">The code system associated with the code</param>
-      /// <param name="displayName">The display name associated with the code</param>
-      /// <param name="originalText">Original text, usually applicable in the absence of a code and display name</param>
-      /// <param name="translations">Any translations that are associated with this modality</param>
-      /// <returns>CodableText defining a modality</returns>
-      public static ICodableText CreateModality(String code, CodingSystem? codeSystem, String displayName, String originalText, List<ICodableTranslation> translations)
-      {
-          return CreateCodableText(code, codeSystem, displayName, originalText, translations);
-      }
+        /// <summary>
+        /// Creates a modality
+        /// </summary>
+        /// <param name="code">modality code</param>
+        /// <param name="codeSystem">The code system associated with the code</param>
+        /// <param name="displayName">The display name associated with the code</param>
+        /// <param name="originalText">Original text, usually applicable in the absence of a code and display name</param>
+        /// <param name="translations">Any translations that are associated with this modality</param>
+        /// <returns>CodableText defining a modality</returns>
+        public static ICodableText CreateModality(String code, CodingSystem? codeSystem, String displayName,
+            String originalText, List<ICodableTranslation> translations)
+        {
+            return CreateCodableText(code, codeSystem, displayName, originalText, translations);
+        }
 
-      /// <summary>
-      /// Creates a pathological diagnosis
-      /// </summary>
-      /// <param name="code">pathological diagnosis code</param>
-      /// <param name="codeSystem">The code system associated with the code</param>
-      /// <param name="displayName">The display name associated with the code</param>
-      /// <param name="originalText">Original text, usually applicable in the absence of a code and display name</param>
-      /// <param name="translations">Any translations that are associated with this pathological diagnosis</param>
-      /// <returns>CodableText defining a pathological diagnosis</returns>
-      public static ICodableText CreatePathologicalDiagnois(String code, CodingSystem? codeSystem, String displayName, String originalText, List<ICodableTranslation> translations)
-      {
-          return CreateCodableText(code, codeSystem, displayName, originalText, translations);
-      }
+        /// <summary>
+        /// Creates a pathological diagnosis
+        /// </summary>
+        /// <param name="code">pathological diagnosis code</param>
+        /// <param name="codeSystem">The code system associated with the code</param>
+        /// <param name="displayName">The display name associated with the code</param>
+        /// <param name="originalText">Original text, usually applicable in the absence of a code and display name</param>
+        /// <param name="translations">Any translations that are associated with this pathological diagnosis</param>
+        /// <returns>CodableText defining a pathological diagnosis</returns>
+        public static ICodableText CreatePathologicalDiagnois(String code, CodingSystem? codeSystem, String displayName,
+            String originalText, List<ICodableTranslation> translations)
+        {
+            return CreateCodableText(code, codeSystem, displayName, originalText, translations);
+        }
 
-      /// <summary>
-      /// Creates a sampling precondition
-      /// </summary>
-      /// <param name="code">sampling precondition code</param>
-      /// <param name="codeSystem">The code system associated with the code</param>
-      /// <param name="displayName">The display name associated with the code</param>
-      /// <param name="originalText">Original text, usually applicable in the absence of a code and display name</param>
-      /// <param name="translations">Any translations that are associated with this sampling precondition</param>
-      /// <returns>CodableText defining a sampling precondition</returns>
-      public static ICodableText CreateSamplingPreconditions(String code, CodingSystem? codeSystem, String displayName, String originalText, List<ICodableTranslation> translations)
-      {
-          return CreateCodableText(code, codeSystem, displayName, originalText, translations);
-      }
+        /// <summary>
+        /// Creates a sampling precondition
+        /// </summary>
+        /// <param name="code">sampling precondition code</param>
+        /// <param name="codeSystem">The code system associated with the code</param>
+        /// <param name="displayName">The display name associated with the code</param>
+        /// <param name="originalText">Original text, usually applicable in the absence of a code and display name</param>
+        /// <param name="translations">Any translations that are associated with this sampling precondition</param>
+        /// <returns>CodableText defining a sampling precondition</returns>
+        public static ICodableText CreateSamplingPreconditions(String code, CodingSystem? codeSystem,
+            String displayName, String originalText, List<ICodableTranslation> translations)
+        {
+            return CreateCodableText(code, codeSystem, displayName, originalText, translations);
+        }
 
-      /// <summary>
-      /// Creates a specimen tissue type
-      /// </summary>
-      /// <param name="code">specimen tissue type code</param>
-      /// <param name="codeSystem">The code system associated with the code</param>
-      /// <param name="displayName">The display name associated with the code</param>
-      /// <param name="originalText">Original text, usually applicable in the absence of a code and display name</param>
-      /// <param name="translations">Any translations that are associated with this specimen tissue type</param>
-      /// <returns>CodableText defining a specimen tissue type</returns>
-      public static ICodableText CreateSpecimenTissueType(String code, CodingSystem? codeSystem, String displayName, String originalText, List<ICodableTranslation> translations)
-      {
-          return CreateCodableText(code, codeSystem, displayName, originalText, translations);
-      }
+        /// <summary>
+        /// Creates a specimen tissue type
+        /// </summary>
+        /// <param name="code">specimen tissue type code</param>
+        /// <param name="codeSystem">The code system associated with the code</param>
+        /// <param name="displayName">The display name associated with the code</param>
+        /// <param name="originalText">Original text, usually applicable in the absence of a code and display name</param>
+        /// <param name="translations">Any translations that are associated with this specimen tissue type</param>
+        /// <returns>CodableText defining a specimen tissue type</returns>
+        public static ICodableText CreateSpecimenTissueType(String code, CodingSystem? codeSystem, String displayName,
+            String originalText, List<ICodableTranslation> translations)
+        {
+            return CreateCodableText(code, codeSystem, displayName, originalText, translations);
+        }
 
-      /// <summary>
-      /// Creates an anatomic location side
-      /// </summary>
-      /// <param name="code">anatomic location side code</param>
-      /// <param name="codeSystem">The code system associated with the code</param>
-      /// <param name="displayName">The display name associated with the code</param>
-      /// <param name="originalText">Original text, usually applicable in the absence of a code and display name</param>
-      /// <param name="translations">Any translations that are associated with this anatomic location side</param>
-      /// <returns>CodableText defining an anatomic location side</returns>
-      public static ICodableText CreateAnatomicLocationSide(String code, CodingSystem? codeSystem, String displayName, String originalText, List<ICodableTranslation> translations)
-      {
-          return CreateCodableText(code, codeSystem, displayName, originalText, translations);
-      }
+        /// <summary>
+        /// Creates an anatomic location side
+        /// </summary>
+        /// <param name="code">anatomic location side code</param>
+        /// <param name="codeSystem">The code system associated with the code</param>
+        /// <param name="displayName">The display name associated with the code</param>
+        /// <param name="originalText">Original text, usually applicable in the absence of a code and display name</param>
+        /// <param name="translations">Any translations that are associated with this anatomic location side</param>
+        /// <returns>CodableText defining an anatomic location side</returns>
+        public static ICodableText CreateAnatomicLocationSide(String code, CodingSystem? codeSystem, String displayName,
+            String originalText, List<ICodableTranslation> translations)
+        {
+            return CreateCodableText(code, codeSystem, displayName, originalText, translations);
+        }
 
-      /// <summary>
-      /// Creates an examination result name
-      /// </summary>
-      /// <param name="code">examination result name code</param>
-      /// <param name="codeSystem">The code system associated with the code</param>
-      /// <param name="displayName">The display name associated with the code</param>
-      /// <param name="originalText">Original text, usually applicable in the absence of a code and display name</param>
-      /// <param name="translations">Any translations that are associated with this examination result name</param>
-      /// <returns>CodableText defining an examination result name</returns>
-      public static ICodableText CreateExaminationResultName(String code, CodingSystem? codeSystem, String displayName, String originalText, List<ICodableTranslation> translations)
-      {
-          return CreateCodableText(code, codeSystem, displayName, originalText, translations);
-      }
+        /// <summary>
+        /// Creates an examination result name
+        /// </summary>
+        /// <param name="code">examination result name code</param>
+        /// <param name="codeSystem">The code system associated with the code</param>
+        /// <param name="displayName">The display name associated with the code</param>
+        /// <param name="originalText">Original text, usually applicable in the absence of a code and display name</param>
+        /// <param name="translations">Any translations that are associated with this examination result name</param>
+        /// <returns>CodableText defining an examination result name</returns>
+        public static ICodableText CreateExaminationResultName(String code, CodingSystem? codeSystem,
+            String displayName, String originalText, List<ICodableTranslation> translations)
+        {
+            return CreateCodableText(code, codeSystem, displayName, originalText, translations);
+        }
 
-      /// <summary>
-      /// Creates a test request name.
-      /// </summary>
-      /// <param name="code">Test request code</param>
-      /// <param name="codeSystem">The code system associated with the code</param>
-      /// <param name="displayName">The display name associated with the code</param>
-      /// <returns>CodableText defining a test request name</returns>
-      public static ICodableText CreateTestRequestName(String code, CodingSystem? codeSystem, String displayName)
-      {
-          return CreateCodableText(code, codeSystem, displayName, null, null);
-      }
+        /// <summary>
+        /// Creates a test request name.
+        /// </summary>
+        /// <param name="code">Test request code</param>
+        /// <param name="codeSystem">The code system associated with the code</param>
+        /// <param name="displayName">The display name associated with the code</param>
+        /// <returns>CodableText defining a test request name</returns>
+        public static ICodableText CreateTestRequestName(String code, CodingSystem? codeSystem, String displayName)
+        {
+            return CreateCodableText(code, codeSystem, displayName, null, null);
+        }
 
-      /// <summary>
-      /// Creates a collection procedure
-      /// </summary>
-      /// <param name="code">collection procedure code</param>
-      /// <param name="codeSystem">The code system associated with the code</param>
-      /// <param name="displayName">The display name associated with the code</param>
-      /// <param name="originalText">Original text, usually applicable in the absence of a code and display name</param>
-      /// <param name="translations">Any translations that are associated with this collection procedure</param>
-      /// <returns>CodableText defining a Anatomical Site</returns>
-      public static ICodableText CreateCollectionProcedure(String code, CodingSystem? codeSystem, String displayName, String originalText, List<ICodableTranslation> translations)
-      {
-          return CreateCodableText(code, codeSystem, displayName, originalText, translations);
-      }
+        /// <summary>
+        /// Creates a collection procedure
+        /// </summary>
+        /// <param name="code">collection procedure code</param>
+        /// <param name="codeSystem">The code system associated with the code</param>
+        /// <param name="displayName">The display name associated with the code</param>
+        /// <param name="originalText">Original text, usually applicable in the absence of a code and display name</param>
+        /// <param name="translations">Any translations that are associated with this collection procedure</param>
+        /// <returns>CodableText defining a Anatomical Site</returns>
+        public static ICodableText CreateCollectionProcedure(String code, CodingSystem? codeSystem, String displayName,
+            String originalText, List<ICodableTranslation> translations)
+        {
+            return CreateCodableText(code, codeSystem, displayName, originalText, translations);
+        }
 
-      /// <summary>
-      /// Creates a manifestation
-      /// </summary>
-      /// <param name="code">role manifestation</param>
-      /// <param name="codeSystem">The code system associated with the code</param>
-      /// <param name="displayName">The display name associated with the code</param>
-      /// <param name="originalText">Original text, usually applicable in the absence of a code and display name</param>
-      /// <param name="translations">Any translations that are associated with this manifestation</param>
-      /// <returns>CodableText defining a manifestation</returns>
-      public static ICodableText CreateManifestation(String code, CodingSystem? codeSystem, String displayName, String originalText, List<ICodableTranslation> translations)
-      {
-          return CreateCodableText(code, codeSystem, displayName, originalText, translations);
-      }
+        /// <summary>
+        /// Creates a manifestation
+        /// </summary>
+        /// <param name="code">role manifestation</param>
+        /// <param name="codeSystem">The code system associated with the code</param>
+        /// <param name="displayName">The display name associated with the code</param>
+        /// <param name="originalText">Original text, usually applicable in the absence of a code and display name</param>
+        /// <param name="translations">Any translations that are associated with this manifestation</param>
+        /// <returns>CodableText defining a manifestation</returns>
+        public static ICodableText CreateManifestation(String code, CodingSystem? codeSystem, String displayName,
+            String originalText, List<ICodableTranslation> translations)
+        {
+            return CreateCodableText(code, codeSystem, displayName, originalText, translations);
+        }
 
-      /// <summary>
-      /// Creates a result value reference range meaning
-      /// </summary>
-      /// <param name="code">result value reference range meaning code</param>
-      /// <param name="codeSystem">The code system associated with the code</param>
-      /// <param name="displayName">The display name associated with the code</param>
-      /// <param name="originalText">Original text, usually applicable in the absence of a code and display name</param>
-      /// <param name="translations">Any translations that are associated with this result value reference range meaning</param>
-      /// <returns>CodableText defining a result value reference range meaning</returns>
-      public static ICodableText CreateResultValueReferenceRangeMeaning(String code, CodingSystem? codeSystem, String displayName, String originalText, List<ICodableTranslation> translations)
-      {
-          return CreateCodableText(code, codeSystem, displayName, originalText, translations);
-      }
+        /// <summary>
+        /// Creates a result value reference range meaning
+        /// </summary>
+        /// <param name="code">result value reference range meaning code</param>
+        /// <param name="codeSystem">The code system associated with the code</param>
+        /// <param name="displayName">The display name associated with the code</param>
+        /// <param name="originalText">Original text, usually applicable in the absence of a code and display name</param>
+        /// <param name="translations">Any translations that are associated with this result value reference range meaning</param>
+        /// <returns>CodableText defining a result value reference range meaning</returns>
+        public static ICodableText CreateResultValueReferenceRangeMeaning(String code, CodingSystem? codeSystem,
+            String displayName, String originalText, List<ICodableTranslation> translations)
+        {
+            return CreateCodableText(code, codeSystem, displayName, originalText, translations);
+        }
 
-      /// <summary>
-      /// Creates a role
-      /// </summary>
-      /// <returns>CodableText</returns>
-      public static ICodableText CreateRole()
-      {
-          return new CodableText();
-      }
-      /// <summary>
-      /// Creates a role
-      /// </summary>
-      /// <returns>CodableText</returns>
-      public static ICodableText CreateRole(String code, CodingSystem? codeSystem, String displayName, String originalText, List<ICodableTranslation> translations)
-      {
-          return CreateCodableText(code, codeSystem, displayName, originalText, translations);
-      }
+        /// <summary>
+        /// Creates a role
+        /// </summary>
+        /// <returns>CodableText</returns>
+        public static ICodableText CreateRole()
+        {
+            return new CodableText();
+        }
 
-      /// <summary>
-      /// Creates a participation Role
-      /// </summary>
-      /// <param name="code">role participation</param>
-      /// <param name="codeSystem">The code system associated with the code</param>
-      /// <param name="displayName">The display name associated with the code</param>
-      /// <param name="originalText">Original text, usually applicable in the absence of a code and display name</param>
-      /// <param name="translations">Any translations that are associated with this participation role</param>
-      /// <returns>CodableText defining a participation role</returns>
-      public static ICodableText CreateParticipationRole(String code, CodingSystem? codeSystem, String displayName, String originalText, List<ICodableTranslation> translations)
-      {
-          return CreateCodableText(code, codeSystem, displayName, originalText, translations);
-      }
+        /// <summary>
+        /// Creates a role
+        /// </summary>
+        /// <returns>CodableText</returns>
+        public static ICodableText CreateRole(String code, CodingSystem? codeSystem, String displayName,
+            String originalText, List<ICodableTranslation> translations)
+        {
+            return CreateCodableText(code, codeSystem, displayName, originalText, translations);
+        }
 
-      /// <summary>
-      /// Creates a codableText object that contains and defines a role
-      /// </summary>
-      /// <param name="code">A code</param>
-      /// <param name="codeSystem">The code system associated with the code</param>
-      /// <param name="displayName">The display name associated with the code</param>
-      /// <param name="originalText">Original text, usually applicable in the absence of a code and display name</param>
-      /// <returns>A codable text representing the role</returns>
-      public static ICodableText CreateRole(String code, CodingSystem? codeSystem, String displayName, String originalText)
-      {
-          var codableText = new CodableText();
+        /// <summary>
+        /// Creates a participation Role
+        /// </summary>
+        /// <param name="code">role participation</param>
+        /// <param name="codeSystem">The code system associated with the code</param>
+        /// <param name="displayName">The display name associated with the code</param>
+        /// <param name="originalText">Original text, usually applicable in the absence of a code and display name</param>
+        /// <param name="translations">Any translations that are associated with this participation role</param>
+        /// <returns>CodableText defining a participation role</returns>
+        public static ICodableText CreateParticipationRole(String code, CodingSystem? codeSystem, String displayName,
+            String originalText, List<ICodableTranslation> translations)
+        {
+            return CreateCodableText(code, codeSystem, displayName, originalText, translations);
+        }
 
-          if (codeSystem.HasValue)
-          {
-              codableText.DisplayName = displayName;
-              codableText.Code = code;
-              codableText.CodeSystemCode = codeSystem.Value.GetAttributeValue<NameAttribute, string>(a => a.Code);
-              codableText.CodeSystemName = codeSystem.Value.GetAttributeValue<NameAttribute, string>(a => a.Name);
-              codableText.CodeSystemVersion = codeSystem.Value.GetAttributeValue<NameAttribute, string>(a => a.Version);
-          }
+        /// <summary>
+        /// Creates a codableText object that contains and defines a role
+        /// </summary>
+        /// <param name="code">A code</param>
+        /// <param name="codeSystem">The code system associated with the code</param>
+        /// <param name="displayName">The display name associated with the code</param>
+        /// <param name="originalText">Original text, usually applicable in the absence of a code and display name</param>
+        /// <returns>A codable text representing the role</returns>
+        public static ICodableText CreateRole(String code, CodingSystem? codeSystem, String displayName,
+            String originalText)
+        {
+            var codableText = new CodableText();
 
-          if (!originalText.IsNullOrEmptyWhitespace())
-              codableText.OriginalText = originalText;
+            if (codeSystem.HasValue)
+            {
+                codableText.DisplayName = displayName;
+                codableText.Code = code;
+                codableText.CodeSystemCode = codeSystem.Value.GetAttributeValue<NameAttribute, string>(a => a.Code);
+                codableText.CodeSystemName = codeSystem.Value.GetAttributeValue<NameAttribute, string>(a => a.Name);
+                codableText.CodeSystemVersion =
+                    codeSystem.Value.GetAttributeValue<NameAttribute, string>(a => a.Version);
+            }
 
-          return codableText;
-      }
+            if (!originalText.IsNullOrEmptyWhitespace())
+                codableText.OriginalText = originalText;
 
-      /// <summary>
-      /// Creates a codableText object that contains and defines a role as defined by an occupation
-      /// </summary>
-      /// <param name="occupation">The occupation defining the role</param>
-      /// <returns>A codable text representing the role</returns>
-      public static ICodableText CreateRole(Occupation occupation)
-      {
-          // Remove when other documents are updated
-          var codingSystem = CodingSystem.ANZSCO;
-          if ((new StackTrace()).GetFrames().Any(t => t.GetMethod().Name.Contains(CDADocumentType.EventSummary.ToString()) || t.GetMethod().Name.Contains(CDADocumentType.SharedHeathSummary.ToString())))
-          {
-              codingSystem = CodingSystem.ANZSCORevision1;
-          }
+            return codableText;
+        }
 
-          return new CodableText
-          {
-              DisplayName = occupation != Occupation.Undefined ? occupation.GetAttributeValue<NameAttribute, String>(x => x.Name) : String.Empty,
-              Code = occupation != Occupation.Undefined ? occupation.GetAttributeValue<NameAttribute, String>(x => x.Code) : String.Empty,
-              CodeSystem = codingSystem
-          };
-      }
+        /// <summary>
+        /// Creates a codableText object that contains and defines a role as defined by an occupation
+        /// </summary>
+        /// <param name="occupation">The occupation defining the role</param>
+        /// <returns>A codable text representing the role</returns>
+        public static ICodableText CreateRole(Occupation occupation)
+        {
+            // Remove when other documents are updated
+            var codingSystem = CodingSystem.ANZSCO;
+            if ((new StackTrace()).GetFrames().Any(t =>
+                t.GetMethod().Name.Contains(CDADocumentType.EventSummary.ToString()) ||
+                t.GetMethod().Name.Contains(CDADocumentType.SharedHeathSummary.ToString())))
+            {
+                codingSystem = CodingSystem.ANZSCORevision1;
+            }
+
+            return new CodableText
+            {
+                DisplayName = occupation != Occupation.Undefined
+                    ? occupation.GetAttributeValue<NameAttribute, String>(x => x.Name)
+                    : String.Empty,
+                Code = occupation != Occupation.Undefined
+                    ? occupation.GetAttributeValue<NameAttribute, String>(x => x.Code)
+                    : String.Empty,
+                CodeSystem = codingSystem
+            };
+        }
 
         /// <summary>
         /// Creates a codableText object that contains and defines a role as defined by an occupation
@@ -2589,450 +2710,475 @@ namespace Nehta.VendorLibrary.CDA.Common
         /// <param name="codingSystem">The Coding system that will be associated with the occupation</param>
         /// <returns>A codable text representing the role</returns>
         public static ICodableText CreateRole(Occupation occupation, CodingSystem codingSystem)
-      {
-          return new CodableText
-          {
-              DisplayName = occupation != Occupation.Undefined ? occupation.GetAttributeValue<NameAttribute, String>(x => x.Name) : String.Empty,
-              Code = occupation != Occupation.Undefined ? occupation.GetAttributeValue<NameAttribute, String>(x => x.Code) : String.Empty,
-              CodeSystem = codingSystem
-          };
-      }
+        {
+            return new CodableText
+            {
+                DisplayName = occupation != Occupation.Undefined
+                    ? occupation.GetAttributeValue<NameAttribute, String>(x => x.Name)
+                    : String.Empty,
+                Code = occupation != Occupation.Undefined
+                    ? occupation.GetAttributeValue<NameAttribute, String>(x => x.Code)
+                    : String.Empty,
+                CodeSystem = codingSystem
+            };
+        }
 
-      /// <summary>
-      /// Creates a codableText object that contains and defines a role as defined by an occupation
-      /// </summary>
-      /// <param name="healthcareFacilityTypeCode">The occupation defining the role</param>
-      /// <returns>A codable text representing the role</returns>
-      public static ICodableText CreateRole(HealthcareFacilityTypeCodes healthcareFacilityTypeCode)
-      {
-          return new CodableText
-          {
-              DisplayName = healthcareFacilityTypeCode.GetAttributeValue<NameAttribute, String>(x => x.Name),
-              Code = healthcareFacilityTypeCode.GetAttributeValue<NameAttribute, String>(x => x.Code),
-              CodeSystem = CodingSystem.Anzsic2006
-          };
-      }
+        /// <summary>
+        /// Creates a codableText object that contains and defines a role as defined by an occupation
+        /// </summary>
+        /// <param name="healthcareFacilityTypeCode">The occupation defining the role</param>
+        /// <returns>A codable text representing the role</returns>
+        public static ICodableText CreateRole(HealthcareFacilityTypeCodes healthcareFacilityTypeCode)
+        {
+            return new CodableText
+            {
+                DisplayName = healthcareFacilityTypeCode.GetAttributeValue<NameAttribute, String>(x => x.Name),
+                Code = healthcareFacilityTypeCode.GetAttributeValue<NameAttribute, String>(x => x.Code),
+                CodeSystem = CodingSystem.Anzsic2006
+            };
+        }
 
-      /// <summary>
-      /// Creates a codableText object that contains and defines a role as defined by a RoleCodeAndRoleClassCodes
-      /// </summary>
-      /// <param name="roleCodeAndRoleClassCodes">The occupation defining the role</param>
-      /// <returns>A codable text representing the role</returns>
-      public static ICodableText CreateRole(RoleCodeAndRoleClassCodes roleCodeAndRoleClassCodes)
-      {
-          return CreateCodableText(roleCodeAndRoleClassCodes);
-      }
+        /// <summary>
+        /// Creates a codableText object that contains and defines a role as defined by a RoleCodeAndRoleClassCodes
+        /// </summary>
+        /// <param name="roleCodeAndRoleClassCodes">The occupation defining the role</param>
+        /// <returns>A codable text representing the role</returns>
+        public static ICodableText CreateRole(RoleCodeAndRoleClassCodes roleCodeAndRoleClassCodes)
+        {
+            return CreateCodableText(roleCodeAndRoleClassCodes);
+        }
 
-      /// <summary>
-      /// Creates a codableText object that contains and defines a role as a nullFlavor
-      /// </summary>
-      /// <param name="nullFlavor"></param>
-      /// <returns>CodableText</returns>
-      public static ICodableText CreateRole(NullFlavour nullFlavor)
-      {
-          var codableText = new CodableText
-          {
-              NullFlavour = nullFlavor
-          };
-          return codableText;
-      }
+        /// <summary>
+        /// Creates a codableText object that contains and defines a role as a nullFlavor
+        /// </summary>
+        /// <param name="nullFlavor"></param>
+        /// <returns>CodableText</returns>
+        public static ICodableText CreateRole(NullFlavour nullFlavor)
+        {
+            var codableText = new CodableText
+            {
+                NullFlavour = nullFlavor
+            };
+            return codableText;
+        }
 
-      /// <summary>
-      /// Creates a codableText object that contains and defines a role as a nullFlavor
-      /// </summary>
-      /// <param name="originalText">An OriginalText</param>
-      /// <returns>CodableText</returns>
-      public static ICodableText CreateRole(string originalText)
-      {
-          return CreateCodableText(originalText);
-      }
+        /// <summary>
+        /// Creates a codableText object that contains and defines a role as a nullFlavor
+        /// </summary>
+        /// <param name="originalText">An OriginalText</param>
+        /// <returns>CodableText</returns>
+        public static ICodableText CreateRole(string originalText)
+        {
+            return CreateCodableText(originalText);
+        }
 
-      /// <summary>
-      /// Creates a result group name
-      /// </summary>
-      /// <param name="code">result group name code</param>
-      /// <param name="codeSystem">The code system associated with the code</param>
-      /// <param name="displayName">The display name associated with the code</param>
-      /// <param name="originalText">Original text, usually applicable in the absence of a code and display name</param>
-      /// <param name="translations">Any translations that are associated with this result group name</param>
-      /// <returns>CodableText defining a result group name</returns>
-      public static ICodableText CreateResultGroupName(String code, CodingSystem? codeSystem, String displayName, String originalText, List<ICodableTranslation> translations)
-      {
-          return CreateCodableText(code, codeSystem, displayName, originalText, translations);
-      }
+        /// <summary>
+        /// Creates a result group name
+        /// </summary>
+        /// <param name="code">result group name code</param>
+        /// <param name="codeSystem">The code system associated with the code</param>
+        /// <param name="displayName">The display name associated with the code</param>
+        /// <param name="originalText">Original text, usually applicable in the absence of a code and display name</param>
+        /// <param name="translations">Any translations that are associated with this result group name</param>
+        /// <returns>CodableText defining a result group name</returns>
+        public static ICodableText CreateResultGroupName(String code, CodingSystem? codeSystem, String displayName,
+            String originalText, List<ICodableTranslation> translations)
+        {
+            return CreateCodableText(code, codeSystem, displayName, originalText, translations);
+        }
 
-      /// <summary>
-      /// Creates a result group name
-      /// </summary>
-      /// <param name="nullFlavor">nullFlavor</param>
-      /// <returns>CodableText defining a result group name</returns>
-      public static ICodableText CreateResultGroupName(NullFlavour nullFlavor)
-      {
-          return CreateCodableText(nullFlavor);
-      }
+        /// <summary>
+        /// Creates a result group name
+        /// </summary>
+        /// <param name="nullFlavor">nullFlavor</param>
+        /// <returns>CodableText defining a result group name</returns>
+        public static ICodableText CreateResultGroupName(NullFlavour nullFlavor)
+        {
+            return CreateCodableText(nullFlavor);
+        }
 
-      /// <summary>
-      /// Creates a procedure name
-      /// </summary>
-      /// <param name="originalText">Original text, usually applicable in the absence of a code and display name</param>
-      /// <returns>CodableText defining a procedure</returns>
-      public static ICodableText CreateProcedureName(String originalText)
-      {
-          return CreateCodableText(null, null, null, originalText, null);
-      }
+        /// <summary>
+        /// Creates a procedure name
+        /// </summary>
+        /// <param name="originalText">Original text, usually applicable in the absence of a code and display name</param>
+        /// <returns>CodableText defining a procedure</returns>
+        public static ICodableText CreateProcedureName(String originalText)
+        {
+            return CreateCodableText(null, null, null, originalText, null);
+        }
 
-      /// <summary>
-      /// Creates an anatomic location name
-      /// </summary>
-      /// <param name="code">anatomic location name code</param>
-      /// <param name="codeSystem">The code system associated with the code</param>
-      /// <param name="displayName">The display name associated with the code</param>
-      /// <param name="originalText">Original text, usually applicable in the absence of a code and display name</param>
-      /// <param name="translations">Any translations that are associated with this anatomic location name</param>
-      /// <returns>CodableText defining an anatomic location name</returns>
-      public static ICodableText CreateAnatomicLocationName(String code, CodingSystem? codeSystem, String displayName, String originalText, List<ICodableTranslation> translations)
-      {
-          return CreateCodableText(code, codeSystem, displayName, originalText, translations);
-      }
+        /// <summary>
+        /// Creates an anatomic location name
+        /// </summary>
+        /// <param name="code">anatomic location name code</param>
+        /// <param name="codeSystem">The code system associated with the code</param>
+        /// <param name="displayName">The display name associated with the code</param>
+        /// <param name="originalText">Original text, usually applicable in the absence of a code and display name</param>
+        /// <param name="translations">Any translations that are associated with this anatomic location name</param>
+        /// <returns>CodableText defining an anatomic location name</returns>
+        public static ICodableText CreateAnatomicLocationName(String code, CodingSystem? codeSystem, String displayName,
+            String originalText, List<ICodableTranslation> translations)
+        {
+            return CreateCodableText(code, codeSystem, displayName, originalText, translations);
+        }
 
-      /// <summary>
-      /// Creates a diagnosis
-      /// </summary>
-      /// <param name="code">diagnosis code</param>
-      /// <param name="codeSystem">The code system associated with the code</param>
-      /// <param name="displayName">The display name associated with the code</param>
-      /// <param name="originalText">Original text, usually applicable in the absence of a code and display name</param>
-      /// <param name="translations">Any translations associated with this diagnosis</param>
-      /// <returns>CodableText defining a diagnosis</returns>
-      public static ICodableText CreateDiagnosis(String code, CodingSystem? codeSystem, String displayName, String originalText, List<ICodableTranslation> translations)
-      {
-          return CreateCodableText(code, codeSystem, displayName, originalText, null);
-      }
+        /// <summary>
+        /// Creates a diagnosis
+        /// </summary>
+        /// <param name="code">diagnosis code</param>
+        /// <param name="codeSystem">The code system associated with the code</param>
+        /// <param name="displayName">The display name associated with the code</param>
+        /// <param name="originalText">Original text, usually applicable in the absence of a code and display name</param>
+        /// <param name="translations">Any translations associated with this diagnosis</param>
+        /// <returns>CodableText defining a diagnosis</returns>
+        public static ICodableText CreateDiagnosis(String code, CodingSystem? codeSystem, String displayName,
+            String originalText, List<ICodableTranslation> translations)
+        {
+            return CreateCodableText(code, codeSystem, displayName, originalText, null);
+        }
 
-      /// <summary>
-      /// Creates Reason for Encounter Description
-      /// </summary>
-      /// <param name="code">Reason for Encounter Description</param>
-      /// <param name="codeSystem">The code system associated with the code</param>
-      /// <param name="displayName">The display name associated with the code</param>
-      /// <param name="originalText">Original text, usually applicable in the absence of a code and display name</param>
-      /// <param name="translations">Any translations that are associated with this result name</param>
-      /// <returns>CodableText defining a Reason for Encounter Description</returns>
-      public static ICodableText CreateReasonForEncounterDescription(String code, CodingSystem? codeSystem, String displayName, String originalText, List<ICodableTranslation> translations)
-      {
-          return CreateCodableText(code, codeSystem, displayName, originalText, translations);
-      }
+        /// <summary>
+        /// Creates Reason for Encounter Description
+        /// </summary>
+        /// <param name="code">Reason for Encounter Description</param>
+        /// <param name="codeSystem">The code system associated with the code</param>
+        /// <param name="displayName">The display name associated with the code</param>
+        /// <param name="originalText">Original text, usually applicable in the absence of a code and display name</param>
+        /// <param name="translations">Any translations that are associated with this result name</param>
+        /// <returns>CodableText defining a Reason for Encounter Description</returns>
+        public static ICodableText CreateReasonForEncounterDescription(String code, CodingSystem? codeSystem,
+            String displayName, String originalText, List<ICodableTranslation> translations)
+        {
+            return CreateCodableText(code, codeSystem, displayName, originalText, translations);
+        }
 
-      /// <summary>
-      /// Creates Reason for Encounter Description
-      /// </summary>
-      /// <param name="originalText">Original text, usually applicable in the absence of a code and display name</param>
-      /// <returns>CodableText defining a Reason for Encounter Description</returns>
-      public static ICodableText CreateReasonForEncounterDescription(String originalText)
-      {
-          return CreateCodableText(originalText);
-      }
+        /// <summary>
+        /// Creates Reason for Encounter Description
+        /// </summary>
+        /// <param name="originalText">Original text, usually applicable in the absence of a code and display name</param>
+        /// <returns>CodableText defining a Reason for Encounter Description</returns>
+        public static ICodableText CreateReasonForEncounterDescription(String originalText)
+        {
+            return CreateCodableText(originalText);
+        }
 
-      /// <summary>
-      /// Creates Reason for Clinical Synopsis Description
-      /// </summary>
-      /// <returns>CodableText defining a Reason for Encounter Description</returns>
-      public static ICodableText CreateClinicalSynopsisDescription(String orginalText)
-      {
-          return CreateCodableText(orginalText);
-      }
+        /// <summary>
+        /// Creates Reason for Clinical Synopsis Description
+        /// </summary>
+        /// <returns>CodableText defining a Reason for Encounter Description</returns>
+        public static ICodableText CreateClinicalSynopsisDescription(String orginalText)
+        {
+            return CreateCodableText(orginalText);
+        }
 
-      /// <summary>
-      /// Creates a Anatomical Side
-      /// </summary>
-      /// <param name="code">AnatomicalSide code</param>
-      /// <param name="codeSystem">The code system associated with the code</param>
-      /// <param name="displayName">The display name associated with the code</param>
-      /// <param name="originalText">Original text, usually applicable in the absence of a code and display name</param>
-      /// <param name="translations">Any translations that are associated with this medicine</param>
-      /// <returns>CodableText defining a AnatomicalSide</returns>
-      public static ICodableText CreateAnatomicalSide(String code, CodingSystem? codeSystem, String displayName, String originalText, List<ICodableTranslation> translations)
-      {
-          return CreateCodableText(code, codeSystem, displayName, originalText, translations);
-      }
+        /// <summary>
+        /// Creates a Anatomical Side
+        /// </summary>
+        /// <param name="code">AnatomicalSide code</param>
+        /// <param name="codeSystem">The code system associated with the code</param>
+        /// <param name="displayName">The display name associated with the code</param>
+        /// <param name="originalText">Original text, usually applicable in the absence of a code and display name</param>
+        /// <param name="translations">Any translations that are associated with this medicine</param>
+        /// <returns>CodableText defining a AnatomicalSide</returns>
+        public static ICodableText CreateAnatomicalSide(String code, CodingSystem? codeSystem, String displayName,
+            String originalText, List<ICodableTranslation> translations)
+        {
+            return CreateCodableText(code, codeSystem, displayName, originalText, translations);
+        }
 
-      /// <summary>
-      /// Creates a medicine
-      /// </summary>
-      /// <returns>CodableText defining a medicine</returns>
-      public static ICodableText CreateMedicine()
-      {
-          return new CodableText();
-      }
+        /// <summary>
+        /// Creates a medicine
+        /// </summary>
+        /// <returns>CodableText defining a medicine</returns>
+        public static ICodableText CreateMedicine()
+        {
+            return new CodableText();
+        }
 
-      /// <summary>
-      /// Creates a procedure name
-      /// </summary>
-      /// <param name="code">Procedure code</param>
-      /// <param name="codeSystem">The code system associated with the code</param>
-      /// <param name="displayName">The display name associated with the code</param>
-      /// <param name="originalText">Original text, usually applicable in the absence of a code and display name</param>
-      /// <param name="translations">Any translations that are associated with this procedure</param>
-      /// <returns>CodableText defining a procedure</returns>
-      public static ICodableText CreateProcedureName(String code, CodingSystem? codeSystem, String displayName, String originalText, List<ICodableTranslation> translations)
-      {
-          return CreateCodableText(code, codeSystem, displayName, originalText, translations);
-      }
+        /// <summary>
+        /// Creates a procedure name
+        /// </summary>
+        /// <param name="code">Procedure code</param>
+        /// <param name="codeSystem">The code system associated with the code</param>
+        /// <param name="displayName">The display name associated with the code</param>
+        /// <param name="originalText">Original text, usually applicable in the absence of a code and display name</param>
+        /// <param name="translations">Any translations that are associated with this procedure</param>
+        /// <returns>CodableText defining a procedure</returns>
+        public static ICodableText CreateProcedureName(String code, CodingSystem? codeSystem, String displayName,
+            String originalText, List<ICodableTranslation> translations)
+        {
+            return CreateCodableText(code, codeSystem, displayName, originalText, translations);
+        }
 
-      /// <summary>
-      /// Creates a substance or agent
-      /// </summary>
-      /// <param name="code">substance or agent code</param>
-      /// <param name="codeSystem">The code system associated with the code</param>
-      /// <param name="displayName">The display name associated with the code</param>
-      /// <param name="originalText">Original text, usually applicable in the absence of a code and display name</param>
-      /// <param name="translations">Any translations that are associated with this substance or agent</param>
-      /// <returns>CodableText defining a substance or agent</returns>
-      public static ICodableText CreateSubstanceOrAgent(String code, CodingSystem? codeSystem, String displayName, String originalText, List<ICodableTranslation> translations)
-      {
-          return CreateCodableText(code, codeSystem, displayName, originalText, translations);
-      }
+        /// <summary>
+        /// Creates a substance or agent
+        /// </summary>
+        /// <param name="code">substance or agent code</param>
+        /// <param name="codeSystem">The code system associated with the code</param>
+        /// <param name="displayName">The display name associated with the code</param>
+        /// <param name="originalText">Original text, usually applicable in the absence of a code and display name</param>
+        /// <param name="translations">Any translations that are associated with this substance or agent</param>
+        /// <returns>CodableText defining a substance or agent</returns>
+        public static ICodableText CreateSubstanceOrAgent(String code, CodingSystem? codeSystem, String displayName,
+            String originalText, List<ICodableTranslation> translations)
+        {
+            return CreateCodableText(code, codeSystem, displayName, originalText, translations);
+        }
 
-      /// <summary>
-      /// Creates a test result name
-      /// </summary>
-      /// <param name="code">result name</param>
-      /// <param name="codeSystem">The code system associated with the code</param>
-      /// <param name="displayName">The display name associated with the code</param>
-      /// <param name="originalText">Original text, usually applicable in the absence of a code and display name</param>
-      /// <param name="translations">Any translations that are associated with this result name</param>
-      /// <returns>CodableText defining a result name</returns>
-      public static ICodableText CreateTestResultName(String code, CodingSystem? codeSystem, String displayName, String originalText, List<ICodableTranslation> translations)
-      {
-          return CreateCodableText(code, codeSystem, displayName, originalText, translations);
-      }
+        /// <summary>
+        /// Creates a test result name
+        /// </summary>
+        /// <param name="code">result name</param>
+        /// <param name="codeSystem">The code system associated with the code</param>
+        /// <param name="displayName">The display name associated with the code</param>
+        /// <param name="originalText">Original text, usually applicable in the absence of a code and display name</param>
+        /// <param name="translations">Any translations that are associated with this result name</param>
+        /// <returns>CodableText defining a result name</returns>
+        public static ICodableText CreateTestResultName(String code, CodingSystem? codeSystem, String displayName,
+            String originalText, List<ICodableTranslation> translations)
+        {
+            return CreateCodableText(code, codeSystem, displayName, originalText, translations);
+        }
 
-      /// <summary>
-      /// Creates a test result group name
-      /// </summary>
-      /// <param name="code">result name</param>
-      /// <param name="codeSystem">The code system associated with the code</param>
-      /// <param name="displayName">The display name associated with the code</param>
-      /// <param name="originalText">Original text, usually applicable in the absence of a code and display name</param>
-      /// <param name="translations">Any translations that are associated with this result name</param>
-      /// <returns>CodableText defining a result name</returns>
-      public static ICodableText CreateTestResultGroupName(String code, CodingSystem? codeSystem, String displayName, String originalText, List<ICodableTranslation> translations)
-      {
-          return CreateCodableText(code, codeSystem, displayName, originalText, translations);
-      }
+        /// <summary>
+        /// Creates a test result group name
+        /// </summary>
+        /// <param name="code">result name</param>
+        /// <param name="codeSystem">The code system associated with the code</param>
+        /// <param name="displayName">The display name associated with the code</param>
+        /// <param name="originalText">Original text, usually applicable in the absence of a code and display name</param>
+        /// <param name="translations">Any translations that are associated with this result name</param>
+        /// <returns>CodableText defining a result name</returns>
+        public static ICodableText CreateTestResultGroupName(String code, CodingSystem? codeSystem, String displayName,
+            String originalText, List<ICodableTranslation> translations)
+        {
+            return CreateCodableText(code, codeSystem, displayName, originalText, translations);
+        }
 
-      /// <summary>
-      /// Creates a medicine CodableText
-      /// </summary>
-      /// <param name="code">Medicine code</param>
-      /// <param name="codeSystem">The code system associated with the code</param>
-      /// <param name="displayName">The display name associated with the code</param>
-      /// <param name="originalText">Original text, usually applicable in the absence of a code and display name</param>
-      /// <param name="translations">Any translations that are associated with this procedure</param>
-      /// <returns>CodableText defining a medicine</returns>
-      public static ICodableText CreateMedicine(String code, CodingSystem? codeSystem, String displayName, String originalText, List<ICodableTranslation> translations)
-      {
-          return CreateCodableText(code, codeSystem, displayName, originalText, translations);
-      }
+        /// <summary>
+        /// Creates a medicine CodableText
+        /// </summary>
+        /// <param name="code">Medicine code</param>
+        /// <param name="codeSystem">The code system associated with the code</param>
+        /// <param name="displayName">The display name associated with the code</param>
+        /// <param name="originalText">Original text, usually applicable in the absence of a code and display name</param>
+        /// <param name="translations">Any translations that are associated with this procedure</param>
+        /// <returns>CodableText defining a medicine</returns>
+        public static ICodableText CreateMedicine(String code, CodingSystem? codeSystem, String displayName,
+            String originalText, List<ICodableTranslation> translations)
+        {
+            return CreateCodableText(code, codeSystem, displayName, originalText, translations);
+        }
 
-      /// <summary>
-      /// Creates a Arranged Service Description CodableText
-      /// </summary>
-      /// <param name="code">type of participation</param>
-      /// <param name="codeSystem">The code system associated with the code</param>
-      /// <param name="displayName">The display name associated with the code</param>
-      /// <param name="originalText">Original text, usually applicable in the absence of a code and display name</param>
-      /// <param name="translations">Any translations that are associated with this procedure</param>
-      /// <returns>CodableText defining a participation type</returns>
-      public static ICodableText CreateArrangedServiceDescription(String code, CodingSystem? codeSystem, String displayName, String originalText, List<ICodableTranslation> translations)
-      {
-          return CreateCodableText(code, codeSystem, displayName, originalText, translations);
-      }
+        /// <summary>
+        /// Creates a Arranged Service Description CodableText
+        /// </summary>
+        /// <param name="code">type of participation</param>
+        /// <param name="codeSystem">The code system associated with the code</param>
+        /// <param name="displayName">The display name associated with the code</param>
+        /// <param name="originalText">Original text, usually applicable in the absence of a code and display name</param>
+        /// <param name="translations">Any translations that are associated with this procedure</param>
+        /// <returns>CodableText defining a participation type</returns>
+        public static ICodableText CreateArrangedServiceDescription(String code, CodingSystem? codeSystem,
+            String displayName, String originalText, List<ICodableTranslation> translations)
+        {
+            return CreateCodableText(code, codeSystem, displayName, originalText, translations);
+        }
 
-      /// <summary>
-      /// Creates a Service Booking Status CodableText
-      /// </summary>
-      /// <param name="code">type of participation</param>
-      /// <param name="codeSystem">The code system associated with the code</param>
-      /// <param name="displayName">The display name associated with the code</param>
-      /// <param name="originalText">Original text, usually applicable in the absence of a code and display name</param>
-      /// <param name="translations">Any translations that are associated with this procedure</param>
-      /// <returns>CodableText defining a participation type</returns>
-      public static ICodableText CreateServiceBookingStatus(String code, CodingSystem? codeSystem, String displayName, String originalText, List<ICodableTranslation> translations)
-      {
-          return CreateCodableText(code, codeSystem, displayName, originalText, translations);
-      }
+        /// <summary>
+        /// Creates a Service Booking Status CodableText
+        /// </summary>
+        /// <param name="code">type of participation</param>
+        /// <param name="codeSystem">The code system associated with the code</param>
+        /// <param name="displayName">The display name associated with the code</param>
+        /// <param name="originalText">Original text, usually applicable in the absence of a code and display name</param>
+        /// <param name="translations">Any translations that are associated with this procedure</param>
+        /// <returns>CodableText defining a participation type</returns>
+        public static ICodableText CreateServiceBookingStatus(String code, CodingSystem? codeSystem, String displayName,
+            String originalText, List<ICodableTranslation> translations)
+        {
+            return CreateCodableText(code, codeSystem, displayName, originalText, translations);
+        }
 
-      /// <summary>
-      /// Creates a NoKnownAdverseReactionTo CodableText
-      /// </summary>
-      /// <param name="code">type of participation</param>
-      /// <param name="codeSystem">The code system associated with the code</param>
-      /// <param name="displayName">The display name associated with the code</param>
-      /// <param name="originalText">Original text, usually applicable in the absence of a code and display name</param>
-      /// <param name="translations">Any translations that are associated with this procedure</param>
-      /// <returns>CodableText defining a participation type</returns>
-      public static ICodableText CreateNoKnownAdverseReactionTo(String code, CodingSystem? codeSystem, String displayName, String originalText, List<ICodableTranslation> translations)
-      {
-          return CreateCodableText(code, codeSystem, displayName, originalText, translations);
-      }
+        /// <summary>
+        /// Creates a NoKnownAdverseReactionTo CodableText
+        /// </summary>
+        /// <param name="code">type of participation</param>
+        /// <param name="codeSystem">The code system associated with the code</param>
+        /// <param name="displayName">The display name associated with the code</param>
+        /// <param name="originalText">Original text, usually applicable in the absence of a code and display name</param>
+        /// <param name="translations">Any translations that are associated with this procedure</param>
+        /// <returns>CodableText defining a participation type</returns>
+        public static ICodableText CreateNoKnownAdverseReactionTo(String code, CodingSystem? codeSystem,
+            String displayName, String originalText, List<ICodableTranslation> translations)
+        {
+            return CreateCodableText(code, codeSystem, displayName, originalText, translations);
+        }
 
-      /// <summary>
-      /// Creates a CreateNoKnownAllergicReactionTo CodableText
-      /// </summary>
-      /// <param name="code">type of participation</param>
-      /// <param name="codeSystem">The code system associated with the code</param>
-      /// <param name="displayName">The display name associated with the code</param>
-      /// <param name="originalText">Original text, usually applicable in the absence of a code and display name</param>
-      /// <param name="translations">Any translations that are associated with this procedure</param>
-      /// <returns>CodableText defining a participation type</returns>
-      public static ICodableText CreateNoKnownAllergicReactionTo(String code, CodingSystem? codeSystem, String displayName, String originalText, List<ICodableTranslation> translations)
-      {
-          return CreateCodableText(code, codeSystem, displayName, originalText, translations);
-      }
+        /// <summary>
+        /// Creates a CreateNoKnownAllergicReactionTo CodableText
+        /// </summary>
+        /// <param name="code">type of participation</param>
+        /// <param name="codeSystem">The code system associated with the code</param>
+        /// <param name="displayName">The display name associated with the code</param>
+        /// <param name="originalText">Original text, usually applicable in the absence of a code and display name</param>
+        /// <param name="translations">Any translations that are associated with this procedure</param>
+        /// <returns>CodableText defining a participation type</returns>
+        public static ICodableText CreateNoKnownAllergicReactionTo(String code, CodingSystem? codeSystem,
+            String displayName, String originalText, List<ICodableTranslation> translations)
+        {
+            return CreateCodableText(code, codeSystem, displayName, originalText, translations);
+        }
 
-      /// <summary>
-      /// Creates a CreateReactionDescriptions CodableText
-      /// </summary>
-      /// <param name="code">type of participation</param>
-      /// <param name="codeSystem">The code system associated with the code</param>
-      /// <param name="displayName">The display name associated with the code</param>
-      /// <param name="originalText">Original text, usually applicable in the absence of a code and display name</param>
-      /// <param name="translations">Any translations that are associated with this procedure</param>
-      /// <returns>CodableText defining a participation type</returns>
-      public static ICodableText CreateReactionDescriptions(String code, CodingSystem? codeSystem, String displayName, String originalText, List<ICodableTranslation> translations)
-      {
-          return CreateCodableText(code, codeSystem, displayName, originalText, translations);
-      }
+        /// <summary>
+        /// Creates a CreateReactionDescriptions CodableText
+        /// </summary>
+        /// <param name="code">type of participation</param>
+        /// <param name="codeSystem">The code system associated with the code</param>
+        /// <param name="displayName">The display name associated with the code</param>
+        /// <param name="originalText">Original text, usually applicable in the absence of a code and display name</param>
+        /// <param name="translations">Any translations that are associated with this procedure</param>
+        /// <returns>CodableText defining a participation type</returns>
+        public static ICodableText CreateReactionDescriptions(String code, CodingSystem? codeSystem, String displayName,
+            String originalText, List<ICodableTranslation> translations)
+        {
+            return CreateCodableText(code, codeSystem, displayName, originalText, translations);
+        }
 
-      /// <summary>
-      /// Creates a CreateNoKnownHypersensitivityReactionTo CodableText
-      /// </summary>
-      /// <param name="code">type of participation</param>
-      /// <param name="codeSystem">The code system associated with the code</param>
-      /// <param name="displayName">The display name associated with the code</param>
-      /// <param name="originalText">Original text, usually applicable in the absence of a code and display name</param>
-      /// <param name="translations">Any translations that are associated with this procedure</param>
-      /// <returns>CodableText defining a participation type</returns>
-      public static ICodableText CreateNoKnownHypersensitivityReactionTo(String code, CodingSystem? codeSystem, String displayName, String originalText, List<ICodableTranslation> translations)
-      {
-          return CreateCodableText(code, codeSystem, displayName, originalText, translations);
-      }
+        /// <summary>
+        /// Creates a CreateNoKnownHypersensitivityReactionTo CodableText
+        /// </summary>
+        /// <param name="code">type of participation</param>
+        /// <param name="codeSystem">The code system associated with the code</param>
+        /// <param name="displayName">The display name associated with the code</param>
+        /// <param name="originalText">Original text, usually applicable in the absence of a code and display name</param>
+        /// <param name="translations">Any translations that are associated with this procedure</param>
+        /// <returns>CodableText defining a participation type</returns>
+        public static ICodableText CreateNoKnownHypersensitivityReactionTo(String code, CodingSystem? codeSystem,
+            String displayName, String originalText, List<ICodableTranslation> translations)
+        {
+            return CreateCodableText(code, codeSystem, displayName, originalText, translations);
+        }
 
-      /// <summary>
-      /// Creates a CreateNoKnownIntoleranceTo CodableText
-      /// </summary>
-      /// <param name="code">type of participation</param>
-      /// <param name="codeSystem">The code system associated with the code</param>
-      /// <param name="displayName">The display name associated with the code</param>
-      /// <param name="originalText">Original text, usually applicable in the absence of a code and display name</param>
-      /// <param name="translations">Any translations that are associated with this procedure</param>
-      /// <returns>CodableText defining a participation type</returns>
-      public static ICodableText CreateNoKnownIntoleranceTo(String code, CodingSystem? codeSystem, String displayName, String originalText, List<ICodableTranslation> translations)
-      {
-          return CreateCodableText(code, codeSystem, displayName, originalText, translations);
-      }
+        /// <summary>
+        /// Creates a CreateNoKnownIntoleranceTo CodableText
+        /// </summary>
+        /// <param name="code">type of participation</param>
+        /// <param name="codeSystem">The code system associated with the code</param>
+        /// <param name="displayName">The display name associated with the code</param>
+        /// <param name="originalText">Original text, usually applicable in the absence of a code and display name</param>
+        /// <param name="translations">Any translations that are associated with this procedure</param>
+        /// <returns>CodableText defining a participation type</returns>
+        public static ICodableText CreateNoKnownIntoleranceTo(String code, CodingSystem? codeSystem, String displayName,
+            String originalText, List<ICodableTranslation> translations)
+        {
+            return CreateCodableText(code, codeSystem, displayName, originalText, translations);
+        }
 
-      /// <summary>
-      /// Creates a CreateAgentDescription CodableText
-      /// </summary>
-      /// <param name="code">type of participation</param>
-      /// <param name="codeSystem">The code system associated with the code</param>
-      /// <param name="displayName">The display name associated with the code</param>
-      /// <param name="originalText">Original text, usually applicable in the absence of a code and display name</param>
-      /// <param name="translations">Any translations that are associated with this procedure</param>
-      /// <returns>CodableText defining a participation type</returns>
-      public static ICodableText CreateAgentDescription(String code, CodingSystem? codeSystem, String displayName, String originalText, List<ICodableTranslation> translations)
-      {
-          return CreateCodableText(code, codeSystem, displayName, originalText, translations);
-      }
+        /// <summary>
+        /// Creates a CreateAgentDescription CodableText
+        /// </summary>
+        /// <param name="code">type of participation</param>
+        /// <param name="codeSystem">The code system associated with the code</param>
+        /// <param name="displayName">The display name associated with the code</param>
+        /// <param name="originalText">Original text, usually applicable in the absence of a code and display name</param>
+        /// <param name="translations">Any translations that are associated with this procedure</param>
+        /// <returns>CodableText defining a participation type</returns>
+        public static ICodableText CreateAgentDescription(String code, CodingSystem? codeSystem, String displayName,
+            String originalText, List<ICodableTranslation> translations)
+        {
+            return CreateCodableText(code, codeSystem, displayName, originalText, translations);
+        }
 
-      /// <summary>
-      /// Creates a CreateAdverseReactionType CodableText
-      /// </summary>
-      /// <param name="code">type of participation</param>
-      /// <param name="codeSystem">The code system associated with the code</param>
-      /// <param name="displayName">The display name associated with the code</param>
-      /// <param name="originalText">Original text, usually applicable in the absence of a code and display name</param>
-      /// <param name="translations">Any translations that are associated with this procedure</param>
-      /// <returns>CodableText defining a participation type</returns>
-      public static ICodableText CreateAdverseReactionType(String code, CodingSystem? codeSystem, String displayName, String originalText, List<ICodableTranslation> translations)
-      {
-          return CreateCodableText(code, codeSystem, displayName, originalText, translations);
-      }
+        /// <summary>
+        /// Creates a CreateAdverseReactionType CodableText
+        /// </summary>
+        /// <param name="code">type of participation</param>
+        /// <param name="codeSystem">The code system associated with the code</param>
+        /// <param name="displayName">The display name associated with the code</param>
+        /// <param name="originalText">Original text, usually applicable in the absence of a code and display name</param>
+        /// <param name="translations">Any translations that are associated with this procedure</param>
+        /// <returns>CodableText defining a participation type</returns>
+        public static ICodableText CreateAdverseReactionType(String code, CodingSystem? codeSystem, String displayName,
+            String originalText, List<ICodableTranslation> translations)
+        {
+            return CreateCodableText(code, codeSystem, displayName, originalText, translations);
+        }
 
-      /// <summary>
-      /// Creates a CreateAdverseReactionType NullFlavour
-      /// </summary>
-      /// <param name="nullFlavour">type of participation</param>
-      /// <returns>CodableText defining a participation type</returns>
-      public static ICodableText CreateAdverseReactionType(NullFlavour nullFlavour)
-      {
-          return CreateCodableText(nullFlavour);
-      }
+        /// <summary>
+        /// Creates a CreateAdverseReactionType NullFlavour
+        /// </summary>
+        /// <param name="nullFlavour">type of participation</param>
+        /// <returns>CodableText defining a participation type</returns>
+        public static ICodableText CreateAdverseReactionType(NullFlavour nullFlavour)
+        {
+            return CreateCodableText(nullFlavour);
+        }
 
-      /// <summary>
-      /// Creates a separation mode CodableText.
-      /// </summary>
-      /// <param name="separationMode">Separation mode.</param>
-      /// <returns>Separation mode ICodableText</returns>
-      public static ICodableText CreateSeparationMode(ModeOfSeparation separationMode)
-      {
-          return CreateCodableText(
-              separationMode.GetAttributeValue<NameAttribute, string>(x => x.Code),
-              CodingSystem.AIHW,
-              separationMode.GetAttributeValue<NameAttribute, string>(x => x.Name),
-              null,
-              null);
-      }
+        /// <summary>
+        /// Creates a separation mode CodableText.
+        /// </summary>
+        /// <param name="separationMode">Separation mode.</param>
+        /// <returns>Separation mode ICodableText</returns>
+        public static ICodableText CreateSeparationMode(ModeOfSeparation separationMode)
+        {
+            return CreateCodableText(
+                separationMode.GetAttributeValue<NameAttribute, string>(x => x.Code),
+                CodingSystem.AIHW,
+                separationMode.GetAttributeValue<NameAttribute, string>(x => x.Name),
+                null,
+                null);
+        }
 
-      /// <summary>
-      /// Create a Specialty CodableText
-      /// </summary>
-      /// <param name="code">Specialty mode code</param>
-      /// <param name="codeSystem">The code system associated with the code</param>
-      /// <param name="displayName">The display name associated with the code</param>
-      /// <param name="originalText">Original text, usually applicable in the absence of a code and display name</param>
-      /// <param name="translations">Any translations that are associated with this procedure</param>
-      /// <returns>CodableText </returns>
-      public static ICodableText CreateSpecialty(String code, CodingSystem? codeSystem, String displayName, String originalText, List<ICodableTranslation> translations)
-      {
-          return CreateCodableText(code, codeSystem, displayName, originalText, translations);
-      }
+        /// <summary>
+        /// Create a Specialty CodableText
+        /// </summary>
+        /// <param name="code">Specialty mode code</param>
+        /// <param name="codeSystem">The code system associated with the code</param>
+        /// <param name="displayName">The display name associated with the code</param>
+        /// <param name="originalText">Original text, usually applicable in the absence of a code and display name</param>
+        /// <param name="translations">Any translations that are associated with this procedure</param>
+        /// <returns>CodableText </returns>
+        public static ICodableText CreateSpecialty(String code, CodingSystem? codeSystem, String displayName,
+            String originalText, List<ICodableTranslation> translations)
+        {
+            return CreateCodableText(code, codeSystem, displayName, originalText, translations);
+        }
 
-      /// <summary>
-      /// Create a Specialty CodableText nullFlavor
-      /// </summary>
-      /// <param name="nullFlavor">Specialty mode nullflavor</param>
-      /// <returns>CodableText </returns>
-      public static ICodableText CreateSpecialty(NullFlavour nullFlavor)
-      {
-          return CreateCodableText(nullFlavor);
-      }
+        /// <summary>
+        /// Create a Specialty CodableText nullFlavor
+        /// </summary>
+        /// <param name="nullFlavor">Specialty mode nullflavor</param>
+        /// <returns>CodableText </returns>
+        public static ICodableText CreateSpecialty(NullFlavour nullFlavor)
+        {
+            return CreateCodableText(nullFlavor);
+        }
 
-      /// <summary>
-      /// Creates a Image View Name
-      /// </summary>
-      /// <param name="code">Image View Name name code</param>
-      /// <param name="codeSystem">The code system associated with the code</param>
-      /// <param name="displayName">The display name associated with the code</param>
-      /// <param name="originalText">Original text, usually applicable in the absence of a code and display name</param>
-      /// <param name="translations">Any translations that are associated with this result group name</param>
-      /// <returns>CodableText defining a result group name</returns>
-      public static ICodableText CreateImageViewName(String code, CodingSystem? codeSystem, String displayName, String originalText, List<ICodableTranslation> translations)
-      {
-          return CreateCodableText(code, codeSystem, displayName, originalText, translations);
-      }
+        /// <summary>
+        /// Creates a Image View Name
+        /// </summary>
+        /// <param name="code">Image View Name name code</param>
+        /// <param name="codeSystem">The code system associated with the code</param>
+        /// <param name="displayName">The display name associated with the code</param>
+        /// <param name="originalText">Original text, usually applicable in the absence of a code and display name</param>
+        /// <param name="translations">Any translations that are associated with this result group name</param>
+        /// <returns>CodableText defining a result group name</returns>
+        public static ICodableText CreateImageViewName(String code, CodingSystem? codeSystem, String displayName,
+            String originalText, List<ICodableTranslation> translations)
+        {
+            return CreateCodableText(code, codeSystem, displayName, originalText, translations);
+        }
 
-      /// <summary>
-      /// Creates Hl7V3ResultStatus ICoadable text
-      /// </summary>
-      /// <param name="resultStatus">The Hl7V3ResultStatus</param>
-      /// <returns>A Hl7V3ResultStatus converted to a ICodableText</returns>
-      public static ICodableText CreateResultStatus(Hl7V3ResultStatus resultStatus)
-      {
-          return CreateResultStatus(resultStatus, null);
-      }
+        /// <summary>
+        /// Creates Hl7V3ResultStatus ICoadable text
+        /// </summary>
+        /// <param name="resultStatus">The Hl7V3ResultStatus</param>
+        /// <returns>A Hl7V3ResultStatus converted to a ICodableText</returns>
+        public static ICodableText CreateResultStatus(Hl7V3ResultStatus resultStatus)
+        {
+            return CreateResultStatus(resultStatus, null);
+        }
 
         /// <summary>
         /// Creates Hl7V3ResultStatus ICoadable text
@@ -3041,12 +3187,12 @@ namespace Nehta.VendorLibrary.CDA.Common
         /// <param name="resultOriginalText">This overrides the long display name in the Narrative</param>
         /// <returns>A Hl7V3ResultStatus converted to a ICodableText</returns>
         public static ICodableText CreateResultStatus(Hl7V3ResultStatus resultStatus, string resultOriginalText)
-      {
-          return CreateCodableText(resultStatus.GetAttributeValue<NameAttribute, String>(x => x.Code),
-                                   CodingSystem.HL7ResultStatus,
-                                   resultStatus.GetAttributeValue<NameAttribute, String>(x => x.Name),
-                                   resultOriginalText);
-      }
+        {
+            return CreateCodableText(resultStatus.GetAttributeValue<NameAttribute, String>(x => x.Code),
+                CodingSystem.HL7ResultStatus,
+                resultStatus.GetAttributeValue<NameAttribute, String>(x => x.Name),
+                resultOriginalText);
+        }
 
         /// <summary>
         /// Creates A StructuredText Element
@@ -3128,459 +3274,465 @@ namespace Nehta.VendorLibrary.CDA.Common
         /// </summary>
         /// <returns>(IImagingExaminationResult) Imaging Examination Result Discharge Summary</returns>
         public static IImagingExaminationResult CreateImagingExaminationResult()
-      {
-        return new ImagingExaminationResult();
-      }
+        {
+            return new ImagingExaminationResult();
+        }
 
-      #endregion
+        #endregion
 
-      #region Time
+        #region Time
 
-      /// <summary>
-      /// Creates am StructuredTiming
-      /// </summary>
-      /// <returns>StructuredTiming</returns>
-      public static StructuredTiming CreateStructuredTiming()
-      {
-        return new StructuredTiming();
-      }
+        /// <summary>
+        /// Creates am StructuredTiming
+        /// </summary>
+        /// <returns>StructuredTiming</returns>
+        public static StructuredTiming CreateStructuredTiming()
+        {
+            return new StructuredTiming();
+        }
 
-      /// <summary>
-      /// Creates a EventRelatedIntervalOfTime (EIVL_TS)
-      /// </summary>
-      /// <returns>EventRelatedIntervalOfTime</returns>
-      public static EventRelatedIntervalOfTime CreateEventRelatedIntervalOfTime()
-      {
-        return new EventRelatedIntervalOfTime();
-      }
+        /// <summary>
+        /// Creates a EventRelatedIntervalOfTime (EIVL_TS)
+        /// </summary>
+        /// <returns>EventRelatedIntervalOfTime</returns>
+        public static EventRelatedIntervalOfTime CreateEventRelatedIntervalOfTime()
+        {
+            return new EventRelatedIntervalOfTime();
+        }
 
-      /// <summary>
-      /// Creates a ParentheticSetExpressionOfTime (SXPR_TS)
-      /// </summary>
-      /// <returns>ParentheticSetExpressionOfTime</returns>
-      public static ParentheticSetExpressionOfTime CreateParentheticSetExpressionOfTime()
-      {
-        return new ParentheticSetExpressionOfTime();
-      }
+        /// <summary>
+        /// Creates a ParentheticSetExpressionOfTime (SXPR_TS)
+        /// </summary>
+        /// <returns>ParentheticSetExpressionOfTime</returns>
+        public static ParentheticSetExpressionOfTime CreateParentheticSetExpressionOfTime()
+        {
+            return new ParentheticSetExpressionOfTime();
+        }
 
-      /// <summary>
-      /// Creates a IPeriodicIntervalOfTime (PIVL_TS)
-      /// </summary>
-      /// <returns>IPeriodicIntervalOfTime</returns>
-      public static PeriodicIntervalOfTime CreatePeriodicIntervalOfTime()
-      {
-        return new PeriodicIntervalOfTime();
-      }
+        /// <summary>
+        /// Creates a IPeriodicIntervalOfTime (PIVL_TS)
+        /// </summary>
+        /// <returns>IPeriodicIntervalOfTime</returns>
+        public static PeriodicIntervalOfTime CreatePeriodicIntervalOfTime()
+        {
+            return new PeriodicIntervalOfTime();
+        }
 
-      /// <summary>
-      /// Creates a SetComponentTS (SXCM_TS)
-      /// </summary>
-      /// <returns>SetComponentTS</returns>
-      public static SetComponentTS CreateSetComponentTS()
-      {
-        return new SetComponentTS();
-      }
+        /// <summary>
+        /// Creates a SetComponentTS (SXCM_TS)
+        /// </summary>
+        /// <returns>SetComponentTS</returns>
+        public static SetComponentTS CreateSetComponentTS()
+        {
+            return new SetComponentTS();
+        }
 
-      /// <summary>
-      /// Creates a Frequency
-      /// </summary>
-      /// <returns>Frequency</returns>
-      public static Frequency CreateFrequency()
-      {
-        return new Frequency();
-      }
+        /// <summary>
+        /// Creates a Frequency
+        /// </summary>
+        /// <returns>Frequency</returns>
+        public static Frequency CreateFrequency()
+        {
+            return new Frequency();
+        }
 
-      /// <summary>
-      /// Creates an CdaInterval with low.
-      /// </summary>
-      /// <param name="low">Low.</param>
-      /// <returns>Interval</returns>
-      public static CdaInterval CreateLow(ISO8601DateTime low)
-      {
-        return CdaInterval.CreateLow(low);
-      }
+        /// <summary>
+        /// Creates an CdaInterval with low.
+        /// </summary>
+        /// <param name="low">Low.</param>
+        /// <returns>Interval</returns>
+        public static CdaInterval CreateLow(ISO8601DateTime low)
+        {
+            return CdaInterval.CreateLow(low);
+        }
 
-      /// <summary>
-      /// Creates an CdaInterval with low.
-      /// </summary>
-      /// <param name="low">Low.</param>
-      /// <param name="value">value.</param>
-      /// <param name="operatorType">operatorType.</param>
-      /// <param name="nullFlavor">nullFlavor.</param>
-      /// <returns>CdaInterval</returns>
-      public static CdaInterval CreateLow(ISO8601DateTime low, int? value, OperationTypes? operatorType, NullFlavor? nullFlavor)
-      {
-        return CdaInterval.CreateLow(low, value, operatorType, nullFlavor);
-      }
+        /// <summary>
+        /// Creates an CdaInterval with low.
+        /// </summary>
+        /// <param name="low">Low.</param>
+        /// <param name="value">value.</param>
+        /// <param name="operatorType">operatorType.</param>
+        /// <param name="nullFlavor">nullFlavor.</param>
+        /// <returns>CdaInterval</returns>
+        public static CdaInterval CreateLow(ISO8601DateTime low, int? value, OperationTypes? operatorType,
+            NullFlavor? nullFlavor)
+        {
+            return CdaInterval.CreateLow(low, value, operatorType, nullFlavor);
+        }
 
-      /// <summary>
-      /// Creates an CdaInterval with a width.
-      /// </summary>
-      /// <param name="width">Width.</param>
-      /// <param name="unit">Unit.</param>
-      /// <returns>CdaInterval</returns>
-      public static CdaInterval CreateWidth(string width, TimeUnitOfMeasure unit)
-      {
-        return CdaInterval.CreateWidth(width, unit);
-      }
+        /// <summary>
+        /// Creates an CdaInterval with a width.
+        /// </summary>
+        /// <param name="width">Width.</param>
+        /// <param name="unit">Unit.</param>
+        /// <returns>CdaInterval</returns>
+        public static CdaInterval CreateWidth(string width, TimeUnitOfMeasure unit)
+        {
+            return CdaInterval.CreateWidth(width, unit);
+        }
 
-      /// <summary>
-      /// Creates an CdaInterval with a width.
-      /// </summary>
-      /// <param name="width">Width.</param>
-      /// <param name="value">Quantity.</param>
-      /// <param name="unit">Unit.</param>
-      /// <param name="operatorType">operatorType.</param>
-      /// <param name="nullFlavor">nullFlavor.</param> 
-      /// <returns>CdaInterval</returns>
-      public static CdaInterval CreateWidth(string width, TimeUnitOfMeasure unit, int? value, OperationTypes? operatorType, NullFlavor? nullFlavor)
-      {
-        return CdaInterval.CreateWidth(width, unit, value, operatorType, nullFlavor);
-      }
+        /// <summary>
+        /// Creates an CdaInterval with a width.
+        /// </summary>
+        /// <param name="width">Width.</param>
+        /// <param name="value">Quantity.</param>
+        /// <param name="unit">Unit.</param>
+        /// <param name="operatorType">operatorType.</param>
+        /// <param name="nullFlavor">nullFlavor.</param> 
+        /// <returns>CdaInterval</returns>
+        public static CdaInterval CreateWidth(string width, TimeUnitOfMeasure unit, int? value,
+            OperationTypes? operatorType, NullFlavor? nullFlavor)
+        {
+            return CdaInterval.CreateWidth(width, unit, value, operatorType, nullFlavor);
+        }
 
-      /// <summary>
-      /// Creates an CdaInterval with high.
-      /// </summary>
-      /// <param name="high">High.</param>
-      /// <returns>Interval</returns>
-      public static CdaInterval CreateHigh(ISO8601DateTime high)
-      {
-        return CdaInterval.CreateHigh(high);
-      }
+        /// <summary>
+        /// Creates an CdaInterval with high.
+        /// </summary>
+        /// <param name="high">High.</param>
+        /// <returns>Interval</returns>
+        public static CdaInterval CreateHigh(ISO8601DateTime high)
+        {
+            return CdaInterval.CreateHigh(high);
+        }
 
-      /// <summary>
-      /// Creates an CdaInterval with high.
-      /// </summary>
-      /// <param name="value">value.</param>
-      /// <param name="operatorType">operatorType.</param>
-      /// <param name="nullFlavor">nullFlavor.</param>
-      /// <param name="high">High.</param>
-      /// <returns>CdaInterval</returns>
-      public static CdaInterval CreateHigh(ISO8601DateTime high, int? value, OperationTypes? operatorType, NullFlavor? nullFlavor)
-      {
-        return CdaInterval.CreateHigh(high, value, operatorType, nullFlavor);
-      }
+        /// <summary>
+        /// Creates an CdaInterval with high.
+        /// </summary>
+        /// <param name="value">value.</param>
+        /// <param name="operatorType">operatorType.</param>
+        /// <param name="nullFlavor">nullFlavor.</param>
+        /// <param name="high">High.</param>
+        /// <returns>CdaInterval</returns>
+        public static CdaInterval CreateHigh(ISO8601DateTime high, int? value, OperationTypes? operatorType,
+            NullFlavor? nullFlavor)
+        {
+            return CdaInterval.CreateHigh(high, value, operatorType, nullFlavor);
+        }
 
-      /// <summary>
-      /// Creates an CdaInterval with center.
-      /// </summary>
-      /// <param name="center">Center.</param>
-      /// <returns>Interval</returns>
-      public static CdaInterval CreateCenter(ISO8601DateTime center)
-      {
-        return CdaInterval.CreateCenter(center);
-      }
+        /// <summary>
+        /// Creates an CdaInterval with center.
+        /// </summary>
+        /// <param name="center">Center.</param>
+        /// <returns>Interval</returns>
+        public static CdaInterval CreateCenter(ISO8601DateTime center)
+        {
+            return CdaInterval.CreateCenter(center);
+        }
 
-      /// <summary>
-      /// Creates an CdaInterval with center.
-      /// </summary>
-      /// <param name="value">value.</param>
-      /// <param name="operatorType">operatorType.</param>
-      /// <param name="nullFlavor">nullFlavor.</param>
-      /// <param name="center">Center.</param>
-      /// <returns>CdaInterval</returns>
-      public static CdaInterval CreateCenter(ISO8601DateTime center, int? value, OperationTypes? operatorType, NullFlavor? nullFlavor)
-      {
-        return CdaInterval.CreateCenter(center, value, operatorType, nullFlavor);
-      }
+        /// <summary>
+        /// Creates an CdaInterval with center.
+        /// </summary>
+        /// <param name="value">value.</param>
+        /// <param name="operatorType">operatorType.</param>
+        /// <param name="nullFlavor">nullFlavor.</param>
+        /// <param name="center">Center.</param>
+        /// <returns>CdaInterval</returns>
+        public static CdaInterval CreateCenter(ISO8601DateTime center, int? value, OperationTypes? operatorType,
+            NullFlavor? nullFlavor)
+        {
+            return CdaInterval.CreateCenter(center, value, operatorType, nullFlavor);
+        }
 
-      /// <summary>
-      /// Creates an CdaInterval with high and low.
-      /// </summary>
-      /// <param name="low">Low.</param>
-      /// <param name="high">High.</param>
-      /// <returns>CdaInterval</returns>
-      public static CdaInterval CreateLowHigh(ISO8601DateTime low, ISO8601DateTime high)
-      {
-        return CdaInterval.CreateLowHigh(low, high);
-      }
-
-
-      /// <summary>
-      /// Creates an CdaInterval with high and low.
-      /// </summary>
-      /// <param name="low">Low.</param>
-      /// <param name="high">High.</param>
-      /// <param name="value">value.</param>
-      /// <param name="operatorType">operatorType.</param>
-      /// <param name="nullFlavor">nullFlavor.</param>
-      /// <returns>CdaInterval</returns>
-      public static CdaInterval CreateLowHigh(ISO8601DateTime low, ISO8601DateTime high, int? value, OperationTypes? operatorType, NullFlavor? nullFlavor)
-      {
-        return CdaInterval.CreateLowHigh(low, high, value, operatorType, nullFlavor);
-      }
-
-      /// <summary>
-      /// Creates an CdaInterval with low and width.
-      /// </summary>
-      /// <param name="low">Low.</param>
-      /// <param name="value">Quantity.</param>
-      /// <param name="unit">Unit.</param>
-      /// <returns>CdaInterval</returns>
-      public static CdaInterval CreateLowWidth(ISO8601DateTime low, string value, TimeUnitOfMeasure unit)
-      {
-        return CdaInterval.CreateLowWidth(low, value, unit);
-      }
-
-      /// <summary>
-      /// Creates an CdaInterval with low and width.
-      /// </summary>
-      /// <param name="low">Low.</param>
-      /// <param name="width">Width.</param>
-      /// <param name="unit">Unit.</param>
-      /// <param name="value">value.</param>
-      /// <param name="operatorType">operatorType.</param>
-      /// <param name="nullFlavor">nullFlavor.</param>
-      /// <returns>CdaInterval</returns>
-      public static CdaInterval CreateLowWidth(ISO8601DateTime low, string width, TimeUnitOfMeasure unit, int? value, OperationTypes? operatorType, NullFlavor? nullFlavor)
-      {
-        return CdaInterval.CreateLowWidth(low, width, unit, value, operatorType, nullFlavor);
-      }
-
-      /// <summary>
-      /// Creates an CdaInterval with high and width.
-      /// </summary>
-      /// <param name="high">High.</param>
-      /// <param name="width">width.</param>
-      /// <param name="unit">Unit.</param>
-      /// <returns>CdaInterval</returns>
-      public static CdaInterval CreateHighWidth(ISO8601DateTime high, string width, TimeUnitOfMeasure unit)
-      {
-        return CdaInterval.CreateHighWidth(high, width, unit);
-      }
-
-      /// <summary>
-      /// Creates an CdaInterval with high and width.
-      /// </summary>
-      /// <param name="high">High.</param>
-      /// <param name="width">Width.</param>
-      /// <param name="unit">Unit.</param>
-      /// <param name="value">value.</param>
-      /// <param name="operatorType">operatorType.</param>
-      /// <param name="nullFlavor">nullFlavor.</param>
-      /// <returns>CdaInterval</returns>
-      public static CdaInterval CreateHighWidth(ISO8601DateTime high, string width, TimeUnitOfMeasure unit, int? value, OperationTypes? operatorType, NullFlavor? nullFlavor)
-      {
-        return CdaInterval.CreateHighWidth(high, width, unit, value, operatorType, nullFlavor);
-      }
+        /// <summary>
+        /// Creates an CdaInterval with high and low.
+        /// </summary>
+        /// <param name="low">Low.</param>
+        /// <param name="high">High.</param>
+        /// <returns>CdaInterval</returns>
+        public static CdaInterval CreateLowHigh(ISO8601DateTime low, ISO8601DateTime high)
+        {
+            return CdaInterval.CreateLowHigh(low, high);
+        }
 
 
-      /// <summary>
-      /// Creates an CdaInterval with center and width.
-      /// </summary>
-      /// <param name="center">Center.</param>
-      /// <param name="value">Quantity.</param>
-      /// <param name="unit">Unit.</param>
-      /// <returns>CdaInterval</returns>
-      public static CdaInterval CreateCenterWidth(ISO8601DateTime center, string value, TimeUnitOfMeasure unit)
-      {
-        return CdaInterval.CreateCenterWidth(center, value, unit);
-      }
+        /// <summary>
+        /// Creates an CdaInterval with high and low.
+        /// </summary>
+        /// <param name="low">Low.</param>
+        /// <param name="high">High.</param>
+        /// <param name="value">value.</param>
+        /// <param name="operatorType">operatorType.</param>
+        /// <param name="nullFlavor">nullFlavor.</param>
+        /// <returns>CdaInterval</returns>
+        public static CdaInterval CreateLowHigh(ISO8601DateTime low, ISO8601DateTime high, int? value,
+            OperationTypes? operatorType, NullFlavor? nullFlavor)
+        {
+            return CdaInterval.CreateLowHigh(low, high, value, operatorType, nullFlavor);
+        }
 
-      /// <summary>
-      /// Creates an CdaInterval with center and width.
-      /// </summary>
-      /// <param name="center">Center.</param>
-      /// <param name="width">Width.</param>
-      /// <param name="unit">Unit.</param>
-      /// <param name="value">value.</param>
-      /// <param name="operatorType">operatorType.</param>
-      /// <param name="nullFlavor">nullFlavor.</param>
-      /// <returns>CdaInterval</returns>
-      public static CdaInterval CreateCenterWidth(ISO8601DateTime center, string width, TimeUnitOfMeasure unit, int? value, OperationTypes? operatorType, NullFlavor? nullFlavor)
-      {
-        return CdaInterval.CreateCenterWidth(center, width, unit, value, operatorType, nullFlavor);
-      }
+        /// <summary>
+        /// Creates an CdaInterval with low and width.
+        /// </summary>
+        /// <param name="low">Low.</param>
+        /// <param name="value">Quantity.</param>
+        /// <param name="unit">Unit.</param>
+        /// <returns>CdaInterval</returns>
+        public static CdaInterval CreateLowWidth(ISO8601DateTime low, string value, TimeUnitOfMeasure unit)
+        {
+            return CdaInterval.CreateLowWidth(low, value, unit);
+        }
+
+        /// <summary>
+        /// Creates an CdaInterval with low and width.
+        /// </summary>
+        /// <param name="low">Low.</param>
+        /// <param name="width">Width.</param>
+        /// <param name="unit">Unit.</param>
+        /// <param name="value">value.</param>
+        /// <param name="operatorType">operatorType.</param>
+        /// <param name="nullFlavor">nullFlavor.</param>
+        /// <returns>CdaInterval</returns>
+        public static CdaInterval CreateLowWidth(ISO8601DateTime low, string width, TimeUnitOfMeasure unit, int? value,
+            OperationTypes? operatorType, NullFlavor? nullFlavor)
+        {
+            return CdaInterval.CreateLowWidth(low, width, unit, value, operatorType, nullFlavor);
+        }
+
+        /// <summary>
+        /// Creates an CdaInterval with high and width.
+        /// </summary>
+        /// <param name="high">High.</param>
+        /// <param name="width">width.</param>
+        /// <param name="unit">Unit.</param>
+        /// <returns>CdaInterval</returns>
+        public static CdaInterval CreateHighWidth(ISO8601DateTime high, string width, TimeUnitOfMeasure unit)
+        {
+            return CdaInterval.CreateHighWidth(high, width, unit);
+        }
+
+        /// <summary>
+        /// Creates an CdaInterval with high and width.
+        /// </summary>
+        /// <param name="high">High.</param>
+        /// <param name="width">Width.</param>
+        /// <param name="unit">Unit.</param>
+        /// <param name="value">value.</param>
+        /// <param name="operatorType">operatorType.</param>
+        /// <param name="nullFlavor">nullFlavor.</param>
+        /// <returns>CdaInterval</returns>
+        public static CdaInterval CreateHighWidth(ISO8601DateTime high, string width, TimeUnitOfMeasure unit,
+            int? value, OperationTypes? operatorType, NullFlavor? nullFlavor)
+        {
+            return CdaInterval.CreateHighWidth(high, width, unit, value, operatorType, nullFlavor);
+        }
+
+
+        /// <summary>
+        /// Creates an CdaInterval with center and width.
+        /// </summary>
+        /// <param name="center">Center.</param>
+        /// <param name="value">Quantity.</param>
+        /// <param name="unit">Unit.</param>
+        /// <returns>CdaInterval</returns>
+        public static CdaInterval CreateCenterWidth(ISO8601DateTime center, string value, TimeUnitOfMeasure unit)
+        {
+            return CdaInterval.CreateCenterWidth(center, value, unit);
+        }
+
+        /// <summary>
+        /// Creates an CdaInterval with center and width.
+        /// </summary>
+        /// <param name="center">Center.</param>
+        /// <param name="width">Width.</param>
+        /// <param name="unit">Unit.</param>
+        /// <param name="value">value.</param>
+        /// <param name="operatorType">operatorType.</param>
+        /// <param name="nullFlavor">nullFlavor.</param>
+        /// <returns>CdaInterval</returns>
+        public static CdaInterval CreateCenterWidth(ISO8601DateTime center, string width, TimeUnitOfMeasure unit,
+            int? value, OperationTypes? operatorType, NullFlavor? nullFlavor)
+        {
+            return CdaInterval.CreateCenterWidth(center, width, unit, value, operatorType, nullFlavor);
+        }
 
         #endregion
 
 
-      /// <summary>
-      /// Creates a reviewed medication
-      /// </summary>
-      /// <returns>(IReviewedMedication) Medication</returns>
-      public static IMedication CreateMedication()
-      {
-          return new Medication();
-      }
+        /// <summary>
+        /// Creates a reviewed medication
+        /// </summary>
+        /// <returns>(IReviewedMedication) Medication</returns>
+        public static IMedication CreateMedication()
+        {
+            return new Medication();
+        }
 
-      /// <summary>
-      /// Creates a reviewed adverse substance reactions
-      /// </summary>
-      /// <returns>(IAdverseReactions) AdverseSubstanceReactions</returns>
-      public static IAdverseReactions CreateAdverseReactions()
-      {
-          return new AdverseReactions();
-      }
+        /// <summary>
+        /// Creates a reviewed adverse substance reactions
+        /// </summary>
+        /// <returns>(IAdverseReactions) AdverseSubstanceReactions</returns>
+        public static IAdverseReactions CreateAdverseReactions()
+        {
+            return new AdverseReactions();
+        }
 
-      #region Utilities
+        #region Utilities
 
         /// <summary>
         /// Creates a OID
         /// </summary>
         /// <returns>Creates an OID</returns>
         public static string CreateOid()
-      {
-         return OIDHelper.UuidToOid(CreateGuid());
-      }
+        {
+            return OIDHelper.UuidToOid(CreateGuid());
+        }
 
-      /// <summary>
-      /// Convert a file path to a ByteArray
-      /// </summary>
-      /// <param name="filePath"></param>
-      /// <returns></returns>
-      public static byte[] FileToByteArray(string filePath)
-      {
-          byte[] imageData = null;
-          var fileInfo = new FileInfo(filePath);
-          long imageFileLength = fileInfo.Length;
-          var fs = new FileStream(filePath, FileMode.Open, FileAccess.Read);
-          var br = new BinaryReader(fs);
-          imageData = br.ReadBytes((int)imageFileLength);
-          fs.Close();
-          br.Close();
-          return imageData;
-      }
+        /// <summary>
+        /// Convert a file path to a ByteArray
+        /// </summary>
+        /// <param name="filePath"></param>
+        /// <returns></returns>
+        public static byte[] FileToByteArray(string filePath)
+        {
+            byte[] imageData = null;
+            var fileInfo = new FileInfo(filePath);
+            long imageFileLength = fileInfo.Length;
+            var fs = new FileStream(filePath, FileMode.Open, FileAccess.Read);
+            var br = new BinaryReader(fs);
+            imageData = br.ReadBytes((int) imageFileLength);
+            fs.Close();
+            br.Close();
+            return imageData;
+        }
 
-      /// <summary>
-      /// Converts a UUID to an OID
-      /// </summary>
-      /// <returns>Creates an OID</returns>
-      public static string ConvertUuidToOid(string uuid)
-      {
-        return OIDHelper.UuidToOid(uuid);
-      }
+        /// <summary>
+        /// Converts a UUID to an OID
+        /// </summary>
+        /// <returns>Creates an OID</returns>
+        public static string ConvertUuidToOid(string uuid)
+        {
+            return OIDHelper.UuidToOid(uuid);
+        }
 
-      /// <summary>
-      /// Calculate an age based on the Birth Date
-      /// </summary>
-      /// <param name="birthdate"></param>
-      /// <returns></returns>
-      public static int CalculateAge(DateTime birthdate)
-      {
-        // get the difference in years
-        int years = DateTime.Now.Year - birthdate.Year;
-        // subtract another year if we're before the
-        // birth day in the current year
-        if (DateTime.Now.Month < birthdate.Month ||
-            (DateTime.Now.Month == birthdate.Month && DateTime.Now.Day < birthdate.Day))
-          years--;
+        /// <summary>
+        /// Calculate an age based on the Birth Date
+        /// </summary>
+        /// <param name="birthdate"></param>
+        /// <returns></returns>
+        public static int CalculateAge(DateTime birthdate)
+        {
+            // get the difference in years
+            int years = DateTime.Now.Year - birthdate.Year;
+            // subtract another year if we're before the
+            // birth day in the current year
+            if (DateTime.Now.Month < birthdate.Month ||
+                (DateTime.Now.Month == birthdate.Month && DateTime.Now.Day < birthdate.Day))
+                years--;
 
-        return years;
-      }
+            return years;
+        }
 
-      #endregion
+        #endregion
 
-      #region ETP
+        #region ETP
 
-      /// <summary>
-      /// Creates a Prescriber
-      /// </summary>
-      /// <returns></returns>
-      public static IParticipationPrescriber CreatePrescriber()
-      {
-          return new Participation();
-      }
+        /// <summary>
+        /// Creates a Prescriber
+        /// </summary>
+        /// <returns></returns>
+        public static IParticipationPrescriber CreatePrescriber()
+        {
+            return new Participation();
+        }
 
-      /// <summary>
-      /// Creates a participant for a prescriber
-      /// </summary>
-      /// <returns></returns>
-      public static IPrescriber CreateParticipantForPrescriber()
-      {
-          return new Participant();
-      }
+        /// <summary>
+        /// Creates a participant for a prescriber
+        /// </summary>
+        /// <returns></returns>
+        public static IPrescriber CreateParticipantForPrescriber()
+        {
+            return new Participant();
+        }
 
-      /// <summary>
-      /// Creates a person
-      /// </summary>
-      /// <returns>(IPersonPrescriber) Person</returns>
-      public static IPersonPrescriber CreatePersonForPrescriber()
-      {
-          return new Person();
-      }
+        /// <summary>
+        /// Creates a person
+        /// </summary>
+        /// <returns>(IPersonPrescriber) Person</returns>
+        public static IPersonPrescriber CreatePersonForPrescriber()
+        {
+            return new Person();
+        }
 
-      /// <summary>
-      /// Creates a Prescriber organisation
-      /// </summary>
-      /// <returns>(IParticipationPrescriberOrganisation) Participation</returns>
-      public static IParticipationPrescriberOrganisation CreatePrescriberOrganisation()
-      {
-          return new Participation();
-      }
+        /// <summary>
+        /// Creates a Prescriber organisation
+        /// </summary>
+        /// <returns>(IParticipationPrescriberOrganisation) Participation</returns>
+        public static IParticipationPrescriberOrganisation CreatePrescriberOrganisation()
+        {
+            return new Participation();
+        }
 
-      /// <summary>
-      /// Creates a participant for a prescriber organisation
-      /// </summary>
-      /// <returns>(IPrescriberOrganisation) Participant</returns>
-      public static IPrescriberOrganisation CreateParticipantForPrescriberOrganisation()
-      {
-          return new Participant();
-      }
+        /// <summary>
+        /// Creates a participant for a prescriber organisation
+        /// </summary>
+        /// <returns>(IPrescriberOrganisation) Participant</returns>
+        public static IPrescriberOrganisation CreateParticipantForPrescriberOrganisation()
+        {
+            return new Participant();
+        }
 
-      /// <summary>
-      /// Creates a dispenser
-      /// </summary>
-      /// <returns></returns>
-      public static IParticipationDispenser CreateDispenser()
-      {
-          return new Participation
-          {
-              Role = CreateRole(Occupation.Pharmacistsnfd)
-          };
-      }
+        /// <summary>
+        /// Creates a dispenser
+        /// </summary>
+        /// <returns></returns>
+        public static IParticipationDispenser CreateDispenser()
+        {
+            return new Participation
+            {
+                Role = CreateRole(Occupation.Pharmacistsnfd)
+            };
+        }
 
-      /// <summary>
-      /// Creates a participant for a dispenser
-      /// </summary>
-      /// <returns></returns>
-      public static IDispenser CreateParticipantForDispenser()
-      {
-          return new Participant();
-      }
+        /// <summary>
+        /// Creates a participant for a dispenser
+        /// </summary>
+        /// <returns></returns>
+        public static IDispenser CreateParticipantForDispenser()
+        {
+            return new Participant();
+        }
 
-      /// <summary>
-      /// Creates a person
-      /// </summary>
-      /// <returns>(IPersonDispenser) Person</returns>
-      public static IPersonDispenser CreatePersonForDispenser()
-      {
-          return new Person();
-      }
+        /// <summary>
+        /// Creates a person
+        /// </summary>
+        /// <returns>(IPersonDispenser) Person</returns>
+        public static IPersonDispenser CreatePersonForDispenser()
+        {
+            return new Person();
+        }
 
-      /// <summary>
-      /// Creates a Dispenser organisation
-      /// </summary>
-      /// <returns>(IParticipationDispenserOrganisation) Participation</returns>
-      public static IParticipationDispenserOrganisation CreateDispenserOrganisation()
-      {
-          return new Participation();
-      }
+        /// <summary>
+        /// Creates a Dispenser organisation
+        /// </summary>
+        /// <returns>(IParticipationDispenserOrganisation) Participation</returns>
+        public static IParticipationDispenserOrganisation CreateDispenserOrganisation()
+        {
+            return new Participation();
+        }
 
-      /// <summary>
-      /// Creates a participant for a dispenser organisation
-      /// </summary>
-      /// <returns>(IDispenserOrganisation) Participant</returns>
-      public static IDispenserOrganisation CreateParticipantForDispenserOrganisation()
-      {
-          return new Participant();
-      }
+        /// <summary>
+        /// Creates a participant for a dispenser organisation
+        /// </summary>
+        /// <returns>(IDispenserOrganisation) Participant</returns>
+        public static IDispenserOrganisation CreateParticipantForDispenserOrganisation()
+        {
+            return new Participant();
+        }
 
-      #endregion
+        #endregion
 
-      #endregion
+        #endregion
 
-
-
-      #region Constructors
+        #region Constructors
 
         /// <summary>
         /// Default Constructor
         /// </summary>
         public BaseCDAModel()
         {
-           ShowAdministrativeObservationsSection = true;
-           ShowAdministrativeObservationsNarrativeAndTitle = true;
+            ShowAdministrativeObservationsSection = true;
+            ShowAdministrativeObservationsNarrativeAndTitle = true;
         }
 
         #endregion

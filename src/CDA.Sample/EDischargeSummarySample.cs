@@ -96,6 +96,9 @@ namespace Nehta.VendorLibrary.CDA.Sample
             // Hide Administrative Observations Section 
             document.ShowAdministrativeObservationsSection = false;
 
+            // If Document is a sub type, define Title here which will also become the document Title
+            //document.SubTypeTitle = "Discharge Summary - Procedure";
+
             // Add mandatory elements to the discharge 1A document
             document.SCSContent.Event = EDischargeSummary.CreateEvent();
             var encounter = EDischargeSummary.CreateEncounter();
@@ -155,6 +158,9 @@ namespace Nehta.VendorLibrary.CDA.Sample
             document.ShowAdministrativeObservationsSection = false;
 
             document.IncludeLogo = false;
+
+            // If Document is a sub type, define Title here which will also become the document Title
+            //document.SubTypeTitle = "Discharge Summary - Procedure";
 
             // Add mandatory elements to the discharge 1A document
             document.SCSContent.Event = EDischargeSummary.CreateEvent();
@@ -289,6 +295,9 @@ namespace Nehta.VendorLibrary.CDA.Sample
             cdaContext.SetId = BaseCDAModel.CreateIdentifier(BaseCDAModel.CreateGuid(), null);
             // CDA Context Version
             cdaContext.Version = "1";
+
+            // If Document is a sub type, define Title here which will also become the document Title
+            //eDischargeSummary.SubTypeTitle = "Discharge Summary - Procedure";
 
             // Include Logo
             eDischargeSummary.IncludeLogo = true;

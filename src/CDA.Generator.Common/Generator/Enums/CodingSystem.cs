@@ -180,6 +180,12 @@ namespace Nehta.VendorLibrary.CDA.Generator.Enums
         HL7SubstanceAdminSubstitution,
 
         ///<summary>
+        /// HL7 v3 - EmployeeJobClass
+        ///</summary>
+        [Name(Name = "HL7:EmployeeJobClass", Code = "2.16.840.1.113883.5.1059")]
+        HL7EmployeeJobClass,
+
+        ///<summary>
         /// HL7 - Observation Interpretation Normality
         ///</summary>
         [Name(Name = "HL7 ServiceDeliveryLocationRoleType", Code = "2.16.840.1.113883.1.11.17660")]
@@ -418,5 +424,92 @@ namespace Nehta.VendorLibrary.CDA.Generator.Enums
         /// </summary>
         [Name(Name = "NCTIS Anatomical Region Values", Code = "1.2.36.1.2001.1001.101.104.17008")]
         NCTISAnatomicalRegionValues,
+
+
+        /// <summary>
+        /// ALL HL7 OID references are here
+        /// https://confluence.hl7australia.com/display/AFR/HL7+AU+OID+Registry
+        /// </summary>
+
+
+
+
+        /// <summary>
+        ///HL7: Non-Clinical Empty Reason
+        /// https://api.healthterminologies.gov.au/integration/v2/fhir/ValueSet/non-clinical-empty-reason-2
+        /// </summary>
+        [Name(Name = "ListEmptyReasons", Code = "2.16.840.1.113883.4.642.4.1106")]
+        HL7NonClinicalEmptyReason,
+
+        /// <summary>
+        ///HL7: Allergy Intolerance Type
+        /// http://hl7.org/fhir/R4/valueset-allergy-intolerance-type.html
+        /// </summary>
+        [Name(Name = "AllergyIntoleranceType", Code = "2.16.840.1.113883.4.642.4.132")]
+        HL7AllergyIntoleranceType,
+
+        /// <summary>
+        ///HL7: Allergy Intolerance Clinical Status Codes
+        /// http://hl7.org/fhir/R4/valueset-allergyintolerance-clinical.html
+        /// </summary>
+        [Name(Name = "AllergyIntoleranceClinicalStatusCodes", Code = "2.16.840.1.113883.4.642.4.1373")]
+        HL7AllergyIntoleranceClinicalStatusCodes,
+
+        /// <summary>
+        ///HL7: Allergy Intolerance Verification Status Codes
+        /// http://hl7.org/fhir/R4/valueset-allergyintolerance-verification.html
+        /// </summary>
+        [Name(Name = "AllergyIntoleranceVerificationStatusCodes", Code = "2.16.840.1.113883.4.642.4.1371")]
+        HL7AllergyIntoleranceVerificationStatusCodes,
+
+        /// <summary>
+        ///HL7: Medication Statement Taken
+        /// http://hl7.org/fhir/STU3/valueset-medication-statement-taken.html
+        /// http://hl7.org/fhir/STU3/codesystem-medication-statement-taken.html
+        /// </summary>
+        [Name(Name = "MedicationStatementTaken", Code = "2.16.840.1.113883.4.642.1.358")]
+        HL7MedicationStatementTakenCodes,
+
+        /// <summary>
+        ///HL7: Act Status
+        /// https://api.healthterminologies.gov.au/integration/v2/fhir/ValueSet/medication-act-status-hl7-v3-1
+        /// https://www.hl7.org/fhir/v3/ActStatus/cs.html
+        /// https://www.hl7.org/documentcenter/public/standards/vocabulary/vocabulary_tables/infrastructure/vocabulary/vs_ActCode.html
+        /// </summary>
+        [Name(Name = "v3.ActStatus", Code = "2.16.840.1.113883.5.14")]
+        HL7ActStatusCodes,
+
+
+        /// <summary>
+        ///HL7: Act Encounter Status Coes
+        /// https://api.healthterminologies.gov.au/integration/v2/fhir/ValueSet/encounter-act-status-hl7-v3-1
+        /// 
+        /// </summary>
+        [Name(Name = "v3.ActStatus", Code = "2.16.840.1.113883.5.14")]
+        HL7ActEncounterStatusCodes,
+
+        /// <summary>
+        ///HL7: Act Encounter Code
+        /// https://api.healthterminologies.gov.au/integration/v2/fhir/ValueSet/encounter-act-status-hl7-v3-1
+        /// </summary>
+        [Name(Name = "ActEncounterCode", Code = "2.16.840.1.113883.5.4")]
+        HL7ActEncounterCodes,
+
+        /// <summary>
+        ///HL7:Medicine Item Change Status Codes
+        /// https://api.healthterminologies.gov.au/integration/v2/fhir/ValueSet/medicine-item-change-from-practitioner-medicines-review-1
+        /// http://hl7.org.au/fhir/CodeSystem/medicine-item-change
+        /// </summary>
+        [Name(Name = "MedicineItemChange", Code = "2.16.840.1.113883.2.3.4.1.2.6")]
+        HL7MedicineItemChangeCodes,
+
+        /// <summary>
+        ///HL7: Medication Statement Category
+        /// 
+        /// </summary>
+        [Name(Name = "MedicationStatementCategory", Code = "2.16.840.1.113883.4.642.4.1120")]
+        HL7MedicationStatementCategoryCodes,
+        
+
     }
 }

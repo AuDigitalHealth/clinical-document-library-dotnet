@@ -33,7 +33,7 @@ namespace Nehta.VendorLibrary.CDA.SCSModel
         string Id { get; set; }
 
         /// <summary>
-        /// The medicine as a codableText
+        /// The medicine
         /// </summary>
         [CanBeNull]
         ICodableText Medicine { get; set; }

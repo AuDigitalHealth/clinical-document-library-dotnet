@@ -21,6 +21,31 @@ namespace Nehta.VendorLibrary.CDA.Generator.Enums
     /// </summary>
     public enum CDADocumentType
     {
+        #region Common Template Ids for all Documents
+
+        /// <summary>
+        /// CDA Rendering Specification = Template id for Spec
+        /// </summary>
+        [Name(Name = "CDA Rendering Specification", CodeSystem = "", Code = "", TemplateIdentifier = "1.2.36.1.2001.1001.100.149", Version = "1.0", Title = "CDA Rendering Specification")]
+        CdaRenderingSpecification,
+
+        /// <summary>
+        /// ClinicalDocument = Template id for a ClinicalDocument - against FHIR Template Specs
+        /// </summary>
+        [Name(Name = "ClinicalDocument", CodeSystem = "", Code = "", TemplateIdentifier = "1.2.36.1.2001.1001.102.101.100033", Version = "1.0", Title = "ClinicalDocument")]
+        ClinicalDocumentTemplate,
+
+        /// <summary>
+        /// Common conformance profile v1.7
+        /// </summary>
+        [Name(Name = "Common conformance profile v1.7", CodeSystem = "", Code = "", TemplateIdentifier = "1.2.36.1.2001.1001.100.1003.100000", Version = "1.0", Title = "Common conformance profile v1.7")]
+        CommonConformanceProfileV17,
+
+        #endregion
+
+
+        #region Continuity Of Care
+
         /// <summary>
         /// Patient Summary
         /// </summary>
@@ -46,10 +71,21 @@ namespace Nehta.VendorLibrary.CDA.Generator.Enums
         EReferral,
 
         /// <summary>
+        /// Service Referral
+        /// </summary>
+        [Name(Name = "Referral note", CodeSystem = "LOINC", Code = "57133-1", TemplateIdentifier = "1.2.36.1.2001.1001.100.1002.231", Version = "1.1", Title = "Service Referral")]
+        ServiceReferral,
+
+        /// <summary>
         /// EventSummary
         /// </summary>
         [Name(Name = "Summary of episode note", CodeSystem = "LOINC", Code = "34133-9", TemplateIdentifier = "1.2.36.1.2001.1001.101.100.1002.136", Version = "1.3", Title = "Event Summary")]
         EventSummary,
+
+        #endregion
+
+
+        #region Medicare Documents
 
         /// <summary>
         /// Medicare DVA Benefits Report
@@ -87,6 +123,11 @@ namespace Nehta.VendorLibrary.CDA.Generator.Enums
         [Name(Name = "Advance Care Directive Custodian Record", CodeSystem = "NCTIS", Code = "100.16696", TemplateIdentifier = "1.2.36.1.2001.1001.101.100.1002.156", Version = "1.0", Title = "Advance Care Directive Custodian")]
         AdvanceCareDirectiveCustodianRecord,
 
+        #endregion
+
+
+        #region Consumer Documents
+
         /// <summary>
         /// Consumer Entered Health Summary
         /// </summary>
@@ -111,6 +152,11 @@ namespace Nehta.VendorLibrary.CDA.Generator.Enums
         [Name(Name = "Consumer Entered Achievements", CodeSystem = "NCTIS", Code = "100.16812", TemplateIdentifier = "1.2.36.1.2001.1001.101.100.1002.206", Version = "1.0", Title = "Consumer Entered Achievements")]
         NSWConsumerEnteredAchievements,
 
+        #endregion
+
+
+        #region View Documents
+
         /// <summary>
         /// Consolidated View
         /// </summary>
@@ -122,6 +168,11 @@ namespace Nehta.VendorLibrary.CDA.Generator.Enums
         /// </summary>
         [Name(Name = "Medicare Overview", CodeSystem = "NCTIS", Code = "100.16767", TemplateIdentifier = "1.2.36.1.2001.1001.100.1002.172", Version = "1.1", Title = "Medicare Overview")]
         MedicareOverview,
+
+        #endregion
+
+
+        #region Prescription+Dispense Documents
 
         /// <summary>
         /// PCEHR Prescription Record
@@ -159,23 +210,10 @@ namespace Nehta.VendorLibrary.CDA.Generator.Enums
         [Name(Name = "Prescription Request", CodeSystem = "NCTIS", Code = "100.16285", TemplateIdentifier = "1.2.36.1.2001.1001.101.100.1002.101", Version = "1.1", Title = "Prescription Request")]
         EPrescriptionRequest,
 
-        /// <summary>
-        /// Consumer Entered Measurements
-        /// </summary>
-        [Name(Name = "Consumer Entered Measurements", CodeSystem = "NCTIS", Code = "100.16870", TemplateIdentifier = "1.2.36.1.2001.1001.100.1002.208", Version = "1.1", Title = "Consumer Entered Measurements")]
-        ConsumerEnteredMeasurements,
+        #endregion
 
-        /// <summary>
-        /// Healthcare Provider Entered Measurements
-        /// </summary>
-        [Name(Name = "Healthcare Provider Entered Measurements", CodeSystem = "NCTIS", Code = "100.16871", TemplateIdentifier = "1.2.36.1.2001.1001.100.1002.209", Version = "1.0", Title = "Healthcare Provider Entered Measurements")]
-        HealthcareProviderEnteredMeasurements,
 
-        /// <summary>
-        /// Physical Measurements View
-        /// </summary>
-        [Name(Name = "Physical Measurements View", CodeSystem = "NCTIS", Code = "100.16872", TemplateIdentifier = "1.2.36.1.2001.1001.100.1002.210", Version = "1.0", Title = "Physical Measurements View")]
-        PhysicalMeasurementsView,
+        #region Path and DI Documents
 
         /// <summary>
         /// Pathology Result View
@@ -201,6 +239,11 @@ namespace Nehta.VendorLibrary.CDA.Generator.Enums
         [Name(Name = "Diagnostic Imaging Report", CodeSystem = "NCTIS", Code = "100.16957", TemplateIdentifier = "1.2.36.1.2001.1001.100.1002.222", Version = "1.0", Title = "Diagnostic Imaging Report")]
         DiagnosticImagingReport,
 
+        #endregion
+
+
+        #region Advance Care Information 
+
         /// <summary>
         /// Advance Care Information
         /// </summary>
@@ -208,12 +251,80 @@ namespace Nehta.VendorLibrary.CDA.Generator.Enums
         AdvanceCareInformation,
 
         /// <summary>
-        /// Service Referral
+        /// Advance Care Information Subtype = Advance Care Planning Document (Same as ACI as that was the first doc)
         /// </summary>
-        [Name(Name = "Referral note", CodeSystem = "LOINC", Code = "57133-1", TemplateIdentifier = "1.2.36.1.2001.1001.100.1002.231", Version = "1.1", Title = "Service Referral")]
-        ServiceReferral,
+        [Name(Name = "Advance Care Planning Document", CodeSystem = "NCTIS", Code = "100.16998", TemplateIdentifier = "1.2.36.1.2001.1001.100.1002.226", Version = "1.0", Title = "Advance Care Planning Document")]
+        AdvanceCarePlanning,
+
+        /// <summary>
+        /// Advance Care Information Subtype = Goals of Care Document
+        /// </summary>
+        [Name(Name = "Goals of Care Document", CodeSystem = "NCTIS", Code = "100.32016", TemplateIdentifier = "1.2.36.1.2001.1001.100.1003.100001", Version = "1.0", Title = "Goals of Care Document")]
+        GoalsOfCare,
+
+        #endregion
+
+
+        #region Pharmacist Shared Medicines List / Shared Medicines List
+
+        /// <summary>
+        /// Core Level One = base Template for Level One Docs
+        /// </summary>
+        [Name(Name = "Core Level One", CodeSystem = "", Code = "", TemplateIdentifier = "1.2.36.1.2001.1001.100.1002.218", Version = "1.1", Title = "Core Level One")]
+        CoreLevelOne,
+
+        /// <summary>
+        /// Pharmacist Shared Medicines List
+        /// </summary>
+        [Name(Name = "Pharmacist Shared Medicines List", CodeSystem = "LOINC", Code = "56445-0", TemplateIdentifier = "1.2.36.1.2001.1001.100.1002.237", Version = "1.0", Title = "Pharmacist Shared Medicines List")]
+        PharmacistSharedMedicinesList,
+
+        /// <summary>
+        /// Shared Medicines List - Pharmacist  v2 (using FHIR models)
+        /// </summary>
+        [Name(Name = "Pharmacist Shared Medicines List", CodeSystem = "LOINC", Code = "56445-0", TemplateIdentifier = "1.2.36.1.2001.1001.102.101.100065", Version = "1.0", Title = "Pharmacist Shared Medicines List")]
+        PharmacistSharedMedicinesListV2HPII,
+
+        /// <summary>
+        /// Shared Medicines List - Pharmacist  v2 (using FHIR models)
+        /// </summary>
+        [Name(Name = "Pharmacist Shared Medicines List", CodeSystem = "LOINC", Code = "56445-0", TemplateIdentifier = "1.2.36.1.2001.1001.102.101.100065", Version = "1.0", Title = "Pharmacist Shared Medicines List")]
+        PharmacistSharedMedicinesListV2NoHPII,
+
+        /// <summary>
+        /// PSML v2 conformance profile
+        /// </summary>
+        [Name(Name = "PSML v2 conformance profile", CodeSystem = "", Code = "", TemplateIdentifier = "1.2.36.1.2001.1001.100.1003.100002", Version = "1.0", Title = "PSML v2 conformance profile HPI-I default")]
+        PharmacistSharedMedicinesListV2ConformanceProfileHPII,
+
+        /// <summary>
+        /// PSML v2 conformance profile
+        /// </summary>
+        [Name(Name = "PSML v2 conformance profile", CodeSystem = "", Code = "", TemplateIdentifier = "1.2.36.1.2001.1001.100.1003.100003", Version = "1.0", Title = "PSML v2 conformance profile HPI-I relaxed")]
+        PharmacistSharedMedicinesListV2ConformanceProfileNoHPII,
+
+        #endregion
+
 
         #region CeHR 
+
+        /// <summary>
+        /// Consumer Entered Measurements
+        /// </summary>
+        [Name(Name = "Consumer Entered Measurements", CodeSystem = "NCTIS", Code = "100.16870", TemplateIdentifier = "1.2.36.1.2001.1001.100.1002.208", Version = "1.1", Title = "Consumer Entered Measurements")]
+        ConsumerEnteredMeasurements,
+
+        /// <summary>
+        /// Healthcare Provider Entered Measurements
+        /// </summary>
+        [Name(Name = "Healthcare Provider Entered Measurements", CodeSystem = "NCTIS", Code = "100.16871", TemplateIdentifier = "1.2.36.1.2001.1001.100.1002.209", Version = "1.0", Title = "Healthcare Provider Entered Measurements")]
+        HealthcareProviderEnteredMeasurements,
+
+        /// <summary>
+        /// Physical Measurements View
+        /// </summary>
+        [Name(Name = "Physical Measurements View", CodeSystem = "NCTIS", Code = "100.16872", TemplateIdentifier = "1.2.36.1.2001.1001.100.1002.210", Version = "1.0", Title = "Physical Measurements View")]
+        PhysicalMeasurementsView,
 
         /// <summary>
         /// NSW Health Check Assessment
@@ -233,12 +344,6 @@ namespace Nehta.VendorLibrary.CDA.Generator.Enums
         [Name(Name = "Birth Details", CodeSystem = "NCTIS", Code = "100.16939", TemplateIdentifier = "1.2.36.1.2001.1001.100.1002.214", Version = "1.0", Title = "Birth Details")]
         BirthDetails,
 
-        /// <summary>
-        /// Pharmacist Shared Medicines List
-        /// </summary>
-        [Name(Name = "Pharmacist Shared Medicines List", CodeSystem = "LOINC", Code = "56445-0", TemplateIdentifier = "1.2.36.1.2001.1001.100.1002.237", Version = "1.0", Title = "Pharmacist Shared Medicines List")]
-        PharmacistSharedMedicinesList,
-       
         /// <summary> 
         /// Observation View
         /// </summary>
@@ -252,6 +357,7 @@ namespace Nehta.VendorLibrary.CDA.Generator.Enums
         ChildHealthCheckScheduleView,
 
         #endregion
+
 
     }
 }

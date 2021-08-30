@@ -20,11 +20,10 @@ using CDA.Generator.Common.CDAModel.Entities;
 using JetBrains.Annotations;
 using Nehta.VendorLibrary.CDA.Common;
 using Nehta.VendorLibrary.CDA.Common.Enums;
+using Nehta.VendorLibrary.CDA.Generator.Enums;
 using Nehta.VendorLibrary.CDA.SCSModel;
 using Nehta.VendorLibrary.CDA.SCSModel.Common;
 using Nehta.VendorLibrary.Common;
-using Nehta.VendorLibrary.CDA.Generator.Enums;
-using Nehta.VendorLibrary.CDA.SCSModel.ServiceReferral.Interfaces;
 
 namespace Nehta.VendorLibrary.CDA.CDAModel
 {
@@ -43,8 +42,8 @@ namespace Nehta.VendorLibrary.CDA.CDAModel
         ICDAContextConsumerEnteredHealthSummary, ICDAContextConsumerEnteredNotes, ICDAContextConsolidatedView, ICDAContextMedicareOverview, ICDAContextPrescriptionAndDispenseView,
         ICDAContextConsumerEnteredAchievements, ICDAContextPhysicalMeasurements, ICDAContextNSWHealthCheckAssessment, ICDAContextPersonalHealthObservation, ICDAContextConsumerQuestionnaire,
         ICDAContextBirthDetailsRecord, ICDAContextChildHealthCheckScheduleView, ICDAContextObservationViewDocument, ICDAContextPathologyResultView, ICDAContextPathologyResultReport, ICDAContextDiagnosticImagingReport,
-        ICDAContextAdvanceCareInformation, ICDAContextPathologyReportWithStructuredContent, ICDAContextServiceReferral, ICDAContextPCML
-  {
+        ICDAContextAdvanceCareInformation, ICDAContextPathologyReportWithStructuredContent, ICDAContextServiceReferral, ICDAContextPCML, ICDAContextSML
+    {
         #region Properties
 
         /// <summary>
@@ -81,6 +80,13 @@ namespace Nehta.VendorLibrary.CDA.CDAModel
         [CanBeNull]
         [DataMember]
         public Identifier SetId { get; set; }
+
+        /// <summary>
+        /// The Template Package Identifier - New from May 2020
+        /// </summary>
+        [CanBeNull]
+        [DataMember]
+        public Identifier TemplatePackageId { get; set; }
 
         /// <summary>
         /// The authenticator of the CDA document

@@ -18,12 +18,25 @@ namespace Nehta.VendorLibrary.CDA.SCSModel.PCML.Entities
     public class Encounter
     {
         /// <summary>
+        /// The Shared Id for SML
+        /// </summary>
+        [CanBeNull]
+        [DataMember]
+        public Guid EncounterId { get; set; }
+
+        /// <summary>
         /// The Duration of the EncounterPeriod
         /// </summary>
         [CanBeNull]
         [DataMember]
         public CdaInterval EncounterPeriod { get; set; }
 
+        /// <summary>
+        /// Encounter Class - for SML only
+        /// </summary>
+        [CanBeNull]
+        [DataMember]
+        public ICodableText EncounterClass { get; set; }
 
         /// <summary>
         /// Participation Healthcare Facility

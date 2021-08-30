@@ -12,20 +12,17 @@
  * under the License.
  */
 
-using System;
 using System.Collections.Generic;
-using System.Runtime.Serialization;
 using CDA.Generator.Common.SCSModel.Interfaces;
 using Nehta.VendorLibrary.CDA.SCSModel.PCML.Entities;
 using JetBrains.Annotations;
-using Nehta.VendorLibrary.CDA.SCSModel.Common;
 using Nehta.VendorLibrary.CDA.SCSModel.ServiceReferral.Interfaces;
 using Nehta.VendorLibrary.Common;
 
 namespace Nehta.VendorLibrary.CDA.SCSModel
 {
     /// <summary>
-    /// This interface encapsulates all the CDA specific content for an BirthDetailsRecord
+    /// This interface encapsulates all the CDA specific content for an PSML
     /// </summary>
     public interface IPCMLContext
     {
@@ -59,7 +56,7 @@ namespace Nehta.VendorLibrary.CDA.SCSModel
         IList<IParticipationPersonOrOrganisation> Participant { get; set; }
 
         /// <summary>
-        /// Validate the CDA Content for this INSW Child e-Health Record Birth Details Context
+        /// Validate the CDA Content for this PSML
         /// </summary>
         /// <param name="path">The path to this object as a string</param>
         /// <param name="messages">the validation messages, these may be added to within this method</param>

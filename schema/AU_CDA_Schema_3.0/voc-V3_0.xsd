@@ -1787,8 +1787,8 @@
          <xs:enumeration value="PG"/>
          <xs:enumeration value="HP"/>
          <xs:enumeration value="HV"/>
-		 <!-- Following value was missing but should have been here: OLD -->
-		 <xs:enumeration value="OLD"/>         
+         <!-- Missing but theoretically should be here: OLD -->
+         <xs:enumeration value="OLD"/>         
          <xs:enumeration value="DIR"/>
          <xs:enumeration value="PUB"/>
       </xs:restriction>
@@ -2018,13 +2018,13 @@
          <xs:enumeration value="PUB"/>
          <xs:enumeration value="RGRP"/>
          <xs:enumeration value="STATE"/>
-         <!-- Extension: EMP -->
+         <!-- Extension: EMP for Employment-->
          <xs:enumeration value="EMP"/>
-         <!-- Extension: IDENT -->
+         <!-- Extension: IDENT for EntityIdentifier -->
          <xs:enumeration value="IDENT"/>
-         <!-- Extension: QUAL -->
+         <!-- Extension: QUAL for Qualifications, FieldOfPractice-->
          <xs:enumeration value="QUAL"/>
-      	<!-- Extension: Coverage2/Entitlment-->
+         <!-- Extension: COV for Entitlement, PolicyOrAccount-->
       	<xs:enumeration value="COV"/>
       </xs:restriction>
    </xs:simpleType>
@@ -2301,28 +2301,34 @@
          <xs:enumeration value="SRCH"/>
          <!-- Missing but theoretically should be here: SNDX -->
          <xs:enumeration value="SNDX"/>
-         <!-- extension value from R2 data types: T -->
+         <!-- Extension: T (from R2 data types) -->
          <xs:enumeration value="T"/>
-         <!-- extension value from R2 data types: DN -->
+         <!-- Extension: DN (from R2 data types)-->
          <xs:enumeration value="DN"/>
-         <!-- extension value from R2 data types: M -->
+         <!-- Extension: M (from R2 data types)-->
          <xs:enumeration value="M"/>
-         <!-- extension The Australian Digital Health Agency: NB -->
+         <!-- Extension: NB (New Born from Australian Digital Health Agency)-->
          <xs:enumeration value="NB"/>
-         <!-- extension The Australian Digital Health Agency: UI -->
+         <!-- Extension: UI (Unreliable Information from Australian Digital Health Agency) -->
          <xs:enumeration value="UI"/>
-         <!-- extension The Australian Digital Health Agency: SP -->
+         <!-- Extension: SP (Special Privacy/Security Requirement from Australian Digital Health Agency) -->
          <xs:enumeration value="SP"/>
-      	<!-- Begin Extension - Added Organisation Name Use Value from AS 4846-2006 Organisation Name Usage -->
+         <!-- Extension: ORGU (Organisational unit/section/division name from AS 4846-2006 Organisation Name Usage) -->
       	<xs:enumeration value="ORGU"/>
-      	<xs:enumeration value="ORGS"/>
-      	<xs:enumeration value="ORGB"/>
-      	<xs:enumeration value="ORGL"/>
-      	<xs:enumeration value="ORGA"/>
-      	<xs:enumeration value="ORGE"/>
-      	<xs:enumeration value="ORGX"/>
-      	<xs:enumeration value="ORGY"/>
-      	<!-- Begin Extension - Added Organisation Name Use Value from AS 4846-2006 Organisation Name Usage -->
+         <!-- Extension: ORGS (Service location name from AS 4846-2006 Organisation Name Usage) -->
+         <xs:enumeration value="ORGS"/>
+         <!-- Extension: ORGB (Business name from AS 4846-2006 Organisation Name Usage) -->
+         <xs:enumeration value="ORGB"/>
+         <!-- Extension: ORGL (Locally used name from AS 4846-2006 Organisation Name Usage) -->
+         <xs:enumeration value="ORGL"/>
+         <!-- Extension: ORGA (Abbreviated name from AS 4846-2006 Organisation Name Usage) -->
+         <xs:enumeration value="ORGA"/>
+         <!-- Extension: ORGE (Enterprise name from AS 4846-2006 Organisation Name Usage) -->
+         <xs:enumeration value="ORGE"/>
+         <!-- Extension: ORGX (Other from AS 4846-2006 Organisation Name Usage) -->
+         <xs:enumeration value="ORGX"/>
+         <!-- Extension: ORGY (Unknown from AS 4846-2006 Organisation Name Usage) -->
+         <xs:enumeration value="ORGY"/>
       </xs:restriction>
    </xs:simpleType>
    <xs:simpleType name="EntityNameUseR2">
@@ -2983,10 +2989,8 @@
       <xs:restriction base="cs">
          <xs:enumeration value="SBJ"/>
          <xs:enumeration value="SPC"/>
-      	<!-- Extension -->
+      	<!-- Extension: COVBY -->
       	<xs:enumeration value="COVBY"/>
-      	<!-- End extension -->
-      	
       </xs:restriction>
    </xs:simpleType>
    <xs:simpleType name="ParticipationTracker">
@@ -4605,10 +4609,8 @@
          <xs:enumeration value="SPRT"/>
          <xs:enumeration value="SUBJ"/>
          <xs:enumeration value="XCRPT"/>
-      	<!-- Extension -->
+      	<!-- Extension: AUTH -->
       	<xs:enumeration value="AUTH"/>
-      	<!-- Extension -->
-      	
       </xs:restriction>
    </xs:simpleType>
    <xs:simpleType name="x_ActRelationshipExternalReference">

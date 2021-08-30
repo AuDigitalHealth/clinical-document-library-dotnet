@@ -3,6 +3,23 @@
 Changes made to Schemas
 
 ---
+### 03/12/2020
+---
+
+This change is to add extension for interpreter required to the Agency Extensions schema.
+### EXTENSION.xsd
+
+<!-- Extension: languageCommunication -->
+<xs:element name="interpreterRequiredInd" type="hl7:BL" />
+
+
+This change is to add extension for interpreter required to POCD_MT000040.LanguageCommunication.
+### POCD_MT000040-AU-V1_0.xsd
+
+Change in <xs:complexType name="POCD_MT000040.LanguageCommunication"> to add an extension
+<xs:element ref="ext:interpreterRequiredInd" minOccurs="0"/>
+
+---
 ### 11/06/2019
 ---
 

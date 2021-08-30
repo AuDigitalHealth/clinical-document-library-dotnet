@@ -1,7 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Runtime.Serialization;
-using CDA.Generator.Common.SCSModel.CeHR.Enum;
 using CDA.Generator.Common.SCSModel.Interfaces;
 using Nehta.VendorLibrary.CDA.CDAModel;
 using Nehta.VendorLibrary.CDA.Generator.Enums;
@@ -151,22 +149,6 @@ namespace Nehta.VendorLibrary.CDA.Common
             return new Participant();
         }
 
-
-        /// <summary>
-        /// Creates a Create Question
-        /// </summary>
-        /// <returns>AssessmentItem</returns>
-        public static ICodableText CreateAssesmentItemTitle(HealthCheckAssessmentQuestion healthCheckAssessmentQuestion)
-        {
-            return new CodableText
-            {
-                DisplayName = healthCheckAssessmentQuestion.GetAttributeValue<NameAttribute, string>(x => x.Name),
-                Code = healthCheckAssessmentQuestion.GetAttributeValue<NameAttribute, string>(x => x.Code),
-                CodeSystemCode = ((CodingSystem)Enum.Parse(typeof(CodingSystem), healthCheckAssessmentQuestion.GetAttributeValue<NameAttribute, string>(x => x.CodeSystem))).GetAttributeValue<NameAttribute, string>(x => x.Code),
-                CodeSystemName = ((CodingSystem)Enum.Parse(typeof(CodingSystem), healthCheckAssessmentQuestion.GetAttributeValue<NameAttribute, string>(x => x.CodeSystem))).GetAttributeValue<NameAttribute, string>(x => x.Name),
-                CodeSystemVersion = ((CodingSystem)Enum.Parse(typeof(CodingSystem), healthCheckAssessmentQuestion.GetAttributeValue<NameAttribute, string>(x => x.CodeSystem))).GetAttributeValue<NameAttribute, string>(x => x.Version)
-            };
-        }
 
         #endregion
     }

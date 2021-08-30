@@ -1541,7 +1541,6 @@ namespace Nehta.VendorLibrary.CDA.Generator
                                             "Additional Comments",
                                             null
                                         ),
-              // TODO: REMOVE THIS CreateEncapsulatedData(therapeuticGood.AdditionalComments),
                                     CreateStructuredText(therapeuticGood.AdditionalComments, null),
                                 CreateIdentifierArray(new UniqueId())
                                 )
@@ -1714,6 +1713,26 @@ namespace Nehta.VendorLibrary.CDA.Generator
                                                    }, null, null);
           }
           return entry;
+        }
+
+        private static POCD_MT000040Entry CreateEmptyStatement(EmptyReason emptyReason)
+        {
+            var entry = new POCD_MT000040Entry();
+
+            if (emptyReason != null)
+            {
+                entry = CreateEntryObservation(x_ActRelationshipEntry.COMP,
+                    CreateConceptDescriptor("ASSERTION",  CodingSystem.ActCode, "Assertion", null), null,
+                    new List<ANY>
+                    {
+                        CreateConceptDescriptor(emptyReason.Value.GetAttributeValue<NameAttribute, string>(x => x.Code),
+                            CodingSystem.HL7NonClinicalEmptyReason,
+                            emptyReason.Value.GetAttributeValue<NameAttribute, string>(x => x.Name),
+                            emptyReason.OriginalText, null)
+
+                    }, null, null);
+            }
+            return entry;
         }
 
         /// <summary>

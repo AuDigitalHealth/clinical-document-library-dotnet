@@ -41,8 +41,7 @@ StaticMifToXsd.xsl version 2.0</xs:documentation>
 	<xs:include schemaLocation="datatypes-V3_0.xsd"/>
 	<xs:include schemaLocation="voc-V3_0.xsd"/>
 	<xs:include schemaLocation="NarrativeBlock.xsd"/>
-	<xs:import namespace="http://ns.electronichealth.net.au/Ci/Cda/Extensions/3.0"
-		schemaLocation="EXTENSION.xsd"/>
+	<xs:import namespace="http://ns.electronichealth.net.au/Ci/Cda/Extensions/3.0" schemaLocation="EXTENSION.xsd"/>
 	<xs:complexType name="POCD_MT000040.InfrastructureRoot.typeId">
 		<xs:complexContent>
 			<xs:restriction base="II">
@@ -64,27 +63,16 @@ StaticMifToXsd.xsl version 2.0</xs:documentation>
 			<xs:element name="priorityCode" type="CE" minOccurs="0"/>
 			<xs:element name="languageCode" type="CS" minOccurs="0"/>
 			<xs:element name="subject" type="POCD_MT000040.Subject" minOccurs="0"/>
-			<xs:element name="specimen" type="POCD_MT000040.Specimen" minOccurs="0"
-				maxOccurs="unbounded"/>
-			<xs:element name="performer" type="POCD_MT000040.Performer2" minOccurs="0"
-				maxOccurs="unbounded"/>
-			<xs:element name="author" type="POCD_MT000040.Author" minOccurs="0"
-				maxOccurs="unbounded"/>
-			<xs:element name="informant" type="POCD_MT000040.Informant12" minOccurs="0"
-				maxOccurs="unbounded"/>
-			<xs:element name="participant" type="POCD_MT000040.Participant2" minOccurs="0"
-				maxOccurs="unbounded"/>
-			<xs:element name="entryRelationship" type="POCD_MT000040.EntryRelationship"
-				minOccurs="0" maxOccurs="unbounded"/>
-			<xs:element name="reference" type="POCD_MT000040.Reference" minOccurs="0"
-				maxOccurs="unbounded"/>
-			<xs:element name="precondition" type="POCD_MT000040.Precondition" minOccurs="0"
-				maxOccurs="unbounded"/>
-
-			<!-- Extension: start inFulfillmentOf1 -->
+			<xs:element name="specimen" type="POCD_MT000040.Specimen" minOccurs="0" maxOccurs="unbounded"/>
+			<xs:element name="performer" type="POCD_MT000040.Performer2" minOccurs="0" maxOccurs="unbounded"/>
+			<xs:element name="author" type="POCD_MT000040.Author" minOccurs="0" maxOccurs="unbounded"/>
+			<xs:element name="informant" type="POCD_MT000040.Informant12" minOccurs="0" maxOccurs="unbounded"/>
+			<xs:element name="participant" type="POCD_MT000040.Participant2" minOccurs="0" maxOccurs="unbounded"/>
+			<xs:element name="entryRelationship" type="POCD_MT000040.EntryRelationship" minOccurs="0" maxOccurs="unbounded"/>
+			<xs:element name="reference" type="POCD_MT000040.Reference" minOccurs="0" maxOccurs="unbounded"/>
+			<xs:element name="precondition" type="POCD_MT000040.Precondition" minOccurs="0" maxOccurs="unbounded"/>
+			<!-- Extension: inFulfillmentOf1 -->
 			<xs:element ref="ext:inFulfillmentOf1" minOccurs="0" maxOccurs="unbounded"/>
-			<!-- Extension: end inFulfillmentOf1 -->
-
 		</xs:sequence>
 		<xs:attribute name="nullFlavor" type="NullFlavor" use="optional"/>
 		<xs:attribute name="classCode" type="x_ActClassDocumentEntryAct" use="required"/>
@@ -102,27 +90,22 @@ StaticMifToXsd.xsl version 2.0</xs:documentation>
 			<xs:element name="telecom" type="TEL" minOccurs="0" maxOccurs="unbounded"/>
 			<xs:choice>
 				<xs:element name="assignedPerson" type="POCD_MT000040.Person" minOccurs="0"/>
-				<xs:element name="assignedAuthoringDevice" type="POCD_MT000040.AuthoringDevice"
-					minOccurs="0"/>
+				<xs:element name="assignedAuthoringDevice" type="POCD_MT000040.AuthoringDevice" minOccurs="0"/>
 			</xs:choice>
-			<xs:element name="representedOrganization" type="POCD_MT000040.Organization"
-				minOccurs="0"/>
+			<xs:element name="representedOrganization" type="POCD_MT000040.Organization" minOccurs="0"/>
 		</xs:sequence>
 		<xs:attribute name="nullFlavor" type="NullFlavor" use="optional"/>
-		<xs:attribute name="classCode" type="RoleClassAssignedEntity" use="optional"
-			fixed="ASSIGNED"/>
+		<xs:attribute name="classCode" type="RoleClassAssignedEntity" use="optional" fixed="ASSIGNED"/>
 	</xs:complexType>
 	<xs:complexType name="POCD_MT000040.AssignedCustodian">
 		<xs:sequence>
 			<xs:element name="realmCode" type="CS" minOccurs="0" maxOccurs="unbounded"/>
 			<xs:element name="typeId" type="POCD_MT000040.InfrastructureRoot.typeId" minOccurs="0"/>
 			<xs:element name="templateId" type="II" minOccurs="0" maxOccurs="unbounded"/>
-			<xs:element name="representedCustodianOrganization"
-				type="POCD_MT000040.CustodianOrganization"/>
+			<xs:element name="representedCustodianOrganization" type="POCD_MT000040.CustodianOrganization"/>
 		</xs:sequence>
 		<xs:attribute name="nullFlavor" type="NullFlavor" use="optional"/>
-		<xs:attribute name="classCode" type="RoleClassAssignedEntity" use="optional"
-			fixed="ASSIGNED"/>
+		<xs:attribute name="classCode" type="RoleClassAssignedEntity" use="optional" fixed="ASSIGNED"/>
 	</xs:complexType>
 	<xs:complexType name="POCD_MT000040.AssignedEntity">
 		<xs:sequence>
@@ -134,12 +117,10 @@ StaticMifToXsd.xsl version 2.0</xs:documentation>
 			<xs:element name="addr" type="AD" minOccurs="0" maxOccurs="unbounded"/>
 			<xs:element name="telecom" type="TEL" minOccurs="0" maxOccurs="unbounded"/>
 			<xs:element name="assignedPerson" type="POCD_MT000040.Person" minOccurs="0"/>
-			<xs:element name="representedOrganization" type="POCD_MT000040.Organization"
-				minOccurs="0"/>
+			<xs:element name="representedOrganization" type="POCD_MT000040.Organization" minOccurs="0"/>
 		</xs:sequence>
 		<xs:attribute name="nullFlavor" type="NullFlavor" use="optional"/>
-		<xs:attribute name="classCode" type="RoleClassAssignedEntity" use="optional"
-			fixed="ASSIGNED"/>
+		<xs:attribute name="classCode" type="RoleClassAssignedEntity" use="optional" fixed="ASSIGNED"/>
 	</xs:complexType>
 	<xs:complexType name="POCD_MT000040.AssociatedEntity">
 		<xs:sequence>
@@ -189,16 +170,13 @@ StaticMifToXsd.xsl version 2.0</xs:documentation>
 			<xs:element name="code" type="CE" minOccurs="0"/>
 			<xs:element name="manufacturerModelName" type="SC" minOccurs="0"/>
 			<xs:element name="softwareName" type="SC" minOccurs="0"/>
-			<xs:element name="asMaintainedEntity" type="POCD_MT000040.MaintainedEntity"
-				minOccurs="0" maxOccurs="unbounded"/>
-			<!-- Extension: start asEntityIdentifier -->
+			<xs:element name="asMaintainedEntity" type="POCD_MT000040.MaintainedEntity" minOccurs="0" maxOccurs="unbounded"/>
+			<!-- Extension: asEntityIdentifier -->
 			<xs:element ref="ext:asEntityIdentifier" minOccurs="0" maxOccurs="unbounded"/>
-			<!-- Extension: end asEntityIdentifier -->
 		</xs:sequence>
 		<xs:attribute name="nullFlavor" type="NullFlavor" use="optional"/>
 		<xs:attribute name="classCode" type="EntityClassDevice" use="optional" fixed="DEV"/>
-		<xs:attribute name="determinerCode" type="EntityDeterminer" use="optional" fixed="INSTANCE"
-		/>
+		<xs:attribute name="determinerCode" type="EntityDeterminer" use="optional" fixed="INSTANCE"/>
 	</xs:complexType>
 	<xs:complexType name="POCD_MT000040.Authorization">
 		<xs:sequence>
@@ -233,40 +211,27 @@ StaticMifToXsd.xsl version 2.0</xs:documentation>
 			<xs:element name="languageCode" type="CS" minOccurs="0"/>
 			<xs:element name="setId" type="II" minOccurs="0"/>
 			<xs:element name="versionNumber" type="INT" minOccurs="0"/>
-
-			<!-- extension ClinicalDocument.completionCode -->
+			<!-- Extension: completionCode -->
 			<xs:element ref="ext:completionCode" minOccurs="0"/>
-			<!-- Extension: end ClinicalDocument.completionCode -->
-
 			<xs:element name="copyTime" type="TS" minOccurs="0"/>
 			<xs:element name="recordTarget" type="POCD_MT000040.RecordTarget" maxOccurs="unbounded"/>
 			<xs:element name="author" type="POCD_MT000040.Author" maxOccurs="unbounded"/>
 			<xs:element name="dataEnterer" type="POCD_MT000040.DataEnterer" minOccurs="0"/>
-			<xs:element name="informant" type="POCD_MT000040.Informant12" minOccurs="0"
-				maxOccurs="unbounded"/>
+			<xs:element name="informant" type="POCD_MT000040.Informant12" minOccurs="0" maxOccurs="unbounded"/>
 			<xs:element name="custodian" type="POCD_MT000040.Custodian"/>
-			<xs:element name="informationRecipient" type="POCD_MT000040.InformationRecipient"
-				minOccurs="0" maxOccurs="unbounded"/>
-			<xs:element name="legalAuthenticator" type="POCD_MT000040.LegalAuthenticator"
-				minOccurs="0"/>
-			<xs:element name="authenticator" type="POCD_MT000040.Authenticator" minOccurs="0"
-				maxOccurs="unbounded"/>
-			<xs:element name="participant" type="POCD_MT000040.Participant1" minOccurs="0"
-				maxOccurs="unbounded"/>
-			<xs:element name="inFulfillmentOf" type="POCD_MT000040.InFulfillmentOf" minOccurs="0"
-				maxOccurs="unbounded"/>
-			<xs:element name="documentationOf" type="POCD_MT000040.DocumentationOf" minOccurs="0"
-				maxOccurs="unbounded"/>
-			<xs:element name="relatedDocument" type="POCD_MT000040.RelatedDocument" minOccurs="0"
-				maxOccurs="unbounded"/>
-			<xs:element name="authorization" type="POCD_MT000040.Authorization" minOccurs="0"
-				maxOccurs="unbounded"/>
+			<xs:element name="informationRecipient" type="POCD_MT000040.InformationRecipient" minOccurs="0" maxOccurs="unbounded"/>
+			<xs:element name="legalAuthenticator" type="POCD_MT000040.LegalAuthenticator" minOccurs="0"/>
+			<xs:element name="authenticator" type="POCD_MT000040.Authenticator" minOccurs="0" maxOccurs="unbounded"/>
+			<xs:element name="participant" type="POCD_MT000040.Participant1" minOccurs="0" maxOccurs="unbounded"/>
+			<xs:element name="inFulfillmentOf" type="POCD_MT000040.InFulfillmentOf" minOccurs="0" maxOccurs="unbounded"/>
+			<xs:element name="documentationOf" type="POCD_MT000040.DocumentationOf" minOccurs="0" maxOccurs="unbounded"/>
+			<xs:element name="relatedDocument" type="POCD_MT000040.RelatedDocument" minOccurs="0" maxOccurs="unbounded"/>
+			<xs:element name="authorization" type="POCD_MT000040.Authorization" minOccurs="0" maxOccurs="unbounded"/>
 			<xs:element name="componentOf" type="POCD_MT000040.Component1" minOccurs="0"/>
 			<xs:element name="component" type="POCD_MT000040.Component2"/>
 		</xs:sequence>
 		<xs:attribute name="nullFlavor" type="NullFlavor" use="optional"/>
-		<xs:attribute name="classCode" type="ActClassClinicalDocument" use="optional"
-			fixed="DOCCLIN"/>
+		<xs:attribute name="classCode" type="ActClassClinicalDocument" use="optional" fixed="DOCCLIN"/>
 		<xs:attribute name="moodCode" type="ActMood" use="optional" fixed="EVN"/>
 	</xs:complexType>
 	<xs:complexType name="POCD_MT000040.Component1">
@@ -277,8 +242,7 @@ StaticMifToXsd.xsl version 2.0</xs:documentation>
 			<xs:element name="encompassingEncounter" type="POCD_MT000040.EncompassingEncounter"/>
 		</xs:sequence>
 		<xs:attribute name="nullFlavor" type="NullFlavor" use="optional"/>
-		<xs:attribute name="typeCode" type="ActRelationshipHasComponent" use="optional" fixed="COMP"
-		/>
+		<xs:attribute name="typeCode" type="ActRelationshipHasComponent" use="optional" fixed="COMP"/>
 	</xs:complexType>
 	<xs:complexType name="POCD_MT000040.Component2">
 		<xs:sequence>
@@ -320,8 +284,7 @@ StaticMifToXsd.xsl version 2.0</xs:documentation>
 				<xs:element name="organizer" type="POCD_MT000040.Organizer"/>
 				<xs:element name="procedure" type="POCD_MT000040.Procedure"/>
 				<xs:element name="regionOfInterest" type="POCD_MT000040.RegionOfInterest"/>
-				<xs:element name="substanceAdministration"
-					type="POCD_MT000040.SubstanceAdministration"/>
+				<xs:element name="substanceAdministration" type="POCD_MT000040.SubstanceAdministration"/>
 				<xs:element name="supply" type="POCD_MT000040.Supply"/>
 			</xs:choice>
 		</xs:sequence>
@@ -395,16 +358,12 @@ StaticMifToXsd.xsl version 2.0</xs:documentation>
 			<xs:element name="name" type="ON" minOccurs="0"/>
 			<xs:element name="telecom" type="TEL" minOccurs="0"/>
 			<xs:element name="addr" type="AD" minOccurs="0"/>
-
-			<!-- Extension: start asEntityIdentifier -->
+			<!-- Extension: asEntityIdentifier -->
 			<xs:element ref="ext:asEntityIdentifier" minOccurs="0" maxOccurs="unbounded"/>
-			<!-- Extension: end asEntityIdentifier -->
-
 		</xs:sequence>
 		<xs:attribute name="nullFlavor" type="NullFlavor" use="optional"/>
 		<xs:attribute name="classCode" type="EntityClassOrganization" use="optional" fixed="ORG"/>
-		<xs:attribute name="determinerCode" type="EntityDeterminer" use="optional" fixed="INSTANCE"
-		/>
+		<xs:attribute name="determinerCode" type="EntityDeterminer" use="optional" fixed="INSTANCE"/>
 	</xs:complexType>
 	<xs:complexType name="POCD_MT000040.DataEnterer">
 		<xs:sequence>
@@ -426,14 +385,12 @@ StaticMifToXsd.xsl version 2.0</xs:documentation>
 			<xs:element name="code" type="CE" minOccurs="0"/>
 			<xs:element name="manufacturerModelName" type="SC" minOccurs="0"/>
 			<xs:element name="softwareName" type="SC" minOccurs="0"/>
-			<!-- Extension: start asEntityIdentifier -->
+			<!-- Extension: asEntityIdentifier -->
 			<xs:element ref="ext:asEntityIdentifier" minOccurs="0" maxOccurs="unbounded"/>
-			<!-- Extension: end asEntityIdentifier -->
 		</xs:sequence>
 		<xs:attribute name="nullFlavor" type="NullFlavor" use="optional"/>
 		<xs:attribute name="classCode" type="EntityClassDevice" use="optional" default="DEV"/>
-		<xs:attribute name="determinerCode" type="EntityDeterminer" use="optional" fixed="INSTANCE"
-		/>
+		<xs:attribute name="determinerCode" type="EntityDeterminer" use="optional" fixed="INSTANCE"/>
 	</xs:complexType>
 	<xs:complexType name="POCD_MT000040.DocumentationOf">
 		<xs:sequence>
@@ -453,15 +410,11 @@ StaticMifToXsd.xsl version 2.0</xs:documentation>
 			<xs:element name="id" type="II" minOccurs="0" maxOccurs="unbounded"/>
 			<xs:element name="code" type="CE" minOccurs="0"/>
 			<xs:element name="effectiveTime" type="IVL_TS"/>
-
-			<!-- Extension: start admissionReferralSourceCode -->
+			<!-- Extension: admissionReferralSourceCode -->
 			<xs:element ref="ext:admissionReferralSourceCode" minOccurs="0" maxOccurs="1"/>
-			<!-- Extension: end admissionReferralSourceCode -->
-
 			<xs:element name="dischargeDispositionCode" type="CE" minOccurs="0"/>
 			<xs:element name="responsibleParty" type="POCD_MT000040.ResponsibleParty" minOccurs="0"/>
-			<xs:element name="encounterParticipant" type="POCD_MT000040.EncounterParticipant"
-				minOccurs="0" maxOccurs="unbounded"/>
+			<xs:element name="encounterParticipant" type="POCD_MT000040.EncounterParticipant" minOccurs="0" maxOccurs="unbounded"/>
 			<xs:element name="location" type="POCD_MT000040.Location" minOccurs="0"/>
 		</xs:sequence>
 		<xs:attribute name="nullFlavor" type="NullFlavor" use="optional"/>
@@ -478,38 +431,22 @@ StaticMifToXsd.xsl version 2.0</xs:documentation>
 			<xs:element name="text" type="ED" minOccurs="0"/>
 			<xs:element name="statusCode" type="CS" minOccurs="0"/>
 			<xs:element name="effectiveTime" type="IVL_TS" minOccurs="0"/>
-
-			<!-- Extension: start admissionReferralSourceCode -->
+			<!-- Extension: admissionReferralSourceCode -->
 			<xs:element ref="ext:admissionReferralSourceCode" minOccurs="0" maxOccurs="1"/>
-			<!-- Extension: end admissionReferralSourceCode -->
-
-			<!-- Extension: start dischargeDispositionCode -->
+			<!-- Extension: dischargeDispositionCode -->
 			<xs:element ref="ext:dischargeDispositionCode" minOccurs="0"/>
-			<!-- Extension: end dischargeDispositionCode -->
-
 			<xs:element name="priorityCode" type="CE" minOccurs="0"/>
 			<xs:element name="subject" type="POCD_MT000040.Subject" minOccurs="0"/>
-			<xs:element name="specimen" type="POCD_MT000040.Specimen" minOccurs="0"
-				maxOccurs="unbounded"/>
-			<xs:element name="performer" type="POCD_MT000040.Performer2" minOccurs="0"
-				maxOccurs="unbounded"/>
-			<xs:element name="author" type="POCD_MT000040.Author" minOccurs="0"
-				maxOccurs="unbounded"/>
-			<xs:element name="informant" type="POCD_MT000040.Informant12" minOccurs="0"
-				maxOccurs="unbounded"/>
-			<xs:element name="participant" type="POCD_MT000040.Participant2" minOccurs="0"
-				maxOccurs="unbounded"/>
-			<xs:element name="entryRelationship" type="POCD_MT000040.EntryRelationship"
-				minOccurs="0" maxOccurs="unbounded"/>
-			<xs:element name="reference" type="POCD_MT000040.Reference" minOccurs="0"
-				maxOccurs="unbounded"/>
-			<xs:element name="precondition" type="POCD_MT000040.Precondition" minOccurs="0"
-				maxOccurs="unbounded"/>
-
-			<!-- Extension: start inFulfillmentOf1 -->
+			<xs:element name="specimen" type="POCD_MT000040.Specimen" minOccurs="0" maxOccurs="unbounded"/>
+			<xs:element name="performer" type="POCD_MT000040.Performer2" minOccurs="0" maxOccurs="unbounded"/>
+			<xs:element name="author" type="POCD_MT000040.Author" minOccurs="0" maxOccurs="unbounded"/>
+			<xs:element name="informant" type="POCD_MT000040.Informant12" minOccurs="0" maxOccurs="unbounded"/>
+			<xs:element name="participant" type="POCD_MT000040.Participant2" minOccurs="0" maxOccurs="unbounded"/>
+			<xs:element name="entryRelationship" type="POCD_MT000040.EntryRelationship" minOccurs="0" maxOccurs="unbounded"/>
+			<xs:element name="reference" type="POCD_MT000040.Reference" minOccurs="0" maxOccurs="unbounded"/>
+			<xs:element name="precondition" type="POCD_MT000040.Precondition" minOccurs="0" maxOccurs="unbounded"/>
+			<!-- Extension: inFulfillmentOf1 -->
 			<xs:element ref="ext:inFulfillmentOf1" minOccurs="0" maxOccurs="unbounded"/>
-			<!-- Extension: end inFulfillmentOf1 -->
-
 		</xs:sequence>
 		<xs:attribute name="nullFlavor" type="NullFlavor" use="optional"/>
 		<xs:attribute name="classCode" type="ActClass" use="required"/>
@@ -533,42 +470,25 @@ StaticMifToXsd.xsl version 2.0</xs:documentation>
 			<xs:element name="templateId" type="II" minOccurs="0" maxOccurs="unbounded"/>
 			<xs:element name="id" type="II" minOccurs="0" maxOccurs="unbounded"/>
 			<xs:element name="code" type="CE" minOccurs="0"/>
-
-			<!-- Extension: start name -->
+			<!-- Extension: name -->
 			<xs:element ref="ext:name" minOccurs="0" maxOccurs="unbounded"/>
-			<!-- Extension: end name -->
-
 			<xs:element name="desc" type="ED" minOccurs="0"/>
-
-			<!-- Extension: start telecom -->
+			<!-- Extension: telecom -->
 			<xs:element ref="ext:telecom" minOccurs="0" maxOccurs="unbounded"/>
-			<!-- Extension: end telecom -->
-
-			<!-- Extension: start addr -->
+			<!-- Extension: addr -->
 			<xs:element ref="ext:addr" minOccurs="0" maxOccurs="unbounded"/>
-			<!-- Extension: end addr -->
-
-			<!-- Extension: start asOrganizationPartOf -->
+			<!-- Extension: asOrganizationPartOf -->
 			<xs:element ref="ext:asOrganizationPartOf" minOccurs="0" maxOccurs="unbounded"/>
-			<!-- Extension: end asOrganizationPartOf -->
-
-			<!-- Extension: start asEntityIdentifier -->
+			<!-- Extension: asEntityIdentifier -->
 			<xs:element ref="ext:asEntityIdentifier" minOccurs="0" maxOccurs="unbounded"/>
-			<!-- Extension: end asEntityIdentifier -->
-
-			<!-- Extension: start asQualifiedEntity -->
+			<!-- Extension: asQualifiedEntity -->
 			<xs:element ref="ext:asQualifiedEntity" minOccurs="0" maxOccurs="1"/>
-			<!-- Extension: end asQualifiedEntity -->
-
-			<!-- Extensions: start PersonalRelationShip -->
+			<!-- Extension: personalRelationship -->
 			<xs:element ref="ext:personalRelationship" minOccurs="0" maxOccurs="unbounded"/>
-			<!-- Extensions: end PersonalRelationShip -->
-
 		</xs:sequence>
 		<xs:attribute name="nullFlavor" type="NullFlavor" use="optional"/>
 		<xs:attribute name="classCode" type="EntityClassRoot" use="optional" default="ENT"/>
-		<xs:attribute name="determinerCode" type="EntityDeterminer" use="optional" fixed="INSTANCE"
-		/>
+		<xs:attribute name="determinerCode" type="EntityDeterminer" use="optional" fixed="INSTANCE"/>
 	</xs:complexType>
 	<xs:complexType name="POCD_MT000040.Entry">
 		<xs:sequence>
@@ -583,14 +503,10 @@ StaticMifToXsd.xsl version 2.0</xs:documentation>
 				<xs:element name="organizer" type="POCD_MT000040.Organizer"/>
 				<xs:element name="procedure" type="POCD_MT000040.Procedure"/>
 				<xs:element name="regionOfInterest" type="POCD_MT000040.RegionOfInterest"/>
-				<xs:element name="substanceAdministration"
-					type="POCD_MT000040.SubstanceAdministration"/>
+				<xs:element name="substanceAdministration" type="POCD_MT000040.SubstanceAdministration"/>
 				<xs:element name="supply" type="POCD_MT000040.Supply"/>
-
-				<!-- Begin Extension controlAct -->
+				<!-- Extension: controlAct -->
 				<xs:element ref="ext:controlAct"/>
-				<!-- End Extension controlAct -->
-
 			</xs:choice>
 		</xs:sequence>
 		<xs:attribute name="nullFlavor" type="NullFlavor" use="optional"/>
@@ -612,13 +528,10 @@ StaticMifToXsd.xsl version 2.0</xs:documentation>
 				<xs:element name="organizer" type="POCD_MT000040.Organizer"/>
 				<xs:element name="procedure" type="POCD_MT000040.Procedure"/>
 				<xs:element name="regionOfInterest" type="POCD_MT000040.RegionOfInterest"/>
-				<xs:element name="substanceAdministration"
-					type="POCD_MT000040.SubstanceAdministration"/>
+				<xs:element name="substanceAdministration" type="POCD_MT000040.SubstanceAdministration"/>
 				<xs:element name="supply" type="POCD_MT000040.Supply"/>
-
-				<!-- Begin Extension controlAct -->
+				<!-- Extension: controlAct -->
 				<xs:element ref="ext:controlAct"/>
-				<!-- End Extension controlAct -->
 			</xs:choice>
 		</xs:sequence>
 		<xs:attribute name="nullFlavor" type="NullFlavor" use="optional"/>
@@ -706,8 +619,7 @@ StaticMifToXsd.xsl version 2.0</xs:documentation>
 			<xs:element name="id" type="II" minOccurs="0" maxOccurs="unbounded"/>
 			<xs:element name="code" type="CE" minOccurs="0"/>
 			<xs:element name="location" type="POCD_MT000040.Place" minOccurs="0"/>
-			<xs:element name="serviceProviderOrganization" type="POCD_MT000040.Organization"
-				minOccurs="0"/>
+			<xs:element name="serviceProviderOrganization" type="POCD_MT000040.Organization" minOccurs="0"/>
 		</xs:sequence>
 		<xs:attribute name="nullFlavor" type="NullFlavor" use="optional"/>
 		<xs:attribute name="classCode" type="RoleClassServiceDeliveryLocation" use="optional"
@@ -753,20 +665,15 @@ StaticMifToXsd.xsl version 2.0</xs:documentation>
 			<xs:element name="typeId" type="POCD_MT000040.InfrastructureRoot.typeId" minOccurs="0"/>
 			<xs:element name="templateId" type="II" minOccurs="0" maxOccurs="unbounded"/>
 			<xs:element name="id" type="II" minOccurs="0" maxOccurs="unbounded"/>
-
-			<!-- extension IntendedRecipient.code-->
+			<!-- Extension: code-->
 			<xs:element ref="ext:code" minOccurs="0"/>
-			<!-- Extension: end IntendedRecipient.code -->
-
 			<xs:element name="addr" type="AD" minOccurs="0" maxOccurs="unbounded"/>
 			<xs:element name="telecom" type="TEL" minOccurs="0" maxOccurs="unbounded"/>
 			<xs:element name="informationRecipient" type="POCD_MT000040.Person" minOccurs="0"/>
-			<xs:element name="receivedOrganization" type="POCD_MT000040.Organization" minOccurs="0"
-			/>
+			<xs:element name="receivedOrganization" type="POCD_MT000040.Organization" minOccurs="0"/>
 		</xs:sequence>
 		<xs:attribute name="nullFlavor" type="NullFlavor" use="optional"/>
-		<xs:attribute name="classCode" type="x_InformationRecipientRole" use="optional"
-			default="ASSIGNED"/>
+		<xs:attribute name="classCode" type="x_InformationRecipientRole" use="optional" default="ASSIGNED"/>
 	</xs:complexType>
 	<xs:complexType name="POCD_MT000040.LabeledDrug">
 		<xs:sequence>
@@ -777,10 +684,8 @@ StaticMifToXsd.xsl version 2.0</xs:documentation>
 			<xs:element name="name" type="EN" minOccurs="0"/>
 		</xs:sequence>
 		<xs:attribute name="nullFlavor" type="NullFlavor" use="optional"/>
-		<xs:attribute name="classCode" type="EntityClassManufacturedMaterial" use="optional"
-			fixed="MMAT"/>
-		<xs:attribute name="determinerCode" type="EntityDeterminerDetermined" use="optional"
-			fixed="KIND"/>
+		<xs:attribute name="classCode" type="EntityClassManufacturedMaterial" use="optional" fixed="MMAT"/>
+		<xs:attribute name="determinerCode" type="EntityDeterminerDetermined" use="optional" fixed="KIND"/>
 	</xs:complexType>
 	<xs:complexType name="POCD_MT000040.LanguageCommunication">
 		<xs:sequence>
@@ -791,6 +696,8 @@ StaticMifToXsd.xsl version 2.0</xs:documentation>
 			<xs:element name="modeCode" type="CE" minOccurs="0"/>
 			<xs:element name="proficiencyLevelCode" type="CE" minOccurs="0"/>
 			<xs:element name="preferenceInd" type="BL" minOccurs="0"/>
+			<!-- Extension: languageCommunication-->
+			<xs:element ref="ext:interpreterRequiredInd" minOccurs="0"/>
 		</xs:sequence>
 		<xs:attribute name="nullFlavor" type="NullFlavor" use="optional"/>
 	</xs:complexType>
@@ -815,8 +722,7 @@ StaticMifToXsd.xsl version 2.0</xs:documentation>
 			<xs:element name="healthCareFacility" type="POCD_MT000040.HealthCareFacility"/>
 		</xs:sequence>
 		<xs:attribute name="nullFlavor" type="NullFlavor" use="optional"/>
-		<xs:attribute name="typeCode" type="ParticipationTargetLocation" use="optional" fixed="LOC"
-		/>
+		<xs:attribute name="typeCode" type="ParticipationTargetLocation" use="optional" fixed="LOC"/>
 	</xs:complexType>
 	<xs:complexType name="POCD_MT000040.MaintainedEntity">
 		<xs:sequence>
@@ -839,17 +745,12 @@ StaticMifToXsd.xsl version 2.0</xs:documentation>
 				<xs:element name="manufacturedLabeledDrug" type="POCD_MT000040.LabeledDrug"/>
 				<xs:element name="manufacturedMaterial" type="POCD_MT000040.Material"/>
 			</xs:choice>
-			<xs:element name="manufacturerOrganization" type="POCD_MT000040.Organization"
-				minOccurs="0"/>
-
-			<!-- Extension: Begin Subject to Regulation 24 & State Authority Number-->
+			<xs:element name="manufacturerOrganization" type="POCD_MT000040.Organization" minOccurs="0"/>
+			<!-- Extension: subjectOf1 -->
 			<xs:element ref="ext:subjectOf1" minOccurs="0" maxOccurs="unbounded"/>
-			<!-- Extension: End Subject to Regulation 24 & State Authority Number-->
-
 		</xs:sequence>
 		<xs:attribute name="nullFlavor" type="NullFlavor" use="optional"/>
-		<xs:attribute name="classCode" type="RoleClassManufacturedProduct" use="optional"
-			fixed="MANU"/>
+		<xs:attribute name="classCode" type="RoleClassManufacturedProduct" use="optional" fixed="MANU"/>
 	</xs:complexType>
 	<xs:complexType name="POCD_MT000040.Material">
 		<xs:sequence>
@@ -858,32 +759,19 @@ StaticMifToXsd.xsl version 2.0</xs:documentation>
 			<xs:element name="templateId" type="II" minOccurs="0" maxOccurs="unbounded"/>
 			<xs:element name="code" type="CE" minOccurs="0"/>
 			<xs:element name="name" type="EN" minOccurs="0"/>
-			<!-- Extension: start desc -->
+			<!-- Extension: desc -->
 			<xs:element ref="ext:desc" minOccurs="0" maxOccurs="1"/>
-			<!-- Extension: end desc -->
-
 			<xs:element name="lotNumberText" type="ST" minOccurs="0"/>
-
-			<!-- Extension: start expirationTime -->
+			<!-- Extension: expirationTime -->
 			<xs:element ref="ext:expirationTime" minOccurs="0" maxOccurs="1"/>
-			<!-- Extension: end expirationTime -->
-
-			<!-- Extension: start asIngredient -->
+			<!-- Extension: asIngredient -->
 			<xs:element ref="ext:asIngredient" minOccurs="0" maxOccurs="unbounded"/>
-			<!-- Extension: end asIngredient -->
-
-			<!-- BEGIN NEW EXTENSION FOR formCode -->
-			<!-- Extension: Start formCode -->
+			<!-- Extension: formCode -->
 			<xs:element ref="ext:formCode" minOccurs="0" maxOccurs="1"/>
-			<!-- Extension: End formCode -->
-			<!-- END NEW EXTENSION FOR formCode -->
-
 		</xs:sequence>
 		<xs:attribute name="nullFlavor" type="NullFlavor" use="optional"/>
-		<xs:attribute name="classCode" type="EntityClassManufacturedMaterial" use="optional"
-			fixed="MMAT"/>
-		<xs:attribute name="determinerCode" type="EntityDeterminerDetermined" use="optional"
-			fixed="KIND"/>
+		<xs:attribute name="classCode" type="EntityClassManufacturedMaterial" use="optional" fixed="MMAT"/>
+		<xs:attribute name="determinerCode" type="EntityDeterminerDetermined" use="optional" fixed="KIND"/>
 	</xs:complexType>
 	<xs:complexType name="POCD_MT000040.NonXMLBody">
 		<xs:sequence>
@@ -917,29 +805,17 @@ StaticMifToXsd.xsl version 2.0</xs:documentation>
 			<xs:element name="methodCode" type="CE" minOccurs="0" maxOccurs="unbounded"/>
 			<xs:element name="targetSiteCode" type="CD" minOccurs="0" maxOccurs="unbounded"/>
 			<xs:element name="subject" type="POCD_MT000040.Subject" minOccurs="0"/>
-			<xs:element name="specimen" type="POCD_MT000040.Specimen" minOccurs="0"
-				maxOccurs="unbounded"/>
-			<xs:element name="performer" type="POCD_MT000040.Performer2" minOccurs="0"
-				maxOccurs="unbounded"/>
-			<xs:element name="author" type="POCD_MT000040.Author" minOccurs="0"
-				maxOccurs="unbounded"/>
-			<xs:element name="informant" type="POCD_MT000040.Informant12" minOccurs="0"
-				maxOccurs="unbounded"/>
-			<xs:element name="participant" type="POCD_MT000040.Participant2" minOccurs="0"
-				maxOccurs="unbounded"/>
-			<xs:element name="entryRelationship" type="POCD_MT000040.EntryRelationship"
-				minOccurs="0" maxOccurs="unbounded"/>
-			<xs:element name="reference" type="POCD_MT000040.Reference" minOccurs="0"
-				maxOccurs="unbounded"/>
-			<xs:element name="precondition" type="POCD_MT000040.Precondition" minOccurs="0"
-				maxOccurs="unbounded"/>
-			<xs:element name="referenceRange" type="POCD_MT000040.ReferenceRange" minOccurs="0"
-				maxOccurs="unbounded"/>
-
-			<!-- Extension: start inFulfillmentOf1 -->
+			<xs:element name="specimen" type="POCD_MT000040.Specimen" minOccurs="0" maxOccurs="unbounded"/>
+			<xs:element name="performer" type="POCD_MT000040.Performer2" minOccurs="0" maxOccurs="unbounded"/>
+			<xs:element name="author" type="POCD_MT000040.Author" minOccurs="0" maxOccurs="unbounded"/>
+			<xs:element name="informant" type="POCD_MT000040.Informant12" minOccurs="0" maxOccurs="unbounded"/>
+			<xs:element name="participant" type="POCD_MT000040.Participant2" minOccurs="0" maxOccurs="unbounded"/>
+			<xs:element name="entryRelationship" type="POCD_MT000040.EntryRelationship" minOccurs="0" maxOccurs="unbounded"/>
+			<xs:element name="reference" type="POCD_MT000040.Reference" minOccurs="0" maxOccurs="unbounded"/>
+			<xs:element name="precondition" type="POCD_MT000040.Precondition" minOccurs="0" maxOccurs="unbounded"/>
+			<xs:element name="referenceRange" type="POCD_MT000040.ReferenceRange" minOccurs="0" maxOccurs="unbounded"/>
+			<!-- Extension: inFulfillmentOf1 -->
 			<xs:element ref="ext:inFulfillmentOf1" minOccurs="0" maxOccurs="unbounded"/>
-			<!-- Extension: end inFulfillmentOf1 -->
-
 		</xs:sequence>
 		<xs:attribute name="nullFlavor" type="NullFlavor" use="optional"/>
 		<xs:attribute name="classCode" type="ActClassObservation" use="required"/>
@@ -955,22 +831,14 @@ StaticMifToXsd.xsl version 2.0</xs:documentation>
 			<xs:element name="languageCode" type="CS" minOccurs="0"/>
 			<xs:element name="value" type="ED"/>
 			<xs:element name="subject" type="POCD_MT000040.Subject" minOccurs="0"/>
-			<xs:element name="specimen" type="POCD_MT000040.Specimen" minOccurs="0"
-				maxOccurs="unbounded"/>
-			<xs:element name="performer" type="POCD_MT000040.Performer2" minOccurs="0"
-				maxOccurs="unbounded"/>
-			<xs:element name="author" type="POCD_MT000040.Author" minOccurs="0"
-				maxOccurs="unbounded"/>
-			<xs:element name="informant" type="POCD_MT000040.Informant12" minOccurs="0"
-				maxOccurs="unbounded"/>
-			<xs:element name="participant" type="POCD_MT000040.Participant2" minOccurs="0"
-				maxOccurs="unbounded"/>
-			<xs:element name="entryRelationship" type="POCD_MT000040.EntryRelationship"
-				minOccurs="0" maxOccurs="unbounded"/>
-			<xs:element name="reference" type="POCD_MT000040.Reference" minOccurs="0"
-				maxOccurs="unbounded"/>
-			<xs:element name="precondition" type="POCD_MT000040.Precondition" minOccurs="0"
-				maxOccurs="unbounded"/>
+			<xs:element name="specimen" type="POCD_MT000040.Specimen" minOccurs="0" maxOccurs="unbounded"/>
+			<xs:element name="performer" type="POCD_MT000040.Performer2" minOccurs="0" maxOccurs="unbounded"/>
+			<xs:element name="author" type="POCD_MT000040.Author" minOccurs="0" maxOccurs="unbounded"/>
+			<xs:element name="informant" type="POCD_MT000040.Informant12" minOccurs="0" maxOccurs="unbounded"/>
+			<xs:element name="participant" type="POCD_MT000040.Participant2" minOccurs="0" maxOccurs="unbounded"/>
+			<xs:element name="entryRelationship" type="POCD_MT000040.EntryRelationship" minOccurs="0" maxOccurs="unbounded"/>
+			<xs:element name="reference" type="POCD_MT000040.Reference" minOccurs="0" maxOccurs="unbounded"/>
+			<xs:element name="precondition" type="POCD_MT000040.Precondition" minOccurs="0" maxOccurs="unbounded"/>
 		</xs:sequence>
 		<xs:attribute name="ID" type="xs:ID"/>
 		<xs:attribute name="nullFlavor" type="NullFlavor" use="optional"/>
@@ -1014,18 +882,13 @@ StaticMifToXsd.xsl version 2.0</xs:documentation>
 			<xs:element name="telecom" type="TEL" minOccurs="0" maxOccurs="unbounded"/>
 			<xs:element name="addr" type="AD" minOccurs="0" maxOccurs="unbounded"/>
 			<xs:element name="standardIndustryClassCode" type="CE" minOccurs="0"/>
-			<xs:element name="asOrganizationPartOf" type="POCD_MT000040.OrganizationPartOf"
-				minOccurs="0"/>
-
-			<!-- Extension: start asEntityIdentifier -->
+			<xs:element name="asOrganizationPartOf" type="POCD_MT000040.OrganizationPartOf" minOccurs="0"/>
+			<!-- Extension: asEntityIdentifier -->
 			<xs:element ref="ext:asEntityIdentifier" minOccurs="0" maxOccurs="unbounded"/>
-			<!-- Extension: end asEntityIdentifier -->
-
 		</xs:sequence>
 		<xs:attribute name="nullFlavor" type="NullFlavor" use="optional"/>
 		<xs:attribute name="classCode" type="EntityClassOrganization" use="optional" fixed="ORG"/>
-		<xs:attribute name="determinerCode" type="EntityDeterminer" use="optional" fixed="INSTANCE"
-		/>
+		<xs:attribute name="determinerCode" type="EntityDeterminer" use="optional" fixed="INSTANCE"/>
 	</xs:complexType>
 	<xs:complexType name="POCD_MT000040.OrganizationPartOf">
 		<xs:sequence>
@@ -1051,22 +914,14 @@ StaticMifToXsd.xsl version 2.0</xs:documentation>
 			<xs:element name="statusCode" type="CS"/>
 			<xs:element name="effectiveTime" type="IVL_TS" minOccurs="0"/>
 			<xs:element name="subject" type="POCD_MT000040.Subject" minOccurs="0"/>
-			<xs:element name="specimen" type="POCD_MT000040.Specimen" minOccurs="0"
-				maxOccurs="unbounded"/>
-			<xs:element name="performer" type="POCD_MT000040.Performer2" minOccurs="0"
-				maxOccurs="unbounded"/>
-			<xs:element name="author" type="POCD_MT000040.Author" minOccurs="0"
-				maxOccurs="unbounded"/>
-			<xs:element name="informant" type="POCD_MT000040.Informant12" minOccurs="0"
-				maxOccurs="unbounded"/>
-			<xs:element name="participant" type="POCD_MT000040.Participant2" minOccurs="0"
-				maxOccurs="unbounded"/>
-			<xs:element name="reference" type="POCD_MT000040.Reference" minOccurs="0"
-				maxOccurs="unbounded"/>
-			<xs:element name="precondition" type="POCD_MT000040.Precondition" minOccurs="0"
-				maxOccurs="unbounded"/>
-			<xs:element name="component" type="POCD_MT000040.Component4" minOccurs="0"
-				maxOccurs="unbounded"/>
+			<xs:element name="specimen" type="POCD_MT000040.Specimen" minOccurs="0" maxOccurs="unbounded"/>
+			<xs:element name="performer" type="POCD_MT000040.Performer2" minOccurs="0" maxOccurs="unbounded"/>
+			<xs:element name="author" type="POCD_MT000040.Author" minOccurs="0" maxOccurs="unbounded"/>
+			<xs:element name="informant" type="POCD_MT000040.Informant12" minOccurs="0" maxOccurs="unbounded"/>
+			<xs:element name="participant" type="POCD_MT000040.Participant2" minOccurs="0" maxOccurs="unbounded"/>
+			<xs:element name="reference" type="POCD_MT000040.Reference" minOccurs="0" maxOccurs="unbounded"/>
+			<xs:element name="precondition" type="POCD_MT000040.Precondition" minOccurs="0" maxOccurs="unbounded"/>
+			<xs:element name="component" type="POCD_MT000040.Component4" minOccurs="0" maxOccurs="unbounded"/>
 		</xs:sequence>
 		<xs:attribute name="nullFlavor" type="NullFlavor" use="optional"/>
 		<xs:attribute name="classCode" type="x_ActClassDocumentEntryOrganizer" use="required"/>
@@ -1084,8 +939,7 @@ StaticMifToXsd.xsl version 2.0</xs:documentation>
 			<xs:element name="versionNumber" type="INT" minOccurs="0"/>
 		</xs:sequence>
 		<xs:attribute name="nullFlavor" type="NullFlavor" use="optional"/>
-		<xs:attribute name="classCode" type="ActClassClinicalDocument" use="optional"
-			fixed="DOCCLIN"/>
+		<xs:attribute name="classCode" type="ActClassClinicalDocument" use="optional" fixed="DOCCLIN"/>
 		<xs:attribute name="moodCode" type="ActMood" use="optional" fixed="EVN"/>
 	</xs:complexType>
 	<xs:complexType name="POCD_MT000040.Participant1">
@@ -1139,55 +993,34 @@ StaticMifToXsd.xsl version 2.0</xs:documentation>
 			<xs:element name="templateId" type="II" minOccurs="0" maxOccurs="unbounded"/>
 			<xs:element name="id" type="II" minOccurs="0"/>
 			<xs:element name="name" type="PN" minOccurs="0" maxOccurs="unbounded"/>
-
-			<!-- Extension (in this extension we are simply constraining this to be mandatory) -->
+			<!-- Extension: administrativeGenderCode (in this extension we are simply constraining this to be mandatory) -->
 			<xs:element name="administrativeGenderCode" type="CE" minOccurs="1"/>
-			<!-- Extension  -->
-
 			<xs:element name="birthTime" type="TS" minOccurs="0"/>
 			<xs:element name="maritalStatusCode" type="CE" minOccurs="0"/>
 			<xs:element name="religiousAffiliationCode" type="CE" minOccurs="0"/>
 			<xs:element name="raceCode" type="CE" minOccurs="0"/>
 			<xs:element name="ethnicGroupCode" type="CE" minOccurs="0"/>
-
-			<!-- Extension: start multipleBirthInd -->
+			<!-- Extension: multipleBirthInd -->
 			<xs:element ref="ext:multipleBirthInd" minOccurs="0" maxOccurs="1"/>
-			<!-- Extension: end multipleBirthInd -->
-
-			<!-- Extension: start multipleBirthOrderNumber -->
+			<!-- Extension: multipleBirthOrderNumber -->
 			<xs:element ref="ext:multipleBirthOrderNumber" minOccurs="0" maxOccurs="1"/>
-			<!-- Extension: end multipleBirthOrderNumber -->
-
-			<!-- Extension: start deceasedTime -->
+			<!-- Extension: deceasedInd -->
 			<xs:element ref="ext:deceasedInd" minOccurs="0"/>
+			<!-- Extension: deceasedTime -->
 			<xs:element ref="ext:deceasedTime" minOccurs="0"/>
-			<!-- extension: end -->
-
-			<xs:element name="guardian" type="POCD_MT000040.Guardian" minOccurs="0"
-				maxOccurs="unbounded"/>
+			<xs:element name="guardian" type="POCD_MT000040.Guardian" minOccurs="0" maxOccurs="unbounded"/>
 			<xs:element name="birthplace" type="POCD_MT000040.Birthplace" minOccurs="0"/>
-
-			<!-- Extension: start asEntityIdentifier -->
+			<!-- Extension: asEntityIdentifier -->
 			<xs:element ref="ext:asEntityIdentifier" minOccurs="0" maxOccurs="unbounded"/>
-			<!-- Extension: end asEntityIdentifier -->
-
-
-			<!-- Extension: start asEmployment -->
+			<!-- Extension: asEmployment -->
 			<xs:element ref="ext:asEmployment" minOccurs="0" maxOccurs="1"/>
-			<!-- Extension: end asEmployment -->
-
-			<!-- NEW EXTENSION FOR PERSONALRELATIONSHIP -->
-			<!-- Extensions: start PersonalRelationShip -->
+			<!-- Extension: personalRelationship -->
 			<xs:element ref="ext:personalRelationship" minOccurs="0" maxOccurs="unbounded"/>
-			<!-- Extensions: end PersonalRelationShip -->
-
-			<xs:element name="languageCommunication" type="POCD_MT000040.LanguageCommunication"
-				minOccurs="0" maxOccurs="unbounded"/>
+			<xs:element name="languageCommunication" type="POCD_MT000040.LanguageCommunication" minOccurs="0" maxOccurs="unbounded"/>
 		</xs:sequence>
 		<xs:attribute name="nullFlavor" type="NullFlavor" use="optional"/>
 		<xs:attribute name="classCode" type="EntityClass" use="optional" fixed="PSN"/>
-		<xs:attribute name="determinerCode" type="EntityDeterminer" use="optional" fixed="INSTANCE"
-		/>
+		<xs:attribute name="determinerCode" type="EntityDeterminer" use="optional" fixed="INSTANCE"/>
 	</xs:complexType>
 	<xs:complexType name="POCD_MT000040.PatientRole">
 		<xs:sequence>
@@ -1198,8 +1031,7 @@ StaticMifToXsd.xsl version 2.0</xs:documentation>
 			<xs:element name="addr" type="AD" minOccurs="0" maxOccurs="unbounded"/>
 			<xs:element name="telecom" type="TEL" minOccurs="0" maxOccurs="unbounded"/>
 			<xs:element name="patient" type="POCD_MT000040.Patient" minOccurs="0"/>
-			<xs:element name="providerOrganization" type="POCD_MT000040.Organization" minOccurs="0"
-			/>
+			<xs:element name="providerOrganization" type="POCD_MT000040.Organization" minOccurs="0"/>
 		</xs:sequence>
 		<xs:attribute name="nullFlavor" type="NullFlavor" use="optional"/>
 		<xs:attribute name="classCode" type="RoleClass" use="optional" fixed="PAT"/>
@@ -1226,8 +1058,7 @@ StaticMifToXsd.xsl version 2.0</xs:documentation>
 			<xs:element name="assignedEntity" type="POCD_MT000040.AssignedEntity"/>
 		</xs:sequence>
 		<xs:attribute name="nullFlavor" type="NullFlavor" use="optional"/>
-		<xs:attribute name="typeCode" type="ParticipationPhysicalPerformer" use="optional"
-			fixed="PRF"/>
+		<xs:attribute name="typeCode" type="ParticipationPhysicalPerformer" use="optional" fixed="PRF"/>
 	</xs:complexType>
 	<xs:complexType name="POCD_MT000040.Person">
 		<xs:sequence>
@@ -1235,41 +1066,24 @@ StaticMifToXsd.xsl version 2.0</xs:documentation>
 			<xs:element name="typeId" type="POCD_MT000040.InfrastructureRoot.typeId" minOccurs="0"/>
 			<xs:element name="templateId" type="II" minOccurs="0" maxOccurs="unbounded"/>
 			<xs:element name="name" type="PN" minOccurs="0" maxOccurs="unbounded"/>
-
-			<!-- Extension: start administrativeGenderCode -->
+			<!-- Extension: administrativeGenderCode -->
 			<xs:element ref="ext:administrativeGenderCode" minOccurs="0" maxOccurs="1"/>
-			<!-- Extension: end administrativeGenderCode -->
-
-			<!-- Extension: start birthTime -->
+			<!-- Extension: birthTime -->
 			<xs:element ref="ext:birthTime" minOccurs="0" maxOccurs="1"/>
-			<!-- Extension: end birthTime -->
-
-			<!-- Extension: start asEntityIdentifier -->
+			<!-- Extension: asEntityIdentifier -->
 			<xs:element ref="ext:asEntityIdentifier" minOccurs="0" maxOccurs="unbounded"/>
-			<!-- Extension: end asEntityIdentifier -->
-
-			<!-- Extension: start asEmployment -->
+			<!-- Extension: asEmployment -->
 			<xs:element ref="ext:asEmployment" minOccurs="0" maxOccurs="1"/>
-			<!-- Extension: end asEmployment -->
-
-			<!-- Extension: start asQualifications -->
+			<!-- Extension: asQualifications -->
 			<xs:element ref="ext:asQualifications" minOccurs="0" maxOccurs="1"/>
-			<!-- Extension: end asQualifications -->
-
-			<!-- NEW EXTENSION FOR PERSONALRELATIONSHIP -->
-			<!-- Extensions: start PersonalRelationShip -->
+			<!-- Extension: personalRelationship -->
 			<xs:element ref="ext:personalRelationship" minOccurs="0" maxOccurs="unbounded"/>
-			<!-- Extensions: end PersonalRelationShip -->
-
-			<!-- Extension: start languageCommunication-->
+			<!-- Extension: languageCommunication-->
 			<xs:element ref="ext:languageCommunication" minOccurs="0" maxOccurs="unbounded"/>
-			<!-- Extension: end languageCommunication -->
-
 		</xs:sequence>
 		<xs:attribute name="nullFlavor" type="NullFlavor" use="optional"/>
 		<xs:attribute name="classCode" type="EntityClass" use="optional" fixed="PSN"/>
-		<xs:attribute name="determinerCode" type="EntityDeterminer" use="optional" fixed="INSTANCE"
-		/>
+		<xs:attribute name="determinerCode" type="EntityDeterminer" use="optional" fixed="INSTANCE"/>
 	</xs:complexType>
 	<xs:complexType name="POCD_MT000040.Place">
 		<xs:sequence>
@@ -1281,8 +1095,7 @@ StaticMifToXsd.xsl version 2.0</xs:documentation>
 		</xs:sequence>
 		<xs:attribute name="nullFlavor" type="NullFlavor" use="optional"/>
 		<xs:attribute name="classCode" type="EntityClassPlace" use="optional" fixed="PLC"/>
-		<xs:attribute name="determinerCode" type="EntityDeterminer" use="optional" fixed="INSTANCE"
-		/>
+		<xs:attribute name="determinerCode" type="EntityDeterminer" use="optional" fixed="INSTANCE"/>
 	</xs:complexType>
 	<xs:complexType name="POCD_MT000040.PlayingEntity">
 		<xs:sequence>
@@ -1293,44 +1106,26 @@ StaticMifToXsd.xsl version 2.0</xs:documentation>
 			<xs:element name="quantity" type="PQ" minOccurs="0" maxOccurs="unbounded"/>
 			<xs:element name="name" type="PN" minOccurs="0" maxOccurs="unbounded"/>
 			<xs:element name="desc" type="ED" minOccurs="0"/>
-
-			<!-- Extension: start administrativeGenderCode -->
+			<!-- Extension: administrativeGenderCode -->
 			<xs:element ref="ext:administrativeGenderCode" minOccurs="0" maxOccurs="1"/>
-			<!-- Extension: end administrativeGenderCode -->
-
-			<!-- Extension: start birthTime -->
+			<!-- Extension: birthTime -->
 			<xs:element ref="ext:birthTime" minOccurs="0" maxOccurs="1"/>
-			<!-- Extension: end birthTime -->
-
-			<!-- Extension: start asEntityIdentifier -->
-			<xs:element ref="ext:asEntityIdentifier" minOccurs="0" maxOccurs="unbounded"/>
-			<!-- Extension: end asEntityIdentifier -->
-
-			<!-- Extension: start asEmployment -->
+			<!-- Extension: asEntityIdentifier -->
+			<xs:element ref="ext:asEntityIdentifier" minOccurs="0" maxOccurs="unbounded"/>	
+			<!-- Extension: asEmployment -->
 			<xs:element ref="ext:asEmployment" minOccurs="0" maxOccurs="1"/>
-			<!-- Extension: end asEmployment -->
-
-			<!-- Extension: start asQualifiedEntity -->
+			<!-- Extension: asQualifiedEntity -->
 			<xs:element ref="ext:asQualifiedEntity" minOccurs="0" maxOccurs="1"/>
-			<!-- Extension: end asQualifiedEntity -->
-
 			<!-- Extension: asSpecimenInContainer -->
 			<xs:element ref="ext:asSpecimenInContainer" minOccurs="0" maxOccurs="1"/>
-			<!-- End Extension: asSpecimenInContainer -->
-
-			<!-- Extensions: start PersonalRelationShip -->
+			<!-- Extension: personalRelationship -->
 			<xs:element ref="ext:personalRelationship" minOccurs="0" maxOccurs="unbounded"/>
-			<!-- Extensions: end PersonalRelationShip -->
-
-			<!-- Extension: start languageCommunication -->
+			<!-- Extension: languageCommunication -->
 			<xs:element ref="ext:languageCommunication" minOccurs="0" maxOccurs="unbounded"/>
-			<!-- Extension: end languageCommunication -->
-
 		</xs:sequence>
 		<xs:attribute name="nullFlavor" type="NullFlavor" use="optional"/>
 		<xs:attribute name="classCode" type="EntityClassRoot" use="optional" default="ENT"/>
-		<xs:attribute name="determinerCode" type="EntityDeterminer" use="optional" fixed="INSTANCE"
-		/>
+		<xs:attribute name="determinerCode" type="EntityDeterminer" use="optional" fixed="INSTANCE"/>
 	</xs:complexType>
 	<xs:complexType name="POCD_MT000040.Precondition">
 		<xs:sequence>
@@ -1358,27 +1153,16 @@ StaticMifToXsd.xsl version 2.0</xs:documentation>
 			<xs:element name="approachSiteCode" type="CD" minOccurs="0" maxOccurs="unbounded"/>
 			<xs:element name="targetSiteCode" type="CD" minOccurs="0" maxOccurs="unbounded"/>
 			<xs:element name="subject" type="POCD_MT000040.Subject" minOccurs="0"/>
-			<xs:element name="specimen" type="POCD_MT000040.Specimen" minOccurs="0"
-				maxOccurs="unbounded"/>
-			<xs:element name="performer" type="POCD_MT000040.Performer2" minOccurs="0"
-				maxOccurs="unbounded"/>
-			<xs:element name="author" type="POCD_MT000040.Author" minOccurs="0"
-				maxOccurs="unbounded"/>
-			<xs:element name="informant" type="POCD_MT000040.Informant12" minOccurs="0"
-				maxOccurs="unbounded"/>
-			<xs:element name="participant" type="POCD_MT000040.Participant2" minOccurs="0"
-				maxOccurs="unbounded"/>
-			<xs:element name="entryRelationship" type="POCD_MT000040.EntryRelationship"
-				minOccurs="0" maxOccurs="unbounded"/>
-			<xs:element name="reference" type="POCD_MT000040.Reference" minOccurs="0"
-				maxOccurs="unbounded"/>
-			<xs:element name="precondition" type="POCD_MT000040.Precondition" minOccurs="0"
-				maxOccurs="unbounded"/>
-
-			<!-- Extension: start inFulfillmentOf1 -->
+			<xs:element name="specimen" type="POCD_MT000040.Specimen" minOccurs="0" maxOccurs="unbounded"/>
+			<xs:element name="performer" type="POCD_MT000040.Performer2" minOccurs="0" maxOccurs="unbounded"/>
+			<xs:element name="author" type="POCD_MT000040.Author" minOccurs="0" maxOccurs="unbounded"/>
+			<xs:element name="informant" type="POCD_MT000040.Informant12" minOccurs="0" maxOccurs="unbounded"/>
+			<xs:element name="participant" type="POCD_MT000040.Participant2" minOccurs="0" maxOccurs="unbounded"/>
+			<xs:element name="entryRelationship" type="POCD_MT000040.EntryRelationship" minOccurs="0" maxOccurs="unbounded"/>
+			<xs:element name="reference" type="POCD_MT000040.Reference" minOccurs="0" maxOccurs="unbounded"/>
+			<xs:element name="precondition" type="POCD_MT000040.Precondition" minOccurs="0" maxOccurs="unbounded"/>
+			<!-- Extension: inFulfillmentOf1 -->
 			<xs:element ref="ext:inFulfillmentOf1" minOccurs="0" maxOccurs="unbounded"/>
-			<!-- Extension: end inFulfillmentOf1 -->
-
 		</xs:sequence>
 		<xs:attribute name="nullFlavor" type="NullFlavor" use="optional"/>
 		<xs:attribute name="classCode" type="ActClass" use="required"/>
@@ -1446,25 +1230,16 @@ StaticMifToXsd.xsl version 2.0</xs:documentation>
 			<xs:element name="templateId" type="II" minOccurs="0" maxOccurs="unbounded"/>
 			<xs:element name="id" type="II" maxOccurs="unbounded"/>
 			<xs:element name="code" type="CS"/>
-			<xs:element name="value" type="POCD_MT000040.RegionOfInterest.value"
-				maxOccurs="unbounded"/>
+			<xs:element name="value" type="POCD_MT000040.RegionOfInterest.value" maxOccurs="unbounded"/>
 			<xs:element name="subject" type="POCD_MT000040.Subject" minOccurs="0"/>
-			<xs:element name="specimen" type="POCD_MT000040.Specimen" minOccurs="0"
-				maxOccurs="unbounded"/>
-			<xs:element name="performer" type="POCD_MT000040.Performer2" minOccurs="0"
-				maxOccurs="unbounded"/>
-			<xs:element name="author" type="POCD_MT000040.Author" minOccurs="0"
-				maxOccurs="unbounded"/>
-			<xs:element name="informant" type="POCD_MT000040.Informant12" minOccurs="0"
-				maxOccurs="unbounded"/>
-			<xs:element name="participant" type="POCD_MT000040.Participant2" minOccurs="0"
-				maxOccurs="unbounded"/>
-			<xs:element name="entryRelationship" type="POCD_MT000040.EntryRelationship"
-				minOccurs="0" maxOccurs="unbounded"/>
-			<xs:element name="reference" type="POCD_MT000040.Reference" minOccurs="0"
-				maxOccurs="unbounded"/>
-			<xs:element name="precondition" type="POCD_MT000040.Precondition" minOccurs="0"
-				maxOccurs="unbounded"/>
+			<xs:element name="specimen" type="POCD_MT000040.Specimen" minOccurs="0" maxOccurs="unbounded"/>
+			<xs:element name="performer" type="POCD_MT000040.Performer2" minOccurs="0" maxOccurs="unbounded"/>
+			<xs:element name="author" type="POCD_MT000040.Author" minOccurs="0" maxOccurs="unbounded"/>
+			<xs:element name="informant" type="POCD_MT000040.Informant12" minOccurs="0" maxOccurs="unbounded"/>
+			<xs:element name="participant" type="POCD_MT000040.Participant2" minOccurs="0" maxOccurs="unbounded"/>
+			<xs:element name="entryRelationship" type="POCD_MT000040.EntryRelationship" minOccurs="0" maxOccurs="unbounded"/>
+			<xs:element name="reference" type="POCD_MT000040.Reference" minOccurs="0" maxOccurs="unbounded"/>
+			<xs:element name="precondition" type="POCD_MT000040.Precondition" minOccurs="0" maxOccurs="unbounded"/>
 		</xs:sequence>
 		<xs:attribute name="ID" type="xs:ID"/>
 		<xs:attribute name="nullFlavor" type="NullFlavor" use="optional"/>
@@ -1500,9 +1275,8 @@ StaticMifToXsd.xsl version 2.0</xs:documentation>
 			<xs:element name="realmCode" type="CS" minOccurs="0" maxOccurs="unbounded"/>
 			<xs:element name="typeId" type="POCD_MT000040.InfrastructureRoot.typeId" minOccurs="0"/>
 			<xs:element name="templateId" type="II" minOccurs="0" maxOccurs="unbounded"/>
-			<!-- Extension: start id -->
+			<!-- Extension: id -->
 			<xs:element ref="ext:id" minOccurs="0" maxOccurs="unbounded"/>
-			<!-- Extension: end id -->
 			<xs:element name="code" type="CE" minOccurs="0"/>
 			<xs:element name="addr" type="AD" minOccurs="0" maxOccurs="unbounded"/>
 			<xs:element name="telecom" type="TEL" minOccurs="0" maxOccurs="unbounded"/>
@@ -1533,18 +1307,12 @@ StaticMifToXsd.xsl version 2.0</xs:documentation>
 			<xs:element name="confidentialityCode" type="CE" minOccurs="0"/>
 			<xs:element name="languageCode" type="CS" minOccurs="0"/>
 			<xs:element name="subject" type="POCD_MT000040.Subject" minOccurs="0"/>
-			<xs:element name="author" type="POCD_MT000040.Author" minOccurs="0"
-				maxOccurs="unbounded"/>
-			<xs:element name="informant" type="POCD_MT000040.Informant12" minOccurs="0"
-				maxOccurs="unbounded"/>
+			<xs:element name="author" type="POCD_MT000040.Author" minOccurs="0" maxOccurs="unbounded"/>
+			<xs:element name="informant" type="POCD_MT000040.Informant12" minOccurs="0" maxOccurs="unbounded"/>
 			<xs:element name="entry" type="POCD_MT000040.Entry" minOccurs="0" maxOccurs="unbounded"/>
-			<xs:element name="component" type="POCD_MT000040.Component5" minOccurs="0"
-				maxOccurs="unbounded"/>
-
-			<!-- Extension: Entitlement -->
+			<xs:element name="component" type="POCD_MT000040.Component5" minOccurs="0" maxOccurs="unbounded"/>
+			<!-- Extension: coverage2 -->
 			<xs:element ref="ext:coverage2" minOccurs="0" maxOccurs="unbounded"/>
-			<!-- End Extension Entitlement -->
-
 		</xs:sequence>
 		<xs:attribute name="ID" type="xs:ID"/>
 		<xs:attribute name="nullFlavor" type="NullFlavor" use="optional"/>
@@ -1559,8 +1327,7 @@ StaticMifToXsd.xsl version 2.0</xs:documentation>
 			<xs:element name="id" type="II" minOccurs="0" maxOccurs="unbounded"/>
 			<xs:element name="code" type="CE" minOccurs="0"/>
 			<xs:element name="effectiveTime" type="IVL_TS" minOccurs="0"/>
-			<xs:element name="performer" type="POCD_MT000040.Performer1" minOccurs="0"
-				maxOccurs="unbounded"/>
+			<xs:element name="performer" type="POCD_MT000040.Performer1" minOccurs="0" maxOccurs="unbounded"/>
 		</xs:sequence>
 		<xs:attribute name="nullFlavor" type="NullFlavor" use="optional"/>
 		<xs:attribute name="classCode" type="ActClassRoot" use="optional" default="ACT"/>
@@ -1582,8 +1349,7 @@ StaticMifToXsd.xsl version 2.0</xs:documentation>
 			<xs:element name="typeId" type="POCD_MT000040.InfrastructureRoot.typeId" minOccurs="0"/>
 			<xs:element name="templateId" type="II" minOccurs="0" maxOccurs="unbounded"/>
 			<xs:element name="id" type="II" minOccurs="0" maxOccurs="unbounded"/>
-			<xs:element name="specimenPlayingEntity" type="POCD_MT000040.PlayingEntity"
-				minOccurs="0"/>
+			<xs:element name="specimenPlayingEntity" type="POCD_MT000040.PlayingEntity" minOccurs="0"/>
 		</xs:sequence>
 		<xs:attribute name="nullFlavor" type="NullFlavor" use="optional"/>
 		<xs:attribute name="classCode" type="RoleClassSpecimen" use="optional" fixed="SPEC"/>
@@ -1618,51 +1384,33 @@ StaticMifToXsd.xsl version 2.0</xs:documentation>
 			<xs:element name="realmCode" type="CS" minOccurs="0" maxOccurs="unbounded"/>
 			<xs:element name="typeId" type="POCD_MT000040.InfrastructureRoot.typeId" minOccurs="0"/>
 			<xs:element name="templateId" type="II" minOccurs="0" maxOccurs="unbounded"/>
-			<!-- Extension: start id -->
+			<!-- Extension: id -->
 			<xs:element ref="ext:id" minOccurs="0" maxOccurs="unbounded"/>
-			<!-- Extension: end id -->
 			<xs:element name="name" type="PN" minOccurs="0" maxOccurs="unbounded"/>
 			<xs:element name="administrativeGenderCode" type="CE" minOccurs="0"/>
 			<xs:element name="birthTime" type="TS" minOccurs="0"/>
-
-			<!-- Extension: start ethnicGroupCode -->
+			<!-- Extension: ethnicGroupCode -->
 			<xs:element ref="ext:ethnicGroupCode" minOccurs="0" maxOccurs="1"/>
-			<!-- Extension: end ethnicGroupCode -->
-
-			<!-- Extension: start multipleBirthInd -->
+			<!-- Extension: multipleBirthInd -->
 			<xs:element ref="ext:multipleBirthInd" minOccurs="0" maxOccurs="1"/>
-			<!-- Extension: end multipleBirthInd -->
-
-			<!-- Extension: start multipleBirthOrderNumber -->
+			<!-- Extension: multipleBirthOrderNumber -->
 			<xs:element ref="ext:multipleBirthOrderNumber" minOccurs="0" maxOccurs="1"/>
-			<!-- Extension: end multipleBirthOrderNumber -->
-
-			<!-- Extension: start deceasedTime -->
+			<!-- Extension: deceasedInd -->
 			<xs:element ref="ext:deceasedInd" minOccurs="0"/>
+			<!-- Extension: deceasedTime -->
 			<xs:element ref="ext:deceasedTime" minOccurs="0"/>
-			<!-- extension: end -->
-
-			<!-- Extension: start asEntityIdentifier -->
+			<!-- Extension: asEntityIdentifier -->
 			<xs:element ref="ext:asEntityIdentifier" minOccurs="0" maxOccurs="unbounded"/>
-			<!-- Extension: end asEntityIdentifier -->
-
-			<!-- Extension: start asEmployment -->
+			<!-- Extension: asEmployment -->
 			<xs:element ref="ext:asEmployment" minOccurs="0" maxOccurs="1"/>
-			<!-- Extension: end asEmployment -->
-
-			<!-- Extension: start asQualifications -->
+			<!-- Extension: asQualifications -->
 			<xs:element ref="ext:asQualifications" minOccurs="0" maxOccurs="1"/>
-			<!-- Extension: end asQualifications -->
-
-			<!-- Extension: start languageCommunication-->
+			<!-- Extension: languageCommunication-->
 			<xs:element ref="ext:languageCommunication" minOccurs="0" maxOccurs="unbounded"/>
-			<!-- Extension: end languageCommunication -->
-			
 		</xs:sequence>
 		<xs:attribute name="nullFlavor" type="NullFlavor" use="optional"/>
 		<xs:attribute name="classCode" type="EntityClass" use="optional" fixed="PSN"/>
-		<xs:attribute name="determinerCode" type="EntityDeterminer" use="optional" fixed="INSTANCE"
-		/>
+		<xs:attribute name="determinerCode" type="EntityDeterminer" use="optional" fixed="INSTANCE"/>
 	</xs:complexType>
 	<xs:complexType name="POCD_MT000040.SubstanceAdministration">
 		<xs:sequence>
@@ -1676,11 +1424,8 @@ StaticMifToXsd.xsl version 2.0</xs:documentation>
 			<xs:element name="effectiveTime" type="SXCM_TS" minOccurs="0" maxOccurs="unbounded"/>
 			<xs:element name="priorityCode" type="CE" minOccurs="0"/>
 			<xs:element name="repeatNumber" type="IVL_INT" minOccurs="0"/>
-
-			<!-- Extension Begin: MethodCode -->
+			<!-- Extension: methodCode -->
 			<xs:element ref="ext:methodCode" minOccurs="0" maxOccurs="1"/>
-			<!-- Extension End: MethodCode -->
-
 			<xs:element name="routeCode" type="CE" minOccurs="0"/>
 			<xs:element name="approachSiteCode" type="CD" minOccurs="0" maxOccurs="unbounded"/>
 			<xs:element name="doseQuantity" type="IVL_PQ" minOccurs="0"/>
@@ -1688,28 +1433,17 @@ StaticMifToXsd.xsl version 2.0</xs:documentation>
 			<xs:element name="maxDoseQuantity" type="RTO_PQ_PQ" minOccurs="0"/>
 			<xs:element name="administrationUnitCode" type="CE" minOccurs="0"/>
 			<xs:element name="subject" type="POCD_MT000040.Subject" minOccurs="0"/>
-			<xs:element name="specimen" type="POCD_MT000040.Specimen" minOccurs="0"
-				maxOccurs="unbounded"/>
+			<xs:element name="specimen" type="POCD_MT000040.Specimen" minOccurs="0" maxOccurs="unbounded"/>
 			<xs:element name="consumable" type="POCD_MT000040.Consumable"/>
-			<xs:element name="performer" type="POCD_MT000040.Performer2" minOccurs="0"
-				maxOccurs="unbounded"/>
-			<xs:element name="author" type="POCD_MT000040.Author" minOccurs="0"
-				maxOccurs="unbounded"/>
-			<xs:element name="informant" type="POCD_MT000040.Informant12" minOccurs="0"
-				maxOccurs="unbounded"/>
-			<xs:element name="participant" type="POCD_MT000040.Participant2" minOccurs="0"
-				maxOccurs="unbounded"/>
-			<xs:element name="entryRelationship" type="POCD_MT000040.EntryRelationship"
-				minOccurs="0" maxOccurs="unbounded"/>
-			<xs:element name="reference" type="POCD_MT000040.Reference" minOccurs="0"
-				maxOccurs="unbounded"/>
-			<xs:element name="precondition" type="POCD_MT000040.Precondition" minOccurs="0"
-				maxOccurs="unbounded"/>
-
-			<!-- Extension: start inFulfillmentOf1 -->
+			<xs:element name="performer" type="POCD_MT000040.Performer2" minOccurs="0" maxOccurs="unbounded"/>
+			<xs:element name="author" type="POCD_MT000040.Author" minOccurs="0" maxOccurs="unbounded"/>
+			<xs:element name="informant" type="POCD_MT000040.Informant12" minOccurs="0" maxOccurs="unbounded"/>
+			<xs:element name="participant" type="POCD_MT000040.Participant2" minOccurs="0" maxOccurs="unbounded"/>
+			<xs:element name="entryRelationship" type="POCD_MT000040.EntryRelationship" minOccurs="0" maxOccurs="unbounded"/>
+			<xs:element name="reference" type="POCD_MT000040.Reference" minOccurs="0" maxOccurs="unbounded"/>
+			<xs:element name="precondition" type="POCD_MT000040.Precondition" minOccurs="0" maxOccurs="unbounded"/>
+			<!-- Extension: inFulfillmentOf1 -->
 			<xs:element ref="ext:inFulfillmentOf1" minOccurs="0" maxOccurs="unbounded"/>
-			<!-- Extension: end inFulfillmentOf1 -->
-
 		</xs:sequence>
 		<xs:attribute name="nullFlavor" type="NullFlavor" use="optional"/>
 		<xs:attribute name="classCode" type="ActClass" use="required" fixed="SBADM"/>
@@ -1732,36 +1466,21 @@ StaticMifToXsd.xsl version 2.0</xs:documentation>
 			<xs:element name="quantity" type="PQ" minOccurs="0"/>
 			<xs:element name="expectedUseTime" type="IVL_TS" minOccurs="0"/>
 			<xs:element name="subject" type="POCD_MT000040.Subject" minOccurs="0"/>
-			<xs:element name="specimen" type="POCD_MT000040.Specimen" minOccurs="0"
-				maxOccurs="unbounded"/>
+			<xs:element name="specimen" type="POCD_MT000040.Specimen" minOccurs="0" maxOccurs="unbounded"/>
 			<xs:element name="product" type="POCD_MT000040.Product" minOccurs="0"/>
-			<xs:element name="performer" type="POCD_MT000040.Performer2" minOccurs="0"
-				maxOccurs="unbounded"/>
-			<xs:element name="author" type="POCD_MT000040.Author" minOccurs="0"
-				maxOccurs="unbounded"/>
-			<xs:element name="informant" type="POCD_MT000040.Informant12" minOccurs="0"
-				maxOccurs="unbounded"/>
-			<xs:element name="participant" type="POCD_MT000040.Participant2" minOccurs="0"
-				maxOccurs="unbounded"/>
-			<xs:element name="entryRelationship" type="POCD_MT000040.EntryRelationship"
-				minOccurs="0" maxOccurs="unbounded"/>
-			<xs:element name="reference" type="POCD_MT000040.Reference" minOccurs="0"
-				maxOccurs="unbounded"/>
-			<xs:element name="precondition" type="POCD_MT000040.Precondition" minOccurs="0"
-				maxOccurs="unbounded"/>
-
-			<!-- Extension Begin: SubstitutionPermission (Brand Substitute Allowed) -->
+			<xs:element name="performer" type="POCD_MT000040.Performer2" minOccurs="0" maxOccurs="unbounded"/>
+			<xs:element name="author" type="POCD_MT000040.Author" minOccurs="0" maxOccurs="unbounded"/>
+			<xs:element name="informant" type="POCD_MT000040.Informant12" minOccurs="0" maxOccurs="unbounded"/>
+			<xs:element name="participant" type="POCD_MT000040.Participant2" minOccurs="0" maxOccurs="unbounded"/>
+			<xs:element name="entryRelationship" type="POCD_MT000040.EntryRelationship" minOccurs="0" maxOccurs="unbounded"/>
+			<xs:element name="reference" type="POCD_MT000040.Reference" minOccurs="0" maxOccurs="unbounded"/>
+			<xs:element name="precondition" type="POCD_MT000040.Precondition" minOccurs="0" maxOccurs="unbounded"/>
+			<!-- Extension: subjectOf2 -->
 			<xs:element ref="ext:subjectOf2" minOccurs="0" maxOccurs="1"/>
-			<!-- Extension End: SubstitutionPermission (Brand Substitute Allowed) -->
-
-			<!-- Extension Begin: Coverage (Authority Approval Number & Medical Benefit Category Type) -->
+			<!-- Extension: coverage -->
 			<xs:element ref="ext:coverage" minOccurs="0" maxOccurs="unbounded"/>
-			<!-- Extension End: Coverage (Authority Approval Number & Medical Benefit Category Type) -->
-
-			<!-- Extension: start inFulfillmentOf1 -->
+			<!-- Extension: inFulfillmentOf1 -->
 			<xs:element ref="ext:inFulfillmentOf1" minOccurs="0" maxOccurs="unbounded"/>
-			<!-- Extension: end inFulfillmentOf1 -->
-
 		</xs:sequence>
 		<xs:attribute name="nullFlavor" type="NullFlavor" use="optional"/>
 		<xs:attribute name="classCode" type="ActClassSupply" use="required" fixed="SPLY"/>

@@ -25,4 +25,3 @@ payment of the cost of having those services supplied again.
  
 A term which is given a meaning in the Apache Licence, has the same 
 meaning when used in these terms.
-

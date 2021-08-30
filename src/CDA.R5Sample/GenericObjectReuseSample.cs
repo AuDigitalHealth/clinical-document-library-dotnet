@@ -165,7 +165,7 @@ namespace CDA.R5Samples
               person.Organisation.NameUsage = OrganisationNameUsage.Other;
 
               person.Organisation.Department = "Some department service provider";
-              person.Organisation.EmploymentType = BaseCDAModel.CreateCodableText(EmploymentType.Casual);
+              person.Organisation.EmploymentType = BaseCDAModel.CreateCodableText(Hl7V3EmployeeJobClass.FullTime);
               person.Organisation.Occupation = BaseCDAModel.CreateRole(Occupation.GeneralMedicalPractitioner, CodingSystem.ANZSCORevision1);
               person.Organisation.PositionInOrganisation = BaseCDAModel.CreateCodableText(null, null, null, "Manager", null);
 
@@ -279,7 +279,7 @@ namespace CDA.R5Samples
 
                 person.Organisation.NameUsage = OrganisationNameUsage.Other;
                 person.Organisation.Department = "Some department requester";
-                person.Organisation.EmploymentType = BaseCDAModel.CreateCodableText(EmploymentType.Casual);
+                person.Organisation.EmploymentType = BaseCDAModel.CreateCodableText(Hl7V3EmployeeJobClass.FullTime);
                 person.Organisation.Occupation = BaseCDAModel.CreateRole(Occupation.GeneralMedicalPractitioner, CodingSystem.ANZSCORevision1);
                 person.Organisation.PositionInOrganisation = BaseCDAModel.CreateCodableText("Manager");
 

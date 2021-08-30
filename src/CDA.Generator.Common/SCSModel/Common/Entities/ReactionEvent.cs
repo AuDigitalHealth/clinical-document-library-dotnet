@@ -45,6 +45,20 @@ namespace Nehta.VendorLibrary.CDA.SCSModel.Common
         public List<ICodableText> Manifestations { get; set; }
 
         /// <summary>
+        /// VerificationStatus for SML only
+        /// </summary>
+        [CanBeNull]
+        [DataMember]
+        public ICodableText VerificationStatus { get; set; }
+
+        /// <summary>
+        /// Substance for SML only
+        /// </summary>
+        [CanBeNull]
+        [DataMember]
+        public ICodableText Substance { get; set; }
+
+        /// <summary>
         /// The Reaction Type
         /// 
         /// ReactionType = 11000036103 |Adverse reaction type reference set
@@ -52,6 +66,14 @@ namespace Nehta.VendorLibrary.CDA.SCSModel.Common
         [CanBeNull]
         [DataMember]
         public ICodableText ReactionType { get; set; }
+
+        /// <summary>
+        /// Onset Date (just for SML)
+        /// Optional
+        /// </summary>
+        [CanBeNull]
+        [DataMember]
+        public CdaIntervalOrAge ReactionOnsetDate { get; set; }
 
         #endregion
 

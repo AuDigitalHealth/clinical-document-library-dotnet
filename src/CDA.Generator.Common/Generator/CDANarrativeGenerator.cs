@@ -296,12 +296,214 @@ namespace Nehta.VendorLibrary.CDA.Generator
         }
 
         /// <summary>
+        /// Creates the narrative section for medications.
+        /// </summary>
+        /// <param name="medicationsSML"></param>
+        /// <param name="isCurrentMedications"></param>
+        /// <returns></returns>
+        public StrucDocText CreateNarrative(MedicationListSML medicationsSML, bool isCurrentMedications)
+        {
+            var strucDocTableList = new List<StrucDocTable>();
+            var narrative = new List<List<string>>();
+            var narrativeParagraph = new List<StrucDocParagraph>();
+
+            if (medicationsSML != null && medicationsSML.MedicineItem.Any())
+            {
+                if (isCurrentMedications)
+                {
+                    // healthcare setting
+                    List<List<string>> hcsettingList = new List<List<string>>();
+                    if (medicationsSML.Encounter != null && medicationsSML.Encounter.EncounterType != null)
+                    {
+                        List<string> setting = new List<string>();
+                        setting.Add(medicationsSML.Encounter.EncounterType.DisplayName);
+                        hcsettingList.Add(setting);
+
+                        strucDocTableList.Add
+                        (
+                            PopulateTable
+                            (
+                                "Healthcare setting",
+                                null,
+                                new[] { "Description" },
+                                new string[0],
+                                hcsettingList
+                            )
+                        );
+                    }
+
+
+                    // Current medications
+                    var narativeHeader = new List<string>
+                    {
+                        "Medicine",
+                        "Brand Name",
+                        "Direction",
+                        "Medicine Purpose",
+                        "Medicine Status",
+                        "Expected End Date",
+                        "Special Instructions",
+                        "Medicine Image"
+                    };
+
+                    foreach (MedicineItemSML medicineItemSml in medicationsSML.MedicineItem)
+                    {
+                        string medicinePurposeText = null;
+                        if (medicineItemSml.MedicinePurpose != null)
+                        {
+                            foreach (ICodableText clinicalIndication in medicineItemSml.MedicinePurpose)
+                            {
+                                medicinePurposeText += clinicalIndication.NarrativeText + DELIMITER;
+                            }
+                        }
+
+                        string commentNoteText = null;
+                        if (medicineItemSml.AdditionalComments != null)
+                        {
+                            foreach (NoteSML additionalComment in medicineItemSml.AdditionalComments)
+                            {
+                                commentNoteText += additionalComment.NoteText + DELIMITER;
+                            }
+                        }
+
+                        string instructions = string.Empty;
+                        if (medicineItemSml.Dosage != null)
+                        {
+                            instructions = string.Join(DELIMITER, medicineItemSml.Dosage.Select(d => d.Instructions));
+                        }
+
+                        narrative.Add(new List<string>
+                        {
+                            medicineItemSml.Medication.ItemCode.NarrativeText,
+                            medicineItemSml.Medication.BrandName ?? string.Empty,
+                            instructions,
+                            medicinePurposeText ?? string.Empty,
+                            medicineItemSml.MedicationStatus.NarrativeText,
+                            medicineItemSml.EffectiveTimeTakenOrNot?.NarrativeText() ?? string.Empty,
+                            commentNoteText ?? string.Empty,
+                            medicineItemSml.Medication.Image ?? string.Empty
+                        });
+                    }
+
+                    strucDocTableList.Add
+                    (
+                        PopulateTable
+                        (
+                            "Current Medications",
+                            null,
+                            narativeHeader.ToArray(),
+                            new string[0],
+                            narrative
+                        )
+                    );
+
+                    List<List<string>> notesList = new List<List<string>>();
+                    if (medicationsSML.AdditionalListComments != null)
+                    {
+                        foreach (NoteSML noteSml in medicationsSML.AdditionalListComments)
+                        {
+                            List<string> notes = new List<string>();
+                            notes.Add(noteSml.NoteText);
+                            notesList.Add(notes);
+                        }
+
+                        strucDocTableList.Add
+                        (
+                            PopulateTable
+                            (
+                                "Current Medication Notes",
+                                null,
+                                new[] {"Description"},
+                                new string[0],
+                                notesList
+                            )
+                        );
+                    }
+                }
+                else
+                {
+                    // Ceased medications
+                    var narativeHeader = new List<string>
+                    {
+                        "Ceased Medicine",
+                        "Reason for Ceasing Medication",
+                        "Ceased Date"
+                    };
+
+                    foreach (MedicineItemSML medicineItemSml in medicationsSML.MedicineItem)
+                    {
+                        string reasonNotTaken = null;
+                        if (medicineItemSml.ChangeDescription != null && medicineItemSml.ChangeDescription.Any())
+                        {
+                            reasonNotTaken += medicineItemSml.ChangeDescription + DELIMITER;
+                        }
+
+                        narrative.Add(new List<string>
+                        {
+                            medicineItemSml.Medication.ItemCode.NarrativeText,
+                            reasonNotTaken, 
+                            medicineItemSml.EffectiveTimeTakenOrNot?.NarrativeText()
+                        });
+                    }
+
+                    strucDocTableList.Add
+                    (
+                        PopulateTable
+                        (
+                            "Ceased Medications",
+                            null,
+                            narativeHeader.ToArray(),
+                            new string[0],
+                            narrative
+                        )
+                    );
+                }
+            }
+
+            var strucDocText = new StrucDocText();
+
+            // Table
+            if (strucDocTableList.Any())
+            {
+                strucDocText.table = strucDocTableList.ToArray();
+            }
+
+            // Narrative paragraph
+            if (narrativeParagraph.Any())
+            {
+                strucDocText.paragraph = narrativeParagraph.ToArray();
+            }
+
+            return strucDocText;
+        }
+
+        /// <summary>
         /// This method creates the narrative for the adverse subject reactions section
         /// </summary>
         /// <param name="adverseSubstanceReactions">allergiesAndAdverseReactions</param>
         /// <returns>StrucDocText</returns>
         public StrucDocText CreateNarrative(IAdverseReactions adverseSubstanceReactions)
         {
+            // Empty reason specified
+            if (adverseSubstanceReactions.EmptyReasonStatement != null)
+            {
+                return new StrucDocText
+                {
+                    paragraph = new StrucDocParagraph[]
+                    {
+                        new StrucDocParagraph
+                        {
+                            // TODO how is the empty reason formatted
+                            Text = new string[]
+                            {
+                                adverseSubstanceReactions.EmptyReasonStatement.OriginalText,
+                                adverseSubstanceReactions.EmptyReasonStatement.Value.ToString()
+                            }
+                        }, 
+                    }
+                };
+            }
+
             var strucDocTableList = new List<StrucDocTable>();
             var narrative = new List<List<String>>();
             var narrativeParagraph = new List<StrucDocParagraph>();
@@ -309,8 +511,9 @@ namespace Nehta.VendorLibrary.CDA.Generator
             var narativeHeader = new List<string>
             {
                 "Substance/Agent",
-                "Manifestations",
                 "Reaction Type",
+                "Reaction",
+                "Reaction Onset Date"
             };
 
             if (adverseSubstanceReactions != null)
@@ -340,14 +543,39 @@ namespace Nehta.VendorLibrary.CDA.Generator
                             }
                         }
 
+                        CdaIntervalOrAge intervalOrAge = adverserReaction.ReactionEvent.ReactionOnsetDate;
+                        string onsetDate = null;
+                        // Check if a date is there at all
+                        if (intervalOrAge != null)
+                        {
+                            if (intervalOrAge.Interval != null)
+                            {
+                                onsetDate = intervalOrAge.Interval.NarrativeText();
+                            }
+                            else if (!string.IsNullOrWhiteSpace(intervalOrAge.Value))
+                            {
+                                if (int.TryParse(intervalOrAge.Value, out int ageValue))
+                                {
+                                    string units = intervalOrAge.Unit.ToString();
+                                    if (ageValue > 1)
+                                    {
+                                        units = $"{units}s";
+                                    }
+
+                                    onsetDate = $"Aged: {intervalOrAge.Value} {units}";
+                                }
+                            }
+                        }
+
                         narrative.Add(
                             new List<string>
                             {
                                 adverserReaction.SubstanceOrAgent != null
                                     ? adverserReaction.SubstanceOrAgent.NarrativeText
                                     : String.Empty,
+                                reactionType,
                                 manfestationDesc,
-                                reactionType
+                                onsetDate ?? string.Empty
                             }
                         );
                     }
@@ -4167,12 +4395,7 @@ namespace Nehta.VendorLibrary.CDA.Generator
                     {
                         var medicationList = new List<Object>
                         {
-                            CreateLink(
-                                australianChildhoodImmunisationRegisterHistory
-                                    .AustralianChildhoodImmunisationRegisterEntries
-                                    .AustralianChildhoodImmunisationRegisterDocumentLink, true,
-                                australianChildhoodImmunisationRegisterEntry.VaccineAdministrationEntry.VaccineType
-                                    .NarrativeText),
+                            australianChildhoodImmunisationRegisterEntry.VaccineAdministrationEntry.VaccineType.NarrativeText,
                             australianChildhoodImmunisationRegisterEntry.VaccineAdministrationEntry != null &&
                             australianChildhoodImmunisationRegisterEntry.VaccineAdministrationEntry
                                 .DateVaccinationReceived != null
@@ -4193,12 +4416,7 @@ namespace Nehta.VendorLibrary.CDA.Generator
                     {
                         var medicationList = new List<Object>
                         {
-                            CreateLink(
-                                australianChildhoodImmunisationRegisterHistory
-                                    .AustralianChildhoodImmunisationRegisterEntries
-                                    .AustralianChildhoodImmunisationRegisterDocumentLink, true,
-                                australianChildhoodImmunisationRegisterEntry.VaccineCancellationEntry.VaccineType
-                                    .NarrativeText),
+                            australianChildhoodImmunisationRegisterEntry.VaccineCancellationEntry.VaccineType.NarrativeText,
                             australianChildhoodImmunisationRegisterEntry.VaccineCancellationEntry != null &&
                             australianChildhoodImmunisationRegisterEntry.VaccineCancellationEntry
                                 .DateVaccinationCancelled != null
@@ -4293,10 +4511,9 @@ namespace Nehta.VendorLibrary.CDA.Generator
                             medicareDVAFundedService.MedicareMBSDVAItem.Code != null
                                 ? medicareDVAFundedService.MedicareMBSDVAItem.Code
                                 : null,
-                            CreateLink(medicareDVAFundedService.MedicareDVAFundedServicesDocumentLink,
-                                medicareDVAFundedService.MedicareMBSDVAItem != null
+                            medicareDVAFundedService.MedicareMBSDVAItem != null
                                     ? medicareDVAFundedService.MedicareMBSDVAItem.NarrativeText
-                                    : null),
+                                    : null,
                             medicareDVAFundedService.ServiceProvider != null &&
                             medicareDVAFundedService.ServiceProvider.Participant != null &&
                             medicareDVAFundedService.ServiceProvider.Participant.Person != null
@@ -4368,9 +4585,7 @@ namespace Nehta.VendorLibrary.CDA.Generator
                             new List<object>
                             {
                                 DELIMITERBOLD + "Donor decision",
-                                CreateLink(
-                                    australianOrganDonorRegisterDetails.AustralianOrganDonorRegisterDetailsDocumentLink,
-                                    item.DonationDecision.Value ? "Yes" : "No")
+                                item.DonationDecision.Value ? "Yes" : "No"
                             }
                         );
 
@@ -5410,8 +5625,7 @@ namespace Nehta.VendorLibrary.CDA.Generator
                 {
                     var medicationList = new List<Object>
                     {
-                        CreateLink(pharmaceuticalBenefitItem.PharmaceuticalBenefitItemDocumentLink, true,
-                            pharmaceuticalBenefitItem.ItemGenericName),
+                        pharmaceuticalBenefitItem.ItemGenericName,
                         pharmaceuticalBenefitItem.Brand.IsNullOrEmptyWhitespace()
                             ? null
                             : DELIMITERBOLD + pharmaceuticalBenefitItem.Brand,

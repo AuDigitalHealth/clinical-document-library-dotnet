@@ -212,6 +212,7 @@ namespace Nehta.VendorLibrary.CDA.Sample
         {
             var eventSummary = EventSummary.CreateEventSummary();
 
+
             // Include Logo
             eventSummary.IncludeLogo = true;
             eventSummary.LogoPath = OutputFolderPath;
@@ -238,6 +239,9 @@ namespace Nehta.VendorLibrary.CDA.Sample
             {
                 cdaContext.Version = "1";
             }
+
+            // If Document is a sub type, define Title here which will also become the document Title
+            //eventSummary.SubTypeTitle = "Event Summary - Emergency department";
 
             // Custodian
             cdaContext.Custodian = BaseCDAModel.CreateCustodian();
@@ -533,7 +537,7 @@ namespace Nehta.VendorLibrary.CDA.Sample
             participant.Person.Organisation.NameUsage = OrganisationNameUsage.Other;
             participant.Person.Organisation.Identifiers = new List<Identifier> { BaseCDAModel.CreateHealthIdentifier(HealthIdentifierType.HPIO, "8003620000045562") };
             participant.Person.Organisation.Department = "Some department service provider";
-            participant.Person.Organisation.EmploymentType = BaseCDAModel.CreateCodableText(EmploymentType.Casual);
+            participant.Person.Organisation.EmploymentType = BaseCDAModel.CreateCodableText(Hl7V3EmployeeJobClass.FullTime);
             participant.Person.Organisation.Occupation = BaseCDAModel.CreateRole(Occupation.GeneralMedicalPractitioner);
             participant.Person.Organisation.PositionInOrganisation = BaseCDAModel.CreateCodableText("Service Provider Manager");
             participant.Person.Organisation.Addresses = new List<IAddress> { address };
