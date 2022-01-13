@@ -372,7 +372,7 @@ namespace Nehta.VendorLibrary.CDA.Sample
                 person.Organisation.NameUsage = OrganisationNameUsage.EnterpriseName;
                 person.Organisation.Department = "Endocrinology";
 
-                person.Organisation.EmploymentType = BaseCDAModel.CreateCodableText(EmploymentType.FullTime);
+                person.Organisation.EmploymentType = BaseCDAModel.CreateCodableText(Hl7V3EmployeeJobClass.PartTime);
                 person.Organisation.Occupation = BaseCDAModel.CreateRole(Occupation.GeneralMedicalPractitioner);
                 person.Organisation.PositionInOrganisation = BaseCDAModel.CreateCodableText(null, null, null, "SMO", null);
             }

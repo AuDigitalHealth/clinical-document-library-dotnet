@@ -200,7 +200,7 @@ namespace Nehta.VendorLibrary.CDA.Generator.Enums
         /// <summary>
         /// HL7 - Diagnostic Service Section ID
         /// </summary>
-        [Name(Name = "Diagnostic service section ID (HL7)", Code = "2.16.840.1.113883.12.74")]
+        [Name(Name = "HL7 Diagnostic service section ID", Code = "2.16.840.1.113883.12.74")]
         HL7DiagnosticServiceSectionID,    
 
         ///<summary>

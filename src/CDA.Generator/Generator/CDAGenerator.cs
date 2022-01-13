@@ -2156,7 +2156,7 @@ namespace Nehta.VendorLibrary.CDA.Generator
 
             // Setup Observations
             components.Add(CDAGeneratorHelper.CreateComponent(pathologyReportWithStructuredContent.SCSContent.PathologyTestResult,
-                                                              pathologyReportWithStructuredContent.SCSContext.ReportingPathologist,
+                                                              pathologyReportWithStructuredContent.SCSContext.ReportingPathologists,
                                                               pathologyReportWithStructuredContent.SCSContent.RelatedDocument,
                                                               pathologyReportWithStructuredContent.SCSContent.CustomNarrative,
                                                               NarrativeGenerator));

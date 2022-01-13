@@ -20,7 +20,7 @@ using Nehta.VendorLibrary.CDA.Common;
 namespace Nehta.VendorLibrary.CDA.Common.Enums
 {
     /// <summary>
-    /// Diagnostic service section ID values (Diagnostic service section ID (HL7)).
+    /// Diagnostic service section ID values (HL7 Diagnostic service section ID).
     /// </summary>
     [Serializable]
     [DataContract]

@@ -334,7 +334,7 @@ namespace CDA.PSML
 
                 // custodian/assignedCustodian/representedCustodianOrganization/<Address>
                 var address1 = BaseCDAModel.CreateAddress();
-                address1.AddressPurpose = AddressPurpose.Residential;
+                address1.AddressPurpose = AddressPurpose.Business;
                 address1.AustralianAddress = BaseCDAModel.CreateAustralianAddress();
                 address1.AustralianAddress.UnstructuredAddressLines = new List<string> { "1 Custodian Street" };
                 address1.AustralianAddress.SuburbTownLocality = "Nehtaville";
@@ -409,7 +409,7 @@ namespace CDA.PSML
         /// Note: the data used within this method is intended as a guide and should be replaced.
         /// </summary>
         /// <returns>A Hydrated IParticipationAuthorHealthcareProvider object</returns>
-        public static void HydrateAuthorHealthcareProvider(IParticipationAuthorHealthcareProvider author, bool mandatoryOnly)
+        public static void HydrateAuthorHealthcareProvider(IParticipationAuthorHealthcareProvider author, bool mandatoryOnly, bool incHpii = true)
         {
             // Document Author > Participation Period
             author.AuthorParticipationPeriodOrDateTimeAuthored = BaseCDAModel.CreateParticipationPeriod(new ISO8601DateTime(DateTime.Now));
@@ -433,7 +433,7 @@ namespace CDA.PSML
 
             // Document Author > Participant > Address
             var address1 = BaseCDAModel.CreateAddress();
-            address1.AddressPurpose = AddressPurpose.Residential;
+            address1.AddressPurpose = AddressPurpose.TemporaryAccommodation;
             address1.AustralianAddress = BaseCDAModel.CreateAustralianAddress();
 
             var address2 = BaseCDAModel.CreateAddress();
@@ -455,25 +455,32 @@ namespace CDA.PSML
 
             author.Participant.Addresses = addressList;
 
-
             // Document Author > Participant > Entity Identifier
-            person.Identifiers = new List<Identifier> { 
-              BaseCDAModel.CreateIdentifier("AuthorHealthcareProvider", null, null, "1.2.3.4.5.66666", null),
-              //BaseCDAModel.CreateHealthIdentifier(HealthIdentifierType.HPII, "8003615833334118"),
-          };
-
+            if (incHpii)
+            {
+                person.Identifiers = new List<Identifier> { 
+                    BaseCDAModel.CreateHealthIdentifier(HealthIdentifierType.HPII, "8003615833334118"),
+                };
+            }
+            else
+            {
+                person.Identifiers = new List<Identifier> { 
+                    BaseCDAModel.CreateIdentifier("AuthorHealthcareProvider", null, null, "1.2.3.4.5.66666", null),
+                };
+            }
 
             person.Organisation = BaseCDAModel.CreateEmploymentOrganisation();
             person.Organisation.Name = "Hay Bill Hospital";
             person.Organisation.NameUsage = OrganisationNameUsage.Other;
 
+
             person.Organisation.Identifiers = new List<Identifier> {
-              BaseCDAModel.CreateHealthIdentifier(HealthIdentifierType.HPIO, "8003620833333789"),
-              //BaseCDAModel.CreateIdentifier("SampleAuthority", null, null, "1.2.3.4.5.66666", null)
-          };
+                BaseCDAModel.CreateHealthIdentifier(HealthIdentifierType.HPIO, "8003620833333789"),
+                //BaseCDAModel.CreateIdentifier("SampleAuthority", null, null, "1.2.3.4.5.66666", null)
+            };
 
             person.Organisation.Department = "Some department service provider";
-            person.Organisation.EmploymentType = BaseCDAModel.CreateCodableText(null, null, null, "Casual", null);
+            person.Organisation.EmploymentType = BaseCDAModel.CreateCodableText(Hl7V3EmployeeJobClass.FullTime);
             person.Organisation.Occupation = BaseCDAModel.CreateRole(Occupation.GeneralMedicalPractitioner);
             person.Organisation.PositionInOrganisation = BaseCDAModel.CreateCodableText(null, null, null, "Manager", null);
 

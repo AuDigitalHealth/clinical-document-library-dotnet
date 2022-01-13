@@ -571,6 +571,12 @@ namespace Nehta.VendorLibrary.CDA.Generator
         StrucDocText CreateNarrative(IParticipationReportingPathologist reportingPathologist, RelatedDocument relatedDocument);
 
         /// <summary>
+        /// Create a Narrative for PathologyTestResults
+        /// </summary>
+        /// <returns>StrucDocText</returns>
+        StrucDocText CreateNarrative(IList<IParticipationReportingPathologist> reportingPathologists, RelatedDocument relatedDocument);
+
+        /// <summary>
         /// Create a Narrative for Requested Services 
         /// </summary>
         /// <returns>StrucDocText</returns>

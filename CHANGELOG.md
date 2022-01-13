@@ -1,5 +1,13 @@
 ## Change Log/Revision History
 
+4.8.0 - Reference Platform Clinical Document Library (Jan 2022)
+----------------------------------------------------
+- Updated Structured Pathology to meet latest conformance profile
+- Changed Specimen OID from "102.16156.220.2.1" to "102.16156"
+- Updated Text for OID "2.16.840.1.113883.12.74" to "HL7 Diagnostic service section ID"
+- Updated ReportingPathologist in Context from 1..1 to 1..*
+
+
 4.7.0 - Reference Platform Clinical Document Library (Sept 2021)
 ----------------------------------------------------
 - Added Enum and Coding System for Hl7V3EmployeeJobClass = employment.jobClassCode

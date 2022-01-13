@@ -8399,6 +8399,88 @@ namespace Nehta.VendorLibrary.CDA.Generator
         }
 
         /// <summary>
+        /// Create Related Document / Reporting Pathologist
+        /// </summary>
+        /// <returns>StrucDocText</returns>
+        public StrucDocText CreateNarrative(IList<IParticipationReportingPathologist> reportingPathologists,
+            RelatedDocument relatedDocument)
+        {
+            var strucDocText = new StrucDocText();
+            var strucDocTableList = new List<StrucDocTable>();
+            var header = new[] { "Report DateTime", "Report Name", "Reporting Pathologist/s", "Report Status" };
+            var narrativeRelatedDocument = new List<List<Object>>();
+
+            string reportingPathologistDisplay = string.Empty;
+
+            for (int i = 0; i < reportingPathologists.Count; i++)
+            {
+                if (reportingPathologists[i] != null && reportingPathologists[i].Participant != null)
+                {
+                    var reportingPathologistOrganisationName = string.Empty;
+                    var reportingPathologistPersonName =
+                        reportingPathologists[i].Participant.Person != null &&
+                        reportingPathologists[i].Participant.Person.PersonNames != null
+                            ? BuildPersonNames(reportingPathologists[i].Participant.Person.PersonNames)
+                            : null;
+
+                    if (reportingPathologists[i].Participant.Person != null &&
+                        reportingPathologists[i].Participant.Person.Organisation != null && !reportingPathologists[i].Participant
+                            .Person.Organisation.Name.IsNullOrEmptyWhitespace())
+                    {
+                        reportingPathologistOrganisationName = string.Format("({0})",
+                            reportingPathologists[i].Participant.Person.Organisation.Name);
+                    }
+
+                    reportingPathologistDisplay += i > 0 ? DELIMITERBREAK : string.Empty;
+                    reportingPathologistDisplay += string.Format("{0}{1}{2}", reportingPathologistPersonName, DELIMITERBREAK,
+                        reportingPathologistOrganisationName);
+                }
+            }
+
+            if (relatedDocument.ExaminationResultRepresentation != null && relatedDocument.DocumentDetails != null &&
+                relatedDocument.DocumentDetails.ReportDescription != null)
+            {
+                relatedDocument.ExaminationResultRepresentation.Caption =
+                    relatedDocument.DocumentDetails != null && relatedDocument.DocumentDetails.ReportDescription != null
+                        ? relatedDocument.DocumentDetails.ReportDescription
+                        : null;
+            }
+
+            narrativeRelatedDocument.Add
+            (
+                new List<Object>
+                {
+                    relatedDocument.DocumentDetails != null && relatedDocument.DocumentDetails.ReportDate != null
+                        ? XCOLWIDTHDATE + relatedDocument.DocumentDetails.ReportDate.NarrativeText()
+                        : null,
+                    relatedDocument.ExaminationResultRepresentation != null
+                        ? CreateSimpleHtmlLink(relatedDocument.ExaminationResultRepresentation)
+                        : null,
+                    reportingPathologistDisplay,
+                    relatedDocument.DocumentDetails != null && relatedDocument.DocumentDetails.ReportStatus != null
+                        ? relatedDocument.DocumentDetails.ReportStatus.NarrativeText
+                        : null
+                }
+            );
+
+            strucDocTableList.Add
+            (
+                PopulateTable
+                (
+                    null,
+                    null,
+                    header,
+                    null,
+                    narrativeRelatedDocument
+                )
+            );
+
+            strucDocText.table = strucDocTableList.ToArray();
+
+            return strucDocText;
+        }
+
+        /// <summary>
         /// Create Participation DI
         /// </summary>
         /// <returns>StrucDocText</returns>

@@ -902,7 +902,9 @@ namespace Nehta.VendorLibrary.CDA.Generator
         }
 
         /// <summary>
-        /// Creates Pathology component
+        /// Creates Pathology component 1A
+        /// IList<SCSModel.Common.PathologyTestResult> pathologyTestResults
+        /// IParticipationReportingPathologist reportingPathologist
         /// </summary>
         /// <returns>POCD_MT000040Component3</returns>
         internal static POCD_MT000040Component3 CreateComponent(
@@ -951,9 +953,7 @@ namespace Nehta.VendorLibrary.CDA.Generator
                 // Create Pathology Test Results
                 if (pathologyTestResults != null)
                 {
-                    componentList.AddRange(CreateComponent(
-                        pathologyTestResults as List<SCSModel.Common.PathologyTestResult>,
-                        CDADocumentType.PathologyReportWithStructuredContent, narrativeGenerator));
+                    componentList.AddRange(CreateComponent(pathologyTestResults as List<SCSModel.Common.PathologyTestResult>, CDADocumentType.PathologyReportWithStructuredContent, narrativeGenerator));
                 }
 
                 // Create Related Document
@@ -985,7 +985,96 @@ namespace Nehta.VendorLibrary.CDA.Generator
         }
 
         /// <summary>
-        /// Creates Pathology component
+        /// Creates Pathology component 1B (NEW)
+        /// IList<SCSModel.Common.PathologyTestResult> pathologyTestResults
+        /// IList<IParticipationReportingPathologist> reportingPathologists
+        /// </summary>
+        /// <returns>POCD_MT000040Component3</returns>
+        internal static POCD_MT000040Component3 CreateComponent(
+            IList<SCSModel.Common.PathologyTestResult> pathologyTestResults,
+            IList<IParticipationReportingPathologist> reportingPathologists,
+            RelatedDocument relatedDocument,
+            StrucDocText pathologyCustomNarrative,
+            INarrativeGenerator narrativeGenerator)
+        {
+            POCD_MT000040Component3 pathologyComponent = null;
+            var componentList = new List<POCD_MT000040Component5>();
+            IList<POCD_MT000040Entry> entriesList = new List<POCD_MT000040Entry>();
+
+            if (pathologyTestResults.Any())
+            {
+                // Section Pathology
+                pathologyComponent = new POCD_MT000040Component3
+                {
+                    section = CreateSectionCodeTitle(PatholodyResultReportSections.Pathology),
+                };
+
+                // Set classCode and moodCode - NOTE: No need for this code because these are default values
+                pathologyComponent.section.classCode = ActClass.DOCSECT;
+                pathologyComponent.section.moodCode = ActMood.EVN;
+
+                // REPORTING PATHOLOGISTS
+                if (reportingPathologists != null)
+                {
+                    List<POCD_MT000040Author> authors = new List<POCD_MT000040Author>();
+                    List<Coverage2> coverages = new List<Coverage2>();
+
+                    foreach (var reportingPathologist in reportingPathologists)
+                    {
+                        authors.Add(CreateAuthor(reportingPathologist));
+
+                        // Entitlements
+                        if (reportingPathologist.Participant != null &&
+                            reportingPathologist.Participant.Entitlements != null &&
+                            reportingPathologist.Participant.Entitlements.Any())
+                        {
+                            coverages.AddRange(
+                                CreateEntitlements(reportingPathologist.Participant.Entitlements,
+                                    reportingPathologist.Participant.UniqueIdentifier.ToString(), RoleClass.ASSIGNED,
+                                    ParticipationType.HLD).ToArray());
+                        }
+                    }
+
+                    pathologyComponent.section.author = authors.ToArray();
+                    pathologyComponent.section.coverage2 = coverages.ToArray();
+                }
+
+                // Create Pathology Test Results
+                if (pathologyTestResults != null)
+                {
+                    componentList.AddRange(CreateComponent(pathologyTestResults as List<SCSModel.Common.PathologyTestResult>, CDADocumentType.PathologyReportWithStructuredContent, narrativeGenerator));
+                }
+
+                // Create Related Document
+                if (relatedDocument != null)
+                {
+                    entriesList.Add(CreateEntryActRelatedDocument(relatedDocument,
+                        CreateCodableText(PatholodyResultReportSections.PathologyStudy)));
+                }
+
+                // Assign list of arrays
+                if (componentList.Any())
+                {
+                    pathologyComponent.section.component = componentList.ToArray();
+                }
+
+                // The default narrative is set in CreateSectionCodeTitle at the top of this section
+                pathologyComponent.section.text = pathologyCustomNarrative ?? narrativeGenerator.CreateNarrative(reportingPathologists, relatedDocument);
+
+                // Add entries
+                if (entriesList.Any())
+                {
+                    pathologyComponent.section.entry = entriesList.ToArray();
+                }
+            }
+
+            return pathologyComponent;
+        }
+
+        /// <summary>
+        /// Creates Pathology component 2A
+        /// IList<SCSModel.Pathology.PathologyTestResult> pathologyTestResults
+        /// IParticipationReportingPathologist reportingPathologist
         /// </summary>
         /// <returns>POCD_MT000040Component3</returns>
         internal static POCD_MT000040Component3 CreateComponent(
@@ -995,7 +1084,6 @@ namespace Nehta.VendorLibrary.CDA.Generator
             StrucDocText pathologyCustomNarrative,
             INarrativeGenerator narrativeGenerator)
         {
-
             POCD_MT000040Component3 pathologyComponent = null;
             var componentList = new List<POCD_MT000040Component5>();
             IList<POCD_MT000040Entry> entriesList = new List<POCD_MT000040Entry>();
@@ -1055,6 +1143,92 @@ namespace Nehta.VendorLibrary.CDA.Generator
                 pathologyComponent.section.text = pathologyCustomNarrative ??
                                                   narrativeGenerator.CreateNarrative(reportingPathologist,
                                                       relatedDocument);
+
+                // Add entries
+                if (entriesList.Any())
+                {
+                    pathologyComponent.section.entry = entriesList.ToArray();
+                }
+            }
+
+            return pathologyComponent;
+        }
+
+        /// <summary>
+        /// Creates Pathology component 2B (NEW)
+        /// IList<IParticipationReportingPathologist> reportingPathologists
+        /// </summary>
+        /// <returns>POCD_MT000040Component3</returns>
+        internal static POCD_MT000040Component3 CreateComponent(
+            IList<SCSModel.Pathology.PathologyTestResult> pathologyTestResults,
+            IList<IParticipationReportingPathologist> reportingPathologists,
+            RelatedDocument relatedDocument,
+            StrucDocText pathologyCustomNarrative,
+            INarrativeGenerator narrativeGenerator)
+        {
+            POCD_MT000040Component3 pathologyComponent = null;
+            var componentList = new List<POCD_MT000040Component5>();
+            IList<POCD_MT000040Entry> entriesList = new List<POCD_MT000040Entry>();
+
+            if (pathologyTestResults.Any())
+            {
+                // Section Pathology
+                pathologyComponent = new POCD_MT000040Component3
+                {
+                    section = CreateSectionCodeTitle(PatholodyResultReportSections.Pathology),
+                };
+
+                // Set classCode and moodCode - NOTE: No need for this code because these are default values
+                pathologyComponent.section.classCode = ActClass.DOCSECT;
+                pathologyComponent.section.moodCode = ActMood.EVN;
+
+                // REPORTING PATHOLOGISTS
+                if (reportingPathologists != null)
+                {
+                    List<POCD_MT000040Author> authors = new List<POCD_MT000040Author>();
+                    List<Coverage2> coverages = new List<Coverage2>();
+
+                    foreach (var reportingPathologist in reportingPathologists)
+                    {
+                        authors.Add(CreateAuthor(reportingPathologist));
+
+                        // Entitlements
+                        if (reportingPathologist.Participant != null &&
+                            reportingPathologist.Participant.Entitlements != null &&
+                            reportingPathologist.Participant.Entitlements.Any())
+                        {
+                            coverages.AddRange(
+                                CreateEntitlements(reportingPathologist.Participant.Entitlements,
+                                    reportingPathologist.Participant.UniqueIdentifier.ToString(), RoleClass.ASSIGNED,
+                                    ParticipationType.HLD).ToArray());
+                        }
+                    }
+
+                    pathologyComponent.section.author = authors.ToArray();
+                    pathologyComponent.section.coverage2 = coverages.ToArray();
+                }
+
+                // Create Pathology Test Results
+                if (pathologyTestResults != null)
+                {
+                    componentList.AddRange(CreateComponent(pathologyTestResults, narrativeGenerator));
+                }
+
+                // Create Related Document
+                if (relatedDocument != null)
+                {
+                    entriesList.Add(CreateEntryActRelatedDocument(relatedDocument,
+                        CreateCodableText(PatholodyResultReportSections.PathologyStudy)));
+                }
+
+                // Assign list of arrays
+                if (componentList.Any())
+                {
+                    pathologyComponent.section.component = componentList.ToArray();
+                }
+
+                // The default narrative is set in CreateSectionCodeTitle at the top of this section
+                pathologyComponent.section.text = pathologyCustomNarrative ?? narrativeGenerator.CreateNarrative(reportingPathologists, relatedDocument);
 
                 // Add entries
                 if (entriesList.Any())
@@ -13121,7 +13295,7 @@ namespace Nehta.VendorLibrary.CDA.Generator
                         code = "102.16156.231.1.1";
                         break;
                     case CDADocumentType.PathologyReportWithStructuredContent:
-                        code = "102.16156.220.2.1";
+                        code = "102.16156";
                         break;
                 }
             }

@@ -14,6 +14,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Xml;
 using CDA.Generator.Common.SCSModel.Entities;
 using Nehta.VendorLibrary.CDA;
@@ -205,12 +206,19 @@ namespace CDA.R5Samples
             pathologyReportWithStructuredContent.SCSContext.Author = BaseCDAModel.CreateAuthorHealthcareProvider();
             GenericObjectReuseSample.HydrateAuthorHealthcareProvider(pathologyReportWithStructuredContent.SCSContext.Author, "Pathology Queensland", mandatorySectionsOnly);
 
+            // The Reporting Pathologist 0..1 to 1..*
+            List<IParticipationReportingPathologist> pathologists = new List<IParticipationReportingPathologist>();
+            pathologists.Add(CreateReportingPathologist(mandatorySectionsOnly));
+            
+            // Add a second for Max
             if (!mandatorySectionsOnly)
             {
-                // The Reporting Pathologist
-                pathologyReportWithStructuredContent.SCSContext.ReportingPathologist = CreateReportingPathologist(mandatorySectionsOnly);
+                pathologists.Add(CreateReportingPathologist(mandatorySectionsOnly));
             }
 
+            pathologyReportWithStructuredContent.SCSContext.ReportingPathologists = pathologists.ToList();
+
+            
             // Order Details
             pathologyReportWithStructuredContent.SCSContext.OrderDetails = CreateOrderDetails(mandatorySectionsOnly);
 

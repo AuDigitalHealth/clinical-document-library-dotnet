@@ -56,9 +56,15 @@ namespace Nehta.VendorLibrary.CDA.SCSModel.Common
 
         [DataMember]
         public IList<IParticipationPersonOrOrganisation> Participant { get; set; }
-         
 
+        [DataMember]
         IParticipationAuthorHealthcareProvider IPathologyReportWithStructuredContentContext.Author { get; set; }
+
+        [DataMember]
+        IParticipationReportingPathologist IPathologyResultReportContext.ReportingPathologist { get; set; }
+
+        [DataMember]
+        IList<IParticipationReportingPathologist> IPathologyReportWithStructuredContentContext.ReportingPathologists { get; set; }
 
         [DataMember]
         public IParticipationSubjectOfCare SubjectOfCare { get; set; }
@@ -317,6 +323,12 @@ namespace Nehta.VendorLibrary.CDA.SCSModel.Common
         [DataMember]
         public IParticipationReportingPathologist ReportingPathologist { get; set; }
 
+        /// <summary>
+        /// The Reporting Pathologists
+        /// </summary>
+        [DataMember]
+        public IList<IParticipationReportingPathologist> ReportingPathologists { get; set; }
+
         #endregion
 
         #endregion
@@ -468,7 +480,7 @@ namespace Nehta.VendorLibrary.CDA.SCSModel.Common
 
             var subjectOfCare = ((IPathologyResultReportContext)this).SubjectOfCare;
             var author = ((IPathologyResultReportContext)this).Author;
-
+            var reportingPathologist = ((IPathologyResultReportContext)this).ReportingPathologist;
 
             // Validate author at this level, and not at Participation / Participant level because it is different from the other documents.
             if (vb.ArgumentRequiredCheck("author", author))
@@ -494,9 +506,9 @@ namespace Nehta.VendorLibrary.CDA.SCSModel.Common
                 }
             }
 
-            if (vb.ArgumentRequiredCheck("ReportingPathologist", ReportingPathologist))
+            if (vb.ArgumentRequiredCheck("ReportingPathologist", reportingPathologist))
             {
-                ReportingPathologist.Validate(vb.Path + "ReportingPathologist", vb.Messages);
+                reportingPathologist.Validate(vb.Path + "ReportingPathologist", vb.Messages);
             }
 
             if (vb.ArgumentRequiredCheck("OrderDetails", OrderDetails))
@@ -511,7 +523,7 @@ namespace Nehta.VendorLibrary.CDA.SCSModel.Common
 
             var subjectOfCare = ((IPathologyReportWithStructuredContentContext)this).SubjectOfCare;
             var author = ((IPathologyReportWithStructuredContentContext)this).Author;
-
+            var reportingPathologists = ((IPathologyReportWithStructuredContentContext)this).ReportingPathologists;
 
             // Validate author at this level, and not at Participation / Participant level because it is different from the other documents.
             if (vb.ArgumentRequiredCheck("author", author))
@@ -537,9 +549,12 @@ namespace Nehta.VendorLibrary.CDA.SCSModel.Common
                 }
             }
 
-            if (ReportingPathologist != null)
+            if (reportingPathologists != null)
             {
-                ReportingPathologist.Validate(vb.Path + "ReportingPathologist", vb.Messages);
+                foreach (var reportingPathologist in reportingPathologists)
+                {
+                    reportingPathologist.Validate(vb.Path + "ReportingPathologists", vb.Messages);
+                }
             }
 
             if (vb.ArgumentRequiredCheck("OrderDetails", OrderDetails))

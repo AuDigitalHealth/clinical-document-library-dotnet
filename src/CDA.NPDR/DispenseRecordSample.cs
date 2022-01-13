@@ -170,18 +170,18 @@ namespace Nehta.VendorLibrary.CDA.NPDR.Sample
       {
         // Set Parent Document
         cdaContext.ParentDocuments = new List<ParentDocument>
-                                     {
-                                        CreateParentDocument(ReleatedDocumentType.Transform, null, BaseCDAModel.CreateGuid(), null, null, mandatorySectionsOnly)
-                                     };
+         {
+            CreateParentDocument(ReleatedDocumentType.Transform, null, "1.2.36.1.2001.1005.50.8003620833333789",BaseCDAModel.CreateGuid(), null, null, mandatorySectionsOnly)
+         };
       }
       else
       {
         // Set Parent Document
         cdaContext.ParentDocuments = new List<ParentDocument>
-                                     {
-                                        CreateParentDocument(ReleatedDocumentType.Transform, null, BaseCDAModel.CreateGuid(), null, "1", mandatorySectionsOnly),
-                                        CreateParentDocument(ReleatedDocumentType.Replace, cdaContext.SetId,BaseCDAModel.CreateGuid(), CDADocumentType.DispenseRecord, "1", mandatorySectionsOnly),
-                                     };
+         {
+            CreateParentDocument(ReleatedDocumentType.Transform, null, "1.2.36.1.2001.1005.50.8003620833333789",BaseCDAModel.CreateGuid(), null, null, mandatorySectionsOnly),
+            CreateParentDocument(ReleatedDocumentType.Replace, cdaContext.SetId,BaseCDAModel.CreateOid(), null, CDADocumentType.DispenseRecord, "1", mandatorySectionsOnly),
+         };
       }
 
       var dispenserOrganisationId = new Guid(BaseCDAModel.CreateGuid()); 
@@ -230,7 +230,8 @@ namespace Nehta.VendorLibrary.CDA.NPDR.Sample
     /// </summary>
     /// <param name="mandatorySectionsOnly">Only show mandatorySectionsOnly fields</param>
     /// <returns>A Hydrated ParentDocument </returns>
-    internal static ParentDocument CreateParentDocument(ReleatedDocumentType documentType, Identifier setID, string parentIdentifier, CDADocumentType? CDAdocumentType, string versionNumber, Boolean mandatorySectionsOnly)
+    internal static ParentDocument CreateParentDocument(ReleatedDocumentType documentType, Identifier setID, string parentIdentifierRoot, string parentIdentifierExtension, 
+        CDADocumentType? CDAdocumentType, string versionNumber, Boolean mandatorySectionsOnly)
     {
       var parentDocument = BaseCDAModel.CreateParentDocument();
 
@@ -238,7 +239,7 @@ namespace Nehta.VendorLibrary.CDA.NPDR.Sample
       parentDocument.ReleatedDocumentType = documentType;
 
       // Represents the unique instance identifier of a clinical document.
-      parentDocument.DocumentId = BaseCDAModel.CreateIdentifier(null, null, parentIdentifier, CDAdocumentType.HasValue ? "1.2.36.1.2001.1005.35" : "1.2.76.56.4567.6543.45", null);
+      parentDocument.DocumentId = BaseCDAModel.CreateIdentifier(null, null, CDAdocumentType.HasValue ? null : parentIdentifierExtension, parentIdentifierRoot, null);
 
       // An integer value used to version successive replacement documents.
       parentDocument.VersionNumber = versionNumber;

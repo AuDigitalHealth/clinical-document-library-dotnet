@@ -46,7 +46,8 @@ namespace Nehta.VendorLibrary.CDA.SCSModel
         /// </summary>
         [CanBeNull]
         [DataMember]
-        IParticipationReportingPathologist ReportingPathologist { get; set; }
+        //TODO:
+        IList<IParticipationReportingPathologist> ReportingPathologists { get; set; }
 
         /// <summary>
         /// Order Details

@@ -339,12 +339,10 @@ namespace CDA.PSML
             pharmacySharedMedsList.SCSContext.SubjectOfCare = BaseCDAModel.CreateSubjectOfCare();
             GenericObjectReuseSample.HydrateSubjectofCare(pharmacySharedMedsList.SCSContext.SubjectOfCare, mandatorySectionsOnly);
 
-
             IParticipationPersonOrOrganisation person = Nehta.VendorLibrary.CDA.Common.PCML.CreateParticipationPersonOrOrganisation();
             person.Participant = Nehta.VendorLibrary.CDA.Common.PCML.CreateParticipantPersonOrOrganisation();
             person.Role = BaseCDAModel.CreateRole(HealthcareFacilityTypeCodes.AgedCareResidentialServices);
             person.Participant.Person = BaseCDAModel.CreatePersonWithOrganisation();
-            
 
             var name1 = BaseCDAModel.CreatePersonName();
             name1.FamilyName = "Grant";
@@ -360,7 +358,6 @@ namespace CDA.PSML
             {
                 BaseCDAModel.CreateHealthIdentifier(HealthIdentifierType.HPII, "8003615833334118")
             };
-
 
             // Subject of Care > Participant > Person or Organisation or Device > Person > Demographic Data > Sex
 
@@ -379,9 +376,6 @@ namespace CDA.PSML
             person.Participant.Addresses  = new List<IAddress> { address1 };
             
             person.Participant.Person.Organisation = BaseCDAModel.CreateEmploymentOrganisation();
-            
-
-            person.Participant.Person.Organisation = BaseCDAModel.CreateEmploymentOrganisation();
             person.Participant.Person.Organisation.Name = "Hay Bill Hospital";
             person.Participant.Person.Organisation.NameUsage = OrganisationNameUsage.Other;
 
@@ -398,11 +392,7 @@ namespace CDA.PSML
                 //populate with full person details
 
                 // Subject of Care > Participant > Address
-
-
                 // Subject of Care > Participant > Person or Organisation or Device > Person > Demographic Data > Indigenous Status
-
-
                 // Subject of Care > Participant > Electronic Communication Detail
                 var coms1 = BaseCDAModel.CreateElectronicCommunicationDetail(
                     "0345754566",
@@ -572,8 +562,6 @@ namespace CDA.PSML
             person.Participant.Addresses = new List<IAddress> { address1 };
 
             person.Participant.Person.Organisation = BaseCDAModel.CreateEmploymentOrganisation();
-
-            person.Participant.Person.Organisation = BaseCDAModel.CreateEmploymentOrganisation();
             person.Participant.Person.Organisation.Name = "Hay Bill Hospital";
             person.Participant.Person.Organisation.NameUsage = OrganisationNameUsage.Other;
 
@@ -590,11 +578,7 @@ namespace CDA.PSML
                 //populate with full person details
 
                 // Subject of Care > Participant > Address
-
-
                 // Subject of Care > Participant > Person or Organisation or Device > Person > Demographic Data > Indigenous Status
-
-
                 // Subject of Care > Participant > Electronic Communication Detail
                 var coms1 = BaseCDAModel.CreateElectronicCommunicationDetail(
                     "0345754566",

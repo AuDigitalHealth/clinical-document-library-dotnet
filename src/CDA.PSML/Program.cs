@@ -33,10 +33,25 @@ namespace CDA.PSML
             PSMLSample.OutputFolderPath = folderPath;
 
             PrepareOutputFolder(folderPath);
-            
+
+            string templatepackageidhpii = "1.2.36.1.2001.1006.1.100065.1";
+            string templatepackageidnohpii = "1.2.36.1.2001.1006.1.100065.2";
+            string templatepackagever = "40672";
+
+
+            var smlCda = new SMLSample();
+            smlCda.MaxPopulatedSMLAuthorHealthcareProviderSample_3A("SML_AuthorHealthcareProvider_3A_Max.xml",  templatepackageidhpii, templatepackagever, true);
+            smlCda.MidMaxPopulatedSMLAuthorHealthcareProviderSample_3A("SML_AuthorHealthcareProvider_3A_MidMax.xml", templatepackageidhpii, templatepackagever, true);
+            smlCda.MidMinPopulatedSMLAuthorHealthcareProviderSample_3A("SML_AuthorHealthcareProvider_3A_MidMin.xml", templatepackageidhpii, templatepackagever, true);
+            smlCda.MinPopulatedSMLAuthorHealthcareProviderSample_3A("SML_AuthorHealthcareProvider_3A_Min.xml", templatepackageidhpii, templatepackagever, true);
+
+            smlCda.MaxPopulatedSMLAuthorHealthcareProviderSample_3A("SML_AuthorHealthcareProvider_3A_MaxNoHpii.xml", templatepackageidnohpii, templatepackagever, false);
+            smlCda.MinPopulatedSMLAuthorHealthcareProviderSample_3A("SML_AuthorHealthcareProvider_3A_MinNoHpii.xml", templatepackageidnohpii, templatepackagever, false);
+
             var psmlCda = new PSMLSample();
             psmlCda.MaxPopulatedPSMLAuthorHealthcareProviderSample_1A("PSML_AuthorHealthcareProvider_1A_Max.xml");
             psmlCda.MinPopulatedPSMLAuthorHealthcareProviderSample_1A("PSML_AuthorHealthcareProvider_1A_Min.xml");
+
 
             //Test Custom Narrative - not currently allowed
             //psmlCda.MaxPopulatedPSMLAuthorHealthcareProviderSample_1B("PSML_AuthorHealthcareProvider_1B_Max.xml");

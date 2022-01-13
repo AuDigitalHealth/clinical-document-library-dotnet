@@ -495,7 +495,7 @@ namespace Nehta.VendorLibrary.CDA.Consumer
               };
 
               person.Organisation.Department = "Some department service provider";
-              person.Organisation.EmploymentType = BaseCDAModel.CreateCodableText(EmploymentType.Casual);
+              person.Organisation.EmploymentType = BaseCDAModel.CreateCodableText(Hl7V3EmployeeJobClass.PartTime);
               person.Organisation.Occupation = BaseCDAModel.CreateRole(Occupation.GeneralMedicalPractitioner);
               person.Organisation.PositionInOrganisation = BaseCDAModel.CreateCodableText(null, null, null, "Manager", null);
 
