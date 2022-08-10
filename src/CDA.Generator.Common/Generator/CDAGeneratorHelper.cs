@@ -14150,26 +14150,57 @@ namespace Nehta.VendorLibrary.CDA.Generator
             {
                 pq = new IVL_PQ();
 
-                pq.ItemsElementName = new ItemsChoiceType[2];
-                pq.Items = new PQ[2];
-
-                pq.ItemsElementName[0] = ItemsChoiceType.low;
-                pq.Items[0] = new IVXB_PQ
+                if (quantityRange.Low.HasValue && quantityRange.High.HasValue)
                 {
-                    unit = quantityRange.Units,
-                    value = quantityRange.Low.HasValue
-                        ? quantityRange.Low.Value.ToString(CultureInfo.InvariantCulture)
-                        : null
-                };
+                    pq.ItemsElementName = new ItemsChoiceType[2];
+                    pq.Items = new PQ[2];
 
-                pq.ItemsElementName[1] = ItemsChoiceType.high;
-                pq.Items[1] = new IVXB_PQ
+                    pq.ItemsElementName[0] = ItemsChoiceType.low;
+                    pq.Items[0] = new IVXB_PQ
+                    {
+                        unit = quantityRange.Units,
+                        value = quantityRange.Low.HasValue
+                            ? quantityRange.Low.Value.ToString(CultureInfo.InvariantCulture)
+                            : null
+                    };
+
+                    pq.ItemsElementName[1] = ItemsChoiceType.high;
+                    pq.Items[1] = new IVXB_PQ
+                    {
+                        unit = quantityRange.Units,
+                        value = quantityRange.High.HasValue
+                            ? quantityRange.High.Value.ToString(CultureInfo.InvariantCulture)
+                            : null
+                    };
+                }
+                else if (quantityRange.Low.HasValue)
                 {
-                    unit = quantityRange.Units,
-                    value = quantityRange.High.HasValue
-                        ? quantityRange.High.Value.ToString(CultureInfo.InvariantCulture)
-                        : null
-                };
+                    pq.ItemsElementName = new ItemsChoiceType[1];
+                    pq.Items = new PQ[1];
+
+                    pq.ItemsElementName[0] = ItemsChoiceType.low;
+                    pq.Items[0] = new IVXB_PQ
+                    {
+                        unit = quantityRange.Units,
+                        value = quantityRange.Low.HasValue
+                            ? quantityRange.Low.Value.ToString(CultureInfo.InvariantCulture)
+                            : null
+                    };
+                }
+                else if (quantityRange.High.HasValue)
+                {
+                    pq.ItemsElementName = new ItemsChoiceType[1];
+                    pq.Items = new PQ[1];
+
+                    pq.ItemsElementName[0] = ItemsChoiceType.high;
+                    pq.Items[0] = new IVXB_PQ
+                    {
+                        unit = quantityRange.Units,
+                        value = quantityRange.High.HasValue
+                            ? quantityRange.High.Value.ToString(CultureInfo.InvariantCulture)
+                            : null
+                    };
+                }
             }
 
             return pq;

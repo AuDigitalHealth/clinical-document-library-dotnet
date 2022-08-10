@@ -180,7 +180,7 @@ namespace Nehta.VendorLibrary.CDA.SCSModel.Common
 
            if (NullFlavour.HasValue)
            {
-               vb.AddValidationMessage(vb.PathName + "NullFlavour", null, "NullFlavour can not be specified for this coadable text field");
+               //vb.AddValidationMessage(vb.PathName + "NullFlavour", null, "NullFlavour can not be specified for this coadable text field");
                return;
            }
 

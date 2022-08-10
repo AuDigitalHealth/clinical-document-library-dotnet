@@ -68,8 +68,8 @@ namespace Nehta.VendorLibrary.CDA.SCSModel.Common
         {
             var validationBuilder = new ValidationBuilder(path, messages);
 
-            validationBuilder.ArgumentRequiredCheck("High", High);
-            validationBuilder.ArgumentRequiredCheck("Low", Low);
+            //validationBuilder.ArgumentRequiredCheck("High", High);
+            //validationBuilder.ArgumentRequiredCheck("Low", Low);
             validationBuilder.ArgumentRequiredCheck("Unit", Units);
         }
 
