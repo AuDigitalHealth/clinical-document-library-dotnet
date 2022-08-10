@@ -91,12 +91,12 @@ namespace Nehta.VendorLibrary.CDA.SCSModel.Common
 
           var vb = new ValidationBuilder(path, messages);
 
-          if (Quantity != null && Quantity.Value != null && (Quantity.Units == null && Unit == null))
+          if (Quantity != null && Quantity.Value != null && (Quantity.UnitCode == null && Unit == null))
           {
             vb.AddValidationMessage(vb.PathName, string.Empty, "'Quantity' and 'Dose Unit' elements SHALL be provided together.");
           }
 
-          if (Quantity != null && (Quantity.Units != null && Unit != null))
+          if (Quantity != null && (Quantity.UnitCode != null && Unit != null))
           {
             vb.AddValidationMessage(vb.PathName, string.Empty, "Please choose only 'Quantity.Units' or 'Unit' not both");
           }

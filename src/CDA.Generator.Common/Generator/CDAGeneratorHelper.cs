@@ -2131,7 +2131,7 @@ namespace Nehta.VendorLibrary.CDA.Generator
                 entryRelationship.substanceAdministration.doseQuantity = new IVL_PQ
                 {
                     value = dosageSml.Dose.Value,
-                    unit = dosageSml.Dose.Units
+                    unit = dosageSml.Dose.UnitCode
                 };
             }
 
@@ -2143,12 +2143,12 @@ namespace Nehta.VendorLibrary.CDA.Generator
                     denominator = new IVL_PQ
                     {
                         value = dosageSml.MaxDosePerPeriod?.Denominator?.Value,
-                        unit = dosageSml.MaxDosePerPeriod?.Denominator?.Units
+                        unit = dosageSml.MaxDosePerPeriod?.Denominator?.UnitCode
                     },
                     numerator = new IVL_PQ
                     {
                         value = dosageSml.MaxDosePerPeriod?.Numerator?.Value,
-                        unit = dosageSml.MaxDosePerPeriod?.Numerator?.Units
+                        unit = dosageSml.MaxDosePerPeriod?.Numerator?.UnitCode
                     }
                 };
             }
@@ -2159,7 +2159,7 @@ namespace Nehta.VendorLibrary.CDA.Generator
                 entryRelationship.substanceAdministration.rateQuantity = new IVL_PQ
                 {
                     value = dosageSml.Rate.Value,
-                    unit = dosageSml.Rate.Units
+                    unit = dosageSml.Rate.UnitCode
                 };
             }
         }
@@ -2467,12 +2467,12 @@ namespace Nehta.VendorLibrary.CDA.Generator
                         numerator = new PQ
                         {
                             value = ingredientsSml.IngredientQuantity.Numerator.Value,
-                            unit = ingredientsSml.IngredientQuantity.Numerator.Units
+                            unit = ingredientsSml.IngredientQuantity.Numerator.UnitCode
                         },
                         denominator = new PQ
                         {
                             value = ingredientsSml.IngredientQuantity.Denominator.Value,
-                            unit = ingredientsSml.IngredientQuantity.Denominator.Units
+                            unit = ingredientsSml.IngredientQuantity.Denominator.UnitCode
                         }
                     };
 
@@ -4533,7 +4533,7 @@ namespace Nehta.VendorLibrary.CDA.Generator
                                     ? item.QuantityToDispense.Quantity.Value
                                     : null,
                                 unit = item.QuantityToDispense != null && item.QuantityToDispense.Quantity != null
-                                    ? item.QuantityToDispense.Quantity.Units
+                                    ? item.QuantityToDispense.Quantity.UnitCode
                                     : null
                             }
                             : null,
@@ -5059,7 +5059,7 @@ namespace Nehta.VendorLibrary.CDA.Generator
                                     ? item.QuantityToDispense.Quantity.Value
                                     : null,
                                 unit = item.QuantityToDispense != null && item.QuantityToDispense.Quantity != null
-                                    ? item.QuantityToDispense.Quantity.Units
+                                    ? item.QuantityToDispense.Quantity.UnitCode
                                     : null
                             }
                             : null,
@@ -5097,7 +5097,7 @@ namespace Nehta.VendorLibrary.CDA.Generator
                                 {
                                     period = new PQ
                                     {
-                                        unit = item.MinimumIntervalBetweenRepeats.Units,
+                                        unit = item.MinimumIntervalBetweenRepeats.UnitCode,
                                         value = !item.MinimumIntervalBetweenRepeats.Value.IsNullOrEmptyWhitespace()
                                             ? item.MinimumIntervalBetweenRepeats.Value
                                             : null,
@@ -5838,7 +5838,7 @@ namespace Nehta.VendorLibrary.CDA.Generator
                                     ? item.QuantityToDispense.Quantity.Value
                                     : null,
                                 unit = item.QuantityToDispense != null && item.QuantityToDispense.Quantity != null
-                                    ? item.QuantityToDispense.Quantity.Units
+                                    ? item.QuantityToDispense.Quantity.UnitCode
                                     : null
                             },
                         product = ((item.QuantityToDispense != null && item.QuantityToDispense.Unit != null) ||
@@ -14056,7 +14056,7 @@ namespace Nehta.VendorLibrary.CDA.Generator
 
                     if (value.TestResultValue != null)
                     {
-                        physicalQuantity.unit = value.TestResultValue.Units;
+                        physicalQuantity.unit = value.TestResultValue.UnitCode;
                         physicalQuantity.value = !value.TestResultValue.Value.IsNullOrEmptyWhitespace()
                             ? value.TestResultValue.Value
                             : null;
@@ -14108,13 +14108,13 @@ namespace Nehta.VendorLibrary.CDA.Generator
             {
                 if (quantity.Value != null)
                 {
-                    if (quantity.Value != null || quantity.Units != null)
+                    if (quantity.Value != null || quantity.UnitCode != null)
                     {
                         physicalQuantity = new PQ
                         {
                             nullFlavor = NullFlavor.NA,
                             nullFlavorSpecified = false,
-                            unit = quantity.Units,
+                            unit = quantity.UnitCode,
                             value = quantity.Value
                         };
                     }
@@ -14158,7 +14158,7 @@ namespace Nehta.VendorLibrary.CDA.Generator
                     pq.ItemsElementName[0] = ItemsChoiceType.low;
                     pq.Items[0] = new IVXB_PQ
                     {
-                        unit = quantityRange.Units,
+                        unit = quantityRange.UnitCode,
                         value = quantityRange.Low.HasValue
                             ? quantityRange.Low.Value.ToString(CultureInfo.InvariantCulture)
                             : null
@@ -14167,7 +14167,7 @@ namespace Nehta.VendorLibrary.CDA.Generator
                     pq.ItemsElementName[1] = ItemsChoiceType.high;
                     pq.Items[1] = new IVXB_PQ
                     {
-                        unit = quantityRange.Units,
+                        unit = quantityRange.UnitCode,
                         value = quantityRange.High.HasValue
                             ? quantityRange.High.Value.ToString(CultureInfo.InvariantCulture)
                             : null
@@ -14181,10 +14181,11 @@ namespace Nehta.VendorLibrary.CDA.Generator
                     pq.ItemsElementName[0] = ItemsChoiceType.low;
                     pq.Items[0] = new IVXB_PQ
                     {
-                        unit = quantityRange.Units,
+                        unit = quantityRange.UnitCode,
                         value = quantityRange.Low.HasValue
                             ? quantityRange.Low.Value.ToString(CultureInfo.InvariantCulture)
-                            : null
+                            : null,
+                        inclusive = quantityRange.Inclusive
                     };
                 }
                 else if (quantityRange.High.HasValue)
@@ -14195,10 +14196,11 @@ namespace Nehta.VendorLibrary.CDA.Generator
                     pq.ItemsElementName[0] = ItemsChoiceType.high;
                     pq.Items[0] = new IVXB_PQ
                     {
-                        unit = quantityRange.Units,
+                        unit = quantityRange.UnitCode,
                         value = quantityRange.High.HasValue
                             ? quantityRange.High.Value.ToString(CultureInfo.InvariantCulture)
-                            : null
+                            : null,
+                        inclusive = quantityRange.Inclusive
                     };
                 }
             }
@@ -15755,7 +15757,7 @@ namespace Nehta.VendorLibrary.CDA.Generator
                 if (quantityUnit.Quantity != null)
                     entry.substanceAdministration.doseQuantity = new IVL_PQ
                     {
-                        unit = string.IsNullOrEmpty(quantityUnit.Quantity.Units) ? null : quantityUnit.Quantity.Units,
+                        unit = string.IsNullOrEmpty(quantityUnit.Quantity.UnitCode) ? null : quantityUnit.Quantity.UnitCode,
                         value = !quantityUnit.Quantity.Value.IsNullOrEmptyWhitespace()
                             ? quantityUnit.Quantity.Value
                             : null,
@@ -16292,8 +16294,8 @@ namespace Nehta.VendorLibrary.CDA.Generator
                                     physicalDetail.WeightVolume == null
                                         ? (physicalDetail.WeightVolume == null
                                             ? String.Empty
-                                            : physicalDetail.WeightVolume.Units)
-                                        : physicalDetail.WeightVolume.Units
+                                            : physicalDetail.WeightVolume.UnitCode)
+                                        : physicalDetail.WeightVolume.UnitCode
                                 }
                             );
                         }

@@ -81,13 +81,13 @@ namespace Nehta.VendorLibrary.CDA.SCSModel.Common
             if (Denominator != null)
             {
               narrative += !Denominator.Value.IsNullOrEmptyWhitespace() ? string.Format(" {0}", Denominator.Value) : String.Empty;
-              narrative += !Denominator.Units.IsNullOrEmptyWhitespace() ? string.Format(" {0}", Denominator.Units)  : String.Empty;              
+              narrative += !Denominator.UnitCode.IsNullOrEmptyWhitespace() ? string.Format(" {0}", Denominator.UnitCode)  : String.Empty;              
             }
 
             if (Numerator != null)
             {
               narrative += !Numerator.Value.IsNullOrEmptyWhitespace() ? string.Format(" {0}", Numerator.Value) : String.Empty;
-              narrative += !Numerator.Units.IsNullOrEmptyWhitespace() ? string.Format(" {0}", Numerator.Units) : String.Empty;   
+              narrative += !Numerator.UnitCode.IsNullOrEmptyWhitespace() ? string.Format(" {0}", Numerator.UnitCode) : String.Empty;   
             }
 
             return narrative;

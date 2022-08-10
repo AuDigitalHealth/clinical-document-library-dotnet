@@ -1978,7 +1978,7 @@ namespace Nehta.VendorLibrary.CDA.Generator
                                 (
                                 new List<string> 
                                     {
-                                        physicalDetail.WeightVolume == null ? (physicalDetail.WeightVolume == null ? String.Empty : physicalDetail.WeightVolume.Units) : physicalDetail.WeightVolume.Units
+                                        physicalDetail.WeightVolume == null ? (physicalDetail.WeightVolume == null ? String.Empty : physicalDetail.WeightVolume.UnitCode) : physicalDetail.WeightVolume.UnitCode
                                     }
                                 );
                         }
@@ -2040,7 +2040,7 @@ namespace Nehta.VendorLibrary.CDA.Generator
                                               {
                                                 new PQ
                                                   {
-                                                    unit = bodyWeight.Quantity.Units,
+                                                    unit = bodyWeight.Quantity.UnitCode,
                                                     value =
                                                       bodyWeight.Quantity == null && !bodyWeight.Quantity.Value.IsNullOrEmptyWhitespace()
                                                         ? null

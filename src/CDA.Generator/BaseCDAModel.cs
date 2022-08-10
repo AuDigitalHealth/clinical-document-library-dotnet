@@ -1016,11 +1016,12 @@ namespace Nehta.VendorLibrary.CDA.Common
         /// Creates a quantity
         /// </summary>
         /// <returns>A Quantity Object</returns>
-        public static Quantity CreateQuantity(string value, string units)
+        public static Quantity CreateQuantity(string value, string unitCode, string unitDisplayName = null)
         {
             return new Quantity
             {
-                Units = units,
+                UnitCode = unitCode,
+                UnitDisplayName = unitDisplayName,
                 Value = value
             };
         }
@@ -1039,12 +1040,12 @@ namespace Nehta.VendorLibrary.CDA.Common
             {
                 Numerator = new Quantity
                 {
-                    Units = numerUnits,
+                    UnitCode = numerUnits,
                     Value = numerVal
                 },
                 Denominator = new Quantity
                 {
-                    Units = denomUnits,
+                    UnitCode = denomUnits,
                     Value = denomVal
                 }
             };
@@ -1058,7 +1059,7 @@ namespace Nehta.VendorLibrary.CDA.Common
         {
             return new Quantity
             {
-                Units = units.GetAttributeValue<NameAttribute, String>(x => x.Code),
+                UnitCode = units.GetAttributeValue<NameAttribute, String>(x => x.Code),
                 Value = value
             };
         }
@@ -1085,13 +1086,15 @@ namespace Nehta.VendorLibrary.CDA.Common
         /// Creates a quantity range
         /// </summary>
         /// <returns>QuantityRange</returns>
-        public static QuantityRange CreateQuantityRange(Double? high, Double? low, string units)
+        public static QuantityRange CreateQuantityRange(Double? high, Double? low, bool inclusive, string unitCode, string unitDisplayName = null)
         {
             return new QuantityRange
             {
                 High = high,
                 Low = low,
-                Units = units
+                Inclusive = inclusive,
+                UnitCode = unitCode,
+                UnitDisplayName = unitDisplayName
             };
         }
 
@@ -1291,7 +1294,7 @@ namespace Nehta.VendorLibrary.CDA.Common
 
                 physicalDetails.WeightVolume = CreateQuantity();
                 physicalDetails.WeightVolume.Value = value;
-                physicalDetails.WeightVolume.Units = units;
+                physicalDetails.WeightVolume.UnitCode = units;
             }
 
             if (image != null)

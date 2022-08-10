@@ -3799,7 +3799,7 @@ namespace Nehta.VendorLibrary.CDA.Generator
                                     : String.Empty,
                                 "Body Weight",
                                 observation.BodyWeight.Quantity.Value + " " +
-                                observation.BodyWeight.Quantity.Units
+                                observation.BodyWeight.Quantity.UnitCode
                             }
                         );
                 }
@@ -3816,8 +3816,8 @@ namespace Nehta.VendorLibrary.CDA.Generator
                                 : String.Empty,
                             "Body Height",
                             observation.BodyHeight.Quantity.Value + " " +
-                            observation.BodyHeight.Quantity.Units != null
-                                ? observation.BodyHeight.Quantity.Units
+                            observation.BodyHeight.Quantity.UnitCode != null
+                                ? observation.BodyHeight.Quantity.UnitCode
                                 : String.Empty
                         }
                     );

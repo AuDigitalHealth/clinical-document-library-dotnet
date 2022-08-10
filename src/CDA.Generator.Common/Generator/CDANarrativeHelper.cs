@@ -473,7 +473,7 @@ namespace Nehta.VendorLibrary.CDA.Generator
                             {
                                 if (physicalDetails.WeightVolume != null)
                                 {
-                                    physicalDetailsOutput = physicalDetailsOutput + physicalDetails.WeightVolume.Value + " " + physicalDetails.WeightVolume.Units + DELIMITER;
+                                    physicalDetailsOutput = physicalDetailsOutput + physicalDetails.WeightVolume.Value + " " + physicalDetails.WeightVolume.UnitCode + DELIMITER;
                                 }
 
                                 if (physicalDetails.Image != null)

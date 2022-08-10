@@ -38,11 +38,18 @@ namespace Nehta.VendorLibrary.CDA.SCSModel.Common
         public String Value { get; set; }
 
         /// <summary>
-        /// Unit
+        /// Unit code
         /// </summary>
         [CanBeNull]
         [DataMember]
-        public String Units { get; set; }
+        public String UnitCode { get; set; }
+
+        /// <summary>
+        /// Unit display name
+        /// </summary>
+        [CanBeNull]
+        [DataMember]
+        public String UnitDisplayName { get; set; }
         #endregion
 
         #region Constructors
@@ -73,7 +80,7 @@ namespace Nehta.VendorLibrary.CDA.SCSModel.Common
                 validationBuilder.AddValidationMessage(path + "Value", null, "Value needs to be a valid decimal string, this is a requirment from schema validation");
               } 
             }
-            validationBuilder.ArgumentRequiredCheck("Unit", Units);
+            validationBuilder.ArgumentRequiredCheck("Unit", UnitCode);
         }
         #endregion
 
@@ -85,9 +92,10 @@ namespace Nehta.VendorLibrary.CDA.SCSModel.Common
             get
             {
                 var narrative = String.Empty;
+                var unitDisplay = UnitDisplayName.IsNullOrEmptyWhitespace() ? UnitCode : UnitDisplayName;
 
                 narrative += !Value.IsNullOrEmptyWhitespace() ? Value : string.Empty;
-                narrative += !Units.IsNullOrEmptyWhitespace() ? (narrative.IsNullOrEmptyWhitespace() ? string.Empty : " ") + Units : String.Empty;
+                narrative += !unitDisplay.IsNullOrEmptyWhitespace() ? (narrative.IsNullOrEmptyWhitespace() ? string.Empty : " ") + unitDisplay : String.Empty;
                 
                 return narrative;
             }
