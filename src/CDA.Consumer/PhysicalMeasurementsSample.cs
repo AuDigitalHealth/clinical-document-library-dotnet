@@ -859,7 +859,7 @@ namespace Nehta.VendorLibrary.CDA.Consumer
         referenceRangeDetails.ReferenceRangeMeaning = BaseCDAModel.CreateCodableText("260395002", CodingSystem.SNOMED, "normal range", null, null);
 
         // Circumference Reference Range
-        referenceRangeDetails.ReferenceRange = BaseCDAModel.CreateQuantityRange(37.5, 90, true, "cm");
+        referenceRangeDetails.ReferenceRange = BaseCDAModel.CreateQuantityRange(37.5, 90, "ml");
 
         return referenceRangeDetails;
       }

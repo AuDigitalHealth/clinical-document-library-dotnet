@@ -1085,15 +1085,20 @@ namespace Nehta.VendorLibrary.CDA.Common
         /// <summary>
         /// Creates a quantity range
         /// </summary>
+        /// <param name="high">The upper bound</param>
+        /// <param name="low">The lower bound</param>
+        /// <param name="units">The unit code</param>
+        /// <param name="unitDisplayName">The unit display name (optional, falls back to units)</param>
+        /// <param name="inclusive">Whether the bounds are included (default true)</param>
         /// <returns>QuantityRange</returns>
-        public static QuantityRange CreateQuantityRange(Double? high, Double? low, bool inclusive, string unitCode, string unitDisplayName = null)
+        public static QuantityRange CreateQuantityRange(Double? high, Double? low, string units, string unitDisplayName = null, bool inclusive = true)
         {
             return new QuantityRange
             {
                 High = high,
                 Low = low,
                 Inclusive = inclusive,
-                Units = unitCode,
+                Units = units,
                 UnitDisplayName = unitDisplayName
             };
         }
