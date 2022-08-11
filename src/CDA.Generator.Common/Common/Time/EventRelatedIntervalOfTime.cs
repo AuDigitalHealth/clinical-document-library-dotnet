@@ -97,8 +97,8 @@ namespace CDA.Generator.Common.Common.Time
           {
             string offset = string.Empty;
 
-            offset += Offset.High.HasValue ? string.Format(" {0} {1} before", Offset.High.Value.ToString(CultureInfo.InvariantCulture), Offset.UnitCode) : string.Empty;
-            offset += Offset.Low.HasValue ? string.Format(" {0} {1} after", Offset.Low.Value.ToString(CultureInfo.InvariantCulture), Offset.UnitCode) : string.Empty;
+            offset += Offset.High.HasValue ? string.Format(" {0} {1} before", Offset.High.Value.ToString(CultureInfo.InvariantCulture), Offset.Units) : string.Empty;
+            offset += Offset.Low.HasValue ? string.Format(" {0} {1} after", Offset.Low.Value.ToString(CultureInfo.InvariantCulture), Offset.Units) : string.Empty;
 
             narrativeText += offset;
           }

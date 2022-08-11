@@ -1020,7 +1020,7 @@ namespace Nehta.VendorLibrary.CDA.Common
         {
             return new Quantity
             {
-                UnitCode = unitCode,
+                Units = unitCode,
                 UnitDisplayName = unitDisplayName,
                 Value = value
             };
@@ -1040,12 +1040,12 @@ namespace Nehta.VendorLibrary.CDA.Common
             {
                 Numerator = new Quantity
                 {
-                    UnitCode = numerUnits,
+                    Units = numerUnits,
                     Value = numerVal
                 },
                 Denominator = new Quantity
                 {
-                    UnitCode = denomUnits,
+                    Units = denomUnits,
                     Value = denomVal
                 }
             };
@@ -1059,7 +1059,7 @@ namespace Nehta.VendorLibrary.CDA.Common
         {
             return new Quantity
             {
-                UnitCode = units.GetAttributeValue<NameAttribute, String>(x => x.Code),
+                Units = units.GetAttributeValue<NameAttribute, String>(x => x.Code),
                 Value = value
             };
         }
@@ -1093,7 +1093,7 @@ namespace Nehta.VendorLibrary.CDA.Common
                 High = high,
                 Low = low,
                 Inclusive = inclusive,
-                UnitCode = unitCode,
+                Units = unitCode,
                 UnitDisplayName = unitDisplayName
             };
         }
@@ -1294,7 +1294,7 @@ namespace Nehta.VendorLibrary.CDA.Common
 
                 physicalDetails.WeightVolume = CreateQuantity();
                 physicalDetails.WeightVolume.Value = value;
-                physicalDetails.WeightVolume.UnitCode = units;
+                physicalDetails.WeightVolume.Units = units;
             }
 
             if (image != null)

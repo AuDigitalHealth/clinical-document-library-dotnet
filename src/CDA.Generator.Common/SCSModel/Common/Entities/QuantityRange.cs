@@ -50,7 +50,7 @@ namespace Nehta.VendorLibrary.CDA.SCSModel.Common
         /// </summary>
         [CanBeNull]
         [DataMember]
-        public String UnitCode { get; set; }
+        public String Units { get; set; }
 
         /// <summary>
         /// Unit
@@ -94,7 +94,7 @@ namespace Nehta.VendorLibrary.CDA.SCSModel.Common
                 validationBuilder.ArgumentRequiredCheck("High", High);
             }
 
-            validationBuilder.ArgumentRequiredCheck("UnitCode", UnitCode);
+            validationBuilder.ArgumentRequiredCheck("Units", Units);
 
             if (High.HasValue && Low.HasValue && !Inclusive)
             {
@@ -118,8 +118,6 @@ namespace Nehta.VendorLibrary.CDA.SCSModel.Common
                     narrative.Append(Low.Value.ToString(CultureInfo.InvariantCulture));
                     narrative.Append(" - ");
                     narrative.Append(High.Value.ToString(CultureInfo.InvariantCulture));
-                    narrative.Append(" ");
-                    narrative.Append(UnitDisplayName ?? UnitCode);
                 }
                 else if (High.HasValue && !Low.HasValue) // right-bounded
                 {
@@ -127,8 +125,6 @@ namespace Nehta.VendorLibrary.CDA.SCSModel.Common
                     if (Inclusive) narrative.Append("=");
                     narrative.Append(" ");
                     narrative.Append(High.Value.ToString(CultureInfo.InvariantCulture));
-                    narrative.Append(" ");
-                    narrative.Append(UnitDisplayName ?? UnitCode);
                 }
                 else if (Low.HasValue && !High.HasValue) // left-bounded
                 {
@@ -136,13 +132,16 @@ namespace Nehta.VendorLibrary.CDA.SCSModel.Common
                     if (Inclusive) narrative.Append("=");
                     narrative.Append(" ");
                     narrative.Append(Low.Value.ToString(CultureInfo.InvariantCulture));
-                    narrative.Append(" ");
-                    narrative.Append(UnitDisplayName ?? UnitCode);
                 }
                 else // unbounded
                 {
                     narrative.Append("[unbounded interval]");
                 }
+
+                // Append units using the display name if given, otherwise the UCUM unit code.
+                var unitDisplay = UnitDisplayName.IsNullOrEmptyWhitespace() ? Units : UnitDisplayName;
+                narrative.Append(" ");
+                narrative.Append(unitDisplay);
 
                 return narrative.ToString();
             }
