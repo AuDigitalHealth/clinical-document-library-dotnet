@@ -1,5 +1,13 @@
 ## Change Log/Revision History
 
+
+4.9.0 - Reference Platform Clinical Document Library (Aug 2022)
+----------------------------------------------------
+- Added support for netstandard2.0
+- Allow half-bounded intervals and nullFlavors
+- Unit Code and Display Name. Narrative generation for half-bounded int… 
+- Make CreateQuantityRange backwards compatible
+
 4.8.0 - Reference Platform Clinical Document Library (Jan 2022)
 ----------------------------------------------------
 - Updated Structured Pathology to meet latest conformance profile

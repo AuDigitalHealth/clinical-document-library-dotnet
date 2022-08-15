@@ -46,8 +46,8 @@ namespace Nehta.VendorLibrary.CDA.SCSModel.Common
         /// <value>
         /// CodeSystem
         /// </value>
-        public CodingSystem CodeSystem 
-        { 
+        public CodingSystem CodeSystem
+        {
             set
             {
                 CodeSystemCode = value.GetAttributeValue<NameAttribute, String>(x => x.Code);
@@ -148,13 +148,14 @@ namespace Nehta.VendorLibrary.CDA.SCSModel.Common
         {
             get
             {
-              var returnString = !OriginalText.IsNullOrEmptyWhitespace() ? OriginalText : !DisplayName.IsNullOrEmptyWhitespace() ? DisplayName : string.Empty;
-              if (NullFlavour.HasValue && OriginalText.IsNullOrEmptyWhitespace())
-              {
-                  returnString = NullFlavour.Value.GetAttributeValue<NameAttribute, string>(x => x.Name);
-              }
+                var returnString = !OriginalText.IsNullOrEmptyWhitespace() ? OriginalText :
+                    !DisplayName.IsNullOrEmptyWhitespace() ? DisplayName : string.Empty;
+                if (NullFlavour.HasValue && OriginalText.IsNullOrEmptyWhitespace())
+                {
+                    returnString = NullFlavour.Value.GetAttributeValue<NameAttribute, string>(x => x.Name);
+                }
 
-              return returnString;
+                return returnString;
             }
         }
 
@@ -165,6 +166,7 @@ namespace Nehta.VendorLibrary.CDA.SCSModel.Common
         internal CodableText()
         {
         }
+
         #endregion
 
         #region Validation
@@ -176,13 +178,14 @@ namespace Nehta.VendorLibrary.CDA.SCSModel.Common
         /// <param name="messages">the validation messages to date, these may be added to within this method</param>
         public void ValidateMandatory(string path, List<ValidationMessage> messages)
         {
-           var vb = new ValidationBuilder(path, messages);
+            var vb = new ValidationBuilder(path, messages);
 
-           if (NullFlavour.HasValue)
-           {
-               vb.AddValidationMessage(vb.PathName + "NullFlavour", null, "NullFlavour can not be specified for this coadable text field");
-               return;
-           }
+            if (NullFlavour.HasValue)
+            {
+                // Commented out - TODO: Chamonix
+                //vb.AddValidationMessage(vb.PathName + "NullFlavour", null, "NullFlavour can not be specified for this coadable text field");
+                return;
+            }
 
             if (QualifierCodes != null)
             {
@@ -197,7 +200,7 @@ namespace Nehta.VendorLibrary.CDA.SCSModel.Common
                 vb.AddValidationMessage(vb.PathName + "QualifierCodes & OriginalText", null, "OriginalText must be provided with QualifierCodes");
             }
 
-            Validate(path, messages);           
+            Validate(path, messages);
         }
 
         /// <summary>
@@ -216,12 +219,14 @@ namespace Nehta.VendorLibrary.CDA.SCSModel.Common
 
             if (!HasCodeSystem && !DisplayName.IsNullOrEmptyWhitespace())
             {
-                vb.AddValidationMessage(vb.PathName, null, "DisplayName can only be provided if a CodeSystem is specified");
+                vb.AddValidationMessage(vb.PathName, null,
+                    "DisplayName can only be provided if a CodeSystem is specified");
             }
 
             if (DisplayName.IsNullOrEmptyWhitespace() && OriginalText.IsNullOrEmptyWhitespace() && NullFlavour == null)
             {
-                vb.AddValidationMessage(vb.PathName, null, "Either OriginalText or DisplayName or a NullFlavour must be provided");
+                vb.AddValidationMessage(vb.PathName, null,
+                    "Either OriginalText or DisplayName or a NullFlavour must be provided");
             }
 
             if (Translations != null)
@@ -242,7 +247,8 @@ namespace Nehta.VendorLibrary.CDA.SCSModel.Common
 
             if (QualifierCodes != null && OriginalText.IsNullOrEmptyWhitespace())
             {
-                vb.AddValidationMessage(vb.PathName + "QualifierCodes & OriginalText", null, "OriginalText must be provided with QualifierCodes");
+                vb.AddValidationMessage(vb.PathName + "QualifierCodes & OriginalText", null,
+                    "OriginalText must be provided with QualifierCodes");
             }
         }
 

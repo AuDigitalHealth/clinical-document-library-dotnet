@@ -16,6 +16,7 @@ using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Runtime.Serialization;
+using System.Text;
 using JetBrains.Annotations;
 using Nehta.VendorLibrary.Common;
 
@@ -50,6 +51,19 @@ namespace Nehta.VendorLibrary.CDA.SCSModel.Common
         [CanBeNull]
         [DataMember]
         public String Units { get; set; }
+
+        /// <summary>
+        /// Unit
+        /// </summary>
+        [CanBeNull]
+        [DataMember]
+        public String UnitDisplayName { get; set; }
+
+        /// <summary>
+        /// Whether the range includes the bounds e.g. "less than or equal to 5" or excludes the bounds e.g. "less than 5".
+        /// </summary>
+        [DataMember]
+        public bool Inclusive { get; set; } = true;
         #endregion
 
         #region Constructors
@@ -67,10 +81,25 @@ namespace Nehta.VendorLibrary.CDA.SCSModel.Common
         public void Validate(string path, List<ValidationMessage> messages)
         {
             var validationBuilder = new ValidationBuilder(path, messages);
+            
+            if (!High.HasValue)
+            {
+                // If you don't have a high you must have a low
+                validationBuilder.ArgumentRequiredCheck("Low", Low);
+            }
+            
+            if (!Low.HasValue)
+            {
+                // If you don't have a low you must have a high
+                validationBuilder.ArgumentRequiredCheck("High", High);
+            }
 
-            validationBuilder.ArgumentRequiredCheck("High", High);
-            validationBuilder.ArgumentRequiredCheck("Low", Low);
-            validationBuilder.ArgumentRequiredCheck("Unit", Units);
+            validationBuilder.ArgumentRequiredCheck("Units", Units);
+
+            if (High.HasValue && Low.HasValue && !Inclusive)
+            {
+                validationBuilder.AddValidationMessage("Inclusive", Inclusive.ToString(), "Bounded intervals must be inclusive");
+            }
         }
 
         #endregion
@@ -82,12 +111,39 @@ namespace Nehta.VendorLibrary.CDA.SCSModel.Common
         {
             get
             {
-                var narrative = String.Empty;
+                var narrative = new StringBuilder();
 
-                narrative += High.HasValue ? "High: " + High.Value.ToString(CultureInfo.InvariantCulture) + Units + " " : String.Empty;
-                narrative += Low.HasValue ? "Low: " + Low.Value.ToString(CultureInfo.InvariantCulture) + Units + " " : String.Empty;
+                if (High.HasValue && Low.HasValue) // bounded
+                {
+                    narrative.Append(Low.Value.ToString(CultureInfo.InvariantCulture));
+                    narrative.Append(" - ");
+                    narrative.Append(High.Value.ToString(CultureInfo.InvariantCulture));
+                }
+                else if (High.HasValue && !Low.HasValue) // right-bounded
+                {
+                    narrative.Append("<");
+                    if (Inclusive) narrative.Append("=");
+                    narrative.Append(" ");
+                    narrative.Append(High.Value.ToString(CultureInfo.InvariantCulture));
+                }
+                else if (Low.HasValue && !High.HasValue) // left-bounded
+                {
+                    narrative.Append(">");
+                    if (Inclusive) narrative.Append("=");
+                    narrative.Append(" ");
+                    narrative.Append(Low.Value.ToString(CultureInfo.InvariantCulture));
+                }
+                else // unbounded
+                {
+                    narrative.Append("[unbounded interval]");
+                }
 
-                return narrative;
+                // Append units using the display name if given, otherwise the UCUM unit code.
+                var unitDisplay = UnitDisplayName.IsNullOrEmptyWhitespace() ? Units : UnitDisplayName;
+                narrative.Append(" ");
+                narrative.Append(unitDisplay);
+
+                return narrative.ToString();
             }
         }
     }

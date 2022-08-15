@@ -1,154 +1,18 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{D3CAE2FF-E5E0-487A-A99D-086422F96805}</ProjectGuid>
+    <TargetFrameworks>netstandard2.0;net45</TargetFrameworks>
     <OutputType>Library</OutputType>
-    <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>DigitalHealth.Hl7.Common</RootNamespace>
-    <AssemblyName>DigitalHealth.Hl7.Common</AssemblyName>
-    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
-    <FileAlignment>512</FileAlignment>
-    <TargetFrameworkProfile />
+    <GenerateAssemblyInfo>true</GenerateAssemblyInfo>
+    <GenerateDocumentationFile>True</GenerateDocumentationFile>
+    <EnableNETAnalyzers>false</EnableNETAnalyzers>
+    <AnalysisMode>AllEnabledByDefault</AnalysisMode>
+    <AnalysisLevel>latest</AnalysisLevel>
   </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <DebugSymbols>true</DebugSymbols>
-    <DebugType>full</DebugType>
-    <Optimize>false</Optimize>
-    <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
+  <!-- Package and assembly information -->
+  <PropertyGroup>
+    <Version>4.9.0.0</Version>
+    <Description>This Library converts a HL7 v2 message into a CDA document</Description>
+    <Company>Australian Digital Health Agency</Company>
+    <Copyright>Copyright ©2022</Copyright>
   </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <DebugType>pdbonly</DebugType>
-    <Optimize>true</Optimize>
-    <OutputPath>bin\Release\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-  </PropertyGroup>
-  <ItemGroup>
-    <Reference Include="System" />
-    <Reference Include="System.Core" />
-    <Reference Include="System.Xml.Linq" />
-    <Reference Include="System.Data.DataSetExtensions" />
-    <Reference Include="Microsoft.CSharp" />
-    <Reference Include="System.Data" />
-    <Reference Include="System.Xml" />
-  </ItemGroup>
-  <ItemGroup>
-    <Compile Include="ConstantsResource.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>ConstantsResource.resx</DependentUpon>
-    </Compile>
-    <Compile Include="DataStructure\AUI.cs" />
-    <Compile Include="DataStructure\CE.cs" />
-    <Compile Include="DataStructure\CN.cs" />
-    <Compile Include="DataStructure\CP.cs" />
-    <Compile Include="DataStructure\CQ.cs" />
-    <Compile Include="DataStructure\CX.cs" />
-    <Compile Include="DataStructure\DLD.cs" />
-    <Compile Include="DataStructure\DLN.cs" />
-    <Compile Include="DataStructure\EI.cs" />
-    <Compile Include="DataStructure\EIP.cs" />
-    <Compile Include="DataStructure\FC.cs" />
-    <Compile Include="DataStructure\FN.cs" />
-    <Compile Include="DataStructure\HD.cs" />
-    <Compile Include="DataStructure\JCC.cs" />
-    <Compile Include="DataStructure\MO.cs" />
-    <Compile Include="DataStructure\MOC.cs" />
-    <Compile Include="DataStructure\MSG.cs" />
-    <Compile Include="DataStructure\NDL.cs" />
-    <Compile Include="DataStructure\OSD.cs" />
-    <Compile Include="DataStructure\PL.cs" />
-    <Compile Include="DataStructure\PRL.cs" />
-    <Compile Include="DataStructure\PT.cs" />
-    <Compile Include="DataStructure\RI.cs" />
-    <Compile Include="DataStructure\SPS.cs" />
-    <Compile Include="DataStructure\TQ.cs" />
-    <Compile Include="DataStructure\TS.cs" />
-    <Compile Include="DataStructure\VID.cs" />
-    <Compile Include="DataStructure\XAD.cs" />
-    <Compile Include="DataStructure\XCN.cs" />
-    <Compile Include="DataStructure\XON.cs" />
-    <Compile Include="DataStructure\XPN.cs" />
-    <Compile Include="DataStructure\XTN.cs" />
-    <Compile Include="Enumerators\IdentifierTypeCode.cs" />
-    <Compile Include="Enumerators\TelecommunicationEquipmentType.cs" />
-    <Compile Include="Enumerators\TelecommunicationUseCode.cs" />
-    <Compile Include="Exceptions\HL7MessageErrorException.cs" />
-    <Compile Include="Exceptions\HL7MessageInfoException.cs" />
-    <Compile Include="HL7AcknowledgementFactory.cs" />
-    <Compile Include="HL7Component.cs" />
-    <Compile Include="HL7DateTime.cs" />
-    <Compile Include="HL7Field.cs" />
-    <Compile Include="HL7Message.cs" />
-    <Compile Include="Exceptions\HL7ParseException.cs" />
-    <Compile Include="HL7Segment.cs" />
-    <Compile Include="HL7SegmentGroup.cs" />
-    <Compile Include="HL7Separators.cs" />
-    <Compile Include="Message\HL7Acknowledgement.cs" />
-    <Compile Include="Message\HL7GenericPasMessage.cs" />
-    <Compile Include="Message\HL7GenericMessage.cs" />
-    <Compile Include="Message\MessageTypes.Designer.cs">
-      <DependentUpon>MessageTypes.resx</DependentUpon>
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-    </Compile>
-    <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="SegmentGroup\AppointmentInformationGeneralGroup.cs" />
-    <Compile Include="SegmentGroup\AppointmentInformationLocationGroup.cs" />
-    <Compile Include="SegmentGroup\AppointmentInformationPersonnelGroup.cs" />
-    <Compile Include="SegmentGroup\AppointmentInformationServiceGroup.cs" />
-    <Compile Include="SegmentGroup\ObservationGroup.cs" />
-    <Compile Include="SegmentGroup\OrderGroup.cs" />
-    <Compile Include="SegmentGroup\ResourceGroup.cs" />
-    <Compile Include="Segment\AIG.cs" />
-    <Compile Include="Segment\AIL.cs" />
-    <Compile Include="Segment\AIP.cs" />
-    <Compile Include="Segment\AIS.cs" />
-    <Compile Include="Segment\AL1.cs" />
-    <Compile Include="Segment\DG1.cs" />
-    <Compile Include="Segment\DRG.cs" />
-    <Compile Include="Segment\ERR.cs" />
-    <Compile Include="Segment\EVN.cs" />
-    <Compile Include="Segment\IN1.cs" />
-    <Compile Include="Segment\MRG.cs" />
-    <Compile Include="Segment\MSA.cs" />
-    <Compile Include="Segment\MSH.cs" />
-    <Compile Include="Segment\NK1.cs" />
-    <Compile Include="Segment\NTE.cs" />
-    <Compile Include="Segment\OBR.cs" />
-    <Compile Include="Segment\OBX.cs" />
-    <Compile Include="Segment\ORC.cs" />
-    <Compile Include="Segment\PID.cs" />
-    <Compile Include="Segment\PV1.cs" />
-    <Compile Include="Segment\PV2.cs" />
-    <Compile Include="Segment\RGS.cs" />
-    <Compile Include="Segment\SCH.cs" />
-    <Compile Include="Segment\ZPD.cs" />
-    <Compile Include="Segment\ZVI.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="ConstantsResource.resx">
-      <Generator>ResXFileCodeGenerator</Generator>
-      <LastGenOutput>ConstantsResource.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Message\MessageTypes.resx">
-      <Generator>ResXFileCodeGenerator</Generator>
-      <LastGenOutput>MessageTypes.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
-  </ItemGroup>
-  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
-       Other similar extension points exist, see Microsoft.Common.targets.
-  <Target Name="BeforeBuild">
-  </Target>
-  <Target Name="AfterBuild">
-  </Target>
-  -->
 </Project>
