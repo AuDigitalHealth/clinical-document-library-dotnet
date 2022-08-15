@@ -380,7 +380,8 @@ namespace CDA.R5Samples
             }
             else
             {
-                // Care Agency Employee Identifier
+                // Care Agency Employee Identifier - change to Agent
+                author.Role = BaseCDAModel.CreateRole(RoleCodeAndRoleClassCodes.Agent);
 
                 person.Identifiers.Add(
                     BaseCDAModel.CreateIdentifier(

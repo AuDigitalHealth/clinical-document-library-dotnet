@@ -31,6 +31,11 @@
     <PackageReference Include="Nehta.VendorLibrary.Common" Version="4.3.0" />
   </ItemGroup>
   <ItemGroup>
+    <InternalsVisibleTo Include="Nehta.VendorLibrary.CDA.Generator.v3" />
+	<InternalsVisibleTo Include="Nehta.VendorLibrary.CDA.Generator.v2" />
+	<InternalsVisibleTo Include="Nehta.VendorLibrary.CDA.Medicare" />
+  </ItemGroup>  
+  <ItemGroup>
     <Compile Remove="Common\Interfaces\PersonOrganisation\IPersonWithOrganisations.cs" />
   </ItemGroup>
 </Project>

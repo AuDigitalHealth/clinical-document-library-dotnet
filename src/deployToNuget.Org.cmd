@@ -1,7 +1,5 @@
 del *.nupkg
 
-msbuild CDA.sln /p:Configuration=Release
-
 REM Use dotnet for packaging now
 REM NuGet.exe pack CDA.Generator/CDA.Generator.csproj -Properties Configuration=Release -IncludeReferencedProjects
 REM NuGet.exe pack DigitalHealth.Hl7ToCdaTransformer/DigitalHealth.Hl7ToCdaTransformer.csproj -Properties Configuration=Release -IncludeReferencedProjects
