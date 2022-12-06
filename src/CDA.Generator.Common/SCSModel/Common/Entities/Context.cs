@@ -680,8 +680,8 @@ namespace Nehta.VendorLibrary.CDA.SCSModel.Common
 
                 if (Author.Participant != null)
                 {
-                    vb.ArgumentRequiredCheck(vb.Path + "Author.Participant.ElectronicCommunicationDetails", Author.Participant.ElectronicCommunicationDetails);
-                    vb.ArgumentRequiredCheck(vb.Path + "Author.Participant.Addresses", Author.Participant.Addresses);
+                    vb.ArgumentRequiredCheck("Author.Participant.ElectronicCommunicationDetails", Author.Participant.ElectronicCommunicationDetails);
+                    vb.ArgumentRequiredCheck("Author.Participant.Addresses", Author.Participant.Addresses);
 
                     if (Author.Participant.Person != null)
                         vb.ArgumentRequiredCheck("Author.Participant.Person.Organisation", Author.Participant.Person.Organisation);
@@ -734,8 +734,8 @@ namespace Nehta.VendorLibrary.CDA.SCSModel.Common
 
                 if (Author.Participant != null)
                 {
-                    vb.ArgumentRequiredCheck(vb.Path + "Author.Participant.ElectronicCommunicationDetails", Author.Participant.ElectronicCommunicationDetails);
-                    vb.ArgumentRequiredCheck(vb.Path + "Author.Participant.Addresses", Author.Participant.Addresses);
+                    vb.ArgumentRequiredCheck("Author.Participant.ElectronicCommunicationDetails", Author.Participant.ElectronicCommunicationDetails);
+                    vb.ArgumentRequiredCheck("Author.Participant.Addresses", Author.Participant.Addresses);
 
                     if (Author.Participant.Person != null)
                         vb.ArgumentRequiredCheck("Author.Participant.Person.Organisation", Author.Participant.Person.Organisation);

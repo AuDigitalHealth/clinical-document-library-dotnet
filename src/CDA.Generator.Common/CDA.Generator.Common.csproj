@@ -10,7 +10,7 @@
   </PropertyGroup>
   <!-- Package and assembly information -->
   <PropertyGroup>
-    <Version>4.9.1.0</Version>
+    <Version>4.9.2.0</Version>
     <Description>This Library helps generate Agency defined CDA documents</Description>
     <Company>Australian Digital Health Agency</Company>
     <Copyright>Copyright ©2022</Copyright>
@@ -34,7 +34,7 @@
     <InternalsVisibleTo Include="Nehta.VendorLibrary.CDA.Generator.v3" />
 	<InternalsVisibleTo Include="Nehta.VendorLibrary.CDA.Generator.v2" />
 	<InternalsVisibleTo Include="Nehta.VendorLibrary.CDA.Medicare" />
-  </ItemGroup>  
+  </ItemGroup>   
   <ItemGroup>
     <Compile Remove="Common\Interfaces\PersonOrganisation\IPersonWithOrganisations.cs" />
   </ItemGroup>

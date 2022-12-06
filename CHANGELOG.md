@@ -1,6 +1,15 @@
 ## Change Log/Revision History
 
 
+4.9.2 - Reference Platform Clinical Document Library (Dec 2022)
+----------------------------------------------------
+- Electronic Comms - throw fault when type is not supported
+- Minor code clean up 
+
+4.9.1 - Reference Platform Clinical Document Library (Aug 2022)
+----------------------------------------------------
+- Fixed nuget package
+
 4.9.0 - Reference Platform Clinical Document Library (Aug 2022)
 ----------------------------------------------------
 - Added support for netstandard2.0

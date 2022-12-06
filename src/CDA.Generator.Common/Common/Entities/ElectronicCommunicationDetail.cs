@@ -59,22 +59,23 @@ namespace Nehta.VendorLibrary.CDA.Common
             get
             {
 	            // Begin the switch.
-	            switch (Medium)
-	            {
-	                case ElectronicCommunicationMedium.Telephone:
+                switch (Medium)
+                {
+                    case ElectronicCommunicationMedium.Telephone:
                     case ElectronicCommunicationMedium.Mobile:
-	                case ElectronicCommunicationMedium.Page:
-	                    {
-                            return "tel:" + _address;	                        
-	                    }
+                    case ElectronicCommunicationMedium.Page:
+                    {
+                        return "tel:" + _address;
+                    }
                     case ElectronicCommunicationMedium.Fax:
-                        {
-                            return "fax:" + _address;
-                        }
+                    {
+                        return "fax:" + _address;
+                    }
                     case ElectronicCommunicationMedium.Email:
-                        {
-                            return "mailto:" + _address;
-                        }
+                    {
+                        return "mailto:" + _address;
+                    }
+
                     case ElectronicCommunicationMedium.NFS:
                     {
                         return "nfs:" + _address;
@@ -87,6 +88,10 @@ namespace Nehta.VendorLibrary.CDA.Common
                     {
                         return "http:" + _address;
                     }
+                    case ElectronicCommunicationMedium.FTP:
+                    {
+                        return "ftp:" + _address;
+                    }
                     case ElectronicCommunicationMedium.MLLP:
                     {
                         return "mllp:" + _address;
@@ -95,9 +100,9 @@ namespace Nehta.VendorLibrary.CDA.Common
                     {
                         return "modem:" + _address;
                     }
-                    default :
-                    return ElectronicCommunicationMedium.Modem + " "  + _address;
-	            }
+                    default:
+                        throw new ArgumentException($"Unsupported address type: {Medium} for {_address}");
+                }
             }
             set
             {

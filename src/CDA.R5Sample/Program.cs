@@ -51,6 +51,10 @@ namespace CDA.R5Samples
             var minGoalsOfCareAuthorHealthcareProviderSampleCda = advanceCareInformationSample.MinPopulatedAdvanceCareInformation("GoalsOfCareSampleAuthorHealthcareProvider_3A_Min.xml", AuthorType.AuthorHealthcareProvider, DocumentType.AdvanceCareInformationGoalsOfCare);
             var maxGoalsOfCareAuthorHealthcareProviderSampleCda = advanceCareInformationSample.MaxPopulatedAdvanceCareInformation("GoalsOfCareSampleAuthorHealthcareProvider_3A_Max.xml", AuthorType.AuthorHealthcareProvider, DocumentType.AdvanceCareInformationGoalsOfCare);
 
+            var minGoalsOfCareAuthorNonHealthcareProviderSampleCda = advanceCareInformationSample.MinPopulatedAdvanceCareInformation("GoalsOfCareSampleAuthorNonHealthcareProvider_3A_Min.xml", AuthorType.AuthorNonHealthcareProvider, DocumentType.AdvanceCareInformationGoalsOfCare);
+            var maxGoalsOfCareAuthorNonHealthcareProviderSampleCda = advanceCareInformationSample.MaxPopulatedAdvanceCareInformation("GoalsOfCareSampleAuthorNonHealthcareProvider_3A_Max.xml", AuthorType.AuthorNonHealthcareProvider, DocumentType.AdvanceCareInformationGoalsOfCare);
+
+
             // Pathology
             var ePathologyResultReportSampleCode = new PathologyResultReportSample();
             var minPathologyReportContent = ePathologyResultReportSampleCode.MinPopulatedPathologyResultReport("PathologyResultReport_3A_Min.xml");

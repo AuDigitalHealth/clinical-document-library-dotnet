@@ -110,18 +110,18 @@ namespace Nehta.VendorLibrary.CDA.SCSModel.DischargeSummary
             vb.ChoiceCheck(encounterPeriod);
 
 
-            if (vb.ArgumentRequiredCheck(vb.Path + "SeparationMode", SeparationMode))
+            if (vb.ArgumentRequiredCheck("SeparationMode", SeparationMode))
             {
-                SeparationMode.Validate(vb.Path + "SeparationMode", vb.Messages);
+                SeparationMode.Validate("SeparationMode", vb.Messages);
             }
 
-            if (vb.ArgumentRequiredCheck(vb.Path + "ResponsibleHealthProfessional", ResponsibleHealthProfessional))
+            if (vb.ArgumentRequiredCheck("ResponsibleHealthProfessional", ResponsibleHealthProfessional))
             {
                 if (ResponsibleHealthProfessional != null)
                     ResponsibleHealthProfessional.Validate(vb.Path + "ResponsibleHealthProfessional", messages);
             }
 
-            if (vb.ArgumentRequiredCheck(vb.Path + "Specialty", Specialty))
+            if (vb.ArgumentRequiredCheck("Specialty", Specialty))
             {
                 if (Specialty != null)
                     Specialty.ForEach(specialty => specialty.Validate(vb.Path + "Specialty", messages));

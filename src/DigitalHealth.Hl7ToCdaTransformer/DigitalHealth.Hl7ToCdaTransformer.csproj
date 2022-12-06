@@ -13,7 +13,7 @@
   </PropertyGroup>
   <!-- Package and assembly information -->
   <PropertyGroup>
-    <Version>4.9.1.0</Version>
+    <Version>4.9.2.0</Version>
     <Description>This Library converts a HL7 v2 message into a CDA document</Description>
     <Company>Australian Digital Health Agency</Company>
     <Authors>$(Company)</Authors>
@@ -36,6 +36,9 @@
   <ItemGroup>
     <Compile Remove="Models\Hl7MessageInfoException.cs" />
   </ItemGroup>
+  <ItemGroup>
+	<InternalsVisibleTo Include="DigitalHealth.Hl7ToCdaTransformer.Test" />
+  </ItemGroup>    
   <ItemGroup>
     <Content Include="..\..\LICENSE.txt" Link="Properties\LICENSE.txt" PackagePath="LICENSE.txt" />
   </ItemGroup>
