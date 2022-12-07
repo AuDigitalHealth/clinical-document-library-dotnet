@@ -88,6 +88,11 @@ namespace Nehta.VendorLibrary.CDA.Common
                     {
                         return "http:" + _address;
                     }
+                    case ElectronicCommunicationMedium.HTTPS:
+                    {
+                        // Only supported in certain TPs at the moment
+                        return "https:" + _address;
+                    }
                     case ElectronicCommunicationMedium.FTP:
                     {
                         return "ftp:" + _address;

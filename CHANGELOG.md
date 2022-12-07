@@ -1,5 +1,8 @@
 ## Change Log/Revision History
 
+4.9.3 - Reference Platform Clinical Document Library (Dec 2022)
+----------------------------------------------------
+- Electronic Comms - support for HTTPS
 
 4.9.2 - Reference Platform Clinical Document Library (Dec 2022)
 ----------------------------------------------------

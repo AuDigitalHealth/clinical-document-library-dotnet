@@ -69,6 +69,13 @@ namespace Nehta.VendorLibrary.CDA.Common.Enums
         HTTP,
 
         /// <summary>
+        /// HTTPS
+        /// </summary>
+        [EnumMember]
+        [Name(Name = "HTTPS")]
+        HTTPS,
+
+        /// <summary>
         /// MLLP
         /// </summary>
         [EnumMember]
