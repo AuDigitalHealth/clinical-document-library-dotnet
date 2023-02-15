@@ -8164,8 +8164,10 @@ namespace Nehta.VendorLibrary.CDA.Generator
                 if (documentDetails.DocumentProvenance.Author != null)
                 {
                     var author = documentDetails.DocumentProvenance.Author;
+                    string organisationName = null, personName = null, addresses = null, authordate = null;
 
-                    string organisationName = null, personName = null, addresses = null;
+                    authordate = documentDetails.DocumentProvenance.Author.AuthorParticipationPeriodOrDateTimeAuthored
+                        .NarrativeText();
 
                     if (author.Participant != null)
                     {
@@ -8180,6 +8182,17 @@ namespace Nehta.VendorLibrary.CDA.Generator
                             personName = BuildPersonNames(author.Participant.Person.PersonNames);
                         }
                     }
+
+                    // Date
+                    if (!authordate.IsNullOrEmptyWhitespace())
+                        narrativedDocumentProvenance.Add
+                        (
+                            new List<Object>
+                            {
+                                "Date advance care planning document was written",
+                                authordate
+                            }
+                        );
 
                     // Author Organisation
                     if (!organisationName.IsNullOrEmptyWhitespace())
@@ -8198,7 +8211,8 @@ namespace Nehta.VendorLibrary.CDA.Generator
                         (
                             new List<Object>
                             {
-                                "Author Person Name",
+                                // "Author Person Name",
+                                "Author of the advance care planning document",
                                 personName
                             }
                         );
@@ -8209,10 +8223,12 @@ namespace Nehta.VendorLibrary.CDA.Generator
                         (
                             new List<Object>
                             {
-                                "Address / Contact",
+                                // "Address / Contact",
+                                "Address and Contact number for the author of the advance care planning document",
                                 addresses
                             }
                         );
+
                 }
 
                 // Struc Doc Table List

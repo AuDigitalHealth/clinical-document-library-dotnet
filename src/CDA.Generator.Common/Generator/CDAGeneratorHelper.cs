@@ -13640,26 +13640,23 @@ namespace Nehta.VendorLibrary.CDA.Generator
 
             if (codableText != null)
             {
+                if (codableText.NullFlavour.HasValue)
+                {
+                    return new CD
+                    {
+                        nullFlavor = (NullFlavor)Enum.Parse(typeof(NullFlavor),
+                            codableText.NullFlavour.Value.GetAttributeValue<NameAttribute, string>(x => x.Code)),
+                        nullFlavorSpecified = true
+                    };
+                }
+
                 cd = new CD();
 
                 cd.code = !codableText.Code.IsNullOrEmptyWhitespace() ? codableText.Code : null;
-                cd.codeSystem = !codableText.CodeSystemCode.IsNullOrEmptyWhitespace()
-                    ? codableText.CodeSystemCode
-                    : null;
-                cd.codeSystemName = !codableText.CodeSystemName.IsNullOrEmptyWhitespace()
-                    ? codableText.CodeSystemName
-                    : null;
-                cd.codeSystemVersion = !codableText.CodeSystemVersion.IsNullOrEmptyWhitespace()
-                    ? codableText.CodeSystemVersion
-                    : null;
+                cd.codeSystem = !codableText.CodeSystemCode.IsNullOrEmptyWhitespace() ? codableText.CodeSystemCode : null;
+                cd.codeSystemName = !codableText.CodeSystemName.IsNullOrEmptyWhitespace() ? codableText.CodeSystemName : null;
+                cd.codeSystemVersion = !codableText.CodeSystemVersion.IsNullOrEmptyWhitespace() ? codableText.CodeSystemVersion : null;
                 cd.displayName = !codableText.DisplayName.IsNullOrEmptyWhitespace() ? codableText.DisplayName : null;
-
-                if (codableText.NullFlavour.HasValue)
-                {
-                    cd.nullFlavor = (NullFlavor)Enum.Parse(typeof(NullFlavor),
-                        codableText.NullFlavour.Value.GetAttributeValue<NameAttribute, string>(x => x.Code));
-                    cd.nullFlavorSpecified = true;
-                }
 
                 if (!string.IsNullOrEmpty(codableText.OriginalText))
                 {
@@ -13669,10 +13666,7 @@ namespace Nehta.VendorLibrary.CDA.Generator
                 if (codableText.Translations != null && codableText.Translations.Any())
                 {
                     var translations = new List<CD>();
-
-                    codableText.Translations.ForEach(translation =>
-                        translations.Add(CreateConceptDescriptor(translation)));
-
+                    codableText.Translations.ForEach(translation => translations.Add(CreateConceptDescriptor(translation)));
                     cd.translation = translations.ToArray();
                 }
 
@@ -13680,7 +13674,6 @@ namespace Nehta.VendorLibrary.CDA.Generator
                 {
                     cd.qualifier = CreateQualifierCodes(codableText.QualifierCodes);
                 }
-
             }
 
             return cd;
@@ -13688,11 +13681,12 @@ namespace Nehta.VendorLibrary.CDA.Generator
 
         private static CD CreateConceptDescriptor(ICodableTranslation codableTranslation)
         {
+            // Add fix here
+
             CD cd = null;
 
             if (codableTranslation != null)
             {
-
                 if (codableTranslation.NullFlavour.HasValue)
                 {
                     return new CD
@@ -13707,23 +13701,13 @@ namespace Nehta.VendorLibrary.CDA.Generator
 
                 if (codableTranslation.HasCodeSystem)
                 {
-                    cd.code = codableTranslation.Code;
-                    cd.codeSystem = codableTranslation.CodeSystemCode;
-                    cd.codeSystemName = codableTranslation.CodeSystemName;
-                    var version = codableTranslation.CodeSystemVersion;
-                    if (!string.IsNullOrEmpty(version))
-                    {
-                        cd.codeSystemVersion = version;
-                    }
+                    cd.code = !codableTranslation.Code.IsNullOrEmptyWhitespace() ? codableTranslation.Code : null;
+                    cd.codeSystem = !codableTranslation.CodeSystemCode.IsNullOrEmptyWhitespace() ? codableTranslation.CodeSystemCode : null;
+                    cd.codeSystemName = !codableTranslation.CodeSystemName.IsNullOrEmptyWhitespace() ? codableTranslation.CodeSystemName : null;
+                    cd.codeSystemVersion = !codableTranslation.CodeSystemVersion.IsNullOrEmptyWhitespace() ? codableTranslation.CodeSystemVersion : null;
+                    cd.displayName = !codableTranslation.DisplayName.IsNullOrEmptyWhitespace() ? codableTranslation.DisplayName : null;
                 }
-
-                if (!string.IsNullOrEmpty(codableTranslation.DisplayName))
-                {
-                    cd.displayName = codableTranslation.DisplayName;
-                }
-
-
-                if (!codableTranslation.HasCodeSystem)
+                else
                 {
                     cd.nullFlavor = NullFlavor.OTH;
                     cd.nullFlavorSpecified = true;
@@ -14465,15 +14449,8 @@ namespace Nehta.VendorLibrary.CDA.Generator
 
                 if (personName.Titles != null && personName.Titles.Any())
                 {
-                    var titleArrary = new String[personName.Titles.Count];
-
-                    for (var i = 0; i < personName.Titles.Count; i++)
-                    {
-                        titleArrary[i] = personName.Titles[i];
-                    }
-
-                    participantName.prefix = new enprefix[1];
-                    participantName.prefix[0] = new enprefix { Text = titleArrary };
+                    participantName.prefix =
+                            (from g in personName.Titles select new enprefix { Text = new string[] { g } }).ToArray();
                 }
 
                 participantName.family = new enfamily[1];

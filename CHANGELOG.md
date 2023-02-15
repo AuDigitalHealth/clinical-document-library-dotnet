@@ -1,5 +1,11 @@
 ## Change Log/Revision History
 
+4.9.4 - Reference Platform Clinical Document Library (Feb 2023)
+----------------------------------------------------
+- Fixed multiple titles in output cda
+- Updated Narrative for ACPD
+- Improved ICodableText and ICodableTranslation mapping
+
 4.9.3 - Reference Platform Clinical Document Library (Dec 2022)
 ----------------------------------------------------
 - Electronic Comms - support for HTTPS
