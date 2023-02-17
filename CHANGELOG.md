@@ -1,5 +1,9 @@
 ## Change Log/Revision History
 
+4.10.0 - Reference Platform Clinical Document Library (Feb 2023)
+----------------------------------------------------
+- Raised min framework platform to 4.5.2
+
 4.9.4 - Reference Platform Clinical Document Library (Feb 2023)
 ----------------------------------------------------
 - Fixed multiple titles in output cda

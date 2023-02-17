@@ -1,6 +1,6 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <TargetFrameworks>netstandard2.0;net45</TargetFrameworks>
+    <TargetFrameworks>netstandard2.0;net452</TargetFrameworks>
     <OutputType>Library</OutputType>
     <RootNamespace>Nehta.VendorLibrary.CDA</RootNamespace>
     <AssemblyName>Nehta.VendorLibrary.CDA.Generator.v3</AssemblyName>
@@ -12,7 +12,7 @@
   </PropertyGroup>
   <!-- Package and assembly information -->
   <PropertyGroup>
-    <Version>4.9.4.0</Version>
+    <Version>4.10.0.0</Version>
     <Description>This Library helps generate Agency defined CDA documents</Description>
     <Company>Australian Digital Health Agency</Company>
     <Authors>$(Company)</Authors>
