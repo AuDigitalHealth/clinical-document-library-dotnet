@@ -1,5 +1,9 @@
 ## Change Log/Revision History
 
+4.10.1 - Reference Platform Clinical Document Library (Mar 2023)
+----------------------------------------------------
+- relaxed address nullflavor
+
 4.10.0 - Reference Platform Clinical Document Library (Feb 2023)
 ----------------------------------------------------
 - Raised min framework platform to 4.5.2

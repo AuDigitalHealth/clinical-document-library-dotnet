@@ -10528,6 +10528,16 @@ namespace Nehta.VendorLibrary.CDA.Generator
 
                     returnValue.nullFlavorSpecified = true;
 
+                    // Add support for address rows with Nullflavor
+                    if (address.AustralianAddress != null)
+                    {
+                        FillAustralianAddress(returnValue, address.AustralianAddress);
+                    }
+                    else if (address.InternationalAddress != null)
+                    {
+                        FillInternationalAddress(returnValue, address.InternationalAddress);
+                    }
+
                     return returnValue;
                 }
 
