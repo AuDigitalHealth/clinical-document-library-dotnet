@@ -35,13 +35,13 @@ using Entitlement = Nehta.VendorLibrary.CDA.SCSModel.Common.Entitlement;
 namespace CDA.PSML
 {
     /// <summary>
-    /// This project is intended to demonstrate how a PSML (Pharmacy Shared Medicines) Sample CDA document can be created.
+    /// This project is intended to demonstrate how ACTS Sample CDA document can be created.
     /// 
     /// The project contains two samples, the first is designed to create a fully populated CDA document, including
     /// all of the optional sections and entries. The second sample only populates the mandatory sections and entries.
     /// 
     /// The CDA model is split into three distinct sections, each of which needs to be created via the 
-    /// PCML class, and then populated with data as appropriate. The three sections that need to be
+    /// ACTS class, and then populated with data as appropriate. The three sections that need to be
     /// created and hydrated with data are:
     /// 
     ///     CDA Context (Clinical Document Architecture - Context)
@@ -59,7 +59,7 @@ namespace CDA.PSML
     /// The SCS Content typically contains information that is to be represented with the body of the document.
     /// </summary>
   
-    public class PSMLSample
+    public class ACTSSample
     {
         #region Properties
 
@@ -78,23 +78,25 @@ namespace CDA.PSML
 
         #endregion
 
+        #region Create and Generate CDA
+
         /// <summary>
         /// This sample populates both the mandatory and optional Sections / Entries; as a result this sample
         /// includes all of the sections within the body and each section includes at least one example for 
         /// each of its optional entries.
         /// </summary>
-        public XmlDocument MinPopulatedPSMLAuthorHealthcareProviderSample_1A(string fileName)
+        public XmlDocument MinPopulatedACTS_ResidentialCareHealthSummary_Sample_1A(string fileName)
         {
             XmlDocument xmlDoc = null;
 
-            var PSML = PopulatePSML_1A(true);
+            var ACTS = PopulateACTS_1A(CDADocumentType.ResidentialCareHealthSummary, true);
 
             try
             {
                 CDAGenerator.NarrativeGenerator = new CDANarrativeGenerator();
 
                 //Pass the Child Parent Questionnaire model into the GeneratePCML method 
-                xmlDoc = CDAGenerator.GeneratePCML(PSML);
+                xmlDoc = CDAGenerator.GenerateACTS(ACTS, CDADocumentType.ResidentialCareHealthSummary);
 
                 using (var writer = XmlWriter.Create(OutputFolderPath + @"\" + fileName, new XmlWriterSettings { Indent = true }))
                 {
@@ -118,18 +120,18 @@ namespace CDA.PSML
         /// includes all of the sections within the body and each section includes at least one example for 
         /// each of its optional entries.
         /// </summary>
-        public XmlDocument MaxPopulatedPSMLAuthorHealthcareProviderSample_1A(string fileName)
+        public XmlDocument MaxPopulatedACTS_ResidentialCareHealthSummary_Sample_1A(string fileName)
         {
             XmlDocument xmlDoc = null;
 
-            var PSML = PopulatePSML_1A(false);
+            var acts = PopulateACTS_1A(CDADocumentType.ResidentialCareHealthSummary, false);
             
             try
             {
                 CDAGenerator.NarrativeGenerator = new CDANarrativeGenerator();
 
                 //Pass the Child Parent Questionnaire model into the GeneratePCML method 
-                xmlDoc = CDAGenerator.GeneratePCML(PSML);
+                xmlDoc = CDAGenerator.GenerateACTS(acts, CDADocumentType.ResidentialCareHealthSummary);
 
                 using (var writer = XmlWriter.Create(OutputFolderPath + @"\" + fileName, new XmlWriterSettings { Indent = true }))
                 {
@@ -147,27 +149,24 @@ namespace CDA.PSML
 
             return xmlDoc;
         }
-
-
-        // ***** 1B documents - NOT REQUIRED YET ******
 
         /// <summary>
         /// This sample populates both the mandatory and optional Sections / Entries; as a result this sample
         /// includes all of the sections within the body and each section includes at least one example for 
         /// each of its optional entries.
         /// </summary>
-        public XmlDocument MinPopulatedPSMLAuthorHealthcareProviderSample_1B(string fileName)
+        public XmlDocument MinPopulatedACTS_ResidentialCareMedicationChart_Sample_1A(string fileName)
         {
             XmlDocument xmlDoc = null;
 
-            var PSML = PopulatePSML_1B(true);
+            var acts = PopulateACTS_1A(CDADocumentType.ResidentialCareHealthSummary, true);
 
             try
             {
                 CDAGenerator.NarrativeGenerator = new CDANarrativeGenerator();
 
                 //Pass the Child Parent Questionnaire model into the GeneratePCML method 
-                xmlDoc = CDAGenerator.GeneratePCML(PSML);
+                xmlDoc = CDAGenerator.GenerateACTS(acts, CDADocumentType.ResidentialCareMedicationChart);
 
                 using (var writer = XmlWriter.Create(OutputFolderPath + @"\" + fileName, new XmlWriterSettings { Indent = true }))
                 {
@@ -186,18 +185,89 @@ namespace CDA.PSML
             return xmlDoc;
         }
 
-        public XmlDocument MaxPopulatedPSMLAuthorHealthcareProviderSample_1B(string fileName)
+        /// <summary>
+        /// This sample populates both the mandatory and optional Sections / Entries; as a result this sample
+        /// includes all of the sections within the body and each section includes at least one example for 
+        /// each of its optional entries.
+        /// </summary>
+        public XmlDocument MaxPopulatedACTS_ResidentialCareMedicationChart_Sample_1A(string fileName)
         {
             XmlDocument xmlDoc = null;
 
-            var PSML = PopulatePSML_1B(false);
+            var acts = PopulateACTS_1A(CDADocumentType.ResidentialCareHealthSummary, false);
+
+            try
+            {
+                CDAGenerator.NarrativeGenerator = new CDANarrativeGenerator();
+
+                //Pass the Child Parent Questionnaire model into the GeneratePCML method 
+                xmlDoc = CDAGenerator.GenerateACTS(acts, CDADocumentType.ResidentialCareMedicationChart);
+
+                using (var writer = XmlWriter.Create(OutputFolderPath + @"\" + fileName, new XmlWriterSettings { Indent = true }))
+                {
+                    if (!fileName.IsNullOrEmptyWhitespace()) xmlDoc.Save(writer);
+                }
+            }
+            catch (ValidationException ex)
+            {
+                //Catch any validation exceptions
+                var validationMessages = ex.GetMessagesString();
+
+                //Handle any validation errors as appropriate.
+                throw;
+            }
+
+            return xmlDoc;
+        }
+
+        
+        /// <summary>
+        /// This sample populates both the mandatory and optional Sections / Entries; as a result this sample
+        /// includes all of the sections within the body and each section includes at least one example for 
+        /// each of its optional entries.
+        /// </summary>
+        public XmlDocument MinPopulatedACTS_ResidentialCareTransferReason_Sample_1B(string fileName)
+        {
+            XmlDocument xmlDoc = null;
+
+            var acts = PopulateACTS_1B(CDADocumentType.ResidentialCareTransferReason, true);
+
+            try
+            {
+                CDAGenerator.NarrativeGenerator = new CDANarrativeGenerator();
+
+                //Pass the Child Parent Questionnaire model into the GeneratePCML method 
+                xmlDoc = CDAGenerator.GenerateACTS(acts, CDADocumentType.ResidentialCareTransferReason);
+
+                using (var writer = XmlWriter.Create(OutputFolderPath + @"\" + fileName, new XmlWriterSettings { Indent = true }))
+                {
+                    if (!fileName.IsNullOrEmptyWhitespace()) xmlDoc.Save(writer);
+                }
+            }
+            catch (ValidationException ex)
+            {
+                //Catch any validation exceptions
+                var validationMessages = ex.GetMessagesString();
+
+                //Handle any validation errors as appropriate.
+                throw;
+            }
+
+            return xmlDoc;
+        }
+
+        public XmlDocument MaxPopulatedACTS_ResidentialCareTransferReason_Sample_1B(string fileName)
+        {
+            XmlDocument xmlDoc = null;
+
+            var acts = PopulateACTS_1B(CDADocumentType.ResidentialCareTransferReason, false);
 
             try
             {
                 CDAGenerator.NarrativeGenerator = new CDANarrativeGenerator();
 
                 //Pass the PCML model into the GeneratePCML method 
-                xmlDoc = CDAGenerator.GeneratePCML(PSML);
+                xmlDoc = CDAGenerator.GenerateACTS(acts, CDADocumentType.ResidentialCareTransferReason);
 
                 using (var writer = XmlWriter.Create(OutputFolderPath + @"\" + fileName, new XmlWriterSettings { Indent = true }))
                 {
@@ -216,6 +286,7 @@ namespace CDA.PSML
             return xmlDoc;
         }
 
+        #endregion
 
         #region Populate Methods
         /// <summary>
@@ -224,15 +295,15 @@ namespace CDA.PSML
         /// </summary>
         /// <param name="mandatorySectionsOnly">mandatorySectionsOnly</param>
         /// <returns>PCML</returns>
-        public static Nehta.VendorLibrary.CDA.Common.PCML PopulatePSML_1A(Boolean mandatorySectionsOnly)
+        public static Nehta.VendorLibrary.CDA.Common.ACTS PopulateACTS_1A(CDADocumentType cdaDocumentType, Boolean mandatorySectionsOnly)
         {
-            var pharmacySharedMedsList = Nehta.VendorLibrary.CDA.Common.PCML.CreatePCML();
+            var acts = Nehta.VendorLibrary.CDA.Common.ACTS.CreateACTS();
 
               // Include Logo
-            pharmacySharedMedsList.IncludeLogo = false;
+            acts.IncludeLogo = false;
 
               // Set Creation Time
-            pharmacySharedMedsList.DocumentCreationTime = new ISO8601DateTime(DateTime.Now);
+            acts.DocumentCreationTime = new ISO8601DateTime(DateTime.Now);
 
             #region Setup and populate the CDA context model
 
@@ -241,7 +312,10 @@ namespace CDA.PSML
 
             // Document Id
             cdaContext.DocumentId = BaseCDAModel.CreateIdentifier(BaseCDAModel.CreateOid(), null);
-            
+
+            // CDA Context Version
+            cdaContext.Version = "1";
+
             // Custodian
             cdaContext.Custodian = BaseCDAModel.CreateCustodian();
             GenericObjectReuseSample.HydrateCustodian(cdaContext.Custodian, mandatorySectionsOnly);
@@ -251,8 +325,6 @@ namespace CDA.PSML
             {
                 // Set Id  
                 cdaContext.SetId = BaseCDAModel.CreateIdentifier(BaseCDAModel.CreateOid(), null);
-                // CDA Context Version
-                cdaContext.Version = "1";
 
                 // Legal authenticator
                 cdaContext.LegalAuthenticator = BaseCDAModel.CreateLegalAuthenticator();
@@ -271,33 +343,32 @@ namespace CDA.PSML
             }
 
 
-            pharmacySharedMedsList.CDAContext = cdaContext;
+            acts.CDAContext = cdaContext;
             #endregion
 
             
             #region Setup and Populate the SCS Context model
             // Setup and Populate the SCS Context model
 
-            pharmacySharedMedsList.SCSContext = Nehta.VendorLibrary.CDA.Common.PCML.CreateSCSContext();
+            acts.SCSContext = Nehta.VendorLibrary.CDA.Common.PCML.CreateSCSContext();
 
             var authorHealthcareProvider = BaseCDAModel.CreateAuthorHealthcareProvider();
             GenericObjectReuseSample.HydrateAuthorHealthcareProvider(authorHealthcareProvider, mandatorySectionsOnly);
-            pharmacySharedMedsList.SCSContext.Author = authorHealthcareProvider;
+            acts.SCSContext.Author = authorHealthcareProvider;
 
             //Cannot use as a device : prohibited by CORE Level One
-            //pharmacyCuratedMedsList.SCSContext.Author = GenericObjectReuseSample.CreateAuthorDevice();
 
             if (!mandatorySectionsOnly)
             {
                 // Context>Encounter>HEALTHCARE FACILITY 
-                pharmacySharedMedsList.SCSContext.Encounter = new Encounter
+                acts.SCSContext.Encounter = new Encounter
                 {
                     HealthcareFacility = PopulateHealthcareFacility(mandatorySectionsOnly)
                 };
             }
 
-            pharmacySharedMedsList.SCSContext.SubjectOfCare = BaseCDAModel.CreateSubjectOfCare();
-            GenericObjectReuseSample.HydrateSubjectofCare(pharmacySharedMedsList.SCSContext.SubjectOfCare, mandatorySectionsOnly);
+            acts.SCSContext.SubjectOfCare = BaseCDAModel.CreateSubjectOfCare();
+            GenericObjectReuseSample.HydrateSubjectofCare(acts.SCSContext.SubjectOfCare, mandatorySectionsOnly, true);
 
             IParticipationPersonOrOrganisation person = Nehta.VendorLibrary.CDA.Common.PCML.CreateParticipationPersonOrOrganisation();
             person.Participant = Nehta.VendorLibrary.CDA.Common.PCML.CreateParticipantPersonOrOrganisation();
@@ -320,7 +391,6 @@ namespace CDA.PSML
             };
 
             // Subject of Care > Participant > Person or Organisation or Device > Person > Demographic Data > Sex
-
             var address1 = BaseCDAModel.CreateAddress();
 
             // MUST BE BUSINESS
@@ -344,53 +414,47 @@ namespace CDA.PSML
 
             person.Participant.Person.Organisation.Identifiers = new List<Identifier> {
                 BaseCDAModel.CreateHealthIdentifier(HealthIdentifierType.HPIO, "8003620833333789"),
-                //BaseCDAModel.CreateIdentifier("SampleAuthority", null, null, "1.2.3.4.5.66666", null)
             };
 
-            if (!mandatorySectionsOnly)
-            {
-                //populate with full person details
+            //populate with full person details
+            // Subject of Care > Participant > Address
+            // Subject of Care > Participant > Person or Organisation or Device > Person > Demographic Data > Indigenous Status
+            // Subject of Care > Participant > Electronic Communication Detail
+            var coms1 = BaseCDAModel.CreateElectronicCommunicationDetail(
+                "0345754566",
+                ElectronicCommunicationMedium.Telephone,
+                ElectronicCommunicationUsage.WorkPlace);
+            var coms2 = BaseCDAModel.CreateElectronicCommunicationDetail(
+                "authen@globalauthens.com",
+                ElectronicCommunicationMedium.Email,
+                ElectronicCommunicationUsage.WorkPlace);
 
-                // Subject of Care > Participant > Address
-                // Subject of Care > Participant > Person or Organisation or Device > Person > Demographic Data > Indigenous Status
-                // Subject of Care > Participant > Electronic Communication Detail
-                var coms1 = BaseCDAModel.CreateElectronicCommunicationDetail(
-                    "0345754566",
-                    ElectronicCommunicationMedium.Telephone,
-                    ElectronicCommunicationUsage.WorkPlace);
-                var coms2 = BaseCDAModel.CreateElectronicCommunicationDetail(
-                    "authen@globalauthens.com",
-                    ElectronicCommunicationMedium.Email,
-                    ElectronicCommunicationUsage.WorkPlace);
+           person.Participant.ElectronicCommunicationDetails = new List<ElectronicCommunicationDetail> { coms1, coms2 };
 
-               person.Participant.ElectronicCommunicationDetails = new List<ElectronicCommunicationDetail> { coms1, coms2 };
-                 
+            // Subject of Care > Participant > Entitlement
+            var entitlement1 = BaseCDAModel.CreateEntitlement();
+            entitlement1.Id = BaseCDAModel.CreateMedicareNumber(MedicareNumberType.MedicareCardNumber, "1234567881");
+            entitlement1.Type = EntitlementType.MedicareBenefits;
+            entitlement1.ValidityDuration = BaseCDAModel.CreateInterval("1", TimeUnitOfMeasure.Year);
 
-                // Subject of Care > Participant > Entitlement
-                var entitlement1 = BaseCDAModel.CreateEntitlement();
-                entitlement1.Id = BaseCDAModel.CreateMedicareNumber(MedicareNumberType.MedicareCardNumber, "1234567881");
-                entitlement1.Type = EntitlementType.MedicareBenefits;
-                entitlement1.ValidityDuration = BaseCDAModel.CreateInterval("1", TimeUnitOfMeasure.Year);
+            var entitlement2 = BaseCDAModel.CreateEntitlement();
+            entitlement2.Id = BaseCDAModel.CreateMedicareNumber(MedicareNumberType.MedicareCardNumber, "1234567881");
+            entitlement2.Type = EntitlementType.MedicareBenefits;
+            entitlement2.ValidityDuration = BaseCDAModel.CreateInterval("1", TimeUnitOfMeasure.Year);
 
-                var entitlement2 = BaseCDAModel.CreateEntitlement();
-                entitlement2.Id = BaseCDAModel.CreateMedicareNumber(MedicareNumberType.MedicareCardNumber, "1234567881");
-                entitlement2.Type = EntitlementType.MedicareBenefits;
-                entitlement2.ValidityDuration = BaseCDAModel.CreateInterval("1", TimeUnitOfMeasure.Year);
+            person.Participant.Entitlements = new List<Entitlement> { entitlement1, entitlement2 };
 
-                person.Participant.Entitlements = new List<Entitlement> { entitlement1, entitlement2 };
-
-                // Optional Participants
-                pharmacySharedMedsList.SCSContext.Participant = new List<IParticipationPersonOrOrganisation>();
-                pharmacySharedMedsList.SCSContext.Participant.Add(person);
-            }
+            // Mandatory Participant
+            acts.SCSContext.Participant = new List<IParticipationPersonOrOrganisation> { person };
 
             #endregion
 
+
             #region Setup and populate the SCS Content model
             // Setup and populate the SCS Content model
-            pharmacySharedMedsList.SCSContent = Nehta.VendorLibrary.CDA.Common.PCML.CreateSCSContent();
+            acts.SCSContent = Nehta.VendorLibrary.CDA.Common.PCML.CreateSCSContent();
 
-            pharmacySharedMedsList.SCSContent.EncapsulatedData = BaseCDAModel.CreateEncapsulatedData();
+            acts.SCSContent.EncapsulatedData = BaseCDAModel.CreateEncapsulatedData();
 
             ExternalData report1 = BaseCDAModel.CreateExternalData();
             report1.ExternalDataMediaType = MediaType.PDF;
@@ -398,10 +462,10 @@ namespace CDA.PSML
             report1.Caption = "Attachment One";
 
 
-            pharmacySharedMedsList.SCSContent.EncapsulatedData.ExternalData = report1;
+            acts.SCSContent.EncapsulatedData.ExternalData = report1;
             #endregion
 
-            return pharmacySharedMedsList;
+            return acts;
         }
 
 
@@ -411,16 +475,16 @@ namespace CDA.PSML
         /// </summary>
         /// <param name="mandatorySectionsOnly">mandatorySectionsOnly</param>
         /// <returns>PCML</returns>
-        public static Nehta.VendorLibrary.CDA.Common.PCML PopulatePSML_1B(Boolean mandatorySectionsOnly)
+        public static Nehta.VendorLibrary.CDA.Common.ACTS PopulateACTS_1B(CDADocumentType cdaDocumentType, Boolean mandatorySectionsOnly)
         {
-            var pharmacySharedMedsList = Nehta.VendorLibrary.CDA.Common.PCML.CreatePCML();
+            var acts = Nehta.VendorLibrary.CDA.Common.ACTS.CreateACTS();
 
             // Include Logo
-            pharmacySharedMedsList.IncludeLogo = true;
-			pharmacySharedMedsList.LogoPath = OutputFolderPath;
+            acts.IncludeLogo = true;
+			acts.LogoPath = OutputFolderPath;
 
             // Set Creation Time
-            pharmacySharedMedsList.DocumentCreationTime = new ISO8601DateTime(DateTime.Now);
+            acts.DocumentCreationTime = new ISO8601DateTime(DateTime.Now);
 
             #region Setup and populate the CDA context model
 
@@ -429,6 +493,9 @@ namespace CDA.PSML
 
             // Document Id
             cdaContext.DocumentId = BaseCDAModel.CreateIdentifier(BaseCDAModel.CreateOid(), null);
+
+            // CDA Context Version
+            cdaContext.Version = "1";
 
             // Custodian
             cdaContext.Custodian = BaseCDAModel.CreateCustodian();
@@ -439,8 +506,6 @@ namespace CDA.PSML
             {
                 // Set Id  
                 cdaContext.SetId = BaseCDAModel.CreateIdentifier(BaseCDAModel.CreateOid(), null);
-                // CDA Context Version
-                cdaContext.Version = "1";
 
                 // Legal authenticator
                 cdaContext.LegalAuthenticator = BaseCDAModel.CreateLegalAuthenticator();
@@ -458,32 +523,31 @@ namespace CDA.PSML
                 cdaContext.InformationRecipients.AddRange(new[] { recipient1, recipient2 });
             }
 
-            pharmacySharedMedsList.CDAContext = cdaContext;
+            acts.CDAContext = cdaContext;
             #endregion
 
             #region Setup and Populate the SCS Context model
             // Setup and Populate the SCS Context model
 
-            pharmacySharedMedsList.SCSContext = Nehta.VendorLibrary.CDA.Common.PCML.CreateSCSContext();
+            acts.SCSContext = Nehta.VendorLibrary.CDA.Common.PCML.CreateSCSContext();
 
             var authorHealthcareProvider = BaseCDAModel.CreateAuthorHealthcareProvider();
             GenericObjectReuseSample.HydrateAuthorHealthcareProvider(authorHealthcareProvider, mandatorySectionsOnly);
-            pharmacySharedMedsList.SCSContext.Author = authorHealthcareProvider;
+            acts.SCSContext.Author = authorHealthcareProvider;
 
             //Cannot use as a device : prohibited by CORE Level One
-            //pharmacyCuratedMedsList.SCSContext.Author = GenericObjectReuseSample.CreateAuthorDevice();
 
             if (!mandatorySectionsOnly)
             {
                 // Context>Encounter>HEALTHCARE FACILITY 
-                pharmacySharedMedsList.SCSContext.Encounter = new Encounter
+                acts.SCSContext.Encounter = new Encounter
                 {
                     HealthcareFacility = PopulateHealthcareFacility(mandatorySectionsOnly)
                 };
             }
 
-            pharmacySharedMedsList.SCSContext.SubjectOfCare = BaseCDAModel.CreateSubjectOfCare();
-            GenericObjectReuseSample.HydrateSubjectofCare(pharmacySharedMedsList.SCSContext.SubjectOfCare, mandatorySectionsOnly);
+            acts.SCSContext.SubjectOfCare = BaseCDAModel.CreateSubjectOfCare();
+            GenericObjectReuseSample.HydrateSubjectofCare(acts.SCSContext.SubjectOfCare, mandatorySectionsOnly, true);
 
 
             IParticipationPersonOrOrganisation person = Nehta.VendorLibrary.CDA.Common.PCML.CreateParticipationPersonOrOrganisation();
@@ -507,10 +571,10 @@ namespace CDA.PSML
             };
 
             // Subject of Care > Participant > Person or Organisation or Device > Person > Demographic Data > Sex
-
+            
             var address1 = BaseCDAModel.CreateAddress();
 
-            address1.AddressPurpose = AddressPurpose.Residential;
+            address1.AddressPurpose = AddressPurpose.Business;
             address1.AustralianAddress = BaseCDAModel.CreateAustralianAddress();
 
             address1.AustralianAddress.UnstructuredAddressLines = new List<string> { "1 Clinician Street" };
@@ -533,54 +597,50 @@ namespace CDA.PSML
                 //BaseCDAModel.CreateIdentifier("SampleAuthority", null, null, "1.2.3.4.5.66666", null)
             };
 
-            if (!mandatorySectionsOnly)
-            {
-                //populate with full person details
+            //populate with full person details
 
-                // Subject of Care > Participant > Address
-                // Subject of Care > Participant > Person or Organisation or Device > Person > Demographic Data > Indigenous Status
-                // Subject of Care > Participant > Electronic Communication Detail
-                var coms1 = BaseCDAModel.CreateElectronicCommunicationDetail(
-                    "0345754566",
-                    ElectronicCommunicationMedium.Telephone,
-                    ElectronicCommunicationUsage.WorkPlace);
-                var coms2 = BaseCDAModel.CreateElectronicCommunicationDetail(
-                    "authen@globalauthens.com",
-                    ElectronicCommunicationMedium.Email,
-                    ElectronicCommunicationUsage.WorkPlace);
+            // Subject of Care > Participant > Address
+            // Subject of Care > Participant > Person or Organisation or Device > Person > Demographic Data > Indigenous Status
+            // Subject of Care > Participant > Electronic Communication Detail
+            var coms1 = BaseCDAModel.CreateElectronicCommunicationDetail(
+                "0345754566",
+                ElectronicCommunicationMedium.Telephone,
+                ElectronicCommunicationUsage.WorkPlace);
+            var coms2 = BaseCDAModel.CreateElectronicCommunicationDetail(
+                "authen@globalauthens.com",
+                ElectronicCommunicationMedium.Email,
+                ElectronicCommunicationUsage.WorkPlace);
 
-                person.Participant.ElectronicCommunicationDetails = new List<ElectronicCommunicationDetail> { coms1, coms2 };
+            person.Participant.ElectronicCommunicationDetails = new List<ElectronicCommunicationDetail> { coms1, coms2 };
 
 
-                // Subject of Care > Participant > Entitlement
-                var entitlement1 = BaseCDAModel.CreateEntitlement();
-                entitlement1.Id = BaseCDAModel.CreateMedicareNumber(MedicareNumberType.MedicareCardNumber, "1234567881");
-                entitlement1.Type = EntitlementType.MedicareBenefits;
-                entitlement1.ValidityDuration = BaseCDAModel.CreateInterval("1", TimeUnitOfMeasure.Year);
+            // Subject of Care > Participant > Entitlement
+            var entitlement1 = BaseCDAModel.CreateEntitlement();
+            entitlement1.Id = BaseCDAModel.CreateMedicareNumber(MedicareNumberType.MedicareCardNumber, "1234567881");
+            entitlement1.Type = EntitlementType.MedicareBenefits;
+            entitlement1.ValidityDuration = BaseCDAModel.CreateInterval("1", TimeUnitOfMeasure.Year);
 
-                var entitlement2 = BaseCDAModel.CreateEntitlement();
-                entitlement2.Id = BaseCDAModel.CreateMedicareNumber(MedicareNumberType.MedicareCardNumber, "1234567881");
-                entitlement2.Type = EntitlementType.MedicareBenefits;
-                entitlement2.ValidityDuration = BaseCDAModel.CreateInterval("1", TimeUnitOfMeasure.Year);
+            var entitlement2 = BaseCDAModel.CreateEntitlement();
+            entitlement2.Id = BaseCDAModel.CreateMedicareNumber(MedicareNumberType.MedicareCardNumber, "1234567881");
+            entitlement2.Type = EntitlementType.MedicareBenefits;
+            entitlement2.ValidityDuration = BaseCDAModel.CreateInterval("1", TimeUnitOfMeasure.Year);
 
-                person.Participant.Entitlements = new List<Entitlement> { entitlement1, entitlement2 };
+            person.Participant.Entitlements = new List<Entitlement> { entitlement1, entitlement2 };
 
-                // Optional Participants
-                pharmacySharedMedsList.SCSContext.Participant = new List<IParticipationPersonOrOrganisation>();
-                pharmacySharedMedsList.SCSContext.Participant.Add(person);
-            }
+            // Mandatory Participant
+            acts.SCSContext.Participant = new List<IParticipationPersonOrOrganisation>() { person };
 
             #endregion
 
             #region Setup and populate the SCS Content model
 
             // Setup and populate the SCS Content model
-            pharmacySharedMedsList.SCSContent = Nehta.VendorLibrary.CDA.Common.PCML.CreateSCSContent();
+            acts.SCSContent = Nehta.VendorLibrary.CDA.Common.PCML.CreateSCSContent();
 
             //Use Custom Narrative instead of Attachment - 1B
             //pharmacyCuratedMedsList.SCSContent.EncapsulatedData = BaseCDAModel.CreateEncapsulatedData();
-            pharmacySharedMedsList.ShowAdministrativeObservationsSection = false;
-            pharmacySharedMedsList.ShowAdministrativeObservationsNarrativeAndTitle = false;
+            acts.ShowAdministrativeObservationsSection = false;
+            acts.ShowAdministrativeObservationsNarrativeAndTitle = false;
 
             // Build Narrative
             var sdt = new StrucDocText();
@@ -589,51 +649,43 @@ namespace CDA.PSML
             {
                 new StrucDocTable
                 {
-                    caption = new StrucDocCaption {Text = new [] {"Patient History"}},
+                    caption = new StrucDocCaption {Text = new [] {"Transfer details"}},
                     tbody = new [] { new StrucDocTbody
                     {
-                        tr = new [] { new StrucDocTr { td = new []{ AddTd("Allergies"), AddTd("Nil Known") } } ,
-                                      new StrucDocTr { td = new []{ AddTd("Diagnosis"), AddTd("CVA, TIA, Hypertension") } } }
+                        tr = new [] { new StrucDocTr { td = new []{ AddTd("Transfer date"), AddTd("12 Jan 2023") } } ,
+                                      new StrucDocTr { td = new []{ AddTd("Primary reason for transfer"), AddTd("Patient needed further treatment for her fall.") } },
+                                      new StrucDocTr { td = new []{ AddTd("Actions taken"), AddTd("Patient is not responding to physiotherapy work. Needs more intensive treatment.") } }
+                        }
                     } }
                 },
-                new StrucDocTable
-                {
-                    caption = new StrucDocCaption {Text = new [] {"Medications"}},
-                    thead = new StrucDocThead {tr = new [] { new StrucDocTr { td = new [] { AddTd("Drug", "BoldxColWidthPx200"), AddTd("Direction", "BoldxColWidthPx200"), AddTd("B'fast", "BoldxColWidthPx20"), AddTd("Lunch", "BoldxColWidthPx20"), AddTd("Dinner", "BoldxColWidthPx20"), AddTd("B'time", "BoldxColWidthPx20"), AddTd("Indication", "BoldxColWidthPx200"), AddTd("Special Instructions", "BoldxColWidthPx220") } } }},
-                    tbody = new [] { new StrucDocTbody {tr = new []
-                    {
-                        new StrucDocTr { td = new []{ AddTd("LanoxnPG62.5mcgTb"), AddTd("One on alternate morning"), AddTd("1"), AddTd(""), AddTd(""), AddTd(""), AddTd("Heart rate"), AddTd("") } },
-                        new StrucDocTr { td = new []{ AddTd("Paralgin500mgTb"), AddTd("One four times daily"), AddTd("1"), AddTd("1"), AddTd("1"), AddTd("1"), AddTd("Pain"), AddTd("") } },
-                        new StrucDocTr { td = new []{ AddTd("CandesartanSZ16mg"), AddTd("One in the morning"), AddTd("1"), AddTd(""), AddTd(""), AddTd(""), AddTd("High Blood Pressume"), AddTd("") } },
-                        new StrucDocTr { td = new []{ AddTd("Rispa 0.5mg Tab"), AddTd("One at bedtime"), AddTd(""), AddTd(""), AddTd(""), AddTd("1"), AddTd("Behavioural Disorder"), AddTd("") } },
-                        new StrucDocTr { td = new []{ AddTd("Apo-Rabeprzle20mgTb"), AddTd("One in the morning"), AddTd("1"), AddTd(""), AddTd(""), AddTd(""), AddTd("Barrett's Oesaphagus"), AddTd("") } },
-                        new StrucDocTr { td = new []{ AddTd("Sorbolene Cream"), AddTd("Apply twice daily for dry skin after bath"), AddTd("Ap"), AddTd(""), AddTd("Ap"), AddTd(""), AddTd("Dry Skin"), AddTd("") } },
-                        new StrucDocTr { td = new []{ AddTd("Liquifilm TearsEyDrp"), AddTd("Instill one drop four times daily into both eyes"), AddTd("1"), AddTd("1"), AddTd("1"), AddTd(""), AddTd("Dry Eyes"), AddTd("") } },
-                        new StrucDocTr { td = new []{ AddTd("Keflex 500mg Cap"), AddTd("One three times daily for seven days"), AddTd("1"), AddTd("1"), AddTd("1"), AddTd(""), AddTd(""), AddTd("") } },
-                        new StrucDocTr { td = new []{ AddTd("Coloxyl/SennaTab"), AddTd("One at dinner when necessary if BNO 3/7"), AddTd("1"), AddTd("1"), AddTd("1"), AddTd("1"), AddTd("Constipation"), AddTd("") } },
-                        new StrucDocTr { td = new []{ AddTd("Fosamax70mgTab"), AddTd("One on Thursday morning half an hour before food"), AddTd("1"), AddTd(""), AddTd(""), AddTd(""), AddTd("Asteoporosis"), AddTd("") } },
-                    }} }
-                }
             };
-
 
             // Save Custom Text
             var narrativeOnlyDocument = BaseCDAModel.CreateNarrativeOnlyDocument();
-            narrativeOnlyDocument.Title = "Patient Medication Record";
+            narrativeOnlyDocument.Title = "Residential Care Transfer Reason";
             narrativeOnlyDocument.Narrative = sdt;
 
-            pharmacySharedMedsList.SCSContent.CustomNarrativePcmlRecord = new List<NarrativeOnlyDocument>();
-            pharmacySharedMedsList.SCSContent.CustomNarrativePcmlRecord.Add(narrativeOnlyDocument);
+            acts.SCSContent.CustomNarrativePcmlRecord = new List<NarrativeOnlyDocument>
+            {
+                narrativeOnlyDocument
+            };
 
             #endregion
 
 
-            return pharmacySharedMedsList;
+            return acts;
         }
 
         private static StrucDocTd AddTd(string text, string style = "")
         {
-            return new StrucDocTd {Text = new[] {text}, styleCode = style };
+            if (!string.IsNullOrWhiteSpace(style))
+            {
+                return new StrucDocTd { Text = new[] { text }, styleCode = style };
+            }
+            else
+            {
+                return new StrucDocTd { Text = new[] { text } };
+            }
         }
 
         /// <summary>

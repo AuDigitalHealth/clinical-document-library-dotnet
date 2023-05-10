@@ -125,6 +125,11 @@ namespace Nehta.VendorLibrary.CDA
         IndigenousStatus IndigenousStatus { get; set; }
 
         /// <summary>
+        /// Indigenous status
+        /// </summary>
+        IndigenousStatus AuIndigenousStatus { get; set; }
+
+        /// <summary>
         /// Mother's Original Family Name
         /// </summary>
         [CanBeNull]

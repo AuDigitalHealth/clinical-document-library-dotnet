@@ -34,7 +34,7 @@ namespace CDA.PSML
         /// Note: the data used within this method is intended as a guide and should be replaced.
         /// </summary>
         /// <returns>A Hydrated SubjectofCare</returns>
-        public static void HydrateSubjectofCare(IParticipationSubjectOfCare subjectOfCare, bool mandatoryOnly)
+        public static void HydrateSubjectofCare(IParticipationSubjectOfCare subjectOfCare, bool mandatoryOnly, bool useNewAuIS = false)
         {
             var participant = BaseCDAModel.CreateParticipantForSubjectOfCare();
 
@@ -78,7 +78,15 @@ namespace CDA.PSML
 
             participant.Addresses = new List<IAddress> { address1 };
 
-            person.IndigenousStatus = IndigenousStatus.NeitherAboriginalNorTorresStraitIslanderOrigin;
+            // Use new or old Coding system
+            if (useNewAuIS)
+            {
+                person.AuIndigenousStatus = IndigenousStatus.NeitherAboriginalNorTorresStraitIslanderOrigin;
+            }
+            else
+            {
+                person.IndigenousStatus = IndigenousStatus.NeitherAboriginalNorTorresStraitIslanderOrigin;
+            }
 
             if (!mandatoryOnly)
             {
@@ -432,20 +440,12 @@ namespace CDA.PSML
             person.PersonNames = new List<IPersonName> { name1, name2 };
 
             // Document Author > Participant > Address
-            var address1 = BaseCDAModel.CreateAddress();
-            address1.AddressPurpose = AddressPurpose.TemporaryAccommodation;
-            address1.AustralianAddress = BaseCDAModel.CreateAustralianAddress();
-
             var address2 = BaseCDAModel.CreateAddress();
             address2.AddressPurpose = AddressPurpose.Business;
             address2.AustralianAddress = BaseCDAModel.CreateAustralianAddress();
 
-            var addressList = new List<IAddress> { address1, address2 };
-            address1.AustralianAddress.UnstructuredAddressLines = new List<string> { "1 Clinician Street" };
-            address1.AustralianAddress.SuburbTownLocality = "Nehtaville";
-            address1.AustralianAddress.State = AustralianState.QLD;
-            address1.AustralianAddress.PostCode = "5555";
-            address1.AustralianAddress.DeliveryPointId = 32568931;
+            // Only allowed one address
+            var addressList = new List<IAddress> { address2 };
 
             address2.AustralianAddress.UnstructuredAddressLines = new List<string> { "2 Clinician Street" };
             address2.AustralianAddress.SuburbTownLocality = "Nehtaville";
@@ -484,6 +484,16 @@ namespace CDA.PSML
             person.Organisation.Occupation = BaseCDAModel.CreateRole(Occupation.GeneralMedicalPractitioner);
             person.Organisation.PositionInOrganisation = BaseCDAModel.CreateCodableText(null, null, null, "Manager", null);
 
+            author.Participant.ElectronicCommunicationDetails = new List<ElectronicCommunicationDetail>();
+            var coms1 = BaseCDAModel.CreateElectronicCommunicationDetail(
+                "0345754566",
+                ElectronicCommunicationMedium.Telephone,
+                ElectronicCommunicationUsage.WorkPlace);
+
+            author.Participant.ElectronicCommunicationDetails.Add(coms1);
+
+
+
             if (!mandatoryOnly)
             {
                 name1.GivenNames = new List<string> { "Good" };
@@ -494,21 +504,14 @@ namespace CDA.PSML
                 name2.Titles = new List<string> { "Brother" };
                 name2.NameUsages = new List<NameUsage> { NameUsage.NewbornName };
 
-
-
-
                 // Document Author > Participant > Elec-tronic Communication Detail
-                var coms1 = BaseCDAModel.CreateElectronicCommunicationDetail(
-                    "0345754566",
-                    ElectronicCommunicationMedium.Telephone,
-                    ElectronicCommunicationUsage.WorkPlace);
+
                 var coms2 = BaseCDAModel.CreateElectronicCommunicationDetail(
                     "authen@globalauthens.com",
                     ElectronicCommunicationMedium.Email,
                     ElectronicCommunicationUsage.WorkPlace);
 
-                author.Participant.ElectronicCommunicationDetails = new List<ElectronicCommunicationDetail> { coms1, coms2 };
-
+                author.Participant.ElectronicCommunicationDetails.Add(coms2);
 
                 // Prescriber > Participant > Entitlement
                 var entitlement1 = BaseCDAModel.CreateEntitlement();

@@ -221,6 +221,14 @@ namespace Nehta.VendorLibrary.CDA.Generator
         /// <summary>
         /// This method creates the narrative for the XML Body File
         /// </summary>
+        /// <param name="externalData">externalData</param>
+        /// <param name="strucDocText">strucDocText</param>
+        /// <returns>StrucDocText</returns>
+        StrucDocText CreateNarrative(ExternalData externalData, StrucDocText strucDocText);
+
+        /// <summary>
+        /// This method creates the narrative for the XML Body File
+        /// </summary>
         /// <param name="externalDataList">externalData</param>
         /// <returns>StrucDocText</returns>
         StrucDocText CreateNarrative(List<ExternalData> externalDataList);

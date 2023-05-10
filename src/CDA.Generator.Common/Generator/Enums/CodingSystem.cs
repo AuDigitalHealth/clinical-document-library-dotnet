@@ -132,6 +132,12 @@ namespace Nehta.VendorLibrary.CDA.Generator.Enums
         METEOR,
 
         /// <summary>
+        /// AuIndigenousStatus from Hl7
+        /// </summary>
+        [Name(Name = "Australian Indigenous Status", Code = "1.2.36.1.2001.1004.200.10012")]
+        AuIndigenousStatus,
+
+        /// <summary>
         /// METEOREmploymentType
         /// </summary>
         [Name(Name = "METeOR Employment type", Code = "2.16.840.1.113883.3.879.314867")]

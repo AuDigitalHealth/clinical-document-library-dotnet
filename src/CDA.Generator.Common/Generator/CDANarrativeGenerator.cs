@@ -2097,6 +2097,39 @@ namespace Nehta.VendorLibrary.CDA.Generator
         /// <summary>
         /// This method creates the narrative for the XML Body File
         /// </summary>
+        /// <param name="externalData">externalData</param>
+        /// <param name="strucDocText">strucDocText</param>
+        /// <returns>StrucDocText</returns>
+        [NotNull]
+        public StrucDocText CreateNarrative(ExternalData externalData, StrucDocText strucDocText)
+        {
+            if (externalData != null)
+            {
+                var renderMultiMediaList = new List<StrucDocRenderMultiMedia>();
+
+                if (!renderMultiMediaList.Select(multiMediaItem => multiMediaItem.referencedObject)
+                        .Contains(externalData.ID))
+                {
+                    renderMultiMediaList.Add
+                    (
+                        externalData.ConvertToStrucDocRenderMultiMedia()
+                    );
+                }
+
+                // Need to add renderMultimedia to paragraph list
+                var sdp = new List<StrucDocParagraph>();
+                sdp.AddRange(strucDocText.paragraph);
+                sdp.Add(new StrucDocParagraph { renderMultiMedia = renderMultiMediaList.ToArray() });
+
+                strucDocText.paragraph = sdp.ToArray();
+            }
+
+            return strucDocText;
+        }
+
+        /// <summary>
+        /// This method creates the narrative for the XML Body File
+        /// </summary>
         /// <param name="externalDataList">externalData</param>
         /// <returns>StrucDocText</returns>
         [NotNull]

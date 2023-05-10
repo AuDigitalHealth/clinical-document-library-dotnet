@@ -31,6 +31,8 @@ namespace CDA.PSML
             if (folderPath.IsNullOrEmptyWhitespace()) folderPath = ".";
 
             PSMLSample.OutputFolderPath = folderPath;
+            SMLSample.OutputFolderPath = folderPath;
+            ACTSSample.OutputFolderPath = folderPath;
 
             PrepareOutputFolder(folderPath);
 
@@ -52,10 +54,17 @@ namespace CDA.PSML
             psmlCda.MaxPopulatedPSMLAuthorHealthcareProviderSample_1A("PSML_AuthorHealthcareProvider_1A_Max.xml");
             psmlCda.MinPopulatedPSMLAuthorHealthcareProviderSample_1A("PSML_AuthorHealthcareProvider_1A_Min.xml");
 
-
             //Test Custom Narrative - not currently allowed
             //psmlCda.MaxPopulatedPSMLAuthorHealthcareProviderSample_1B("PSML_AuthorHealthcareProvider_1B_Max.xml");
             //psmlCda.MinPopulatedPSMLAuthorHealthcareProviderSample_1B("PSML_AuthorHealthcareProvider_1B_Min.xml");
+
+            var actsCda = new ACTSSample();
+            actsCda.MinPopulatedACTS_ResidentialCareHealthSummary_Sample_1A("ACTS_ResidentialCareHealthSummary_1A_Min.xml");
+            actsCda.MaxPopulatedACTS_ResidentialCareHealthSummary_Sample_1A("ACTS_ResidentialCareHealthSummary_1A_Max.xml");
+            actsCda.MinPopulatedACTS_ResidentialCareMedicationChart_Sample_1A("ACTS_ResidentialCareMedicationChart_1A_Min.xml");
+            actsCda.MaxPopulatedACTS_ResidentialCareMedicationChart_Sample_1A("ACTS_ResidentialCareMedicationChart_1A_Max.xml");
+            actsCda.MinPopulatedACTS_ResidentialCareTransferReason_Sample_1B("ACTS_ResidentialCareTransferReason_1B_Min.xml");
+            actsCda.MaxPopulatedACTS_ResidentialCareTransferReason_Sample_1B("ACTS_ResidentialCareTransferReason_1B_Max.xml");
 
         }
 

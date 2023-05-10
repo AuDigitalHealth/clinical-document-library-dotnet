@@ -371,7 +371,7 @@ namespace Nehta.VendorLibrary.CDA.Generator
             //
             if (psml.SCSContent.EncapsulatedData != null)
             { 
-                components.Add(CDAGeneratorHelper.CreateComponent(psml.SCSContent.EncapsulatedData, NarrativeGenerator));
+                components.Add(CDAGeneratorHelper.CreateComponent(psml.SCSContent.EncapsulatedData, CDADocumentType.PharmacistSharedMedicinesList, NarrativeGenerator));
             }
 
             if (psml.SCSContent.CustomNarrativePcmlRecord != null)
@@ -495,6 +495,104 @@ namespace Nehta.VendorLibrary.CDA.Generator
             return CDAGeneratorHelper.CreateXml(clinicalDocument, authors, legalAuthenticator, authenticators, recipients, participants, components, nonXmlBody, sml.IncludeLogo, sml.LogoByte, typeof(SML));
         }
 
+        /// <summary>
+        /// Generates ACTS
+        /// </summary>
+        /// <param name="acts">The ACTS object</param>
+        /// <returns>XmlDocument (CDA - ACTS)</returns>
+        public static XmlDocument GenerateACTS(ACTS acts, CDADocumentType cdaDocumentType)
+        {
+            var vb = new ValidationBuilder();
+
+            if (vb.ArgumentRequiredCheck("acts", acts))
+            {
+                acts.Validate("acts", vb.Messages);
+
+                if (acts.SCSContext.Participant == null)
+                {
+                    vb.AddValidationMessage("Participant", "Missing", "You must have a Participant");
+                }
+
+                LogoSetupAndValidation(acts.LogoPath, acts.LogoByte, acts.IncludeLogo, vb);
+            }
+
+            if (vb.Messages.Any())
+            {
+                throw new ValidationException(vb.Messages);
+            }
+
+            var authors = new List<POCD_MT000040Author>();
+            var recipients = new List<POCD_MT000040InformationRecipient>();
+            var participants = new List<POCD_MT000040Participant1>();
+            var components = new List<POCD_MT000040Component3>();
+            var patients = new List<POCD_MT000040RecordTarget>();
+            var authenticators = new List<POCD_MT000040Authenticator>();
+            POCD_MT000040NonXMLBody nonXmlBody = null;
+
+            //SETUP the clinical document object
+            var clinicalDocument = CDAGeneratorHelper.CreateDocument
+                (
+                    acts.DocumentCreationTime,
+                    cdaDocumentType,
+                    acts.CDAContext.DocumentId,
+                    acts.CDAContext.SetId,
+                    acts.CDAContext.Version,
+                    acts.DocumentStatus,
+                    acts.Title
+                );
+
+            foreach (var patientNominatedContact in acts.SCSContext.Participant)
+            {
+                participants.Add(CDAGeneratorHelper.CreateParticipant(patientNominatedContact,
+                    ParticipationType.PART, RoleClassAssociative.PROV, new CE { code = "PCP" },
+                    acts.SCSContext?.SubjectOfCare?.Participant?.UniqueIdentifier.ToString(), true));
+            }
+
+            if (acts.CDAContext.InformationRecipients != null)
+            {
+                recipients.AddRange(acts.CDAContext.InformationRecipients.Select(interestedParty =>
+                    CDAGeneratorHelper.CreateInformationRecipient(interestedParty)));
+            }
+
+            //SETUP the Legal Authenticator
+            var legalAuthenticator = CDAGeneratorHelper.CreateLegalAuthenticator(acts.CDAContext.LegalAuthenticator);
+
+            //SETUP the patient
+            patients.Add(CDAGeneratorHelper.CreateSubjectOfCare(acts.SCSContext.SubjectOfCare));
+            clinicalDocument.recordTarget = patients.ToArray();
+
+            //SETUP the author
+            authors.Add(CDAGeneratorHelper.CreateAuthor(acts.SCSContext.Author, true));
+            clinicalDocument.author = authors.ToArray();
+
+            //SETUP the Custodian
+            clinicalDocument.custodian = CDAGeneratorHelper.CreateCustodian(acts.CDAContext.Custodian);
+
+            //SETUP the Information Recipients
+            clinicalDocument.informationRecipient = recipients.ToArray();
+
+            //SETUP the HealthcareFacility
+            if (acts.SCSContext.Encounter != null && acts.SCSContext.Encounter.HealthcareFacility != null && acts.SCSContext.Encounter.HealthcareFacility.Participant != null)
+                clinicalDocument.componentOf = CDAGeneratorHelper.CreateComponentOf(acts.SCSContext.Encounter.HealthcareFacility);
+
+            //
+            if (acts.SCSContent.EncapsulatedData != null)
+            {
+                components.Add(CDAGeneratorHelper.CreateComponent(acts.SCSContent.EncapsulatedData, cdaDocumentType, NarrativeGenerator));
+            }
+
+            if (acts.SCSContent.CustomNarrativePcmlRecord != null)
+            {
+
+                if (acts.SCSContent.CustomNarrativePcmlRecord != null && acts.SCSContent.CustomNarrativePcmlRecord.Any())
+                {
+                    components.AddRange(CDAGeneratorHelper.CreateNarrativeOnlyDocument(acts.SCSContent.CustomNarrativePcmlRecord, "1.2.36.1.2001.1001.101.101.16886"));
+                }
+            }
+
+            //Generate and return the ACTS
+            return CDAGeneratorHelper.CreateXml(clinicalDocument, authors, legalAuthenticator, authenticators, recipients, participants, components, nonXmlBody, acts.IncludeLogo, acts.LogoByte, typeof(PCML));
+        }
 
 
         /// <summary>

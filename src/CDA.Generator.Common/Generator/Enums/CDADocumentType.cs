@@ -305,6 +305,27 @@ namespace Nehta.VendorLibrary.CDA.Generator.Enums
 
         #endregion
 
+        #region Aged Care Transfer Summary
+
+        /// <summary>
+        /// Residential Care Transfer Reason - 1A
+        /// </summary>
+        [Name(Name = "Residential Care Transfer Reason", CodeSystem = "NCTIS", Code = "100.32044", TemplateIdentifier = "1.2.36.1.2001.1001.100.1002.32044", Version = "1.0", Title = "Residential Care Transfer Reason")]
+        ResidentialCareTransferReason,
+
+        /// <summary>
+        /// Residential Care Health Summary - 1A
+        /// </summary>
+        [Name(Name = "Residential Care Health Summary", CodeSystem = "NCTIS", Code = "100.32049", TemplateIdentifier = "1.2.36.1.2001.1001.100.1002.32049", Version = "1.0", Title = "Residential Care Health Summary")]
+        ResidentialCareHealthSummary,
+
+        /// <summary>
+        /// Residential Care Medication Chart - 1B
+        /// </summary>
+        [Name(Name = "Residential Care Medication Chart", CodeSystem = "NCTIS", Code = "100.32046", TemplateIdentifier = "1.2.36.1.2001.1001.100.1002.32046", Version = "1.0", Title = "Residential Care Medication Chart")]
+        ResidentialCareMedicationChart,
+
+        #endregion
 
         #region CeHR 
 

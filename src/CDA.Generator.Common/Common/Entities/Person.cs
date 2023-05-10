@@ -177,6 +177,14 @@ namespace Nehta.VendorLibrary.CDA.Common
         public IndigenousStatus IndigenousStatus { get; set; }
 
         /// <summary>
+        /// Au Indigenous status
+        /// </summary>
+        [CanBeNull]
+        [DataMember]
+        public IndigenousStatus AuIndigenousStatus { get; set; }
+
+
+        /// <summary>
         /// The Entitlements
         /// </summary>
         [CanBeNull]

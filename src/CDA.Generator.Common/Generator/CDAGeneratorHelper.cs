@@ -114,14 +114,15 @@ namespace Nehta.VendorLibrary.CDA.Generator
 
                 // Rendering Spec
                 CreateIdentifierElement(
-                    CDADocumentType.CdaRenderingSpecification.GetAttributeValue<NameAttribute, string>(x =>
-                        x.TemplateIdentifier),
-                    CDADocumentType.CdaRenderingSpecification.GetAttributeValue<NameAttribute, string>(x => x.Version),
-                    null),
+                    CDADocumentType.CdaRenderingSpecification.GetAttributeValue<NameAttribute, string>(x => x.TemplateIdentifier),
+                    CDADocumentType.CdaRenderingSpecification.GetAttributeValue<NameAttribute, string>(x => x.Version), null),
             };
 
-            //Add another entry here for PSML v1 = Only add this for CDA documents that use DH_CoreLevelOne_CDA_Implementation_Guide_v1.1 dv011 as a base
-            if (cdaDocumentType == CDADocumentType.PharmacistSharedMedicinesList)
+            //Add another entry here for PSML v1 = Only + All ACTS docs - add this for CDA documents that use DH_CoreLevelOne_CDA_Implementation_Guide_v1.1 dv011 as a base
+            if (cdaDocumentType == CDADocumentType.PharmacistSharedMedicinesList ||
+                cdaDocumentType == CDADocumentType.ResidentialCareTransferReason ||
+                cdaDocumentType == CDADocumentType.ResidentialCareHealthSummary ||
+                cdaDocumentType == CDADocumentType.ResidentialCareMedicationChart)
             {
                 templateIds.Add(CreateIdentifierElement(
                     CDADocumentType.CoreLevelOne.GetAttributeValue<NameAttribute, string>(x => x.TemplateIdentifier),
@@ -554,7 +555,7 @@ namespace Nehta.VendorLibrary.CDA.Generator
         }
 
         /// <summary>
-        /// Creates an XML element that contains a CDA reference to the eternal data that was passed into this method
+        /// Creates an XML element that contains a CDA reference to the external data that was passed into this method
         /// </summary>
         /// <param name="externalDataList">externalData</param>
         /// <param name="narrativeGenerator">narrativeGenerator</param>
@@ -570,12 +571,23 @@ namespace Nehta.VendorLibrary.CDA.Generator
 
                 var entryList = new List<POCD_MT000040Entry>();
 
-                externalDataList.ForEach(externalData => entryList.Add(new POCD_MT000040Entry
-                { observationMedia = CreateObservationMedia(externalData) }));
+                externalDataList.ForEach(externalDataItem => entryList.Add(new POCD_MT000040Entry
+                { observationMedia = CreateObservationMedia(externalDataItem) }));
 
                 component.section.entry = entryList.ToArray();
-                component.section.title = CreateStructuredText("Attached Content", null);
-                component.section.text = narrativeGenerator.CreateNarrative(externalDataList);
+
+                // To support 1B narrative with 1A attachments - If Title and Narrative filled in - Using First Entry ONLY
+                var externalData = externalDataList[0];
+                if (!string.IsNullOrWhiteSpace(externalData.Title) && externalData.Narrative != null)
+                {
+                    component.section.title = CreateStructuredText(externalData.Title, null);
+                    component.section.text = narrativeGenerator.CreateNarrative(externalData, externalData.Narrative);
+                }
+                else
+                {
+                    component.section.title = CreateStructuredText("Attached Content", null);
+                    component.section.text = narrativeGenerator.CreateNarrative(externalDataList);
+                }
             }
 
             return component;
@@ -587,7 +599,7 @@ namespace Nehta.VendorLibrary.CDA.Generator
         /// <param name="narrativeOnlyDocuments">NarrativeOnlyDocument</param>
         /// <returns>an XmlElement containing a CDA reference to the external data</returns>
         internal static List<POCD_MT000040Component3> CreateNarrativeOnlyDocument(
-            List<NarrativeOnlyDocument> narrativeOnlyDocuments)
+            List<NarrativeOnlyDocument> narrativeOnlyDocuments, string templateid = null)
         {
             List<POCD_MT000040Component3> components = null;
 
@@ -598,6 +610,7 @@ namespace Nehta.VendorLibrary.CDA.Generator
                     section = new POCD_MT000040Section
                     {
                         title = CreateStructuredText(narrativeOnlyDocument.Title),
+                        templateId = templateid != null ? CreateIdentifierArray(templateid) : null,
                         text = narrativeOnlyDocument.Narrative
                     }
 
@@ -8194,8 +8207,9 @@ namespace Nehta.VendorLibrary.CDA.Generator
         /// Creates an author  
         /// </summary>
         /// <param name="author">Author</param>
+        /// <param name="copyRepOrg">Copy Org</param>
         /// <returns>POCD_MT000040Author</returns>
-        internal static POCD_MT000040Author CreateAuthor(IAuthorCollection author)
+        internal static POCD_MT000040Author CreateAuthor(IAuthorCollection author, bool copyRepOrg = false)
         {
             var participationAuthor = new POCD_MT000040Author();
 
@@ -8222,6 +8236,18 @@ namespace Nehta.VendorLibrary.CDA.Generator
                     if (authorHealthcareProvider.Participant != null)
                     {
                         participationAuthor = CreateAuthor(authorHealthcareProvider);
+
+                        // For ACTS docs only
+                        if (copyRepOrg)
+                        {
+                            participationAuthor.assignedAuthor.representedOrganization = new POCD_MT000040Organization
+                            {
+                                id = CreateIdentifierArray(CreateGuid().ToString(), null),
+                                name = participationAuthor.assignedAuthor?.assignedPerson?.asEmployment?.employerOrganization?.asOrganizationPartOf?.wholeOrganization?.name,
+                                asEntityIdentifier = participationAuthor.assignedAuthor?.assignedPerson?.asEmployment?.employerOrganization?.asOrganizationPartOf?.wholeOrganization?.asEntityIdentifier
+                            };
+                        }
+
                     }
                 }
             }
@@ -9009,12 +9035,23 @@ namespace Nehta.VendorLibrary.CDA.Generator
                             birthTime = CreateTimeStampElementIso(subjectOfCare.Person.DateOfBirth),
                         };
 
+                        // Old Indigenous Status
                         if (subjectOfCare.Person.IndigenousStatus != IndigenousStatus.Undefined)
                         {
                             patient.patientRole.patient.ethnicGroupCode = CreateCodedWithExtensionElement(
                                 subjectOfCare.Person.IndigenousStatus.GetAttributeValue<NameAttribute, string>(x =>
                                     x.Code), CodingSystem.METEOR,
                                 subjectOfCare.Person.IndigenousStatus.GetAttributeValue<NameAttribute, string>(x =>
+                                    x.Name), null, null, null);
+                        }
+
+                        // New Au Indigenous Status
+                        if (subjectOfCare.Person.AuIndigenousStatus != IndigenousStatus.Undefined)
+                        {
+                            patient.patientRole.patient.ethnicGroupCode = CreateCodedWithExtensionElement(
+                                subjectOfCare.Person.AuIndigenousStatus.GetAttributeValue<NameAttribute, string>(x =>
+                                    x.Code), CodingSystem.AuIndigenousStatus,
+                                subjectOfCare.Person.AuIndigenousStatus.GetAttributeValue<NameAttribute, string>(x =>
                                     x.Name), null, null, null);
                         }
 
@@ -9476,9 +9513,10 @@ namespace Nehta.VendorLibrary.CDA.Generator
         /// <returns>CDA participant.</returns>
         internal static POCD_MT000040Participant1 CreateParticipant(IParticipationPersonOrOrganisation participation,
             ParticipationType participationType, RoleClassAssociative roleClassAssociative, CE functionCode,
-            string subjectOfCareIdentifier)
+            string subjectOfCareIdentifier, bool copyEmpOrg = false)
         {
             POCD_MT000040Participant1 returnParticipant = null;
+
 
             if (participation?.Participant != null)
             {
@@ -9497,6 +9535,17 @@ namespace Nehta.VendorLibrary.CDA.Generator
 
                 returnParticipant = CreateParticipant(castedParticipation, participationType, roleClassAssociative,
                     functionCode, subjectOfCareIdentifier);
+
+                // For ACTS docs only
+                if (copyEmpOrg)
+                {
+                    returnParticipant.associatedEntity.scopingOrganization = new POCD_MT000040Organization
+                    {
+                        id = CreateIdentifierArray(CreateGuid().ToString(), null),
+                        name = returnParticipant.associatedEntity?.associatedPerson?.asEmployment?.employerOrganization?.asOrganizationPartOf?.wholeOrganization?.name,
+                        asEntityIdentifier = returnParticipant.associatedEntity?.associatedPerson?.asEmployment?.employerOrganization?.asOrganizationPartOf?.wholeOrganization?.asEntityIdentifier
+                    };
+                }
             }
 
             return returnParticipant;
@@ -19196,8 +19245,7 @@ namespace Nehta.VendorLibrary.CDA.Generator
 
 
 
-        internal static POCD_MT000040Component3 CreateComponent(EncapsulatedData pcmlData,
-            INarrativeGenerator narrativeGenerator)
+        internal static POCD_MT000040Component3 CreateComponent(EncapsulatedData pcmlData, CDADocumentType cdaDocumentType, INarrativeGenerator narrativeGenerator)
         {
             POCD_MT000040Component3 component = null;
 
@@ -19208,14 +19256,19 @@ namespace Nehta.VendorLibrary.CDA.Generator
                     section = new POCD_MT000040Section
                     {
                         id = CreateIdentifierElement(CreateGuid(), null),
-                        code = CreateCodedWithExtensionElement(
-                            CreateCodableText(PcmlSections.PharmacistSharedMedicinesList)),
-                        title = CreateStructuredText(
-                            PcmlSections.PharmacistSharedMedicinesList.GetAttributeValue<NameAttribute, string>(x =>
-                                x.Title), null),
                         templateId = CreateIdentifierArray("1.2.36.1.2001.1001.101.101.16886")
                     }
                 };
+
+                if (cdaDocumentType == CDADocumentType.PharmacistSharedMedicinesList)
+                {
+                    component.section.code = CreateCodedWithExtensionElement(CreateCodableText(PcmlSections.PharmacistSharedMedicinesList));
+                    component.section.title = CreateStructuredText(PcmlSections.PharmacistSharedMedicinesList.GetAttributeValue<NameAttribute, string>(x => x.Title), null);
+                }
+                else
+                {
+                    component.section.title = CreateStructuredText(cdaDocumentType.GetAttributeValue<NameAttribute, string>(x => x.Title), null);
+                }
 
                 if (pcmlData.ExternalData != null && pcmlData.ExternalData != null)
                 {

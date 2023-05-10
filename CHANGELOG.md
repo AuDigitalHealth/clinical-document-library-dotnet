@@ -1,5 +1,10 @@
 ## Change Log/Revision History
 
+4.11.0 - Reference Platform Clinical Document Library (May 2023)
+----------------------------------------------------
+- Added the 3 ACTS documents
+- Added support for Custom Narrative and Attachments for 1B docs
+
 4.10.1 - Reference Platform Clinical Document Library (Mar 2023)
 ----------------------------------------------------
 - relaxed address nullflavor

@@ -208,6 +208,73 @@ namespace Nehta.VendorLibrary.CDA.Sample
         }
 
         /// <summary>
+        /// This example show an example of populating a 1B document
+        /// </summary>
+        public XmlDocument PopulateEDischargeSummarySample_1BWithAttachment(string fileName)
+        {
+            XmlDocument xmlDoc;
+
+            var document = PopulateDischargeSummary(true);
+            document.SCSContent = EDischargeSummary.CreateSCSContent();
+
+            // Hide Administrative Observations Section 
+            document.ShowAdministrativeObservationsSection = false;
+
+            document.IncludeLogo = false;
+
+            // If Document is a sub type, define Title here which will also become the document Title
+            //document.SubTypeTitle = "Discharge Summary - Procedure";
+
+            // Add mandatory elements to the discharge 1A document
+            document.SCSContent.Event = EDischargeSummary.CreateEvent();
+            var encounter = EDischargeSummary.CreateEncounter();
+            encounter.ResponsibleHealthProfessional = CreateResponsibleHealthProfessional(false);
+            encounter.EncounterPeriod = CdaInterval.CreateHigh(new ISO8601DateTime(DateTime.Now));
+            encounter.SeparationMode = BaseCDAModel.CreateSeparationMode(ModeOfSeparation.AdministrativeDischarge);
+            document.SCSContent.Event.Encounter = encounter;
+
+
+            // 1A Attachment
+            var structuredBodyFileList = new List<ExternalData>();
+            var structuredBodyFile = BaseCDAModel.CreateStructuredBodyFile();
+            structuredBodyFile.Caption = "Attached PDF report";
+            structuredBodyFile.ExternalDataMediaType = MediaType.PDF;
+            structuredBodyFile.Path = StructuredFileAttachment;
+            structuredBodyFileList.Add(structuredBodyFile);
+
+            // 1B Add Narrative
+            structuredBodyFile.Title = "Narrative Title";
+            structuredBodyFile.Narrative = new StrucDocText
+                { paragraph = new[] { new StrucDocParagraph { Text = new[] { "The narrative goes here" } } } };
+
+            document.SCSContent.StructuredBodyFiles = structuredBodyFileList;
+
+            try
+            {
+                CDAGenerator.NarrativeGenerator = new CDANarrativeGenerator();
+
+                //Pass the document model into the Generate method 
+                xmlDoc = CDAGenerator.GenerateEDischargeSummary(document);
+
+                using (var writer = XmlWriter.Create(OutputFolderPath + @"\" + fileName,
+                    new XmlWriterSettings { Indent = true }))
+                {
+                    if (!fileName.IsNullOrEmptyWhitespace()) xmlDoc.Save(writer);
+                }
+            }
+            catch (ValidationException ex)
+            {
+                //Catch any validation exceptions
+                var validationMessages = ex.GetMessagesString();
+
+                //Handle any validation errors as appropriate.
+                throw;
+            }
+
+            return xmlDoc;
+        }
+
+        /// <summary>
         /// This sample populates only the mandatory Sections / Entries
         /// </summary>
         public XmlDocument MinPopulatedEDischargeSummary(string fileName)

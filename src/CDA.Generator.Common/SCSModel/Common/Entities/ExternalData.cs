@@ -239,6 +239,17 @@ namespace Nehta.VendorLibrary.CDA.SCSModel.Common.Entities
         [CanBeNull]
         [DataMember]
         public String Caption { get; set; }
+
+        /// <summary>
+        /// The Title of the Component Section
+        /// </summary>
+        public string Title;
+
+        /// <summary>
+        /// The Narrative For the Component
+        /// </summary>
+        public StrucDocText Narrative;
+
         #endregion
 
         #region Constructors

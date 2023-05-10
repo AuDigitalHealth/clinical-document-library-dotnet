@@ -67,6 +67,8 @@ namespace Nehta.VendorLibrary.CDA.Sample
             var maxDischargeSummaryCda = dischargeSummarySampleCode.MaxPopulatedEDischargeSummary("DischargeSummary_3A_Max.xml");
             var dischargeSummaryCda1A = dischargeSummarySampleCode.PopulateEDischargeSummarySample_1A("DischargeSummary_1A.xml");
             var dischargeSummaryCda1B = dischargeSummarySampleCode.PopulateEDischargeSummarySample_1B("DischargeSummary_1B.xml");
+            var dischargeSummaryCda1BA = dischargeSummarySampleCode.PopulateEDischargeSummarySample_1BWithAttachment("DischargeSummary_1BWithAttachment.xml");
+
             LevelsGeneratorPathCorrections("DischargeSummary_3A_Max.xml", "DischargeSummary_2.xml", EDischargeSummarySample.OutputFolderPath);
 
             var eEventSummarySampleCode = new EventSummarySample();
