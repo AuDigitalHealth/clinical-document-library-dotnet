@@ -3486,6 +3486,12 @@ namespace Nehta.VendorLibrary.CDA.Generator
                 components.Add(CDAGeneratorHelper.CreateComponent(serviceReferral.SCSContent.Medications, NarrativeGenerator, CDADocumentType.ServiceReferral));
             }
 
+            // Medical History 
+            if (serviceReferral.SCSContent.MedicalHistory != null)
+            {
+                components.Add(CDAGeneratorHelper.CreateComponent(serviceReferral.SCSContent.MedicalHistory as MedicalHistory, true, NarrativeGenerator));
+            }
+
             // Diagnostic Investigations 
             if (serviceReferral.SCSContent.DiagnosticInvestigations != null)
             {
