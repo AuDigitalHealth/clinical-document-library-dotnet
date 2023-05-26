@@ -1,5 +1,10 @@
 ## Change Log/Revision History
 
+4.11.2 - Reference Platform Clinical Document Library (May 2023)
+----------------------------------------------------
+- Pathology and DI sample clean up to pass IQ rules
+- Fix issue for multiple AnatomicalSite not being displayed
+
 4.11.1 - Reference Platform Clinical Document Library (May 2023)
 ----------------------------------------------------
 - Fixed Service Referral. Wasn't populating Medical History.

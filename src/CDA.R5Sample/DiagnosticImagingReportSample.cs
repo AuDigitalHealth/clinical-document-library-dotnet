@@ -246,12 +246,12 @@ namespace CDA.R5Samples
             var orderDetails = DiagnosticImagingReport.CreateOrderDetails();
 
             // Requester Order Identifier
-            orderDetails.AccessionNumber = DiagnosticImagingReport.CreateAccessionNumber("8003620833333789", "10523475");
+            orderDetails.AccessionNumber = DiagnosticImagingReport.CreateAccessionNumber("8003620833333789", new Random().Next().ToString());
 
             if (!mandatorySectionsOnly)
             {
                 // Requester Order Identifier - Note: Use BaseCDAModel.CreateIdentifier for a non default root element eg.. BaseCDAModel.CreateIdentifier("1.2.36.1.2001.1005.52.8003621231166540", "23451");
-                orderDetails.RequesterOrderIdentifier = DiagnosticImagingReport.CreateRequesterOrderIdentifier("8003620833333789", "23451");
+                orderDetails.RequesterOrderIdentifier = DiagnosticImagingReport.CreateRequesterOrderIdentifier("8003628233352432", new Random().Next().ToString());
             }
 
             // Requester
@@ -310,7 +310,7 @@ namespace CDA.R5Samples
             var examinationDetails = DiagnosticImagingReport.CreateExaminationDetails();
 
             // Image DateTime
-            examinationDetails.ImageDateTime = new ISO8601DateTime(DateTime.Now);
+            examinationDetails.ImageDateTime = new ISO8601DateTime(DateTime.Now.AddMinutes(-60));
 
             return examinationDetails;
         }
@@ -332,7 +332,7 @@ namespace CDA.R5Samples
             diagnosticImagingExaminationResult.Modality = BaseCDAModel.CreateCodableText("363680008", CodingSystem.SNOMED, "X-ray");
 
             // Observation Date Time
-            diagnosticImagingExaminationResult.ObservationDateTime = new ISO8601DateTime(DateTime.Now);
+            diagnosticImagingExaminationResult.ObservationDateTime = new ISO8601DateTime(DateTime.Now.AddMinutes(-60));
 
             // ExaminationDetails
             diagnosticImagingExaminationResult.ExaminationDetails = CreateExaminationDetails(mandatorySectionsOnly);
@@ -429,9 +429,8 @@ namespace CDA.R5Samples
             person.Organisation.PositionInOrganisation = BaseCDAModel.CreateCodableText("Radiologist");
 
             person.Organisation.Identifiers = new List<Identifier> { 
-              BaseCDAModel.CreateHealthIdentifier(HealthIdentifierType.HPIO, "8003620833333789"),
-              BaseCDAModel.CreateIdentifier("Test Authority", null, null, "2.999.1234567890", null)
-          };
+              BaseCDAModel.CreateHealthIdentifier(HealthIdentifierType.HPIO, "8003620833333789")
+            };
 
             if (!mandatoryOnly)
             {
@@ -465,11 +464,13 @@ namespace CDA.R5Samples
                 var code = BaseCDAModel.CreateCodableText("11", CodingSystem.NCTISEntitlementTypeValues, "Medicare Pharmacy Approval Number", null, null);
                 medicarePharmacyApprovalNumberEntitlement.Id = BaseCDAModel.CreateIdentifier("Pharmacy",
                                                                     null,
-                                                                    "1234567892",
+                                                                    "1234567890",
                                                                     "1.2.36.174030967.1.3.2.1",
                                                                     code);
                 medicarePharmacyApprovalNumberEntitlement.Type = EntitlementType.MedicarePharmacyApprovalNumber;
-                medicarePharmacyApprovalNumberEntitlement.ValidityDuration = BaseCDAModel.CreateInterval("1", TimeUnitOfMeasure.Year);
+                medicarePharmacyApprovalNumberEntitlement.ValidityDuration = BaseCDAModel.CreateInterval(
+                    new ISO8601DateTime(DateTime.Now, ISO8601DateTime.Precision.Day),
+                    new ISO8601DateTime(DateTime.Now.AddYears(1), ISO8601DateTime.Precision.Day));
 
                 // Participant > Entitlement 2
                 var medicarePrescriberNumberEntitlement = BaseCDAModel.CreateEntitlement();
@@ -477,9 +478,11 @@ namespace CDA.R5Samples
                 medicarePrescriberNumberEntitlement.Id = BaseCDAModel.CreatePrescriberNumber(IdentifierType.PrescriberNumber, "049960CT");
 
                 medicarePrescriberNumberEntitlement.Type = EntitlementType.MedicarePrescriberNumber;
-                medicarePrescriberNumberEntitlement.ValidityDuration = BaseCDAModel.CreateInterval("1", TimeUnitOfMeasure.Year);
+                medicarePrescriberNumberEntitlement.ValidityDuration = BaseCDAModel.CreateInterval(
+                    new ISO8601DateTime(DateTime.Now, ISO8601DateTime.Precision.Day),
+                    new ISO8601DateTime(DateTime.Now.AddYears(1), ISO8601DateTime.Precision.Day));
 
-                reportingPathologist.Participant.Entitlements = new List<Entitlement> { medicarePharmacyApprovalNumberEntitlement, medicarePrescriberNumberEntitlement };
+                reportingPathologist.Participant.Entitlements = new List<Entitlement> { medicarePharmacyApprovalNumberEntitlement };
 
                 name.GivenNames = new List<string> { "Fitun" };
                 name.Titles = new List<string> { "Dr" };

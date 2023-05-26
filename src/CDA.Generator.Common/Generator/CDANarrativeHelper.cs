@@ -492,14 +492,16 @@ namespace Nehta.VendorLibrary.CDA.Generator
                     var anatomicalDisplay = string.Empty;
                     if (specimenDetail.AnatomicalSite != null)
                     {
-
+                        anatomicalDisplay = string.Empty;
                         foreach (var anatomicalSite in specimenDetail.AnatomicalSite)
                         {
                             //populate the narrative for each anatomical site
                             if (!anatomicalSite.Description.IsNullOrEmptyWhitespace() ||
                                 anatomicalSite.SpecificLocation != null)
                             {
-                                anatomicalDisplay = anatomicalSite.Description;
+                                // CR if more than one AnatomicalSite
+                                if (!string.IsNullOrEmpty(anatomicalDisplay)) anatomicalDisplay += DELIMITER;
+                                anatomicalDisplay += anatomicalSite.Description;
 
                                 if (anatomicalSite.SpecificLocation != null &&
                                     anatomicalSite.SpecificLocation.NameOfLocation != null)

@@ -982,15 +982,15 @@ namespace Nehta.VendorLibrary.CDA.Sample
                 // Tests Requested Name
                 testRequestDetailsOne.TestsRequestedName = new List<ICodableText>
                                               {
-                                                  BaseCDAModel.CreateCodableText("401324008", CodingSystem.SNOMED, "Urinary microscopy, culture and sensitivities"),
-                                                  // BaseCDAModel.CreateCodableText("401324008", CodingSystem.SNOMED, "Urinary microscopy, culture and sensitivities"),
+                                                  BaseCDAModel.CreateCodableText("401324008", CodingSystem.SNOMED, "Urine microscopy, culture and sensitivities"),
+                                                  // BaseCDAModel.CreateCodableText("401324008", CodingSystem.SNOMED, "Urine microscopy, culture and sensitivities"),
                                               };
 
                 // Test request details one
                 ITestRequest testRequestDetailsTwo = BaseCDAModel.CreateTestRequest();
 
                 // Requester Order Identifier
-                testRequestDetailsTwo.RequesterOrderIdentifier = BaseCDAModel.CreateInstanceIdentifier("1.2.36.1.2001.1005.52.8003620833333789", "10523479");
+                testRequestDetailsTwo.RequesterOrderIdentifier = BaseCDAModel.CreateInstanceIdentifier("1.2.36.1.2001.1005.52.8003620833333789", new Random().Next().ToString());
 
                 // LaboratoryTestResultIdentifier
                 testRequestDetailsTwo.LaboratoryTestResultIdentifier = BaseCDAModel.CreateInstanceIdentifier(BaseCDAModel.CreateGuid(), "Laboratory Test Result Identifier");
@@ -998,10 +998,8 @@ namespace Nehta.VendorLibrary.CDA.Sample
                 // Tests Requested Name
                 testRequestDetailsTwo.TestsRequestedName = new List<ICodableText>
                 {
-                    BaseCDAModel.CreateCodableText("401324008", CodingSystem.SNOMED, "Urinary microscopy, culture and sensitivities")
+                    BaseCDAModel.CreateCodableText("401324008", CodingSystem.SNOMED, "Urine microscopy, culture and sensitivities")
                 };
-
-
 
                 // Test Request Details
                 pathologyTestResult.TestRequestDetails = new List<ITestRequest>
@@ -1205,13 +1203,13 @@ namespace Nehta.VendorLibrary.CDA.Sample
                 specimenDetailOne.ReceivedDateTime = new ISO8601DateTime(DateTime.Now);
 
                 // Parent Specimen Identifier
-                specimenDetailOne.ParentSpecimenIdentifier = BaseCDAModel.CreateInstanceIdentifier("1.2.36.84425496912", BaseCDAModel.CreateGuid());
+                specimenDetailOne.ParentSpecimenIdentifier = BaseCDAModel.CreateInstanceIdentifier("1.2.36.93606583706", BaseCDAModel.CreateGuid());
 
                 // Container Identifier
-                specimenDetailOne.ContainerIdentifier = BaseCDAModel.CreateInstanceIdentifier("1.2.36.84425496912", BaseCDAModel.CreateGuid());
+                specimenDetailOne.ContainerIdentifier = BaseCDAModel.CreateInstanceIdentifier("1.2.36.93606583706", BaseCDAModel.CreateGuid());
 
                 // Specimen Identifier
-                specimenDetailOne.SpecimenIdentifier = BaseCDAModel.CreateInstanceIdentifier("1.2.36.84425496912", BaseCDAModel.CreateGuid());
+                specimenDetailOne.SpecimenIdentifier = BaseCDAModel.CreateInstanceIdentifier("1.2.36.93606583706", BaseCDAModel.CreateGuid());
 
             }
 

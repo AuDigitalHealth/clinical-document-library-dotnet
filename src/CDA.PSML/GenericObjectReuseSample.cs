@@ -201,7 +201,7 @@ namespace CDA.PSML
                 var name1 = BaseCDAModel.CreatePersonName();
                 name1.GivenNames = new List<string> { "Information" };
                 name1.FamilyName = "Recipient";
-                name1.Titles = new List<string> { "Doctor" };
+                name1.Titles = new List<string> { "Dr" };
                 name1.NameUsages = new List<NameUsage> { NameUsage.Legal };
 
                 var name2 = BaseCDAModel.CreatePersonName();
@@ -254,7 +254,7 @@ namespace CDA.PSML
             var name1 = BaseCDAModel.CreatePersonName();
             name1.GivenNames = new List<string> { "Good" };
             name1.FamilyName = "Doctor";
-            name1.Titles = new List<string> { "Doctor" };
+            name1.Titles = new List<string> { "Dr" };
             name1.NameUsages = new List<NameUsage> { NameUsage.Legal };
 
             authenticator.Participant.Person.PersonNames = new List<IPersonName> { name1 };
@@ -497,11 +497,11 @@ namespace CDA.PSML
             if (!mandatoryOnly)
             {
                 name1.GivenNames = new List<string> { "Good" };
-                name1.Titles = new List<string> { "Doctor" };
+                name1.Titles = new List<string> { "Dr" };
                 name1.NameUsages = new List<NameUsage> { NameUsage.Legal };
 
                 name2.GivenNames = new List<string> { "Davey" };
-                name2.Titles = new List<string> { "Brother" };
+                name2.Titles = new List<string> { "Br" };
                 name2.NameUsages = new List<NameUsage> { NameUsage.NewbornName };
 
                 // Document Author > Participant > Elec-tronic Communication Detail
@@ -525,7 +525,9 @@ namespace CDA.PSML
                                                                       code);
 
                 entitlement1.Type = EntitlementType.MedicarePharmacyApprovalNumber;
-                entitlement1.ValidityDuration = BaseCDAModel.CreateInterval("1", TimeUnitOfMeasure.Year);
+                entitlement1.ValidityDuration = BaseCDAModel.CreateInterval(
+                    new ISO8601DateTime(DateTime.Now, ISO8601DateTime.Precision.Day),
+                    new ISO8601DateTime(DateTime.Now.AddYears(1), ISO8601DateTime.Precision.Day));
 
                 person.Entitlements = new List<Entitlement> { entitlement1, entitlement1 };
 
@@ -577,11 +579,11 @@ namespace CDA.PSML
             {
 
                 name1.GivenNames = new List<string> { "Good" };
-                name1.Titles = new List<string> { "Doctor" };
+                name1.Titles = new List<string> { "Dr" };
                 name1.NameUsages = new List<NameUsage> { NameUsage.Legal };
 
                 name2.GivenNames = new List<string> { "Davey" };
-                name2.Titles = new List<string> { "Brother" };
+                name2.Titles = new List<string> { "Br" };
                 name2.NameUsages = new List<NameUsage> { NameUsage.NewbornName };
 
                 // Document Author > Participant > Address

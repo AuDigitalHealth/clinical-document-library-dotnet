@@ -236,7 +236,8 @@ namespace CDA.R5Samples
             pathologyReportWithStructuredContent.SCSContent.PathologyTestResult = new List<PathologyTestResult>
             {
                CreatePathologyResults(mandatorySectionsOnly),
-               CreatePathologyResults(mandatorySectionsOnly)
+               // If you want to add more
+               //CreatePathologyResults(mandatorySectionsOnly)
             };
 
             // Related Document
@@ -270,7 +271,7 @@ namespace CDA.R5Samples
             pathologyTestResult.OverallTestResultStatus = BaseCDAModel.CreateCodableText(HL7ResultStatus.FinalResultsResultsStoredAndVerifiedCanOnlyBeChangedWithACorrectedResult);
 
             // Observation Date Time
-            pathologyTestResult.ObservationDateTime = new ISO8601DateTime(DateTimeNow);
+            pathologyTestResult.ObservationDateTime = new ISO8601DateTime(DateTimeNow.AddMinutes(-90));
 
             if (!mandatorySectionsOnly)
             {
@@ -305,7 +306,7 @@ namespace CDA.R5Samples
                 ITestRequest testRequestDetailsOne = BaseCDAModel.CreateTestRequest();
 
                 // Requester Order Identifier
-                testRequestDetailsOne.RequesterOrderIdentifier = BaseCDAModel.CreateInstanceIdentifier("1.2.36.1.2001.1005.52.8003620833333789", "10523479");
+                testRequestDetailsOne.RequesterOrderIdentifier = BaseCDAModel.CreateInstanceIdentifier("1.2.36.1.2001.1005.52.8003628233352432", new Random().Next().ToString());
 
                 // LaboratoryTestResultIdentifier
                 testRequestDetailsOne.LaboratoryTestResultIdentifier = BaseCDAModel.CreateInstanceIdentifier(BaseCDAModel.CreateGuid(), "Laboratory Test Result Identifier");
@@ -313,8 +314,8 @@ namespace CDA.R5Samples
                 // Tests Requested Name
                 testRequestDetailsOne.TestsRequestedName = new List<ICodableText>
                                               {
-                                                  BaseCDAModel.CreateCodableText("401324008", CodingSystem.SNOMED, "Urinary microscopy, culture and sensitivities"),
-                                                  BaseCDAModel.CreateCodableText("401324008", CodingSystem.SNOMED, "Urinary microscopy, culture and sensitivities"),
+                                                  BaseCDAModel.CreateCodableText("401324008", CodingSystem.SNOMED, "Urine microscopy, culture and sensitivities"),
+                                                  //BaseCDAModel.CreateCodableText("401324008", CodingSystem.SNOMED, "Urine microscopy, culture and sensitivities"),
                                               };
 
 
@@ -358,10 +359,10 @@ namespace CDA.R5Samples
             if (!mandatorySectionsOnly)
             {
                 // Requester Order Identifier
-                orderDetails.RequesterOrderIdentifier = BaseCDAModel.CreateIdentifier("1.2.36.1.2001.1005.52.8003620833333789", "10523479");
+                orderDetails.RequesterOrderIdentifier = BaseCDAModel.CreateIdentifier("1.2.36.1.2001.1005.52.8003629166744876", new Random().Next().ToString());
 
                 // Requester Order Identifier
-                orderDetails.RequestedTestName = BaseCDAModel.CreateCodableText("26604007", CodingSystem.SNOMED, "Complete blood count");
+                orderDetails.RequestedTestName = BaseCDAModel.CreateCodableText("26604007", CodingSystem.SNOMED, "Full blood count");
             }
 
             // Requester
@@ -431,7 +432,7 @@ namespace CDA.R5Samples
             otherTestResult.ReportContent.ExternalData = report;
 
             // Report Date
-            otherTestResult.ReportDate = new ISO8601DateTime(DateTime.Now.AddDays(-2));
+            otherTestResult.ReportDate = new ISO8601DateTime(DateTime.Now);
 
             return otherTestResult;
         }
@@ -456,7 +457,7 @@ namespace CDA.R5Samples
             otherTestResult.ReportContent.Text = "Report Content - Text";
 
             // Report Date
-            otherTestResult.ReportDate = new ISO8601DateTime(DateTimeNow);
+            otherTestResult.ReportDate = new ISO8601DateTime(DateTimeNow.AddMinutes(-30));
 
             return otherTestResult;
         }
@@ -471,7 +472,8 @@ namespace CDA.R5Samples
             ITestResultGroup testResultGroup = BaseCDAModel.CreateTestResultGroup();
 
             // Pathology TestResult Group Name
-            testResultGroup.ResultGroupName = BaseCDAModel.CreateCodableText("18719-5", CodingSystem.LOINC, "Chemistry Studies (Set)");
+            //testResultGroup.ResultGroupName = BaseCDAModel.CreateCodableText("18719-5", CodingSystem.LOINC, "Chemistry Studies (Set)");
+            testResultGroup.ResultGroupName = BaseCDAModel.CreateCodableText("26477-0", CodingSystem.LOINC, "Variant lymphocytes [#/volume] in Blood");
 
             // Result (INDIVIDUAL PATHOLOGY TEST RESULT)
             testResultGroup.Results = new List<ITestResult>
@@ -525,7 +527,7 @@ namespace CDA.R5Samples
                 var resultValueReferenceRangeDetail = BaseCDAModel.CreateResultValueReferenceRangeDetail();
 
                 // Reference Range
-                resultValueReferenceRangeDetail.Range = BaseCDAModel.CreateQuantityRange(50, 100, "ml");
+                resultValueReferenceRangeDetail.Range = BaseCDAModel.CreateQuantityRange(100, 50, "ml");
 
                 // Reference Range Meaning
                 resultValueReferenceRangeDetail.ResultValueReferenceRangeMeaning = BaseCDAModel.CreateCodableText("75540009", CodingSystem.SNOMEDCT, "High");
@@ -551,12 +553,12 @@ namespace CDA.R5Samples
             SpecimenDetail specimenDetailOne = BaseCDAModel.CreateSpecimenDetail();
 
             // Date and Time of Collection (Collection DateTime)
-            specimenDetailOne.CollectionDateTime = new ISO8601DateTime(DateTimeNow);
+            specimenDetailOne.CollectionDateTime = new ISO8601DateTime(DateTimeNow.AddMinutes(-90));
 
             if (!mandatorySectionsOnly)
             {
                 // Specimen Tissue Type
-                specimenDetailOne.SpecimenTissueType = BaseCDAModel.CreateCodableText("85756007", CodingSystem.SNOMED, "Body tissue structure");
+                specimenDetailOne.SpecimenTissueType = BaseCDAModel.CreateCodableText("122553000", CodingSystem.SNOMED, "Blood specimen obtained from umbilicus");
 
                 // Collection Procedure
                 specimenDetailOne.CollectionProcedure = BaseCDAModel.CreateCodableText("82078001", CodingSystem.SNOMED, "Collection of blood specimen for laboratory");
@@ -581,9 +583,9 @@ namespace CDA.R5Samples
                 specimenDetailOne.PhysicalDescription = "Physical Details Description";
 
                 // Physical Details (PHYSICAL PROPERTIES OF AN OBJECT)
-                specimenDetailOne.PhysicalDetails = new List<PhysicalDetails> { 
-                    BaseCDAModel.CreatePhysicalDetails("6", "ml", BaseCDAModel.CreateExternalData(MediaType.PDF, AttachmentFileNameAndPath, "Physical Details One"))
-                };
+                //specimenDetailOne.PhysicalDetails = new List<PhysicalDetails> { 
+                //    BaseCDAModel.CreatePhysicalDetails("6", "ml", BaseCDAModel.CreateExternalData(MediaType.PDF, AttachmentFileNameAndPath, "Physical Details One"))
+                //};
 
                 // Sampling Preconditions
                 specimenDetailOne.SamplingPreconditions = BaseCDAModel.CreateCodableText("16985007", CodingSystem.SNOMED, "fasting");
@@ -592,16 +594,16 @@ namespace CDA.R5Samples
                 specimenDetailOne.CollectionSetting = "Ward 1A";
 
                 // Date and Time of Receipt (DateTime Received)
-                specimenDetailOne.ReceivedDateTime = new ISO8601DateTime(DateTime.Now);
+                specimenDetailOne.ReceivedDateTime = new ISO8601DateTime(DateTime.Now.AddMinutes(-60));
 
                 // Parent Specimen Identifier
-                specimenDetailOne.ParentSpecimenIdentifier = BaseCDAModel.CreateInstanceIdentifier("1.2.36.84425496912", BaseCDAModel.CreateGuid());
+                specimenDetailOne.ParentSpecimenIdentifier = BaseCDAModel.CreateInstanceIdentifier("1.2.36.93606583706", BaseCDAModel.CreateGuid());
 
                 // Container Identifier
-                specimenDetailOne.ContainerIdentifier = BaseCDAModel.CreateInstanceIdentifier("1.2.36.84425496912", BaseCDAModel.CreateGuid());
+                specimenDetailOne.ContainerIdentifier = BaseCDAModel.CreateInstanceIdentifier("1.2.36.93606583706", BaseCDAModel.CreateGuid());
 
                 // Specimen Identifier
-                specimenDetailOne.SpecimenIdentifier = BaseCDAModel.CreateInstanceIdentifier("1.2.36.84425496912", BaseCDAModel.CreateGuid());
+                specimenDetailOne.SpecimenIdentifier = BaseCDAModel.CreateInstanceIdentifier("1.2.36.93606583706", BaseCDAModel.CreateGuid());
 
             }
 
@@ -701,10 +703,18 @@ namespace CDA.R5Samples
             var address1 = BaseCDAModel.CreateAddress();
             address1.AddressPurpose = AddressPurpose.Business;
             address1.AustralianAddress = BaseCDAModel.CreateAustralianAddress();
+            address1.AustralianAddress.UnstructuredAddressLines = new List<string> { "1 Clinician Street" };
+            address1.AustralianAddress.SuburbTownLocality = "Nehtaville";
+            address1.AustralianAddress.State = AustralianState.QLD;
+            address1.AustralianAddress.PostCode = "5555";
 
             var address2 = BaseCDAModel.CreateAddress();
             address2.AddressPurpose = AddressPurpose.Business;
             address2.AustralianAddress = BaseCDAModel.CreateAustralianAddress();
+            address2.AustralianAddress.UnstructuredAddressLines = new List<string> { "2 Clinician Street" };
+            address2.AustralianAddress.SuburbTownLocality = "Nehtaville";
+            address2.AustralianAddress.State = AustralianState.QLD;
+            address2.AustralianAddress.PostCode = "5555";
 
             var addressList = new List<IAddress> { address1, address2 };
 
@@ -722,19 +732,21 @@ namespace CDA.R5Samples
 
             reportingPathologist.Participant.ElectronicCommunicationDetails = new List<ElectronicCommunicationDetail> { coms1, coms2 };
 
-            // Participant > Entitlement
+            // Participant > Entitlement example
             var entitlement = BaseCDAModel.CreateEntitlement();
             var code = BaseCDAModel.CreateCodableText("11", CodingSystem.NCTISEntitlementTypeValues, "Medicare Pharmacy Approval Number", null, null);
             entitlement.Id = BaseCDAModel.CreateIdentifier("Pharmacy",
                                                            null,
-                                                           "1234567892",
+                                                           "1234567890",
                                                            "1.2.36.174030967.1.3.2.1",
                                                            code);
 
             entitlement.Type = EntitlementType.MedicarePharmacyApprovalNumber;
-            entitlement.ValidityDuration = BaseCDAModel.CreateInterval("1", TimeUnitOfMeasure.Year);
+            entitlement.ValidityDuration = BaseCDAModel.CreateInterval(
+                new ISO8601DateTime(DateTime.Now, ISO8601DateTime.Precision.Day),
+                new ISO8601DateTime(DateTime.Now.AddYears(1), ISO8601DateTime.Precision.Day));
 
-            reportingPathologist.Participant.Entitlements = new List<Entitlement> { entitlement, entitlement };
+            reportingPathologist.Participant.Entitlements = new List<Entitlement> { entitlement };
 
             person.Organisation = BaseCDAModel.CreateEmploymentOrganisation();
             person.Organisation.Name = "Hay Bill Hospital";
@@ -759,16 +771,6 @@ namespace CDA.R5Samples
                 name.GivenNames = new List<string> { "Fitun" };
                 name.Titles = new List<string> { "Dr" };
                 name.NameUsages = new List<NameUsage> { NameUsage.Legal };
-
-                address1.AustralianAddress.UnstructuredAddressLines = new List<string> { "1 Clinician Street" };
-                address1.AustralianAddress.SuburbTownLocality = "Nehtaville";
-                address1.AustralianAddress.State = AustralianState.QLD;
-                address1.AustralianAddress.PostCode = "5555";
-
-                address2.AustralianAddress.UnstructuredAddressLines = new List<string> { "2 Clinician Street" };
-                address2.AustralianAddress.SuburbTownLocality = "Nehtaville";
-                address2.AustralianAddress.State = AustralianState.QLD;
-                address2.AustralianAddress.PostCode = "5555";
 
                 // Qualifications
                 reportingPathologist.Participant.Qualifications = "FRACGP";

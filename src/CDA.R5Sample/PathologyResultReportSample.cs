@@ -60,6 +60,8 @@ namespace CDA.R5Samples
 
         public static string OutputFolderPath { get; set; }
 
+        public static DateTime DateTimeNow { get; set; }
+
         public static String OutputFileNameAndPath
         {
             get
@@ -230,7 +232,9 @@ namespace CDA.R5Samples
         /// <returns>PathologyTestResult</returns>
         private static PathologyTestResult CreatePathologyTestResult(string reportingPathologistName)
         {
-          PathologyTestResult testResult = PathologyResultReport.CreatePathologyTestResult();
+            DateTimeNow = DateTime.Now;
+
+            PathologyTestResult testResult = PathologyResultReport.CreatePathologyTestResult();
 
           // Please note optional field - Note: This field is only displayed in the Narrative
           testResult.ReportingPathologistForTestResult = reportingPathologistName;
@@ -248,7 +252,7 @@ namespace CDA.R5Samples
           testResult.TestSpecimenDetail = CreateTestSpecimenDetail();
 
           // Pathology Test Result Date Time
-          testResult.ObservationDateTime = new ISO8601DateTime(DateTime.Parse("27 Feb 2007 13:00"));
+          testResult.ObservationDateTime = new ISO8601DateTime(DateTimeNow.AddMinutes(-90));
 
           return testResult;
         }
@@ -262,7 +266,7 @@ namespace CDA.R5Samples
           var testSpecimenDetail = PathologyResultReport.CreateTestSpecimenDetail();
 
           // Date and Time Of Collection
-          testSpecimenDetail.CollectionDateTime = new ISO8601DateTime(DateTime.Parse("27 Feb 2007 13:00"));
+          testSpecimenDetail.CollectionDateTime = new ISO8601DateTime(DateTimeNow.AddMinutes(-90));
 
           return testSpecimenDetail;
         }
@@ -278,7 +282,7 @@ namespace CDA.R5Samples
             var orderDetails = DiagnosticImagingReport.CreateOrderDetails();
 
             // Requester Order Identifier
-            orderDetails.RequesterOrderIdentifier = BaseCDAModel.CreateIdentifier("1.2.36.1.2001.1005.52.8003620833333789", "10523479");
+            orderDetails.RequesterOrderIdentifier = BaseCDAModel.CreateIdentifier("1.2.36.1.2001.1005.52.8003628233352432", new Random().Next().ToString());
 
             // Requester
             orderDetails.Requester = GenericObjectReuseSample.CreateRequester(mandatorySectionsOnly);
@@ -318,7 +322,7 @@ namespace CDA.R5Samples
             documentDetails.ReportIdentifier = BaseCDAModel.CreateIdentifier("1.2.36.1.2001.1005.54.8003620833333789", "10523477");
 
             // Report Date 
-            documentDetails.ReportDate = new ISO8601DateTime(DateTime.Now);
+            documentDetails.ReportDate = new ISO8601DateTime(DateTimeNow.AddMinutes(0));
 
             // Result Status
             documentDetails.ReportStatus = BaseCDAModel.CreateResultStatus(Hl7V3ResultStatus.CorrectionToResults, "Correction To Results"); // or BaseCDAModel.CreateResultStatus(Hl7V3ResultStatus.CorrectionToResults)
@@ -364,10 +368,18 @@ namespace CDA.R5Samples
           var address1 = BaseCDAModel.CreateAddress();
           address1.AddressPurpose = AddressPurpose.Business;
           address1.AustralianAddress = BaseCDAModel.CreateAustralianAddress();
+          address1.AustralianAddress.UnstructuredAddressLines = new List<string> { "1 Clinician Street" };
+          address1.AustralianAddress.SuburbTownLocality = "Nehtaville";
+          address1.AustralianAddress.State = AustralianState.QLD;
+          address1.AustralianAddress.PostCode = "5555";
 
           var address2 = BaseCDAModel.CreateAddress();
           address2.AddressPurpose = AddressPurpose.Business;
           address2.AustralianAddress = BaseCDAModel.CreateAustralianAddress();
+          address2.AustralianAddress.UnstructuredAddressLines = new List<string> { "2 Clinician Street" };
+          address2.AustralianAddress.SuburbTownLocality = "Nehtaville";
+          address2.AustralianAddress.State = AustralianState.QLD;
+          address2.AustralianAddress.PostCode = "5555";
 
           var addressList = new List<IAddress> { address1, address2 };
 
@@ -395,9 +407,11 @@ namespace CDA.R5Samples
                                                          code);
 
           entitlement.Type = EntitlementType.MedicarePharmacyApprovalNumber;
-          entitlement.ValidityDuration = BaseCDAModel.CreateInterval("1", TimeUnitOfMeasure.Year);
+          entitlement.ValidityDuration = BaseCDAModel.CreateInterval(
+              new ISO8601DateTime(DateTime.Now, ISO8601DateTime.Precision.Day),
+              new ISO8601DateTime(DateTime.Now.AddYears(1), ISO8601DateTime.Precision.Day));
 
-          reportingPathologist.Participant.Entitlements = new List<Entitlement> { entitlement, entitlement };
+            reportingPathologist.Participant.Entitlements = new List<Entitlement> { entitlement };
 
           person.Organisation = BaseCDAModel.CreateEmploymentOrganisation();
           person.Organisation.Name = "Hay Bill Hospital";
@@ -422,16 +436,6 @@ namespace CDA.R5Samples
               name.GivenNames = new List<string> { "Fitun" };
               name.Titles = new List<string> { "Dr" };
               name.NameUsages = new List<NameUsage> { NameUsage.Legal };
-
-              address1.AustralianAddress.UnstructuredAddressLines = new List<string> { "1 Clinician Street" };
-              address1.AustralianAddress.SuburbTownLocality = "Nehtaville";
-              address1.AustralianAddress.State = AustralianState.QLD;
-              address1.AustralianAddress.PostCode = "5555";
-
-              address2.AustralianAddress.UnstructuredAddressLines = new List<string> { "2 Clinician Street" };
-              address2.AustralianAddress.SuburbTownLocality = "Nehtaville";
-              address2.AustralianAddress.State = AustralianState.QLD;
-              address2.AustralianAddress.PostCode = "5555";
 
               // Qualifications
               reportingPathologist.Participant.Qualifications = "FRACGP";

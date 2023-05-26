@@ -609,9 +609,11 @@ namespace Nehta.VendorLibrary.CDA.NPDR.Sample
                                                               code);
 
         entitlement1.Type = EntitlementType.MedicarePharmacyApprovalNumber;
-        entitlement1.ValidityDuration = BaseCDAModel.CreateInterval("1", TimeUnitOfMeasure.Year);
+        entitlement1.ValidityDuration = BaseCDAModel.CreateInterval(
+            new ISO8601DateTime(DateTime.Now, ISO8601DateTime.Precision.Day),
+            new ISO8601DateTime(DateTime.Now.AddYears(1), ISO8601DateTime.Precision.Day));
 
-        participation.Participant.Entitlements= new List<Entitlement> { entitlement1 };
+                participation.Participant.Entitlements= new List<Entitlement> { entitlement1 };
 
       }
       return participation;
