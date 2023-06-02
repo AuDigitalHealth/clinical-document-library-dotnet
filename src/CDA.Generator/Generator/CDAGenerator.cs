@@ -545,7 +545,7 @@ namespace Nehta.VendorLibrary.CDA.Generator
             {
                 participants.Add(CDAGeneratorHelper.CreateParticipant(patientNominatedContact,
                     ParticipationType.PART, RoleClassAssociative.PROV, new CE { code = "PCP" },
-                    acts.SCSContext?.SubjectOfCare?.Participant?.UniqueIdentifier.ToString(), true));
+                    acts.SCSContext?.SubjectOfCare?.Participant?.UniqueIdentifier.ToString(), false));
             }
 
             if (acts.CDAContext.InformationRecipients != null)
@@ -562,7 +562,7 @@ namespace Nehta.VendorLibrary.CDA.Generator
             clinicalDocument.recordTarget = patients.ToArray();
 
             //SETUP the author
-            authors.Add(CDAGeneratorHelper.CreateAuthor(acts.SCSContext.Author, true));
+            authors.Add(CDAGeneratorHelper.CreateAuthor(acts.SCSContext.Author, false));
             clinicalDocument.author = authors.ToArray();
 
             //SETUP the Custodian

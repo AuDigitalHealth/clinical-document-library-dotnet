@@ -1,5 +1,9 @@
 ## Change Log/Revision History
 
+4.11.3 - Reference Platform Clinical Document Library (June 2023)
+----------------------------------------------------
+- Removed scopingOrganization and representedOrganization tags in ACTS
+
 4.11.2 - Reference Platform Clinical Document Library (May 2023)
 ----------------------------------------------------
 - Pathology and DI sample clean up to pass IQ rules
