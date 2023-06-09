@@ -1,5 +1,9 @@
 ## Change Log/Revision History
 
+4.11.4 - Reference Platform Clinical Document Library (June 2023)
+----------------------------------------------------
+- Added conformance text to ACP Document
+
 4.11.3 - Reference Platform Clinical Document Library (June 2023)
 ----------------------------------------------------
 - Removed scopingOrganization and representedOrganization tags in ACTS

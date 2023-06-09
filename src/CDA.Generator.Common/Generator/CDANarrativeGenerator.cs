@@ -8116,9 +8116,9 @@ namespace Nehta.VendorLibrary.CDA.Generator
             var renderMultiMediaList = new List<StrucDocRenderMultiMedia>();
 
             // Add Information For Reader
-            if (docType == DocumentType.AdvanceCareInformationGoalsOfCare)
+            if (docType == DocumentType.AdvanceCareInformationGoalsOfCare || docType == DocumentType.AdvanceCareInformationAdvanceCarePlanning)
             {
-                var textToUse = "Healthcare providers may have professional state and territory-specific legal obligations when reading Goals of Care documents stored on an individual's My Health Record.";
+                var textToUse = $"Healthcare providers may have professional state and territory-specific legal obligations when reading {docType.GetAttributeValue<NameAttribute, string>(x => x.Name)}s stored on an individual's My Health Record.";
                 StrucDocContent sdtText = new StrucDocContent()
                 {
                     Text = new string[] { textToUse },
