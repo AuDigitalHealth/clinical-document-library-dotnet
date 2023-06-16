@@ -1,5 +1,9 @@
 ## Change Log/Revision History
 
+4.11.5 - Reference Platform Clinical Document Library (June 2023)
+----------------------------------------------------
+- Amended heading text for ACP Documents
+
 4.11.4 - Reference Platform Clinical Document Library (June 2023)
 ----------------------------------------------------
 - Added conformance text to ACP Document
