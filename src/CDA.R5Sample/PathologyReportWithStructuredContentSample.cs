@@ -509,6 +509,11 @@ namespace CDA.R5Samples
 
             // Test Result Value
             resultGroup.ResultValue.TestResultValue = BaseCDAModel.CreateQuantity("12.88", "ml");
+            //resultGroup.ResultValue.ValueAsQuantityRangeValueAsQuantityRange = BaseCDAModel.CreateQuantityRange(1.2, 1.1, "ml");
+            //resultGroup.ResultValue.ValueAsCodableText = BaseCDAModel.CreateCodableText("75540009", CodingSystem.SNOMEDCT, "High");
+            //resultGroup.ResultValue.ValueAsBoolean = true;
+            //resultGroup.ResultValue.ValueAsString = "Result in upper range";
+            //resultGroup.ResultValue.ValueAsRatio = BaseCDAModel.CreateRatio("10", "ml", "25", "ml");
 
             if (!mandatorySectionsOnly)
             {

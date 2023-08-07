@@ -14,6 +14,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Xml;
 using Nehta.VendorLibrary.CDA.Generator.Enums;
 using Nehta.VendorLibrary.Common;
@@ -23,6 +24,7 @@ using Nehta.VendorLibrary.CDA.Common;
 using Nehta.VendorLibrary.CDA.SCSModel;
 using Nehta.VendorLibrary.CDA.SCSModel.Common;
 using Nehta.VendorLibrary.CDA.SCSModel.Common.Entities;
+using Newtonsoft.Json;
 
 namespace Nehta.VendorLibrary.CDA.Sample
 {
@@ -183,7 +185,13 @@ namespace Nehta.VendorLibrary.CDA.Sample
 
                 using (var writer = XmlWriter.Create(OutputFolderPath + @"\" + fileName, new XmlWriterSettings { Indent = true }))
                 {
-                    if (!fileName.IsNullOrEmptyWhitespace()) xmlDoc.Save(writer);
+                    if (!fileName.IsNullOrEmptyWhitespace())
+                    {
+                        xmlDoc.Save(writer);
+                        // Save as Json
+                        var json = JsonConvert.SerializeObject(xmlDoc);
+                        File.WriteAllText(OutputFolderPath + @"\" + fileName+ ".json", json);
+                    }
                 }
             }
             catch (ValidationException ex)

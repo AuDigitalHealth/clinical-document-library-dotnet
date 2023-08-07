@@ -14085,6 +14085,10 @@ namespace Nehta.VendorLibrary.CDA.Generator
                 PQ physicalQuantity = null;
                 CD conceptDescriptor = null;
                 IVL_PQ intervalPhysicalQuantity = null;
+                BL booleanValue = null;
+                ST structuredText = null;
+                INT intValue = null;
+                RTO ratio = null;
 
                 if (value.ValueAsCodableText != null)
                 {
@@ -14109,6 +14113,23 @@ namespace Nehta.VendorLibrary.CDA.Generator
                 {
                     intervalPhysicalQuantity = CreateIntervalPhysicalQuantity(value.ValueAsQuantityRange);
                 }
+                else if (value.ValueAsBoolean != null)
+                {
+                    booleanValue = CreateBoolean(value.ValueAsBoolean.Value, true);
+                }
+                else if (value.ValueAsString != null)
+                {
+                    structuredText = CreateStructuredText(value.ValueAsString);
+                }
+                else if (value.ValueAsInteger != null)
+                {
+                    intValue = CreateIntegerElement(value.ValueAsInteger, null, null);
+                }
+                else if (value.ValueAsRatio != null)
+                {
+                    ratio = CreateRatio(value.ValueAsRatio);
+                }
+
 
                 if (physicalQuantity != null)
                 {
@@ -14134,6 +14155,22 @@ namespace Nehta.VendorLibrary.CDA.Generator
                 {
                     any = conceptDescriptor;
                 }
+                else if (booleanValue != null)
+                {
+                    any = booleanValue;
+                }
+                else if (structuredText != null)
+                {
+                    any = structuredText;
+                }
+                else if (intValue != null)
+                {
+                    any = intValue;
+                }
+                else if (ratio != null)
+                {
+                    any = ratio;
+                }
             }
 
             return any;
@@ -14141,7 +14178,7 @@ namespace Nehta.VendorLibrary.CDA.Generator
 
         # endregion
 
-        #region Private Entry - Physical Quantity / Interval Physical Quantity
+        #region Private Entry - Physical Quantity / Interval Physical Quantity / Ratio
 
         internal static PQ CreatePhysicalQuantity(Quantity quantity)
         {
@@ -14250,6 +14287,33 @@ namespace Nehta.VendorLibrary.CDA.Generator
 
             return pq;
         }
+
+        private static RTO CreateRatio(Ratio ratioValue)
+        {
+            RTO ratio = null;
+            
+            if (ratioValue.Numerator != null && ratioValue.Denominator != null)
+            {
+                ratio = new RTO
+                {
+                    numerator = new PQ
+                    {
+                        value = ratioValue.Numerator.Value,
+                        unit = ratioValue.Numerator.Units
+                    },
+                    denominator = new PQ
+                    {
+                        value = ratioValue.Denominator.Value,
+                        unit = ratioValue.Denominator.Units
+                    },
+                    nullFlavor = NullFlavor.NA,
+                    nullFlavorSpecified = false,
+                };
+            }
+
+            return ratio;
+        }
+
 
         # endregion
 

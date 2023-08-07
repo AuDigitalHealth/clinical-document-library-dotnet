@@ -31,25 +31,63 @@ namespace Nehta.VendorLibrary.CDA.SCSModel.Common
     {
         #region Properties
         /// <summary>
-        /// ResultValue as codable text
+        /// ResultValue as codable text CD
         /// </summary>
         [CanBeNull]
         [DataMember]
         public ICodableText ValueAsCodableText { get; set; }
 
         /// <summary>
-        /// ResultValue as quantity
+        /// ResultValue as quantity PQ
         /// </summary>
         [CanBeNull]
         [DataMember]
         public Quantity TestResultValue { get; set; }
 
         /// <summary>
-        /// ResultValue as quantity range
+        /// ResultValue as quantity range IVL_PQ
         /// </summary>
         [CanBeNull]
         [DataMember]
         public QuantityRange ValueAsQuantityRange { get; set; }
+
+        /// <summary>
+        /// ResultValue as boolean BL
+        /// </summary>
+        [CanBeNull]
+        [DataMember]
+        public Boolean? ValueAsBoolean { get; set; }
+
+        /// <summary>
+        /// ResultValue as string ST
+        /// </summary>
+        [CanBeNull]
+        [DataMember]
+        public String ValueAsString { get; set; }
+
+        /// <summary>
+        /// ResultValue as integer INT
+        /// </summary>
+        [CanBeNull]
+        [DataMember]
+        public Int32? ValueAsInteger { get; set; }
+
+
+        /// <summary>
+        /// ResultValue as Ratio
+        /// </summary>
+        [CanBeNull]
+        [DataMember]
+        public Ratio ValueAsRatio { get; set; }
+
+        /// <summary>
+        /// ResultValue as PPD (ParametricProbabilityDistribution)
+        /// Looks very complex to implement - Not doing unless requested
+        /// </summary>
+        //[CanBeNull]
+        //[DataMember]
+        //public ParametricProbabilityDistribution ValueAsPPD { get; set; }
+
         #endregion
 
         #region Constructors
@@ -68,7 +106,7 @@ namespace Nehta.VendorLibrary.CDA.SCSModel.Common
         {
             var validationBuilder = new ValidationBuilder(path, messages);
 
-            if(ValueAsCodableText != null)
+            if (ValueAsCodableText != null)
             {
                 ValueAsCodableText.Validate(validationBuilder.Path + "ValueAsCodableText", messages);
             }
@@ -82,12 +120,26 @@ namespace Nehta.VendorLibrary.CDA.SCSModel.Common
             {
                 ValueAsQuantityRange.Validate(validationBuilder.Path + "ValueAsQuantityRange", messages);
             }
+            
+            if (ValueAsBoolean != null || ValueAsString != null || ValueAsInteger != null)
+            {
+                // If not null, then no further validation required
+            }
+
+            if (ValueAsRatio != null)
+            {
+                ValueAsRatio.Validate(validationBuilder.Path + "ValueAsRatio", messages);
+            }
 
             var choiceDictionary = new Dictionary<String, object>
                                        {
                                            {"ValueAsCodableText", ValueAsCodableText},
                                            {"ValueAsQuantity", TestResultValue},
-                                           {"ValueAsQuantityRange", ValueAsQuantityRange}
+                                           {"ValueAsQuantityRange", ValueAsQuantityRange},
+                                           {"ValueAsBoolean", ValueAsBoolean},
+                                           {"ValueAsString", ValueAsString},
+                                           {"ValueAsInteger", ValueAsInteger},
+                                           {"ValueAsRatio", ValueAsRatio},
                                        };
 
             validationBuilder.ChoiceCheck(choiceDictionary);

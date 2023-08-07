@@ -1,5 +1,10 @@
 ## Change Log/Revision History
 
+4.11.6 - Reference Platform Clinical Document Library (Aug 2023)
+----------------------------------------------------
+- Added support for additional ResultValue types for pathology reports
+
+
 4.11.5 - Reference Platform Clinical Document Library (June 2023)
 ----------------------------------------------------
 - Amended heading text for ACP Documents

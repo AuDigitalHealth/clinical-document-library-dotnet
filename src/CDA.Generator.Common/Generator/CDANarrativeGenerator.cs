@@ -1573,7 +1573,24 @@ namespace Nehta.VendorLibrary.CDA.Generator
                                             (pathologyTestResults.ResultValue.ValueAsQuantityRange == null
                                                 ? String.Empty
                                                 : pathologyTestResults.ResultValue.ValueAsQuantityRange.NarrativeText +
+                                                  DELIMITER) +
+                                            (pathologyTestResults.ResultValue.ValueAsBoolean == null
+                                                ? String.Empty
+                                                : pathologyTestResults.ResultValue.ValueAsBoolean.Value.ToString() +
+                                                  DELIMITER) +
+                                            (pathologyTestResults.ResultValue.ValueAsString == null
+                                                ? String.Empty
+                                                : pathologyTestResults.ResultValue.ValueAsString +
+                                                  DELIMITER) +
+                                            (pathologyTestResults.ResultValue.ValueAsInteger == null
+                                                ? String.Empty
+                                                : pathologyTestResults.ResultValue.ValueAsInteger.Value.ToString() +
+                                                  DELIMITER) +
+                                            (pathologyTestResults.ResultValue.ValueAsRatio == null
+                                                ? String.Empty
+                                                : pathologyTestResults.ResultValue.ValueAsRatio.NarrativeText +
                                                   DELIMITER)
+
                                         }
                                     );
 

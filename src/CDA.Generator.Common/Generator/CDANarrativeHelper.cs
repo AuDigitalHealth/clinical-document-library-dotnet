@@ -359,7 +359,16 @@ namespace Nehta.VendorLibrary.CDA.Generator
                                 {
                                     resultGroup.ResultGroupName.NarrativeText.IsNullOrEmptyWhitespace() ? String.Empty : resultGroup.ResultGroupName.NarrativeText,
                                     result.ResultName == null ? String.Empty : result.ResultName.NarrativeText,
-                                    result.ResultValue == null  ? String.Empty : (result.ResultValue.ValueAsCodableText == null  ? String.Empty : result.ResultValue.ValueAsCodableText.NarrativeText + DELIMITER) + (result.ResultValue.TestResultValue == null  ? String.Empty : result.ResultValue.TestResultValue.NarrativeText + DELIMITER) + (result.ResultValue.ValueAsQuantityRange == null  ? String.Empty : result.ResultValue.ValueAsQuantityRange.NarrativeText + DELIMITER),    
+
+                                    result.ResultValue == null ? String.Empty : 
+                                          (result.ResultValue.ValueAsCodableText == null ? String.Empty : result.ResultValue.ValueAsCodableText.NarrativeText + DELIMITER) 
+                                        + (result.ResultValue.TestResultValue == null  ? String.Empty : result.ResultValue.TestResultValue.NarrativeText + DELIMITER) 
+                                        + (result.ResultValue.ValueAsQuantityRange == null  ? String.Empty : result.ResultValue.ValueAsQuantityRange.NarrativeText + DELIMITER)
+                                        + (result.ResultValue.ValueAsBoolean == null  ? String.Empty : result.ResultValue.ValueAsBoolean.Value.ToString() + DELIMITER)
+                                        + (result.ResultValue.ValueAsString == null  ? String.Empty : result.ResultValue.ValueAsString + DELIMITER)
+                                        + (result.ResultValue.ValueAsInteger == null  ? String.Empty : result.ResultValue.ValueAsInteger.Value.ToString() + DELIMITER)
+                                        + (result.ResultValue.ValueAsRatio == null  ? String.Empty : result.ResultValue.ValueAsRatio.NarrativeText + DELIMITER),
+
                                     result.NormalStatus.HasValue ? result.NormalStatus.Value.GetAttributeValue<NameAttribute, string>(x => x.Name) : String.Empty,
                                     resultValueReferenceRangeDetails,
                                     testResultsComments,

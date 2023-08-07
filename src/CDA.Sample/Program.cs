@@ -51,6 +51,7 @@ namespace Nehta.VendorLibrary.CDA.Sample
             var sharedHealthSummarySampleCode = new SharedHealthSummarySample();
             var minSharedHealthSummaryCda = sharedHealthSummarySampleCode.MinPopulatedSharedHealthSummarySample("SharedHealthSummary_3A_Min.xml");
             var maxSharedHealthSummaryCda = sharedHealthSummarySampleCode.MaxPopulatedSharedHealthSummarySample("SharedHealthSummary_3A_Max.xml");
+
             // These should never be created
             // var sharedHealthSummaryCda_1A = sharedHealthSummarySampleCode.PopulateSharedHealthSummarySample_1A("SharedHealthSummary_1A.xml");
             // LevelsGeneratorPathCorrections("SharedHealthSummary_3A_Max.xml", "SharedHealthSummary_2.xml", SharedHealthSummarySample.OutputFolderPath);
