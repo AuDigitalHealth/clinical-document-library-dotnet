@@ -39,7 +39,7 @@ namespace Nehta.VendorLibrary.CDA.Common
   [KnownType(typeof(Content))]
   [KnownType(typeof(Context))]
   [KnownType(typeof(CDAContext))]
-  [TemplatePackage(DocumentName = "Pathology Report With Structured Content", TemplatePackages = "1.2.36.1.2001.1006.1.220 .1(3A) .2(3A)")]
+  [TemplatePackage(DocumentName = "Pathology Report With Structured Content", TemplatePackages = "1.2.36.1.2001.1006.1.220 .5(3A) .6(3A)")]
   public class PathologyReportWithStructuredContent : BaseCDAModel
   {
     #region Constants

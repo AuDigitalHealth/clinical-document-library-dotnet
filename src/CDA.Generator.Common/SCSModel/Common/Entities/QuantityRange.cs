@@ -115,9 +115,16 @@ namespace Nehta.VendorLibrary.CDA.SCSModel.Common
 
                 if (High.HasValue && Low.HasValue) // bounded
                 {
-                    narrative.Append(Low.Value.ToString(CultureInfo.InvariantCulture));
-                    narrative.Append(" - ");
-                    narrative.Append(High.Value.ToString(CultureInfo.InvariantCulture));
+                    if (High.Value == Low.Value) // match
+                    {
+                        narrative.Append(Low.Value.ToString(CultureInfo.InvariantCulture));
+                    }
+                    else
+                    {
+                        narrative.Append(Low.Value.ToString(CultureInfo.InvariantCulture));
+                        narrative.Append(" - ");
+                        narrative.Append(High.Value.ToString(CultureInfo.InvariantCulture));
+                    }
                 }
                 else if (High.HasValue && !Low.HasValue) // right-bounded
                 {

@@ -84,6 +84,11 @@ namespace Nehta.VendorLibrary.CDA.SCSModel.Common
               narrative += !Denominator.Units.IsNullOrEmptyWhitespace() ? string.Format(" {0}", Denominator.Units)  : String.Empty;              
             }
 
+            if (Denominator != null && Numerator != null)
+            {
+                narrative += " : ";
+            }
+
             if (Numerator != null)
             {
               narrative += !Numerator.Value.IsNullOrEmptyWhitespace() ? string.Format(" {0}", Numerator.Value) : String.Empty;

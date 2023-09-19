@@ -1,9 +1,13 @@
 ## Change Log/Revision History
 
+4.11.7 - Reference Platform Clinical Document Library (Sep 2023)
+----------------------------------------------------
+- Updated Quality Ranges to only show one value if both are the same
+- Update Ratio to put : between values
+
 4.11.6 - Reference Platform Clinical Document Library (Aug 2023)
 ----------------------------------------------------
-- Added support for additional ResultValue types for pathology reports
-
+- Added support for additional ResultValue types (BL,ST,INT,RTO) for pathology reports
 
 4.11.5 - Reference Platform Clinical Document Library (June 2023)
 ----------------------------------------------------

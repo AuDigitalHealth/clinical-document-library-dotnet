@@ -12,7 +12,7 @@
   </PropertyGroup>
   <!-- Package and assembly information -->
   <PropertyGroup>
-    <Version>4.11.6.0</Version>
+    <Version>4.11.7.0</Version>
     <Description>This Library helps generate Agency defined CDA documents</Description>
     <Company>Australian Digital Health Agency</Company>
     <Authors>$(Company)</Authors>
