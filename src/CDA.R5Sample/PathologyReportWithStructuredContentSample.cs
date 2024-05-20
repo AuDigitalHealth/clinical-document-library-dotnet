@@ -289,14 +289,11 @@ namespace CDA.R5Samples
                 pathologyTestResult.Conclusion = "Test Result Group Conclusion";
 
                 // Test Result Representation
+                // Demonstrating Text - DONT USE EncapsulatedData
+                // 09/10/23 Using EncapsulatedData with an attachment confuses NCP rendering - can only support one PDF in Report
+                //
                 pathologyTestResult.TestResultRepresentation = BaseCDAModel.CreateEncapsulatedData();
-                pathologyTestResult.TestResultRepresentation.ExternalData = BaseCDAModel.CreateExternalData(MediaType.PDF, AttachmentFileNameAndPath, "Test Result Representation");
-
-                //
-                // Demonstrating Text for EncapsulatedData
-                //
-                //pathologyTestResult.TestResultRepresentation = BaseCDAModel.CreateEncapsulatedData();
-                //pathologyTestResult.TestResultRepresentation.Text = "Lipase 150 U/L (RR < 70)";
+                pathologyTestResult.TestResultRepresentation.Text = "Lipase 150 U/L (RR < 70)";
 
 
                 // Test Comment

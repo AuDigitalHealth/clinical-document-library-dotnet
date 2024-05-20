@@ -1,5 +1,11 @@
 ## Change Log/Revision History
 
+4.11.8 - Reference Platform Clinical Document Library (May 2024)
+----------------------------------------------------
+- Added support for Aged Care Support Plan 
+- Fixed Path to only use one PDF
+
+
 4.11.7 - Reference Platform Clinical Document Library (Sep 2023)
 ----------------------------------------------------
 - Updated Quality Ranges to only show one value if both are the same

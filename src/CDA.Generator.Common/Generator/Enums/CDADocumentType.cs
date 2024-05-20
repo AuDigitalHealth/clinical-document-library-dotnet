@@ -327,6 +327,16 @@ namespace Nehta.VendorLibrary.CDA.Generator.Enums
 
         #endregion
 
+        #region Aged Care Support Plan
+
+        /// <summary>
+        /// Aged Care Support Plan - Support at Home - 1A
+        /// </summary>
+        [Name(Name = "Aged Care Support Plan", CodeSystem = "NCTIS", Code = "100.32052", TemplateIdentifier = "1.2.36.1.2001.1001.100.1002.32052", Version = "1.0", Title = "Aged Care Support Plan")]
+        AgedCareSupportPlanSupportAtHome,
+
+        #endregion
+
         #region CeHR 
 
         /// <summary>

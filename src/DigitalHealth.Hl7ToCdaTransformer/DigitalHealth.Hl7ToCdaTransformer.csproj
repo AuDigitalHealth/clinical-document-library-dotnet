@@ -13,7 +13,7 @@
   </PropertyGroup>
   <!-- Package and assembly information -->
   <PropertyGroup>
-    <Version>4.11.7.0</Version>
+    <Version>4.11.8.0</Version>
     <Description>This Library converts a HL7 v2 message into a CDA document</Description>
     <Company>Australian Digital Health Agency</Company>
     <Authors>$(Company)</Authors>

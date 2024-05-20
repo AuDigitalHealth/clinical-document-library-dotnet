@@ -594,6 +594,75 @@ namespace Nehta.VendorLibrary.CDA.Generator
             return CDAGeneratorHelper.CreateXml(clinicalDocument, authors, legalAuthenticator, authenticators, recipients, participants, components, nonXmlBody, acts.IncludeLogo, acts.LogoByte, typeof(PCML));
         }
 
+        /// <summary>
+        /// Generates ACSP
+        /// </summary>
+        /// <param name="acsp">The ACTS object</param>
+        /// <returns>XmlDocument (CDA - ACTS)</returns>
+        public static XmlDocument GenerateACSP(ACSP acsp, CDADocumentType cdaDocumentType)
+        {
+            var vb = new ValidationBuilder();
+
+            if (vb.ArgumentRequiredCheck("acsp", acsp))
+            {
+                acsp.Validate("acsp", vb.Messages);
+                LogoSetupAndValidation(acsp.LogoPath, acsp.LogoByte, acsp.IncludeLogo, vb);
+            }
+
+            if (vb.Messages.Any())
+            {
+                throw new ValidationException(vb.Messages);
+            }
+
+            var authors = new List<POCD_MT000040Author>();
+            var recipients = new List<POCD_MT000040InformationRecipient>();
+            var participants = new List<POCD_MT000040Participant1>();
+            var components = new List<POCD_MT000040Component3>();
+            var patients = new List<POCD_MT000040RecordTarget>();
+            var authenticators = new List<POCD_MT000040Authenticator>();
+            POCD_MT000040NonXMLBody nonXmlBody = null;
+
+            //SETUP the clinical document object
+            var clinicalDocument = CDAGeneratorHelper.CreateDocument
+                (
+                    acsp.DocumentCreationTime,
+                    cdaDocumentType,
+                    acsp.CDAContext.DocumentId,
+                    acsp.CDAContext.SetId,
+                    acsp.CDAContext.Version,
+                    acsp.DocumentStatus,
+                    acsp.Title
+                );
+
+            //SETUP the patient
+            patients.Add(CDAGeneratorHelper.CreateSubjectOfCare(acsp.SCSContext.SubjectOfCare));
+            clinicalDocument.recordTarget = patients.ToArray();
+
+            //SETUP the author
+            authors.Add(CDAGeneratorHelper.CreateAuthor(acsp.SCSContext.Author, false));
+            clinicalDocument.author = authors.ToArray();
+
+            //SETUP the Custodian
+            clinicalDocument.custodian = CDAGeneratorHelper.CreateCustodian(acsp.CDAContext.Custodian);
+
+            //
+            if (acsp.SCSContent.EncapsulatedData != null)
+            {
+                components.Add(CDAGeneratorHelper.CreateComponent(acsp.SCSContent.EncapsulatedData, cdaDocumentType, NarrativeGenerator));
+            }
+
+            if (acsp.SCSContent.CustomNarrativePcmlRecord != null)
+            {
+                if (acsp.SCSContent.CustomNarrativePcmlRecord != null && acsp.SCSContent.CustomNarrativePcmlRecord.Any())
+                {
+                    components.AddRange(CDAGeneratorHelper.CreateNarrativeOnlyDocument(acsp.SCSContent.CustomNarrativePcmlRecord, "1.2.36.1.2001.1001.101.101.16886"));
+                }
+            }
+
+            //Generate and return the ACTS
+            return CDAGeneratorHelper.CreateXml(clinicalDocument, authors, null, authenticators, recipients, participants, components, nonXmlBody, acsp.IncludeLogo, acsp.LogoByte, typeof(PCML));
+        }
+
 
         /// <summary>
         /// Generates a Consumer Entered Health Summary CDA (XML) document

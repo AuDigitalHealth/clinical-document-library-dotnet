@@ -51,6 +51,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ACSPSample.cs" />
     <Compile Include="GenericObjectReuseSample.cs" />
     <Compile Include="ACTSSample.cs" />
     <Compile Include="SmlSampleCreator.cs" />

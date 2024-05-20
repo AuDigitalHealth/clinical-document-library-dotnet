@@ -139,6 +139,54 @@ namespace CDA.PSML
         }
 
         /// <summary>
+        /// Creates and Hydrates an SubjectofCare
+        /// Note: the data used within this method is intended as a guide and should be replaced.
+        /// </summary>
+        /// <returns>A Hydrated SubjectofCare</returns>
+        public static void HydrateSubjectofCareDOHAC(IParticipationSubjectOfCare subjectOfCare)
+        {
+            var participant = BaseCDAModel.CreateParticipantForSubjectOfCare();
+
+            // Subject of Care > Participant > Person or Organisation or Device > Person
+            var person = BaseCDAModel.CreatePersonForSubjectOfCare();
+
+            participant.UniqueIdentifier = Guid.NewGuid();
+
+            // Subject of Care > Participant > Person or Organisation or Device > Person > Person Name
+            var name1 = BaseCDAModel.CreatePersonName();
+            name1.FamilyName = "Grant";
+            name1.GivenNames = new List<string> { "Sally" };
+            name1.NameUsages = new List<NameUsage> { NameUsage.Legal };
+
+            person.PersonNames = new List<IPersonName> { name1 };
+
+            // Subject of Care > Participant > Person or Organisation or Device > Person > Demographic Data > Sex
+            person.Gender = Gender.Female;
+
+            // Subject of Care > Participant > Person or Organisation or Device > Person > Demographic Data > Date of Birth Detail > 
+            // Date of Birth
+            person.DateOfBirth = new ISO8601DateTime(DateTime.Now.AddYears(-57));
+
+            // Subject of Care > Participant > Entity Identifier
+            person.Identifiers = new List<Identifier>
+                {
+                     BaseCDAModel.CreateHealthIdentifier(HealthIdentifierType.IHI, "8003604444567894")
+                };
+
+            // Default as DOAHC do not collect it
+            person.IndigenousStatus = IndigenousStatus.NotStatedOrInadequatelyDescribed;
+
+            var address1 = BaseCDAModel.CreateAddress();
+            address1.AustralianAddress = BaseCDAModel.CreateAustralianAddress();
+            address1.AddressPurpose = AddressPurpose.NotStatedUnknownInadequatelyDescribed;
+
+            participant.Addresses = new List<IAddress> { address1 };
+
+            participant.Person = person;
+            subjectOfCare.Participant = participant;
+        }
+
+        /// <summary>
         /// Creates and Hydrates a list of recipients
         /// Note: the data used within this method is intended as a guide and should be replaced.
         /// </summary>
@@ -171,30 +219,9 @@ namespace CDA.PSML
                 address1.AustralianAddress.PostCode = "5555";
                 address1.AustralianAddress.DeliveryPointId = 32568931;
 
-                var address2 = BaseCDAModel.CreateAddress();
-                address2.AddressPurpose = AddressPurpose.TemporaryAccommodation;
-                address2.InternationalAddress = BaseCDAModel.CreateInternationalAddress();
-                address2.InternationalAddress.AddressLine = new List<string> { "1 Overseas Street" };
-                address2.InternationalAddress.Country = Country.Albania;
-                address2.InternationalAddress.PostCode = "12345";
-                address2.InternationalAddress.StateProvince = "Foreign Land";
-
-                var addressList = new List<IAddress> { address1, address2 };
+                var addressList = new List<IAddress> { address1 };
 
                 recipient.Participant.Addresses = addressList;
-
-                // informationRecipient/intendedRecipient/<Electronic Communication Detail>
-                var coms1 = BaseCDAModel.CreateElectronicCommunicationDetail(
-                    "0345754566",
-                    ElectronicCommunicationMedium.Telephone,
-                    ElectronicCommunicationUsage.WorkPlace);
-
-                var coms2 = BaseCDAModel.CreateElectronicCommunicationDetail(
-                    "authen@globalauthens.com",
-                    ElectronicCommunicationMedium.Email,
-                    ElectronicCommunicationUsage.WorkPlace);
-
-                recipient.Participant.ElectronicCommunicationDetails = new List<ElectronicCommunicationDetail> { coms1, coms2 };
 
                 // informationRecipient/intendedRecipient/informationRecipient/<Person Name>
 
@@ -204,13 +231,7 @@ namespace CDA.PSML
                 name1.Titles = new List<string> { "Dr" };
                 name1.NameUsages = new List<NameUsage> { NameUsage.Legal };
 
-                var name2 = BaseCDAModel.CreatePersonName();
-                name2.GivenNames = new List<string> { "Information" };
-                name2.FamilyName = "Recipient";
-                name2.Titles = new List<string> { "Mr" };
-                name2.NameUsages = new List<NameUsage> { NameUsage.NewbornName };
-
-                recipient.Participant.Person.PersonNames = new List<IPersonName> { name1, name2 };
+                recipient.Participant.Person.PersonNames = new List<IPersonName> { name1 };
 
                 // informationRecipient/intendedRecipient/receivedOrganization
                 recipient.Participant.Organisation = BaseCDAModel.CreateOrganisationName();
@@ -359,6 +380,29 @@ namespace CDA.PSML
                     ElectronicCommunicationUsage.WorkPlace);
                 custodian.ElectronicCommunicationDetail = coms1;
             }
+        }
+
+        /// <summary>
+        /// Creates and Hydrates a custodian
+        /// 
+        /// Note: the data used within this method is intended as a guide and should be replaced.
+        /// </summary>
+        /// <returns>A Custodian</returns>
+        public static void HydrateCustodianDOHAC(IParticipationCustodian participationCustodian)
+        {
+            var custodian = BaseCDAModel.CreateParticipantCustodian();
+
+            // custodian/assignedCustodian
+            participationCustodian.Participant = custodian;
+
+            // custodian/assignedCustodian/representedCustodianOrganization
+            custodian.Organisation = BaseCDAModel.CreateOrganisationName();
+            custodian.Organisation.Name = "Department of Health and Aged Care";
+            // custodian/assignedCustodian/representedCustodianOrganization/<Entity Identifier>
+            custodian.Organisation.Identifiers = new List<Identifier> {
+                BaseCDAModel.CreateHealthIdentifier(HealthIdentifierType.PAIO, "8003640001000077")
+            };
+
         }
 
         /// <summary>
@@ -652,6 +696,29 @@ namespace CDA.PSML
                                        BaseCDAModel.CreateHealthIdentifier(HealthIdentifierType.PAID, "8003640001000036"),
                                        BaseCDAModel.CreateIdentifier("AuthorDevice", null, null, "1.2.3.4.5.66666", null)
                                    };
+        }
+
+        /// <summary>
+        /// Creates and Hydrates the Author Authoring Device 
+        /// 
+        /// Note: the data used within this method is intended as a guide and should be replaced.
+        /// </summary>
+        /// <returns>A Hydrated AuthorAuthoringDevice object</returns>
+        public static void HydrateAuthorDeviceDOHAC(AuthorAuthoringDevice author)
+        {
+            author.DateTimeAuthored = new ISO8601DateTime(DateTime.Now);
+
+            // Document Author > Role
+            author.Role = BaseCDAModel.CreateRole(NullFlavour.NotApplicable);
+
+            // Document Author > Software Name
+            author.SoftwareName = "Department of Health and Aged Care System";
+
+            // Document Author > Participant > Entity Identifier
+            author.Identifiers = new List<Identifier>
+            {
+                BaseCDAModel.CreateHealthIdentifier(HealthIdentifierType.PAID, "8003640003000034"),
+            };
         }
 
         /// <summary>

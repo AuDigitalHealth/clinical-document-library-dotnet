@@ -1754,15 +1754,15 @@ namespace Nehta.VendorLibrary.CDA.Generator
                     );
 
 
-                // Test Result Representation - PW: 30/5/17 Should be LinkHtml
-                if (pathologyTestResult.TestResultRepresentation != null)
+                // Test Result Representation - PW: 09/10/23 Only allow Text - as can only support one PDF in Report
+                if (pathologyTestResult.TestResultRepresentation != null && pathologyTestResult.TestResultRepresentation.Text != null)
                     narrativepathologyTestResult.Add
                     (
-                        //new List<Object> { "Test Result Representation", CreateEncapsulatedData(pathologyTestResult.TestResultRepresentation, ref renderMultiMediaList) }
                         new List<Object>
                         {
                             "Test Result Representation",
-                            CreateSimpleHtmlLink(pathologyTestResult.TestResultRepresentation.ExternalData)
+                            pathologyTestResult.TestResultRepresentation.Text
+                            //CreateSimpleHtmlLink(pathologyTestResult.TestResultRepresentation.ExternalData)
                         }
                     );
 

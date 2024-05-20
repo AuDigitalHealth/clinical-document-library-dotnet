@@ -122,7 +122,8 @@ namespace Nehta.VendorLibrary.CDA.Generator
             if (cdaDocumentType == CDADocumentType.PharmacistSharedMedicinesList ||
                 cdaDocumentType == CDADocumentType.ResidentialCareTransferReason ||
                 cdaDocumentType == CDADocumentType.ResidentialCareHealthSummary ||
-                cdaDocumentType == CDADocumentType.ResidentialCareMedicationChart)
+                cdaDocumentType == CDADocumentType.ResidentialCareMedicationChart ||
+                cdaDocumentType == CDADocumentType.AgedCareSupportPlanSupportAtHome )
             {
                 templateIds.Add(CreateIdentifierElement(
                     CDADocumentType.CoreLevelOne.GetAttributeValue<NameAttribute, string>(x => x.TemplateIdentifier),
@@ -3884,21 +3885,6 @@ namespace Nehta.VendorLibrary.CDA.Generator
                         relationshipList.Add(
                             CreateRelationshipForTestResultDateTime(pathologyTestResult.ObservationDateTime));
                     }
-
-                    //Added this relationship so as we can reference and display the test result representation 
-                    //data within the narrative
-
-                    // PW (30/5/17): THIS IS WRONG - should only be observation>value>reference
-                    //if (pathologyTestResult.TestResultRepresentation != null && pathologyTestResult.TestResultRepresentation.ExternalData != null)
-                    //{
-                    //    POCD_MT000040EntryRelationship relationShip = CreateEntryRelationshipObservationMedia
-                    //        (
-                    //            x_ActRelationshipEntryRelationship.REFR,
-                    //            pathologyTestResult.TestResultRepresentation.ExternalData
-                    //        );
-
-                    //    relationshipList.Add(relationShip);
-                    //}
 
                     POCD_MT000040Participant2 reportingPathologist = null;
 

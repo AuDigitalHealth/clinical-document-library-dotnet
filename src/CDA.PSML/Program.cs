@@ -33,6 +33,7 @@ namespace CDA.PSML
             PSMLSample.OutputFolderPath = folderPath;
             SMLSample.OutputFolderPath = folderPath;
             ACTSSample.OutputFolderPath = folderPath;
+            ACSPSample.OutputFolderPath = folderPath;
 
             PrepareOutputFolder(folderPath);
 
@@ -65,6 +66,9 @@ namespace CDA.PSML
             actsCda.MaxPopulatedACTS_ResidentialCareMedicationChart_Sample_1A("ACTS_ResidentialCareMedicationChart_1A_Max.xml");
             actsCda.MinPopulatedACTS_ResidentialCareTransferReason_Sample_1B("ACTS_ResidentialCareTransferReason_1B_Min.xml");
             actsCda.MaxPopulatedACTS_ResidentialCareTransferReason_Sample_1B("ACTS_ResidentialCareTransferReason_1B_Max.xml");
+
+            var acspCda = new ACSPSample();
+            acspCda.PopulatedACSP_SupportAtHome_Sample_1A("ACSP_SupportAtHome_1A.xml");
 
         }
 
