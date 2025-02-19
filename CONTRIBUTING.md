@@ -9,9 +9,9 @@ file within this repository.
 
 Issues can be used to:
 
-* Report a defect
-* Request a new feature or enhancement
-* Ask a question
+- Report a defect
+- Request a new feature or enhancement
+- Ask a question
 
 New issues will be automatically populated with a template that highlights the
 information that needs to be submitted with an issue that describes a defect. If
@@ -34,3 +34,8 @@ situations where people are working at cross-purposes.
 
 Before making a contribution, please read the
 [code of conduct](CODE_OF_CONDUCT.md).
+
+## Contact us
+
+You can alo raise a query about this code, by emailing:
+[help@digitalhealth.gov.au](mailto:help@digitalhealth.gov.au)

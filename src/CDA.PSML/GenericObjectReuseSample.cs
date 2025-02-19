@@ -173,8 +173,9 @@ namespace CDA.PSML
                      BaseCDAModel.CreateHealthIdentifier(HealthIdentifierType.IHI, "8003604444567894")
                 };
 
+            //person.IndigenousStatus = IndigenousStatus.NotStatedOrInadequatelyDescribed;
             // Default as DOAHC do not collect it
-            person.IndigenousStatus = IndigenousStatus.NotStatedOrInadequatelyDescribed;
+            person.AuIndigenousStatus = IndigenousStatus.NotStatedOrInadequatelyDescribed;
 
             var address1 = BaseCDAModel.CreateAddress();
             address1.AustralianAddress = BaseCDAModel.CreateAustralianAddress();

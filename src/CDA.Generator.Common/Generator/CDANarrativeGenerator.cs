@@ -7630,7 +7630,7 @@ namespace Nehta.VendorLibrary.CDA.Generator
                         {
                             Text = new[]
                             {
-                                "Reporting Radiologist: ",
+                                "Reporting Clinician: ",
                                 imagingExaminationResult.ReportingRadiologistForImagingExaminationResult,
                             }
                         }
@@ -8555,7 +8555,7 @@ namespace Nehta.VendorLibrary.CDA.Generator
         {
             var strucDocText = new StrucDocText();
             var strucDocTableList = new List<StrucDocTable>();
-            var header = new[] {"Report Date", "Report", "Reporting Radiologist", "Status"};
+            var header = new[] {"Report Date", "Report", "Reporting Clinician", "Status"};
             var relatedDocumentNarrative = new List<List<Object>>();
 
             string reportingRadiologistDisplay = string.Empty;

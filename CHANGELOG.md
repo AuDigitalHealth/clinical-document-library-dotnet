@@ -1,5 +1,15 @@
 ## Change Log/Revision History
 
+4.12.0 - Reference Platform Clinical Document Library (Feb 2025)
+----------------------------------------------------
+- Package updates to latest compatible.
+  JetBrains.Annotations 2018.3.0 --> 2024.3.0
+  System.Configuration.ConfigurationManager 6.0.0 --> 9.0.0
+  System.ServiceModel.Federation 4.8.1 --> 8.1.1
+  LibLog 4.2.6 --> 5.0.5
+- Changed text to Reporting Clinician (from Radiologist)  
+
+
 4.11.8 - Reference Platform Clinical Document Library (May 2024)
 ----------------------------------------------------
 - Added support for Aged Care Support Plan 
