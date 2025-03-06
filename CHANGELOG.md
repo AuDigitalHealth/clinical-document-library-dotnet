@@ -1,5 +1,10 @@
 ## Change Log/Revision History
 
+4.13.0 - Reference Platform Clinical Document Library (March 2025)
+----------------------------------------------------
+Package version amended for long term support
+- System.Configuration.ConfigurationManager 9.0.0 --> 8.0.0
+
 4.12.0 - Reference Platform Clinical Document Library (Feb 2025)
 ----------------------------------------------------
 - Package updates to latest compatible.

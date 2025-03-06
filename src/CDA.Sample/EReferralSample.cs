@@ -828,7 +828,7 @@ namespace Nehta.VendorLibrary.CDA.Sample
 
                 var diagnosis3 = BaseCDAModel.CreateProblemDiagnosis();
                 diagnosis3.Comment = "Diuretic induced";
-                diagnosis3.ProblemDiagnosisIdentification = BaseCDAModel.CreateCodableText("43408002", CodingSystem.SNOMED, "Red reflex");
+                diagnosis3.ProblemDiagnosisIdentification = BaseCDAModel.CreateCodableText("43408002", CodingSystem.SNOMED, "Red reflex present");
                 diagnosisList.Add(diagnosis3);
 
                 var diagnosis4 = BaseCDAModel.CreateProblemDiagnosis();

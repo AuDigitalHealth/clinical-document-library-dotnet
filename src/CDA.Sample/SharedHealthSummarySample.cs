@@ -477,7 +477,7 @@ namespace Nehta.VendorLibrary.CDA.Sample
 
                 var diagnosis6 = SharedHealthSummary.CreateProblemDiagnosis();
                 diagnosis6.Comment = "Cementless";
-                diagnosis6.ProblemDiagnosisIdentification = BaseCDAModel.CreateCodableText("43408002", CodingSystem.SNOMED, "Red reflex");
+                diagnosis6.ProblemDiagnosisIdentification = BaseCDAModel.CreateCodableText("43408002", CodingSystem.SNOMED, "Red reflex present");
                 diagnosis6.DateOfOnset = new ISO8601DateTime(DateTime.Parse("27 Feb 2007"), ISO8601DateTime.Precision.Day);
                 diagnosis6.ShowOngoingDateInNarrative = true;
                 diagnosisList.Add(diagnosis6);
