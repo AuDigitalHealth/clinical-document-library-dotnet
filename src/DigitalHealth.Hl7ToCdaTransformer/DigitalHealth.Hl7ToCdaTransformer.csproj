@@ -1,6 +1,6 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <TargetFrameworks>netstandard2.0;net452</TargetFrameworks>
+    <TargetFrameworks>netstandard2.0;net472;net10.0</TargetFrameworks>
     <OutputType>Library</OutputType>
     <GenerateAssemblyInfo>true</GenerateAssemblyInfo>
     <GenerateDocumentationFile>True</GenerateDocumentationFile>
@@ -13,12 +13,12 @@
   </PropertyGroup>
   <!-- Package and assembly information -->
   <PropertyGroup>
-    <Version>4.13.0.0</Version>
+    <Version>5.0.0.0</Version>
     <Description>This Library converts a HL7 v2 message into a CDA document</Description>
     <Company>Australian Digital Health Agency</Company>
     <Authors>$(Company)</Authors>
-    <Copyright>Copyright ©2022</Copyright>
-    <PackageReleaseNotes>Added netstandard2.0 compatible version of library</PackageReleaseNotes>
+    <Copyright>Copyright ©2026</Copyright>
+    <PackageReleaseNotes>Added net10, netstandard2.0 compatible version of library</PackageReleaseNotes>
     <PackageProjectUrl>https://github.com/AuDigitalHealth/clinical-document-library-dotnet</PackageProjectUrl>
     <PackageTags>ADHA Digital Health Nehta</PackageTags>
     <PackageLicenseFile>LICENSE.txt</PackageLicenseFile>
@@ -30,11 +30,7 @@
     <ProjectReference Include="..\DigitalHealth.Hl7.Common\DigitalHealth.Hl7.Common.csproj" PrivateAssets="all" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="LibLog" Version="5.0.5">
-      <PrivateAssets>all</PrivateAssets>
-      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-    </PackageReference>
-    <PackageReference Include="Nehta.VendorLibrary.Common" Version="4.3.0" />
+    <PackageReference Include="Nehta.VendorLibrary.Common" Version="5.0.0" />
   </ItemGroup>
   <ItemGroup>
     <Compile Remove="Models\Hl7MessageInfoException.cs" />

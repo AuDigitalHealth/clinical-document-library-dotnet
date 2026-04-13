@@ -1,6 +1,6 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <TargetFrameworks>netstandard2.0;net452</TargetFrameworks>
+    <TargetFrameworks>netstandard2.0;net472;net10.0</TargetFrameworks>
     <OutputType>Library</OutputType>
     <GenerateAssemblyInfo>true</GenerateAssemblyInfo>
     <GenerateDocumentationFile>True</GenerateDocumentationFile>
@@ -8,34 +8,36 @@
     <AnalysisMode>AllEnabledByDefault</AnalysisMode>
     <AnalysisLevel>latest</AnalysisLevel>
   </PropertyGroup>
+	<PropertyGroup Condition="'$(TargetFramework)' == 'net10.0'">
+		<NoWarn>CS1591</NoWarn>
+	</PropertyGroup>
   <!-- Package and assembly information -->
   <PropertyGroup>
-    <Version>4.13.0.0</Version>
+    <Version>5.0.0.0</Version>
     <Description>This Library helps generate Agency defined CDA documents</Description>
     <Company>Australian Digital Health Agency</Company>
-    <Copyright>Copyright ©2022</Copyright>
+    <Copyright>Copyright ©2026</Copyright>
   </PropertyGroup>
   <ItemGroup>
     <ProjectReference Include="..\CDA.GeneratedCode\CDA.GeneratedCode.csproj" />
   </ItemGroup>
-  <ItemGroup Condition="'$(TargetFramework)' == 'netstandard2.0'">
-    <PackageReference Include="System.Configuration.ConfigurationManager">
-      <Version>8.0.0</Version>
-    </PackageReference>
-    <PackageReference Include="System.ServiceModel.Federation" Version="8.1.1" />
+  <ItemGroup>
+    <PackageReference Include="JetBrains.Annotations" Version="2025.2.4" />
+    <PackageReference Include="System.Configuration.ConfigurationManager" Version="10.0.5" />          
+    <PackageReference Include="System.ServiceModel.Federation" Version="10.0.652802" />
   </ItemGroup>
   <ItemGroup Condition="'$(TargetFramework)' == 'net452'">
     <Reference Include="System.Configuration" />
     <Reference Include="System.ServiceModel" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="JetBrains.Annotations" Version="2018.3.0" />
-    <PackageReference Include="Nehta.VendorLibrary.Common" Version="4.3.0" />
+    <PackageReference Include="Nehta.VendorLibrary.Common" Version="5.0.0" />
   </ItemGroup>
   <ItemGroup>
     <InternalsVisibleTo Include="Nehta.VendorLibrary.CDA.Generator.v3" />
 	<InternalsVisibleTo Include="Nehta.VendorLibrary.CDA.Generator.v2" />
 	<InternalsVisibleTo Include="Nehta.VendorLibrary.CDA.Medicare" />
+	<InternalsVisibleTo Include="CDA.Medicare.Test" />
   </ItemGroup>   
   <ItemGroup>
     <Compile Remove="Common\Interfaces\PersonOrganisation\IPersonWithOrganisations.cs" />

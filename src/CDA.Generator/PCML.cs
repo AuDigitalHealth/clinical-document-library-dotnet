@@ -149,7 +149,6 @@ namespace Nehta.VendorLibrary.CDA.Common
             return new Participant();
         }
 
-
         #endregion
     }
 }

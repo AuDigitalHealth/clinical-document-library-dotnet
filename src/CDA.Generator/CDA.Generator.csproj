@@ -1,6 +1,6 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <TargetFrameworks>netstandard2.0;net452</TargetFrameworks>
+    <TargetFrameworks>netstandard2.0;net472;net10.0</TargetFrameworks>
     <OutputType>Library</OutputType>
     <RootNamespace>Nehta.VendorLibrary.CDA</RootNamespace>
     <AssemblyName>Nehta.VendorLibrary.CDA.Generator.v3</AssemblyName>
@@ -12,12 +12,12 @@
   </PropertyGroup>
   <!-- Package and assembly information -->
   <PropertyGroup>
-    <Version>4.13.0.0</Version>
+    <Version>5.0.0.0</Version>
     <Description>This Library helps generate Agency defined CDA documents</Description>
     <Company>Australian Digital Health Agency</Company>
     <Authors>$(Company)</Authors>
-    <Copyright>Copyright ©2022</Copyright>
-    <PackageReleaseNotes>Added netstandard2.0 compatible version of library</PackageReleaseNotes>
+    <Copyright>Copyright ©2026</Copyright>
+    <PackageReleaseNotes>Added net10, netstandard2.0 compatible version of library</PackageReleaseNotes>
     <PackageProjectUrl>https://github.com/AuDigitalHealth/clinical-document-library-dotnet</PackageProjectUrl>
     <PackageTags>ADHA Digital Health Nehta</PackageTags>
     <PackageLicenseFile>LICENSE.txt</PackageLicenseFile>
@@ -27,8 +27,7 @@
     <ProjectReference Include="..\CDA.Generator.Common\CDA.Generator.Common.csproj" PrivateAssets="all" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="JetBrains.Annotations" Version="2024.3.0" />
-    <PackageReference Include="Nehta.VendorLibrary.Common" Version="4.3.0" />
+    <PackageReference Include="Nehta.VendorLibrary.Common" Version="5.0.0" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="..\..\LICENSE.txt" Link="Properties\LICENSE.txt" PackagePath="LICENSE.txt" />

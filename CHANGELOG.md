@@ -1,5 +1,18 @@
 ## Change Log/Revision History
 
+5.0.0 - Reference Platform Clinical Document Library (April 2026)
+----------------------------------------------------
+Target Updates:
+net452 -> net472
+(+) net10.0
+
+Package Updates:
+Nehta.VendorLibrary.Common 4.3.0 -> 5.0.0
+JetBrains.Annotations 2024.3.0 -> 2025.2.4
+System.ServiceModel.Federation 8.1.1 -> 10.0.0.652802
+
+(+) System.Configuration.ConfigurationManager -> 10.0.5
+
 4.13.0 - Reference Platform Clinical Document Library (March 2025)
 ----------------------------------------------------
 Package version amended for long term support

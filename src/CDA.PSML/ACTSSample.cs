@@ -342,7 +342,6 @@ namespace CDA.PSML
                 cdaContext.InformationRecipients.AddRange(new[] { recipient1, recipient2 });
             }
 
-
             acts.CDAContext = cdaContext;
             #endregion
 
@@ -382,7 +381,6 @@ namespace CDA.PSML
             name1.NameUsages = new List<NameUsage> { NameUsage.Legal };
 
             person.Participant.Person.PersonNames = new List<IPersonName> { name1 };
-
 
             // Subject of Care > Participant > Person or Organisation or Device > Person > Identifier
             person.Participant.Person.Identifiers = new List<Identifier>
@@ -449,7 +447,6 @@ namespace CDA.PSML
 
             #endregion
 
-
             #region Setup and populate the SCS Content model
             // Setup and populate the SCS Content model
             acts.SCSContent = Nehta.VendorLibrary.CDA.Common.PCML.CreateSCSContent();
@@ -461,13 +458,11 @@ namespace CDA.PSML
             report1.Path = StructuredFileAttachment;
             report1.Caption = "Attachment One";
 
-
             acts.SCSContent.EncapsulatedData.ExternalData = report1;
             #endregion
 
             return acts;
         }
-
 
         /// <summary>
         /// This method populates an PCML model with either the mandatory sections only, or both 
@@ -549,12 +544,10 @@ namespace CDA.PSML
             acts.SCSContext.SubjectOfCare = BaseCDAModel.CreateSubjectOfCare();
             GenericObjectReuseSample.HydrateSubjectofCare(acts.SCSContext.SubjectOfCare, mandatorySectionsOnly, true);
 
-
             IParticipationPersonOrOrganisation person = Nehta.VendorLibrary.CDA.Common.PCML.CreateParticipationPersonOrOrganisation();
             person.Participant = Nehta.VendorLibrary.CDA.Common.PCML.CreateParticipantPersonOrOrganisation();
             person.Role = BaseCDAModel.CreateRole(HealthcareFacilityTypeCodes.AgedCareResidentialServices);
             person.Participant.Person = BaseCDAModel.CreatePersonWithOrganisation();
-
 
             var name1 = BaseCDAModel.CreatePersonName();
             name1.FamilyName = "Grant";
@@ -613,7 +606,6 @@ namespace CDA.PSML
 
             person.Participant.ElectronicCommunicationDetails = new List<ElectronicCommunicationDetail> { coms1, coms2 };
 
-
             // Subject of Care > Participant > Entitlement
             var entitlement1 = BaseCDAModel.CreateEntitlement();
             entitlement1.Id = BaseCDAModel.CreateMedicareNumber(MedicareNumberType.MedicareCardNumber, "1234567881");
@@ -671,7 +663,6 @@ namespace CDA.PSML
             };
 
             #endregion
-
 
             return acts;
         }

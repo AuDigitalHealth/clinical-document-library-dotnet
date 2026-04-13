@@ -62,6 +62,7 @@ using Medications = Nehta.VendorLibrary.CDA.SCSModel.Common.Medications;
 using Participation = Nehta.VendorLibrary.CDA.SCSModel.Common.Participation;
 using ProblemDiagnosis = Nehta.VendorLibrary.CDA.SCSModel.Common.ProblemDiagnosis;
 
+
 namespace Nehta.VendorLibrary.CDA.Generator
 {
     /// <summary>
@@ -915,13 +916,13 @@ namespace Nehta.VendorLibrary.CDA.Generator
             return advanceCareInformationComponent;
         }
 
-        /// <summary>
-        /// Creates Pathology component 1A
-        /// IList<SCSModel.Common.PathologyTestResult> pathologyTestResults
-        /// IParticipationReportingPathologist reportingPathologist
-        /// </summary>
-        /// <returns>POCD_MT000040Component3</returns>
-        internal static POCD_MT000040Component3 CreateComponent(
+		/// <summary>
+		/// Creates Pathology component 1A
+		/// IList<SCSModel.Common.PathologyTestResult> pathologyTestResults
+		/// IParticipationReportingPathologist reportingPathologist
+		/// <returns>POCD_MT000040Component3</returns>
+		/// </summary>        
+		internal static POCD_MT000040Component3 CreateComponent(
             IList<SCSModel.Common.PathologyTestResult> pathologyTestResults,
             IParticipationReportingPathologist reportingPathologist,
             RelatedDocument relatedDocument,
@@ -18257,6 +18258,8 @@ namespace Nehta.VendorLibrary.CDA.Generator
                             xmlSerializer.Serialize(xmlWriter, cdaDocument, xmlSerializerNamespaces);
 
                             returnXmlDocument.LoadXml(stringBuilder.ToString());
+
+
 
                             var styleSheet = ConfigurationManager.AppSettings["XSLStylesheet"];
 

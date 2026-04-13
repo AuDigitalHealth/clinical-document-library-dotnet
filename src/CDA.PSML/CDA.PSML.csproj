@@ -1,90 +1,41 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
-  <PropertyGroup>
-    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{363DE0DE-A5FC-4298-9D2D-F6C66432A0E4}</ProjectGuid>
-    <OutputType>Exe</OutputType>
-    <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>CDA.PSML</RootNamespace>
-    <AssemblyName>CDA.PSML</AssemblyName>
-    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
-    <FileAlignment>512</FileAlignment>
-    <TargetFrameworkProfile />
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <DebugSymbols>true</DebugSymbols>
-    <DebugType>full</DebugType>
-    <Optimize>false</Optimize>
-    <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-    <Prefer32Bit>false</Prefer32Bit>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <DebugType>pdbonly</DebugType>
-    <Optimize>true</Optimize>
-    <OutputPath>bin\Release\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-    <Prefer32Bit>false</Prefer32Bit>
-  </PropertyGroup>
-  <PropertyGroup>
-    <StartupObject />
-  </PropertyGroup>
-  <ItemGroup>
-    <Reference Include="Nehta.VendorLibrary.Common, Version=4.3.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Nehta.VendorLibrary.Common.4.3.0\lib\net45\Nehta.VendorLibrary.Common.dll</HintPath>
-    </Reference>
-    <Reference Include="System" />
-    <Reference Include="System.Configuration" />
-    <Reference Include="System.Core" />
-    <Reference Include="System.Security" />
-    <Reference Include="System.ServiceModel" />
-    <Reference Include="System.Xml.Linq" />
-    <Reference Include="System.Data.DataSetExtensions" />
-    <Reference Include="Microsoft.CSharp" />
-    <Reference Include="System.Data" />
-    <Reference Include="System.Xml" />
-  </ItemGroup>
-  <ItemGroup>
-    <Compile Include="ACSPSample.cs" />
-    <Compile Include="GenericObjectReuseSample.cs" />
-    <Compile Include="ACTSSample.cs" />
-    <Compile Include="SmlSampleCreator.cs" />
-    <Compile Include="SMLSample.cs" />
-    <Compile Include="PSMLSample.cs" />
-    <Compile Include="Program.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\CDA.GeneratedCode\CDA.GeneratedCode.csproj">
-      <Project>{0208153f-d77c-4cd1-b28d-1aadc00e1553}</Project>
-      <Name>CDA.GeneratedCode</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\CDA.Generator.Common\CDA.Generator.Common.csproj">
-      <Project>{851a08a2-728f-4bf7-a050-0e056617a829}</Project>
-      <Name>CDA.Generator.Common</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\CDA.Generator\CDA.Generator.csproj">
-      <Project>{4b542e29-7fa2-4de2-a828-a197da3f6b40}</Project>
-      <Name>CDA.Generator</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="app.config" />
-    <None Include="Attachments\attachment.pdf">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="packages.config" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Attachments\logo.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-  </ItemGroup>
-  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+﻿<Project Sdk="Microsoft.NET.Sdk">
+	<PropertyGroup>
+		<TargetFrameworks>netstandard2.0;net472;net10.0</TargetFrameworks>
+		<OutputType>Exe</OutputType>
+		<RootNamespace>CDA.PSML</RootNamespace>
+		<AssemblyName>CDA.PSML</AssemblyName>
+	</PropertyGroup>
+	<PropertyGroup>
+		<AssemblyTitle>Nehta.VendorLibrary.CDA.PCML</AssemblyTitle>
+		<Description>This Library helps generate Agency defined CDA documents</Description>
+		<Company>Australian Digital Health Agency</Company>
+		<Product>Nehta.VendorLibrary.CDA.PCML</Product>
+		<Copyright>Copyright ©2026</Copyright>
+		<ComVisible>false</ComVisible>
+	</PropertyGroup>
+	<ItemGroup>
+		<PackageReference Include="Nehta.VendorLibrary.Common" Version="5.0.0" />
+	</ItemGroup>
+	<ItemGroup Condition="'$(TargetFramework)' == 'net472'">
+		<Reference Include="System.configuration" />
+		<Reference Include="System.Core" />
+		<Reference Include="System.Security" />
+		<Reference Include="System.ServiceModel" />
+		<Reference Include="System.Web.Extensions" />
+		<Reference Include="System.Windows.Forms" />
+		<Reference Include="System.Xml.Linq" />
+		<Reference Include="System.Data.DataSetExtensions" />
+		<Reference Include="System.Data" />
+		<Reference Include="System.Xml" />
+	</ItemGroup>
+	<ItemGroup>
+		<ProjectReference Include="..\CDA.GeneratedCode\CDA.GeneratedCode.csproj" />
+		<ProjectReference Include="..\CDA.Generator.Common\CDA.Generator.Common.csproj" />
+		<ProjectReference Include="..\CDA.Generator\CDA.Generator.csproj" />
+	</ItemGroup>
+	<ItemGroup>
+		<None Include="app.config" />
+		<None Include="Attachments\attachment.pdf" CopyToOutputDirectory="PreserveNewest" />
+		<Content Include="Attachments\logo.png" CopyToOutputDirectory="Always" />
+	</ItemGroup>
 </Project>
