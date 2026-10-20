@@ -13,7 +13,7 @@
   </PropertyGroup>
   <!-- Package and assembly information -->
   <PropertyGroup>
-    <Version>5.0.1.0</Version>
+    <Version>5.0.2.0</Version>
     <Description>This Library converts a HL7 v2 message into a CDA document</Description>
     <Company>Australian Digital Health Agency</Company>
     <Authors>$(Company)</Authors>
@@ -30,7 +30,7 @@
     <ProjectReference Include="..\DigitalHealth.Hl7.Common\DigitalHealth.Hl7.Common.csproj" PrivateAssets="all" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="Nehta.VendorLibrary.Common" Version="5.0.1" />
+    <PackageReference Include="Nehta.VendorLibrary.Common" Version="5.0.2" />
   </ItemGroup>
   <ItemGroup>
     <Compile Remove="Models\Hl7MessageInfoException.cs" />

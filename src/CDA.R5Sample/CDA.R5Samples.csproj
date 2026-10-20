@@ -15,7 +15,7 @@
 		<ComVisible>false</ComVisible>
 	</PropertyGroup>
 	<ItemGroup>
-		<PackageReference Include="Nehta.VendorLibrary.Common" Version="5.0.1" />
+		<PackageReference Include="Nehta.VendorLibrary.Common" Version="5.0.2" />
 	</ItemGroup>
 	<ItemGroup Condition="'$(TargetFramework)' == 'net472'">
 		<Reference Include="System.configuration" />

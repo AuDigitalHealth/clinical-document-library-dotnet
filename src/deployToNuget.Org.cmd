@@ -9,3 +9,5 @@ dotnet pack .\DigitalHealth.Hl7ToCdaTransformer\DigitalHealth.Hl7ToCdaTransforme
 pause
 
 forfiles /m *.nupkg /c "cmd /c NuGet.exe push @FILE -Source https://www.nuget.org/api/v2/package"
+
+REM USE WEBSITE TO UPLOAD PACKAGE AS ABOVE DOESNT WORK NOW

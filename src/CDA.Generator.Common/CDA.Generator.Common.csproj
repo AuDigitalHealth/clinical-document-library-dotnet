@@ -13,7 +13,7 @@
 	</PropertyGroup>
   <!-- Package and assembly information -->
   <PropertyGroup>
-    <Version>5.0.1.0</Version>
+    <Version>5.0.2.0</Version>
     <Description>This Library helps generate Agency defined CDA documents</Description>
     <Company>Australian Digital Health Agency</Company>
     <Copyright>Copyright ©2026</Copyright>
@@ -23,7 +23,7 @@
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="JetBrains.Annotations" Version="2025.2.4" />
-    <PackageReference Include="System.Configuration.ConfigurationManager" Version="10.0.8" />          
+    <PackageReference Include="System.Configuration.ConfigurationManager" Version="10.0.13" />          
     <PackageReference Include="System.ServiceModel.Federation" Version="10.0.652802" />
   </ItemGroup>
   <ItemGroup Condition="'$(TargetFramework)' == 'net452'">
@@ -31,7 +31,7 @@
     <Reference Include="System.ServiceModel" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="Nehta.VendorLibrary.Common" Version="5.0.1" />
+    <PackageReference Include="Nehta.VendorLibrary.Common" Version="5.0.2" />
   </ItemGroup>
   <ItemGroup>
     <InternalsVisibleTo Include="Nehta.VendorLibrary.CDA.Generator.v3" />

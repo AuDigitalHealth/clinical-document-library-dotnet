@@ -1,5 +1,10 @@
 ## Change Log/Revision History
 
+5.0.2
+=====
+System.Security.Cryptography.Xml 10.0.8 -> 10.0.13
+System.Security.Cryptography.Pkcs 10.0.8 -> 10.0.13
+
 5.0.1
 =====
 System.Security.Cryptography.Xml 10.0.5 -> 10.0.8

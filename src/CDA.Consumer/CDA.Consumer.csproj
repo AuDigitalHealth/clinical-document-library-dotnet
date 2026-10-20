@@ -26,7 +26,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-      <PackageReference Include="Nehta.VendorLibrary.Common" Version="5.0.1" />
+      <PackageReference Include="Nehta.VendorLibrary.Common" Version="5.0.2" />
   </ItemGroup>
     <ItemGroup>
     <None Include="App.config" />
